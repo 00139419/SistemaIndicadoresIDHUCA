@@ -1,0 +1,39 @@
+2025-04-12 15:58:06.326 [main] INFO  c.u.i.s.i.SistemaIndicadoresIdhucaApplication - Starting SistemaIndicadoresIdhucaApplication using Java 17.0.5 with PID 73202 (/Users/dm420/Documents/git/SistemaIndicadoresIDHUCA/server/SistemaIndicadoresIDHUCA/target/classes started by dm420 in /Users/dm420/Documents/git/SistemaIndicadoresIDHUCA/server/SistemaIndicadoresIDHUCA)
+2025-04-12 15:58:06.327 [main] DEBUG c.u.i.s.i.SistemaIndicadoresIdhucaApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-04-12 15:58:06.328 [main] INFO  c.u.i.s.i.SistemaIndicadoresIdhucaApplication - The following 1 profile is active: "dev"
+2025-04-12 15:58:06.619 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-04-12 15:58:06.624 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-04-12 15:58:06.624 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-04-12 15:58:06.624 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12 15:58:06.644 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-04-12 15:58:06.644 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 300 ms
+2025-04-12 15:58:06.777 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-04-12 15:58:06.784 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-04-12 15:58:06.789 [main] INFO  c.u.i.s.i.SistemaIndicadoresIdhucaApplication - Started SistemaIndicadoresIdhucaApplication in 0.653 seconds (process running for 5.955)
+2025-04-12 15:58:19.444 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-12 15:58:19.444 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-04-12 15:58:19.445 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-04-12 15:58:19.462 [http-nio-8080-exec-2] INFO  c.u.i.s.i.controllers.CtrlTest - [SYSTEM] ------ Inicio de servicio 'test/testConnection'
+2025-04-12 15:58:19.478 [http-nio-8080-exec-2] INFO  c.u.i.s.i.controllers.CtrlTest - [SYSTEM] ------ Fin de servicio 'test/testConnection' {"codigo":0,"mensaje":"Success!"}
+2025-04-12 15:59:54.471 [RMI TCP Connection(10)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2025-04-12 15:59:54.476 [RMI TCP Connection(10)-127.0.0.1] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12 15:59:54.476 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-04-12 15:59:54.479 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-04-12 15:59:54.480 [RMI TCP Connection(10)-127.0.0.1] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-04-12 16:00:00.481 [main] INFO  c.u.i.s.i.SistemaIndicadoresIdhucaApplication - Starting SistemaIndicadoresIdhucaApplication using Java 17.0.5 with PID 73790 (/Users/dm420/Documents/git/SistemaIndicadoresIDHUCA/server/SistemaIndicadoresIDHUCA/target/classes started by dm420 in /Users/dm420/Documents/git/SistemaIndicadoresIDHUCA/server/SistemaIndicadoresIDHUCA)
+2025-04-12 16:00:00.482 [main] DEBUG c.u.i.s.i.SistemaIndicadoresIdhucaApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-04-12 16:00:00.482 [main] INFO  c.u.i.s.i.SistemaIndicadoresIdhucaApplication - The following 1 profile is active: "dev"
+2025-04-12 16:00:00.778 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-04-12 16:00:00.783 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-04-12 16:00:00.784 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-04-12 16:00:00.784 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12 16:00:00.802 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-04-12 16:00:00.802 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 305 ms
+2025-04-12 16:00:00.933 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-04-12 16:00:00.941 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-04-12 16:00:00.945 [main] INFO  c.u.i.s.i.SistemaIndicadoresIdhucaApplication - Started SistemaIndicadoresIdhucaApplication in 0.653 seconds (process running for 5.936)
+2025-04-12 16:03:27.203 [RMI TCP Connection(13)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2025-04-12 16:03:27.207 [RMI TCP Connection(13)-127.0.0.1] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12 16:03:27.207 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-04-12 16:03:27.213 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-04-12 16:03:27.213 [RMI TCP Connection(13)-127.0.0.1] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
