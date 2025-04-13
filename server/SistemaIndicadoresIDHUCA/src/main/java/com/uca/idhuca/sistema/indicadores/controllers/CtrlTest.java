@@ -3,6 +3,8 @@ package com.uca.idhuca.sistema.indicadores.controllers;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.jdbc.ConexionJDBC;
+import com.uca.idhuca.sistema.indicadores.security.JwtUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +27,8 @@ public class CtrlTest {
 	@Autowired
 	ConexionJDBC conexionJDBC;
 	
+	@Autowired
+    private JwtUtils jwtUtils;
 	
 	@GetMapping(value = "/testConnection", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> testConnection() {
@@ -50,5 +55,22 @@ public class CtrlTest {
 		log.info("[" + key + "] ------ Fin de servicio 'test/testDbConnection' " + response.toJson());
 		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/testJwtGenerate", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> testJwtGenerate() {
+		SuperGenericResponse response = null;
+		String key = "SYSTEM";
+		log.info("[" + key + "] ------ Inicio de servicio 'test/testJwtGenerate'");
+		
+		response = new SuperGenericResponse();
+		
+		response.setCodigo(OK);
+		response.setMensaje(jwtUtils.generateJwtToken("00139419@uca.edu.sv"));
+		
+		log.info("[" + key + "] ------ Fin de servicio 'test/testJwtGenerate' " + response.toJson());
+		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+	}
+	
+	
 	
 }

@@ -17,4 +17,10 @@ public class ProjectProperties {
 
 	@Value("${spring.datasource.password}")
 	private String jdbcPassword;
+	
+	@Value("${security.jwt.secret}")
+	private String jwtSecret;
+	
+	@Value("${security.jwt.expiration.time}")
+	private String jwtExpirationTime;
 }

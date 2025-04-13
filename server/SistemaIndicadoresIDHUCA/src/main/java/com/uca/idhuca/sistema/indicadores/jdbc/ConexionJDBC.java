@@ -11,13 +11,17 @@ import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.utils.Constantes;
 import com.uca.idhuca.sistema.indicadores.utils.ProjectProperties;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class ConexionJDBC {
 
 	@Autowired
 	ProjectProperties projectProperties;
 
 	public SuperGenericResponse testDbConecction() {
+		String key = "SYSTEM";
 		SuperGenericResponse resonse = new SuperGenericResponse(Constantes.ERROR, "Error generico conectando a la DB");
 		Connection con = null;
 		
@@ -31,6 +35,7 @@ public class ConexionJDBC {
 			if(con != null) {
 				resonse.setCodigo(Constantes.OK);
 				resonse.setMensaje("Conexion exitosa a la base de datos.");
+				log.info("[" + key + "] Conexion a base de datos exitosa.");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
