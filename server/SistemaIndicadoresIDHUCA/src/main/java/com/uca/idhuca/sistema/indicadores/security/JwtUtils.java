@@ -1,16 +1,13 @@
 package com.uca.idhuca.sistema.indicadores.security;
 
 import io.jsonwebtoken.*;
-import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.uca.idhuca.sistema.indicadores.utils.ProjectProperties;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class JwtUtils {

@@ -3,8 +3,6 @@ package com.uca.idhuca.sistema.indicadores.controllers;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,7 +38,7 @@ public class CtrlTest {
 		response.setCodigo(OK);
 		response.setMensaje("Success!");
 		
-		log.info("[" + key + "] ------ Fin de servicio 'test/testConnection' " + response.toJson());
+		log.info("[" + key + "] ------ Fin de servicio 'test/testConnection'");
 		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 	}
 	
@@ -52,7 +50,7 @@ public class CtrlTest {
 		
 		response = conexionJDBC.testDbConecction();
 		
-		log.info("[" + key + "] ------ Fin de servicio 'test/testDbConnection' " + response.toJson());
+		log.info("[" + key + "] ------ Fin de servicio 'test/testDbConnection'");
 		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 	}
 	
@@ -67,7 +65,7 @@ public class CtrlTest {
 		response.setCodigo(OK);
 		response.setMensaje(jwtUtils.generateJwtToken("00139419@uca.edu.sv"));
 		
-		log.info("[" + key + "] ------ Fin de servicio 'test/testJwtGenerate' " + response.toJson());
+		log.info("[" + key + "] ------ Fin de servicio 'test/testJwtGenerate'");
 		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 	}
 	
