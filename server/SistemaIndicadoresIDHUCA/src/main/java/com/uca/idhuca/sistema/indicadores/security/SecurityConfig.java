@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.uca.idhuca.sistema.indicadores.security.RutasPublicas.SIN_AUTENTICACION;
+import static com.uca.idhuca.sistema.indicadores.security.RutasAdministradores.RUTAS_ADMINISTRADORES;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_ADMINISTRADOR;
 
 @Configuration
 public class SecurityConfig {
@@ -27,13 +29,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(SIN_AUTENTICACION).permitAll()
-                .requestMatchers(Constantes.ROOT_CONTEXT + "users/**").hasAuthority("ROL2")
+                .requestMatchers(RUTAS_ADMINISTRADORES).hasAuthority(ROL_ADMINISTRADOR)
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex
@@ -47,7 +49,7 @@ public class SecurityConfig {
     }
     
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
             throws Exception {
         return configuration.getAuthenticationManager();
     }

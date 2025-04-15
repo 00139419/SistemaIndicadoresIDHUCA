@@ -13,4 +13,10 @@ public class Constantes {
 	public static final int OK = 0;
 	public static final int ERROR = -1;
 	
+	/**
+	 * Constantes para los roles
+	 * 
+	 */
+	public static final String ROL_ADMINISTRADOR = "admin";
+	public static final String ROL_USER = "user";
 }

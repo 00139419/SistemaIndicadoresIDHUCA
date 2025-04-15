@@ -3,6 +3,8 @@ VALUES
 ('Daniel Morales', '00139419@uca.edu.sv', '1234', 'ROL1', CURRENT_TIMESTAMP, TRUE);
 
 
+select * from catalogo;
+
 SELECT * FROM usuario;
 
 UPDATE usuario SET contrasena_hash  = '$2a$10$PaAL.LAa0uao9YR3Eb4qeOvd6ukwo9VRWQB/pRn7nF.5XhbJKKl5u' WHERE email = '00139419@uca.edu.sv';

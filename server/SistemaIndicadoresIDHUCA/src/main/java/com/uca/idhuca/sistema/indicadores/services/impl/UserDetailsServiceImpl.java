@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 usuario.getEmail(),
                 usuario.getContrasenaHash(),
                 usuario.isActivo(), true, true, true,
-                Collections.singletonList(new SimpleGrantedAuthority(usuario.getRol().getCodigo()))
+                Collections.singletonList(new SimpleGrantedAuthority(usuario.getRol().getDescripcion()))
         );
     }
 }
