@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "b908760c-8687-4c08-aa35-2b9b639fc169",
+		"name": "SistemaIndicadoresIDHUCA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24892434",
+		"_collection_link": "https://solar-zodiac-900751.postman.co/workspace/Team-Workspace~76096d67-98b4-4424-84bc-7847b85bdd83/collection/24892434-b908760c-8687-4c08-aa35-2b9b639fc169?action=share&source=collection_link&creator=24892434"
+	},
+	"item": [
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "testConnection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/test/testConnection",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"test",
+								"testConnection"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testDbConnection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/test/testDbConnection",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"test",
+								"testDbConnection"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testJwtGenerate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/test/testJwtGenerate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"test",
+								"testJwtGenerate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ0NTEzMTcwLCJleHAiOjE3NDQ1OTk1NzB9.5XJ6tsPACzUxZ3esJFhOsztRoTC9ZmcUfMXhQydyKgRyZ_IkJrBUq_b2IvdpRLmKbi4zVBSDJ_eqo7U8JiDllg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\":\"text\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/users/get/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"users",
+								"get",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
