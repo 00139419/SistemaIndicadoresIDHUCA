@@ -12,11 +12,10 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
 
 @Slf4j
 @Component
-public class LoggingFilter extends OncePerRequestFilter {
+public class RequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
@@ -31,33 +30,25 @@ public class LoggingFilter extends OncePerRequestFilter {
         String userAgent = request.getHeader("User-Agent");
         String authHeader = request.getHeader("Authorization");
 
-        log.info("=== [Petición Entrante] ===");
+        log.info("===========================================================================");
+        log.info("=========================== [Petición Entrante] ==========================");
         log.info("Método: {}", method);
         log.info("Endpoint: {}", endpoint);
         log.info("IP: {}", ip);
         log.info("User-Agent: {}", userAgent);
         log.info("JWT: {}", authHeader != null ? authHeader : "No JWT");
 
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String param = parameterNames.nextElement();
-            log.info("Parámetro: {} = {}", param, request.getParameter(param));
-        }
-
         filterChain.doFilter(request, response);
 
-        String requestBody = new String(request.getContentAsByteArray(), StandardCharsets.UTF_8);
-        if (!requestBody.isBlank()) {
-            log.info("Body de la petición: {}", requestBody);
-        }
-
-        log.info("=== [Respuesta] ===");
+        log.info("============================== [Respuesta] ===============================");
         log.info("Status: {}", response.getStatus());
 
         String responseBody = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
         if (!responseBody.isBlank()) {
             log.info("Body de la respuesta: {}", responseBody);
         }
+        
+        log.info("===========================================================================");
 
         response.copyBodyToResponse();
     }

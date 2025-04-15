@@ -18,4 +18,17 @@ public class GenericEntityResponse<T> extends SuperGenericResponse {
             return "{\"error\": \"No se pudo convertir a JSON: " + e.getMessage() + "\"}";
         }
     }
+	
+	public GenericEntityResponse() {
+		super();
+	}
+
+	public GenericEntityResponse(int codigo, String mensaje) {
+		super(codigo,mensaje);
+	}
+	
+	public GenericEntityResponse(int codigo, String mensaje, T entity) {
+		super(codigo,mensaje);
+		this.entity = entity;
+	}
 }
