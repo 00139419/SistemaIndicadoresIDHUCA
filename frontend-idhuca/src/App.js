@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import MainLayout from './components/layouts/MainLayout';
 import LoginForm from './pages/Login';
 import Index from './pages/Index';
 import 'primereact/resources/themes/lara-light-blue/theme.css'; // Theme
@@ -10,9 +11,11 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/index" element={<Index />} />
+        </Route>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/index" element={<Index />} />
         {/* Otras rutas protegidas podrían ir aquí */}
       </Routes>
     </Router>

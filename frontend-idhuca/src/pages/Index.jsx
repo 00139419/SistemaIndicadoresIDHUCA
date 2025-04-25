@@ -1,14 +1,11 @@
 // src/pages/About.jsx
 import React from 'react';
-import Footer from '../components/footer';
-
+// Index.jsx
 const Index = () => {
   return (
-    <div className="container mt-4">
-      <h1 className="text-center">Página About</h1>
-      <p className="text-center">Esta es una página de prueba con Bootstrap y un footer.</p>
-
-      <Footer />
+    <div>
+      <h1>Bienvenido a la página de inicio</h1>
+      <p>Este es el contenido principal de la página de inicio.</p>
     </div>
   );
 };
