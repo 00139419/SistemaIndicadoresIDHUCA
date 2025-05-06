@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import MainLayout from './components/layouts/MainLayout';
 import LoginForm from './pages/Login';
 import Index from './pages/Index';
+import VerifyIdentity from './pages/VerifyIdentity';
+import ResetPassword from './pages/ResetPassword';
 import 'primereact/resources/themes/lara-light-blue/theme.css'; // Theme
 import 'primereact/resources/primereact.min.css'; // Core CSS
 import 'primeicons/primeicons.css'; // Icons
@@ -16,7 +18,8 @@ function App() {
         </Route>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/" element={<Navigate to="/login" />} />
-        {/* Otras rutas protegidas podrían ir aquí */}
+        <Route path="/verify-identity" element={<VerifyIdentity />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>
   );

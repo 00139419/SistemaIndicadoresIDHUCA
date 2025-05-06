@@ -9,6 +9,7 @@ export default function LoginForm() {
     username: "",
     password: "",
   });
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +28,7 @@ export default function LoginForm() {
     <div
     className="p-d-flex p-jc-center p-ai-center"
     style={{
-      backgroundColor: "#1E3A8A",
+      backgroundColor: "#003C71",
       minHeight: "100vh", // Ensures the container spans the full viewport height
       display: "flex", // Explicitly set flexbox display
       justifyContent: "center", // Centers horizontally
