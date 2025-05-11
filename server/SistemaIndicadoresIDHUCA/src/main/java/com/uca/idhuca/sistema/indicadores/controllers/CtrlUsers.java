@@ -1,6 +1,5 @@
 package com.uca.idhuca.sistema.indicadores.controllers;
 
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
 import java.util.List;
@@ -9,18 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.AddUserDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
+import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
+import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
+import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoUsuario;
+import com.uca.idhuca.sistema.indicadores.services.IUser;
 
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
 
 @Slf4j
 @RestController
@@ -28,99 +34,106 @@ import org.springframework.http.ResponseEntity;
 public class CtrlUsers {
 
 	@Autowired
-	IRepoUsuario repoUsuario;
-
+	IUser userServices;
+	
+	@Autowired
+	ObjectMapper mapper;
+	
 	@GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<List<Usuario>>> getAll() {
-		GenericEntityResponse<List<Usuario>> response = null;
-		String key = "SYSTEM";
-		log.info("[" + key + "] ------ Inicio de servicio 'users/get/all'");
-
+		GenericEntityResponse<List<Usuario>> response = new GenericEntityResponse<>();
+		String key =  "SYSTEM";
 		try {
-			List<Usuario> list = repoUsuario.findAll();
-			response = new GenericEntityResponse<>();
-			response.setCodigo(OK);
-			response.setMensaje("Datos obtenidos correctamente");
-			response.setEntity(list);
-
-			log.info("repoUsuario" + repoUsuario);
-
+			log.info("[" + key + "] ------ Inicio de servicio '/get/all' ");
+			response = userServices.getAll();
+			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
-			if (response != null) {
-				log.info("[" + key + "] ------ Fin de servicio 'users/get/all' " + response.toJson());
-			}
+			log.info("[" + key + "] ------ Fin de servicio '/get/all' ");
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/get/one/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<GenericEntityResponse<Usuario>> getOne(@PathVariable Integer id) {
+		String key =  "SYSTEM";
+		GenericEntityResponse<Usuario> response = new GenericEntityResponse<>();
+		try {
+			log.info("[" + key + "] ------ Inicio de servicio '/get/one/'" + " ID: " + id);
+			response = userServices.getOne(id);
+			return new ResponseEntity<GenericEntityResponse<Usuario>>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/get/one/'");
+		}
 	}
 
 	@PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<Usuario>> addUser(@RequestBody Usuario usuario) {
-		GenericEntityResponse<Usuario> response = new GenericEntityResponse<>();
+	ResponseEntity<SuperGenericResponse> addUser(@RequestBody AddUserDto request) {
+		String key =  "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
 		try {
-			Usuario savedUser = repoUsuario.save(usuario);
-			response.setCodigo(OK);
-			response.setMensaje("Usuario agregado correctamente");
-			response.setEntity(savedUser);
+			log.info("[" + key + "] ------ Inicio de servicio '/add' " + mapper.writeValueAsString(request));
+			response = userServices.add(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setCodigo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			response.setMensaje("Error al agregar usuario");
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/add'");
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "/delete/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<Void>> deleteUser(@PathVariable Long id, @RequestBody Usuario usuario) {
-		GenericEntityResponse<Void> response = new GenericEntityResponse<>();
+	@DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> deleteUser(@PathVariable Integer id) {
+		String key =  "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
 		try {
-			if (repoUsuario.existsById(id)) {
-				// Ensure the ID in the path matches the ID in the request body
-				if (!id.equals(usuario.getId())) {
-					response.setCodigo(HttpStatus.BAD_REQUEST.value());
-					response.setMensaje("El ID en la URL no coincide con el ID en el cuerpo de la solicitud");
-					return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-				}
-				repoUsuario.deleteById(id);
-				response.setCodigo(OK);
-				response.setMensaje("Usuario eliminado correctamente");
-			} else {
-				response.setCodigo(HttpStatus.NOT_FOUND.value());
-				response.setMensaje("Usuario no encontrado");
-				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-			}
+			log.info("[" + key + "] ------ Inicio de servicio '/delete/'" + " ID: " + id);
+			response = userServices.delete(id);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		}  catch (NotFoundException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setCodigo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			response.setMensaje("Error al eliminar usuario");
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/delete/'");
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<Usuario>> updateUser(@PathVariable Long id, @RequestBody Usuario usuario) {
-		GenericEntityResponse<Usuario> response = new GenericEntityResponse<>();
+	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> updateUser(@RequestBody AddUserDto request) {
+		String key =  "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
 		try {
-			if (repoUsuario.existsById(id)) {
-				if (!id.equals(usuario.getId())) {
-					response.setCodigo(HttpStatus.BAD_REQUEST.value());
-					response.setMensaje("El ID en la URL no coincide con el ID en el cuerpo de la solicitud");
-					return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-				}
-				Usuario updatedUser = repoUsuario.save(usuario);
-				response.setCodigo(OK);
-				response.setMensaje("Usuario actualizado correctamente");
-				response.setEntity(updatedUser);
-			} else {
-				response.setCodigo(HttpStatus.NOT_FOUND.value());
-				response.setMensaje("Usuario no encontrado");
-			}
+			log.info("[" + key + "] ------ Inicio de servicio '/update' " + mapper.writeValueAsString(request));
+			response = userServices.update(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		}  catch (NotFoundException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setCodigo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			response.setMensaje("Error al actualizar usuario");
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/update' ");
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

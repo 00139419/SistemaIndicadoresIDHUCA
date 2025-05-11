@@ -19,4 +19,5 @@ public class Constantes {
 	 */
 	public static final String ROL_ADMINISTRADOR = "admin";
 	public static final String ROL_USER = "user";
+	public static final String ROL_AYUDANTE = "ayudante";
 }
