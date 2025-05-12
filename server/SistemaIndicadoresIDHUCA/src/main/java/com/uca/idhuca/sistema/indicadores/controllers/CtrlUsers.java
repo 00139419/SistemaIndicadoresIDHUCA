@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uca.idhuca.sistema.indicadores.controllers.dto.AddUserDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
+import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(ROOT_CONTEXT + "users")
 public class CtrlUsers {
+	
+	@Autowired
+	private Utilidades utils;
 
 	@Autowired
 	IUser userServices;
@@ -44,6 +48,7 @@ public class CtrlUsers {
 		GenericEntityResponse<List<Usuario>> response = new GenericEntityResponse<>();
 		String key =  "SYSTEM";
 		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/get/all' ");
 			response = userServices.getAll();
 			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(response, HttpStatus.OK);
@@ -64,6 +69,7 @@ public class CtrlUsers {
 		String key =  "SYSTEM";
 		GenericEntityResponse<Usuario> response = new GenericEntityResponse<>();
 		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/get/one/'" + " ID: " + id);
 			response = userServices.getOne(id);
 			return new ResponseEntity<GenericEntityResponse<Usuario>>(response, HttpStatus.OK);
@@ -80,10 +86,11 @@ public class CtrlUsers {
 	}
 
 	@PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<SuperGenericResponse> addUser(@RequestBody AddUserDto request) {
+	ResponseEntity<SuperGenericResponse> addUser(@RequestBody UserDto request) {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
 		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/add' " + mapper.writeValueAsString(request));
 			response = userServices.add(request);
 			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
@@ -102,6 +109,7 @@ public class CtrlUsers {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
 		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/delete/'" + " ID: " + id);
 			response = userServices.delete(id);
 			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
@@ -118,10 +126,11 @@ public class CtrlUsers {
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<SuperGenericResponse> updateUser(@RequestBody AddUserDto request) {
+	ResponseEntity<SuperGenericResponse> updateUser(@RequestBody UserDto request) {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
 		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/update' " + mapper.writeValueAsString(request));
 			response = userServices.update(request);
 			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
@@ -136,4 +145,5 @@ public class CtrlUsers {
 			log.info("[" + key + "] ------ Fin de servicio '/update' ");
 		}
 	}
+	
 }

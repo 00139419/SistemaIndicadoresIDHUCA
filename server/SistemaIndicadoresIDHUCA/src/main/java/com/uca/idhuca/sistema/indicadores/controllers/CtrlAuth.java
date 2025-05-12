@@ -14,11 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.Jwt;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
+import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
+import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.services.IAuth;
+import com.uca.idhuca.sistema.indicadores.services.IUser;
+import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 public class CtrlAuth {
 
 	@Autowired
+	private Utilidades utils;
+	
+	@Autowired
 	ObjectMapper mapper;
+	
+	@Autowired
+	IUser userService;
 	
 	@Autowired
 	IAuth authService;
@@ -49,6 +60,46 @@ public class CtrlAuth {
 			return new ResponseEntity<GenericEntityResponse<Jwt>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio 'test/testConnection'");
+		}
+	}
+	
+	@PostMapping(value = "/recovery/password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> recoverypassword(@RequestBody UserDto request) {
+		String key =  "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
+		try {
+			key = request.getEmail() != null ?  request.getEmail() : "SYSTEM";
+			log.info("[" + key + "] ------ Inicio de servicio '/recovery/password' " + mapper.writeValueAsString(request));
+			response = userService.recoveryPassword(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/recovery/password'");
+		}
+	}
+	
+	@GetMapping(value = "/get/securityQuestion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> getSecurityQuestion(@RequestBody UserDto request) {
+		String key =  "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
+		try {
+			key = request.getEmail() != null ?  request.getEmail() : "SYSTEM";
+			log.info("[" + key + "] ------ Inicio de servicio '/get/securityQuestion' " + mapper.writeValueAsString(request));
+			response = userService.getSecurityQuestio(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/get/securityQuestion'");
 		}
 	}
 	

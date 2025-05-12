@@ -1,47 +1,75 @@
 package com.uca.idhuca.sistema.indicadores.services.impl;
 
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CREAR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.DELETE;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarAddUser;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarIdGiven;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarRecoveryPassword;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateUser;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarEmailGiven;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.uca.idhuca.sistema.indicadores.controllers.dto.AddUserDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.models.Catalogo;
+import com.uca.idhuca.sistema.indicadores.models.RecoveryPassword;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
+import com.uca.idhuca.sistema.indicadores.repositories.IRepoCatalogo;
+import com.uca.idhuca.sistema.indicadores.repositories.IRepoRecoveryPassword;
 import com.uca.idhuca.sistema.indicadores.repositories.IRepoUsuario;
+import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
 import com.uca.idhuca.sistema.indicadores.useCase.UserUseCase;
+import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class UserImpl implements IUser {
+	
+	@Autowired
+	PasswordEncoder pEncoder;
 
 	@Autowired
-	IRepoUsuario userRepo;
+	private IRepoUsuario userRepo;
+
+	@Autowired
+	private IRepoCatalogo catalogoRepo;
+	
+	@Autowired
+	private IRepoRecoveryPassword recoveryPasswordRepo;
+	
+	@Autowired
+	private IAuditoria auditoriaService;
+	
+	@Autowired
+	private Utilidades utils;
 	
 	@Autowired
 	private UserUseCase useCase;
 	
 	@Override
-	public SuperGenericResponse add(AddUserDto request) throws ValidationException {
+	public SuperGenericResponse add(UserDto request) throws ValidationException {
 		List<String> errorsList = validarAddUser(request);
 		if (!errorsList.isEmpty()) {
 			throw new ValidationException(ERROR, errorsList.get(0));
 		}
 
-		String key = request.getEmail();
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
 		log.info("[{}] Request válido", key);
 		
 		
@@ -62,8 +90,15 @@ public class UserImpl implements IUser {
 		 Usuario newUser = useCase.darFormatoInsert(request);
 		 log.info("[{}] Creando usuario...",key);
 		 
-		 userRepo.save(newUser);
+		 Usuario usuarioSaved = userRepo.save(newUser);
+		 
+		 RecoveryPassword recovery = useCase.darFormatoRecovery(request, usuarioSaved);
+		 recoveryPasswordRepo.save(recovery);
 		 log.info("[{}] Usuario guardado correctamente.",key);
+		 
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, newUser));
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, recovery));
+		 log.info("[{}] Auditoria creada correctamente.",key);
 		 
 		return new SuperGenericResponse(OK, "Usuario guardado correctamente.");
 	}
@@ -75,6 +110,9 @@ public class UserImpl implements IUser {
 			throw new ValidationException(ERROR, errorsList.get(0));
 		}
 		
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Request válido", key);
+		
 		Usuario usuario = null;
 		try {
 			usuario = userRepo
@@ -83,20 +121,36 @@ public class UserImpl implements IUser {
 			System.out.println("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
-		log.info("[{}] Usuario encontrado correctamente.", "ADMIN");
 		
+		RecoveryPassword recovery;
+		try {
+			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Usuario no existe.");
+			throw new NotFoundException(ERROR, "Recovery no existe.");
+		}
+		log.info("[{}] Usuario encontrado correctamente.", key);
+		
+		recoveryPasswordRepo.delete(recovery);
 		userRepo.delete(usuario);
-		log.info("[{}] Usuario eliminado correctamente.", "ADMIN");
+		log.info("[{}] Usuario eliminado correctamente.", key);
+		
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, usuario));
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, recovery));
+		 log.info("[{}] Auditoria creada correctamente.",key);
 		
 		return new SuperGenericResponse(OK, "Usuario elimindo correctamente.");
 	}
 
 	@Override
-	public SuperGenericResponse update(AddUserDto request) throws ValidationException, NotFoundException {
+	public SuperGenericResponse update(UserDto request) throws ValidationException, NotFoundException {
 		List<String> errorsList = validarUpdateUser(request);
 		if (!errorsList.isEmpty()) {
 			throw new ValidationException(ERROR, errorsList.get(0));
 		}
+		
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Request válido", key);
 		
 		Usuario usuario = null;
 		try {
@@ -106,13 +160,29 @@ public class UserImpl implements IUser {
 			System.out.println("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
-		log.info("[{}] Usuario encontrado correctamente.", "ADMIN");
+		
+		RecoveryPassword recovery;
+		try {
+			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Recovery no existe.");
+			throw new NotFoundException(ERROR, "Recovery no existe.");
+		}
+		log.info("[{}] Usuario encontrado correctamente.", key);
 		
 		useCase.darFormatoUpdate(request, usuario);
-		log.info("[{}] Actualizando usuario... [{}]", "ADMIN", usuario);
+		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
+		
+		useCase.darFormatoUpdateRecovery(request, recovery);
+		log.info("[{}] Actualizando recovery... [{}]", key, usuario);
 		
 		userRepo.save(usuario);
-		log.info("[{}] Usuario actualizado correctamente.","ADMNIN");
+		recoveryPasswordRepo.save(recovery);
+		log.info("[{}] Usuario actualizado correctamente.", key);
+		
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));
+		 log.info("[{}] Auditoria creada correctamente.",key);
 		 
 		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
 	}
@@ -124,6 +194,9 @@ public class UserImpl implements IUser {
 			throw new ValidationException(ERROR, errorsList.get(0));
 		}
 		
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Request válido", key);
+		
 		Usuario usuario = null;
 		try {
 			usuario = userRepo
@@ -133,7 +206,7 @@ public class UserImpl implements IUser {
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		
-		log.info("[{}] Usuario encontrado correctamente.", "ADMIN");
+		log.info("[{}] Usuario encontrado correctamente.", key);
 		
 		return new GenericEntityResponse<Usuario>(OK, "Usuario elimindo correctamente.", usuario);
 	}
@@ -142,13 +215,107 @@ public class UserImpl implements IUser {
 	public GenericEntityResponse<List<Usuario>> getAll() throws ValidationException, NotFoundException {
 		List<Usuario> users = userRepo.findAll();
 		
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Request válido", key);
+		
 		if(users == null || users.size() == 0) {
 			System.out.println("No hay usuarios en la base de datos.");
 			throw new NotFoundException(ERROR, "No hay usuarios en la base de datos.");
 		}
-		log.info("[{}] Usuarios obtenidos correctamente.", "ADMIN");
+		log.info("[{}] Usuarios obtenidos correctamente.", key);
 		
 		return new GenericEntityResponse<List<Usuario>>(OK, "Usuario elimindo correctamente.", users);
+	}
+
+	@Override
+	public SuperGenericResponse recoveryPassword(UserDto request) throws ValidationException, NotFoundException {
+		List<String> errorsList = validarRecoveryPassword(request);
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
+		
+		String key  = request.getEmail() != null ?  request.getEmail() : "SYSTEM";
+		log.info("[{}] Request válido", key);
+		
+		Usuario usuario = null;
+		try {
+			usuario = userRepo
+					 .findByEmail(request.getEmail()).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Usuario no existe.");
+			throw new NotFoundException(ERROR, "Usuario no existe.");
+		}
+		
+		RecoveryPassword recovery;
+		try {
+			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Recovery no existe.");
+			throw new NotFoundException(ERROR, "Recovery no existe.");
+		}
+		
+		if(recovery.getIntentosFallidos() >= utils.maximoIntentosPreguntaSeguridad()) {
+			throw new ValidationException(ERROR, "Usuario alcanzo el maximo de intentos permitidos.");
+		}
+		log.error("[{}] Usuario puede intentar validar pregunta de seguridad.", key);
+		
+		if(!pEncoder.matches(request.getSecurityAnswer(), recovery.getRespuestaHash())) {
+			
+			log.error("[{}] Password incorrecta.", key);
+			recovery.setIntentosFallidos(recovery.getIntentosFallidos() + 1);
+			recoveryPasswordRepo.save(recovery);
+			
+			throw new ValidationException(ERROR, "Respuesta incorrecta.");
+		}
+		
+		recovery.setIntentosFallidos(0);
+		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
+		userRepo.save(usuario);
+		recoveryPasswordRepo.save(recovery);
+		log.error("[{}] Contraseña actualizada.", key);
+		
+		return new SuperGenericResponse(OK, "Cambio de contraseña existoso.");
+	}
+
+	@Override
+	public GenericEntityResponse<Catalogo> getSecurityQuestio(UserDto request)
+			throws ValidationException, NotFoundException {
+		List<String> errorsList = validarEmailGiven(request.getEmail());
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
+		
+		String key  = request.getEmail() != null ?  request.getEmail() : "SYSTEM";
+		log.info("[{}] Request válido", key);
+		
+		Usuario usuario = null;
+		try {
+			usuario = userRepo
+					 .findByEmail(request.getEmail()).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Usuario no existe.");
+			throw new NotFoundException(ERROR, "Usuario no existe.");
+		}
+		
+		RecoveryPassword recovery;
+		try {
+			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Recovery no existe.");
+			throw new NotFoundException(ERROR, "Recovery no existe.");
+		}
+		
+		Catalogo securityQuestion;
+		try {
+			securityQuestion = catalogoRepo.findByCodigo(recovery.getPreguntaCodigo());
+		} catch (Exception e) {
+			System.out.println("Pregunta no existe.");
+			throw new NotFoundException(ERROR, "Pregunta no existe.");
+		}
+		
+		log.error("[{}] Pregunta obtenida correctamente.", key);
+		
+		return new GenericEntityResponse<Catalogo>(OK, "Pregunta obtenida correctamente.", securityQuestion);
 	}
 
 }
