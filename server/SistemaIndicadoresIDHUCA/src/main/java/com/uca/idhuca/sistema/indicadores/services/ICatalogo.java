@@ -2,7 +2,7 @@ package com.uca.idhuca.sistema.indicadores.services;
 
 import java.util.List;
 
-import com.uca.idhuca.sistema.indicadores.controllers.dto.GetCatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
@@ -19,5 +19,5 @@ public interface ICatalogo {
      * @throws ValidationException Si se activan múltiples campos o si no se activa ninguno.
      * @throws NotFoundException Si el campo solicitado no corresponde a ningún catálogo conocido.
      */
-	GenericEntityResponse<List<Catalogo>> get(GetCatalogoDto request) throws ValidationException, NotFoundException;
+	GenericEntityResponse<List<Catalogo>> get(CatalogoDto request) throws ValidationException, NotFoundException;
 }

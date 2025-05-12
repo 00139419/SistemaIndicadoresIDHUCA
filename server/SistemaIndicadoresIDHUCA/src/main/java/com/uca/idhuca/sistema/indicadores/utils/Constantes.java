@@ -32,6 +32,8 @@ public class Constantes {
 	 */
 	public static final String CATALOGO_ROL = "ROL";
 	public static final String CATALOGO_SECURITY_QUESTION = "SQ";
+	public static final String CATALOGO_DEPARTAMENTO = "DEP";
+	public static final String CATALOGO_MUNICIPIO = "MUN";
 	
 	/**
 	 * Operaciones CRUD para auditoria

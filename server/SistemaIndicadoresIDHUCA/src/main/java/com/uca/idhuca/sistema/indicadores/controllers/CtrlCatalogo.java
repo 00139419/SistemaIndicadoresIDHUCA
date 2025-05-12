@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uca.idhuca.sistema.indicadores.controllers.dto.GetCatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
@@ -39,12 +39,12 @@ public class CtrlCatalogo {
 	ObjectMapper mapper;
 	
 	@GetMapping(value = "/get", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<List<Catalogo>>> get(@RequestBody GetCatalogoDto request) {
+	ResponseEntity<GenericEntityResponse<List<Catalogo>>> get(@RequestBody CatalogoDto request) {
 		GenericEntityResponse<List<Catalogo>> response = new GenericEntityResponse<>();
 		String key =  "SYSTEM";
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
-			log.info("[" + key + "] ------ Inicio de servicio '/get' ");
+			log.info("[" + key + "] ------ Inicio de servicio '/get' " + mapper.writeValueAsString(request));
 			response = catalogoService.get(request);
 			return new ResponseEntity<GenericEntityResponse<List<Catalogo>>>(response, HttpStatus.OK);
 		} catch (ValidationException e) {

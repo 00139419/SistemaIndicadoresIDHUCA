@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.uca.idhuca.sistema.indicadores.controllers.dto.GetCatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
@@ -23,6 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_ROL;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_SECURITY_QUESTION;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DEPARTAMENTO;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_MUNICIPIO;
+
 
 @Slf4j
 @Service
@@ -35,7 +38,7 @@ public class CatologoImpl implements ICatalogo {
 	IRepoCatalogo repoCatalogo;
 
 	@Override
-	public GenericEntityResponse<List<Catalogo>> get(GetCatalogoDto request)
+	public GenericEntityResponse<List<Catalogo>> get(CatalogoDto request)
 			throws ValidationException, NotFoundException {
 		List<String> errorsList = validarCatalogoRequest(request);
 		if (!errorsList.isEmpty()) {
@@ -70,6 +73,12 @@ public class CatologoImpl implements ICatalogo {
 	    switch (nombreCampoActivo) {
 	        case "roles":
 	            list = repoCatalogo.obtenerCatalogo(CATALOGO_ROL);
+	            break;
+	        case "departamentos":
+	            list = repoCatalogo.obtenerCatalogo(CATALOGO_DEPARTAMENTO);
+	            break;
+	        case "municipios":
+	            list = repoCatalogo.obtenerCatalogo(CATALOGO_MUNICIPIO + request.getParentId());
 	            break;
 	        case "securityQuestion":
 	        	 list = repoCatalogo.obtenerCatalogo(CATALOGO_SECURITY_QUESTION);

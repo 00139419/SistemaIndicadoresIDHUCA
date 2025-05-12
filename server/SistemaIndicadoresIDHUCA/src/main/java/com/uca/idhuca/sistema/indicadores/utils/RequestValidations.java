@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
-import com.uca.idhuca.sistema.indicadores.controllers.dto.GetCatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 
@@ -184,10 +184,18 @@ public class RequestValidations {
 		return list;
 	}
 
-	public static List<String> validarCatalogoRequest(GetCatalogoDto request) {
+	public static List<String> validarCatalogoRequest(CatalogoDto request) {
 		List<String> list = new ArrayList<>();
 		String error = "";
 		String key = "SYSTEM";
+		
+		if(request.getMunicipios() != null && request.getMunicipios().equals(Boolean.TRUE)) {
+			if(request.getParentId() == null || request.getParentId().isEmpty()) {
+				error = "Si desea el catalogo de municipio debe de mandar en el parentId el codigo del departamento.";
+				list.add(error);
+				log.info("[" + key + "] " + error);
+			}
+		}
 
 		int trueCount = 0;
 
