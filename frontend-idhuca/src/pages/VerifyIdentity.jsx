@@ -4,37 +4,50 @@ import { useNavigate, useLocation } from "react-router-dom";
 import logoUCA from "../assets/idhuca-logo-blue.png";
 
 const VerifyIdentity = () => {
-  // Estado para almacenar la respuesta del usuario
   const [answer, setAnswer] = useState("");
-  // Estado para almacenar el email del usuario (normalmente vendría de un contexto o props)
   const [userEmail, setUserEmail] = useState("");
-
+  const [error, setError] = useState(""); // State for error message
+  const [retryCounter, setRetryCounter] = useState(0); // State for retry countdown
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // obtener el email del usuario desde props, contexto, localStorage o state del router
-    // state del router:
     if (location.state && location.state.email) {
       setUserEmail(location.state.email);
     } else {
-      // Si no hay email en el state, obtenerlo de localStorage o de algún estado global
       const storedEmail = localStorage.getItem("userEmail");
       if (storedEmail) {
         setUserEmail(storedEmail);
       } else {
-        // Si no hay email almacenado, redirigir al login
         setUserEmail("********91@gmail.com");
       }
     }
-  }, [location, navigate]);
+  }, [location]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí iría la lógica para verificar la respuesta
-    console.log("Respuesta a la pregunta de seguridad:", answer);
-    // Si la respuesta es correcta, redirigir al usuario a la página de cambio de contraseña
-    // navigate('/reset-password');
+
+    // Simulate verification logic
+    const isAnswerCorrect = false; // Simulate a failed verification
+    if (!isAnswerCorrect) {
+      setError("No se pudo validar identidad. Inténtalo de nuevo.");
+      setRetryCounter(10); // Set retry countdown to 10 seconds
+
+      // Start countdown
+      const interval = setInterval(() => {
+        setRetryCounter((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            setError(""); // Clear error after countdown
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      // Navigate to the next page if verification succeeds
+      navigate("/reset-password");
+    }
   };
 
   const handleLoginRedirect = () => {
@@ -43,21 +56,21 @@ const VerifyIdentity = () => {
 
   return (
     <div
-    className="vh-100 d-flex align-items-center justify-content-center"
-    style={{ backgroundColor: "#003C71" }}
-  >
-    <div
-      className="bg-white rounded-4 p-4 p-md-5 shadow"
-      style={{ maxWidth: "500px", width: "100%" }}
+      className="vh-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: "#003C71" }}
     >
-      <div className="text-center mb-4 mt-2">
-        <h1 className="fw-bold mb-5">Verificar Identidad</h1>
-        <p className="text-muted">
-          Responda la pregunta de seguridad para verificar la cuenta
-          <br />
-          <strong>{userEmail}</strong>
-        </p>
-      </div>
+      <div
+        className="bg-white rounded-4 p-4 p-md-5 shadow"
+        style={{ maxWidth: "500px", width: "100%" }}
+      >
+        <div className="text-center mb-4 mt-2">
+          <h1 className="fw-bold mb-5">Verificar Identidad</h1>
+          <p className="text-muted">
+            Responda la pregunta de seguridad para verificar la cuenta
+            <br />
+            <strong>{userEmail}</strong>
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -84,18 +97,31 @@ const VerifyIdentity = () => {
             />
           </div>
 
+          {error && (
+            <div
+              className="alert alert-danger text-center"
+              role="alert"
+            >
+              {error} {retryCounter > 0 && `Puedes volver a intentar en ${retryCounter} segundos.`}
+            </div>
+          )}
+
           <div className="text-center mb-4">
             <button
               type="button"
               className="btn btn-link text-decoration-none p-0"
               onClick={handleLoginRedirect}
             >
-              ¿recuerdas tu contraseña? Inicia sesión aquí
+              ¿Recuerdas tu contraseña? Inicia sesión aquí
             </button>
           </div>
 
-          <button type="submit" className="btn btn-dark w-100 py-2">
-            verificar cuenta
+          <button
+            type="submit"
+            className="btn btn-dark w-100 py-2"
+            disabled={retryCounter > 0} // Disable button during countdown
+          >
+            Verificar cuenta
           </button>
         </form>
 
@@ -103,7 +129,7 @@ const VerifyIdentity = () => {
           <img
             src={logoUCA}
             alt="Instituto de Derechos Humanos de la UCA"
-            style={{ height: "50px", width: "auto" }} // Slightly larger logo
+            style={{ height: "50px", width: "auto" }}
           />
         </div>
       </div>
