@@ -6,16 +6,15 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarAddUser;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarEmailGiven;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarIdGiven;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarRecoveryPassword;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateUser;
-import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarEmailGiven;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

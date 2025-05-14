@@ -9,4 +9,5 @@ public class CatalogoDto {
 	Boolean municipios;
 	Boolean securityQuestions;
 	String parentId;
+	String nuevoCatalogo;
 }

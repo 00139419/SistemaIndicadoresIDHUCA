@@ -30,10 +30,10 @@ public class Constantes {
 	/**
 	 * Prefijo de catalogos
 	 */
-	public static final String CATALOGO_ROL = "ROL";
-	public static final String CATALOGO_SECURITY_QUESTION = "SQ";
-	public static final String CATALOGO_DEPARTAMENTO = "DEP";
-	public static final String CATALOGO_MUNICIPIO = "MUN";
+	public static final String CATALOGO_ROL = "ROL_";
+	public static final String CATALOGO_SECURITY_QUESTION = "SQ_";
+	public static final String CATALOGO_DEPARTAMENTO = "DEP_";
+	public static final String CATALOGO_MUNICIPIO = "MUN_";
 	
 	/**
 	 * Operaciones CRUD para auditoria

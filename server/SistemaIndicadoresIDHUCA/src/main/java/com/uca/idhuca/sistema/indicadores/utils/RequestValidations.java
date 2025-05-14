@@ -4,8 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
@@ -188,6 +186,53 @@ public class RequestValidations {
 		List<String> list = new ArrayList<>();
 		String error = "";
 		String key = "SYSTEM";
+		
+		if(request.getMunicipios() != null && request.getMunicipios().equals(Boolean.TRUE)) {
+			if(request.getParentId() == null || request.getParentId().isEmpty()) {
+				error = "Si desea el catalogo de municipio debe de mandar en el parentId el codigo del departamento.";
+				list.add(error);
+				log.info("[" + key + "] " + error);
+			}
+		}
+
+		int trueCount = 0;
+
+		for (Field field : request.getClass().getDeclaredFields()) {
+			field.setAccessible(true);
+			try {
+				Object value = field.get(request);
+				if (value instanceof Boolean && Boolean.TRUE.equals(value)) {
+					trueCount++;
+				}
+			} catch (Exception e) {
+				log.info("[" + key + "]" + " ERROR: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
+		if (trueCount == 0) {
+			error = "Debe seleccionar al menos un catálogo.";
+			list.add(error);
+			log.info("[" + key + "] " + error);
+		} else if (trueCount > 1) {
+			error = "No se puede seleccionar más de un catálogo a la vez.";
+			list.add(error);
+			log.info("[" + key + "] " + error);
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarAddCatalogo(CatalogoDto request) {
+		List<String> list = new ArrayList<>();
+		String error = "";
+		String key = "SYSTEM";
+		
+		if(request.getNuevoCatalogo() == null || request.getNuevoCatalogo().isEmpty()) {
+			error = "la propiedad 'nuevoCatalogo' dentro del request es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "] " + error);
+		}
 		
 		if(request.getMunicipios() != null && request.getMunicipios().equals(Boolean.TRUE)) {
 			if(request.getParentId() == null || request.getParentId().isEmpty()) {

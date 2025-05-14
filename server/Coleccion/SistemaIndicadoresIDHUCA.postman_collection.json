@@ -309,47 +309,6 @@
 							]
 						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer  {{JWT}}",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/auditoria/get/all",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"idhuca-indicadores",
-								"api",
-								"srv",
-								"auditoria",
-								"get",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getOne",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{JWT}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/auditoria/get",
@@ -378,14 +337,7 @@
 					"name": "login",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{JWT}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
@@ -550,6 +502,48 @@
 								"srv",
 								"catalogo",
 								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": true,\n    \"securityQuestions\": false,\n    \"parentId\": \"1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/catalogo/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"catalogo",
+								"add"
 							]
 						}
 					},

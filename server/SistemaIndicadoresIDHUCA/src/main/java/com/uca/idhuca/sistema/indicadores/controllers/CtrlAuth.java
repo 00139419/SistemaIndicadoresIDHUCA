@@ -23,7 +23,6 @@ import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.services.IAuth;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
-import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,9 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(ROOT_CONTEXT + "auth")
 public class CtrlAuth {
 
-	@Autowired
-	private Utilidades utils;
-	
 	@Autowired
 	ObjectMapper mapper;
 	
