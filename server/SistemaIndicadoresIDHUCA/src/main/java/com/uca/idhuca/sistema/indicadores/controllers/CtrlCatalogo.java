@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,7 +69,7 @@ public class CtrlCatalogo {
 		String key =  "SYSTEM";
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
-			log.info("[" + key + "] ------ Inicio de servicio '/get' " + mapper.writeValueAsString(request));
+			log.info("[" + key + "] ------ Inicio de servicio '/add' " + mapper.writeValueAsString(request));
 			response = catalogoService.add(request);
 			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 		} catch (ValidationException e) {
@@ -79,6 +81,48 @@ public class CtrlCatalogo {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/get' ");
+		}
+	}
+	
+	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> update(@RequestBody CatalogoDto request) {
+		SuperGenericResponse response = new SuperGenericResponse();
+		String key =  "SYSTEM";
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/update' " + mapper.writeValueAsString(request));
+			response = catalogoService.update(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/update' ");
+		}
+	}
+	
+	@DeleteMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> delete(@RequestBody CatalogoDto request) {
+		SuperGenericResponse response = new SuperGenericResponse();
+		String key =  "SYSTEM";
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/delete' " + mapper.writeValueAsString(request));
+			response = catalogoService.delete(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/delete' ");
 		}
 	}
 	

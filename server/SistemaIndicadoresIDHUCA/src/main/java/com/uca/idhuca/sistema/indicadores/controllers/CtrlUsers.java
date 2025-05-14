@@ -146,4 +146,25 @@ public class CtrlUsers {
 		}
 	}
 	
+	@PutMapping(value = "/change/password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> changePassword(@RequestBody UserDto request) {
+		String key =  "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/update' " + mapper.writeValueAsString(request));
+			response = userServices.changePassword(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		}  catch (NotFoundException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/update' ");
+		}
+	}
+	
 }

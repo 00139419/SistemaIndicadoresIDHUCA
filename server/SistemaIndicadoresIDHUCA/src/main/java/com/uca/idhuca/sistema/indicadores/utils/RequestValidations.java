@@ -118,6 +118,33 @@ public class RequestValidations {
 
 		return list;
 	}
+	
+	public static List<String> validarChangePassword(UserDto request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		if (request.getPassword() == null || request.getPassword().isEmpty()) {
+			error = "La propiedad 'password' es obligatoria y debe de ser numero valido.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		if(request.getNewPassword() == null || request.getNewPassword().isEmpty()) {
+			error = "La propiedad 'newPassword' es obligatoria y debe de ser numero valido.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		return list;
+	}
 
 	public static List<String> validarIdGiven(Integer id) {
 		List<String> list = new ArrayList<>();
@@ -265,6 +292,56 @@ public class RequestValidations {
 			error = "No se puede seleccionar más de un catálogo a la vez.";
 			list.add(error);
 			log.info("[" + key + "] " + error);
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarUpdateCatalogo(CatalogoDto request) {
+		List<String> list = new ArrayList<>();
+		String error = "";
+		String key = "SYSTEM";
+		
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		Catalogo catalogo = request.getCatalogo();
+		
+		if(catalogo.getCodigo() == null || catalogo.getCodigo().isEmpty()) {
+			error = "La propiedad 'codigo' dentro del objeto catalogo es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		if(catalogo.getDescripcion() == null || catalogo.getDescripcion().isEmpty()) {
+			error = "La propiedad 'descripcion' dentro del objeto catalogo es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarDeleteCatalogo(CatalogoDto request) {
+		List<String> list = new ArrayList<>();
+		String error = "";
+		String key = "SYSTEM";
+		
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		Catalogo catalogo = request.getCatalogo();
+		
+		if(catalogo.getCodigo() == null || catalogo.getCodigo().isEmpty()) {
+			error = "La propiedad 'codigo' dentro del objeto catalogo es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
 		}
 
 		return list;

@@ -23,4 +23,8 @@ public interface ICatalogo {
 	GenericEntityResponse<List<Catalogo>> get(CatalogoDto request) throws ValidationException, NotFoundException;
 	
 	SuperGenericResponse add(CatalogoDto request) throws ValidationException, NotFoundException;
+	
+	SuperGenericResponse update(CatalogoDto request) throws ValidationException, NotFoundException;
+	
+	SuperGenericResponse delete(CatalogoDto request) throws ValidationException, NotFoundException;
 }

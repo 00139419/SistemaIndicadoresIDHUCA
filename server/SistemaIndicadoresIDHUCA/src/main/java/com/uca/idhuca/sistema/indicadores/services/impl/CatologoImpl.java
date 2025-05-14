@@ -4,9 +4,12 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarAddCatalogo;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarCatalogoRequest;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateCatalogo;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarDeleteCatalogo;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +29,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_ROL;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_SECURITY_QUESTION;
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CREAR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DEPARTAMENTO;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_MUNICIPIO;
+
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CREAR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.DELETE;
 
 @Slf4j
 @Service
@@ -156,6 +162,61 @@ public class CatologoImpl implements ICatalogo {
 		log.info("[{}] Catalogo creada correctamente.",key);
 		
 		return new SuperGenericResponse(OK, "Catalogo agregado correctamente.");
+	}
+
+	@Override
+	public SuperGenericResponse update(CatalogoDto request) throws ValidationException, NotFoundException {
+		List<String> errorsList = validarUpdateCatalogo(request);
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
+
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Request válido", key);
+
+		Catalogo catalogo = null;
+		try {
+			catalogo = repoCatalogo
+					 .findByCodigo(request.getCatalogo().getCodigo());
+		} catch (NoSuchElementException e) {
+			System.out.println("Catalogo no existe.");
+			throw new NotFoundException(ERROR, "Catalogo no existe.");
+		}
+		 log.info("[{}] Catalogo válido", key);
+		 
+		 catalogo.setDescripcion(request.getCatalogo().getDescripcion());
+		 repoCatalogo.save(catalogo);
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, catalogo));
+		 log.info("[{}] Catalogo actualizado correctamente.",key);
+		 
+		 return new SuperGenericResponse(OK, "Catalogo actualizado correctamente.");
+	}
+
+	@Override
+	public SuperGenericResponse delete(CatalogoDto request) throws ValidationException, NotFoundException {
+		List<String> errorsList = validarDeleteCatalogo(request);
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
+
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Request válido", key);
+
+		Catalogo catalogo = null;
+		try {
+			catalogo = repoCatalogo
+					 .findByCodigo(request.getCatalogo().getCodigo());
+		} catch (NoSuchElementException e) {
+			System.out.println("Catalogo no existe.");
+			throw new NotFoundException(ERROR, "Catalogo no existe.");
+		}
+		 log.info("[{}] Catalogo válido", key);
+		 
+		 repoCatalogo.delete(catalogo);
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, catalogo));
+		 log.info("[{}] Catalogo eliminado correctamente.",key);
+		 
+		 return new SuperGenericResponse(OK, "Catalogo eliminado correctamente.");
 	}
 
 }

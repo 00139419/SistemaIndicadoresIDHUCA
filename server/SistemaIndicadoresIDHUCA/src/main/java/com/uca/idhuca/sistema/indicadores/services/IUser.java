@@ -88,5 +88,7 @@ public interface IUser {
 	 *                             configurada.
 	 */
 	GenericEntityResponse<Catalogo> getSecurityQuestio(UserDto request) throws ValidationException, NotFoundException;
+	
+	SuperGenericResponse changePassword(UserDto request) throws ValidationException, NotFoundException;
 
 }

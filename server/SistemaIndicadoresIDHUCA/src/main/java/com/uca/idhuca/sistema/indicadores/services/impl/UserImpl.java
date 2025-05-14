@@ -10,6 +10,7 @@ import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.valida
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarIdGiven;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarRecoveryPassword;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateUser;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarChangePassword;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -315,6 +316,54 @@ public class UserImpl implements IUser {
 		log.error("[{}] Pregunta obtenida correctamente.", key);
 		
 		return new GenericEntityResponse<Catalogo>(OK, "Pregunta obtenida correctamente.", securityQuestion);
+	}
+
+	@Override
+	public SuperGenericResponse changePassword(UserDto request) throws ValidationException, NotFoundException {
+		List<String> errorsList = validarChangePassword(request);
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
+
+		Usuario usuario = utils.obtenerUsuarioAutenticado();
+		
+		String key = usuario.getEmail();
+		log.info("[{}] Request válido", key);
+		
+		RecoveryPassword recovery;
+		try {
+			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Recovery no existe.");
+			throw new NotFoundException(ERROR, "Recovery no existe.");
+		}
+		log.info("[{}] Usuario encontrado correctamente.", key);
+		
+		if(recovery.getIntentosFallidos() >= utils.maximoIntentosPreguntaSeguridad()) {
+			throw new ValidationException(ERROR, "Usuario alcanzo el maximo de intentos permitidos.");
+		}
+		
+		if(!pEncoder.matches(request.getPassword(), usuario.getContrasenaHash())) {
+	        log.error("[{}] Password incorrecta.", key);
+	        recovery.setIntentosFallidos(recovery.getIntentosFallidos() + 1);
+	        recoveryPasswordRepo.save(recovery);
+	        throw new ValidationException(ERROR, "Error: usuario o contraseña no coinciden.");
+	    }
+	    log.info("[{}] Autenticación correcta.", key);
+		
+	    usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
+		recovery.setIntentosFallidos(0);
+		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
+		 
+		userRepo.save(usuario);
+		recoveryPasswordRepo.save(recovery);
+		log.info("[{}] Usuario actualizado correctamente.", key);
+		
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));
+		 log.info("[{}] Auditoria creada correctamente.",key);
+		 
+		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
 	}
 
 }

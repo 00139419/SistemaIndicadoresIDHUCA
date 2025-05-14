@@ -189,7 +189,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"Maria Julieta\",\n    \"email\": \"maria123@gmail.com\",\n    \"password\": \"123\",\n    \"rol\": {\n        \"codigo\": \"ROL2\",\n        \"descripcion\": \"user\"\n    },\n    \"securityQuestion\": {\n        \"codigo\": \"SQ001\",\n        \"descripcion\": \"¿Cuál es el nombre de tu primera mascota?\"\n    },\n    \"securityAnswer\": \"123\"\n}",
+							"raw": "{\n    \"nombre\": \"Maria Julieta\",\n    \"email\": \"maria123@gmail.com\",\n    \"password\": \"123\",\n    \"rol\": {\n        \"codigo\": \"ROL_1\",\n        \"descripcion\": \"user\"\n    },\n    \"securityQuestion\": {\n        \"codigo\": \"SQ_1\",\n        \"descripcion\": \"¿Cuál es el nombre de tu primera mascota?\"\n    },\n    \"securityAnswer\": \"123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -251,6 +251,49 @@
 								"srv",
 								"users",
 								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"123\",\n    \"newPassword\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/users/change/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"users",
+								"change",
+								"password"
 							]
 						}
 					},
@@ -344,6 +387,41 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"email\":\"00139419@uca.edu.sv\",\n    \"password\":\"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"maria123@gmail.com\",\n    \"password\":\"1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -482,7 +560,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": true,\n    \"securityQuestions\": false,\n    \"parentId\": \"1\"\n}",
+							"raw": "{\n    \"roles\": false,\n    \"departamentos\": true,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -524,7 +602,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": true,\n    \"securityQuestions\": false,\n    \"parentId\": \"1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
+							"raw": "{\n    \"roles\": false,\n    \"departamentos\": true,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -544,6 +622,90 @@
 								"srv",
 								"catalogo",
 								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"catalogo\": {\n        \"codigo\":\"MUN_1_1\",\n        \"descripcion\": \"AHUACHAPAN\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/catalogo/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"catalogo",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"catalogo\": {\n        \"codigo\":\"DEP_15\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/catalogo/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"catalogo",
+								"delete"
 							]
 						}
 					},
