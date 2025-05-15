@@ -2,6 +2,7 @@ package com.uca.idhuca.sistema.indicadores.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ public class Usuario {
 
 	private String email;
 
+	@JsonIgnore
 	private String contrasenaHash;
 
 	@ManyToOne(fetch = FetchType.EAGER)

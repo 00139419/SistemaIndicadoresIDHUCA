@@ -23,4 +23,7 @@ public class ProjectProperties {
 	
 	@Value("${security.jwt.expiration.time}")
 	private String jwtExpirationTime;
+	
+	@Value("${ruta.archivos.fisicos}")
+	private String rutaArchivosFisicos;
 }

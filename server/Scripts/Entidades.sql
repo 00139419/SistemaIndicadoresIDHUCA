@@ -43,16 +43,26 @@ CREATE TABLE parametro_sistema (
     actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla nota_derecho
+-- Tabla principal: publicación o ficha del derecho
 CREATE TABLE nota_derecho (
     id SERIAL PRIMARY KEY,
     derecho_codigo VARCHAR REFERENCES catalogo(codigo),
     fecha DATE NOT NULL,
     titulo VARCHAR,
     descripcion TEXT,
-    archivo_url TEXT, -- ruta al archivo en el servidor
     creado_por INT REFERENCES usuario(id),
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modificado_por INT REFERENCES usuario(id),
+    modificado_en TIMESTAMP
+);
+
+-- Tabla de archivos adjuntos relacionados
+CREATE TABLE nota_derecho_archivo (
+    id SERIAL PRIMARY KEY,
+    nota_id INT REFERENCES nota_derecho(id) ON DELETE CASCADE,
+    nombre_original VARCHAR,
+    archivo_url TEXT,
+    tipo VARCHAR
 );
 
 -- Tabla registro de eventos
@@ -459,6 +469,13 @@ INSERT INTO catalogo (codigo, descripcion) VALUES
 ('MUN_14_16', 'SANTA ROSA DE LIMA'),
 ('MUN_14_17', 'YAYANTIQUE'),
 ('MUN_14_18', 'YUCUAIQUIN');
+
+-- Catalogo de derechos 
+INSERT INTO catalogo (codigo, descripcion) VALUES
+('DER_1', 'Derecho a la Libertad Personal e Integridad personal'),
+('DER_2', 'Derecho a la Libertad de Expresión'),
+('DER_3', 'Derecho de Acceso a la Justicia'),
+('DER_4', 'Derecho a la Vida');
 
 -- Insertar Adminitrador
 INSERT INTO usuario (nombre, email, contrasena_hash, ROL_codigo, creado_en, activo)

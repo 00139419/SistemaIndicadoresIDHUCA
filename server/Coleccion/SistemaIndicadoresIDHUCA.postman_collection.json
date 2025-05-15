@@ -712,6 +712,70 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "FichaDerecho",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nota",
+									"value": "{ \"derecho\": { \"codigo\": \"DER_1\", \"descripcion\": \"Derecho a la Libertad Personal e Integridad personal\" }, \"titulo\": \"Caso PNC\", \"descripcion\": \"Se recibieron datos de parte de la PNC.\", \"creadoPor\": 1, \"archivos\": [ { \"nombreOriginal\": \"capitulo2_marco_teorico.docx\", \"tipo\": \"informe\" } ] }",
+									"type": "text"
+								},
+								{
+									"key": "archivos",
+									"type": "file",
+									"src": "/Users/dm420/Downloads/capitulo2_marco_teorico.docx"
+								},
+								{
+									"key": "archivos",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho/save",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"fichaDerecho",
+								"save"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

@@ -13,5 +13,10 @@
     "name": "security.jwt.expiration.time",
     "type": "java.lang.String",
     "description": "A description for 'security.jwt.expiration.time'"
+  },
+  {
+    "name": "ruta.archivos.fisicos",
+    "type": "java.lang.String",
+    "description": "A description for 'ruta.archivos.fisicos'"
   }
 ]}

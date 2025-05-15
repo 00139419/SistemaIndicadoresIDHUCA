@@ -4,8 +4,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 
@@ -346,5 +349,73 @@ public class RequestValidations {
 
 		return list;
 	}
+	
+	public static List<String> validarSaveFicha(NotaDerechoRequest request, MultipartFile[] archivos) {
+	    List<String> list = new ArrayList<>();
+	    String key = "SYSTEM";
+
+	    if (request == null) {
+	        String error = "El servicio necesita un JSON de request.";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+	    
+	    Catalogo derecho = request.getDerecho();
+	    
+	    if(derecho == null) {
+	    	String error = "El catalogo de 'derecho' es obligatorio.";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+
+	    if (derecho.getCodigo() == null || derecho.getCodigo().trim().isEmpty()) {
+	        String error = "El campo 'codigo' dentro del objeto 'derecho' es obligatorio.";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+
+	    if (request.getTitulo() == null || request.getTitulo().trim().isEmpty()) {
+	        String error = "El campo 'titulo' es obligatorio.";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+
+	    if (request.getDescripcion() == null || request.getDescripcion().trim().isEmpty()) {
+	        String error = "El campo 'descripcion' es obligatorio.";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+
+	    if (request.getArchivos() == null || request.getArchivos().isEmpty()) {
+	        String error = "Debe enviar al menos un archivo en el campo 'archivos'.";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+
+	    if (archivos == null || archivos.length == 0) {
+	        String error = "No se recibieron archivos físicos adjuntos (MultipartFile[]).";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+
+	    if (request.getArchivos() != null && archivos != null &&
+	        request.getArchivos().size() != archivos.length) {
+	        String error = String.format("La cantidad de archivos descritos (%d) no coincide con los archivos adjuntos enviados (%d).",
+	                request.getArchivos().size(), archivos.length);
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+
+	    return list;
+	}
+
 
 }
