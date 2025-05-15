@@ -5,6 +5,7 @@ import Index from './pages/Index';
 import VerifyIdentity from './pages/VerifyIdentity';
 import ResetPassword from './pages/ResetPassword';
 import ResetPasswordSuccess from './pages/ResetPasswordSuccess';
+import Form from './pages/Form';
 import 'primereact/resources/themes/lara-light-blue/theme.css'; // Theme
 import 'primereact/resources/primereact.min.css'; // Core CSS
 import 'primeicons/primeicons.css'; // Icons
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/index" element={<Index />} />
+          <Route path="/formulario-derecho" index element={<Form />} />
         </Route>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/" element={<Navigate to="/login" />} />
