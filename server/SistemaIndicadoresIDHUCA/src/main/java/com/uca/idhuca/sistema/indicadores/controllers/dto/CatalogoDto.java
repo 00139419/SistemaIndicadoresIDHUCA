@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class CatalogoDto {
+	Boolean derechos;
 	Boolean roles;
 	Boolean departamentos;
 	Boolean municipios;

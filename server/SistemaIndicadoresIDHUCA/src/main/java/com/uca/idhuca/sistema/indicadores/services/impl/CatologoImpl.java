@@ -31,6 +31,7 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_ROL;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_SECURITY_QUESTION;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DEPARTAMENTO;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_MUNICIPIO;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DERECHO;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CREAR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
@@ -85,6 +86,9 @@ public class CatologoImpl implements ICatalogo {
 		switch (nombreCampoActivo) {
 		case "roles":
 			list = repoCatalogo.obtenerCatalogo(CATALOGO_ROL);
+			break;
+		case "derechos":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_DERECHO);
 			break;
 		case "departamentos":
 			list = repoCatalogo.obtenerCatalogo(CATALOGO_DEPARTAMENTO);
@@ -144,6 +148,10 @@ public class CatologoImpl implements ICatalogo {
 		case "departamentos":
 			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_DEPARTAMENTO, null) + 1;
 			nuevoCatalogo.setCodigo(CATALOGO_DEPARTAMENTO + indice);
+			break;
+		case "derechos":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_DERECHO, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_DERECHO + indice);
 			break;
 		case "municipios":
 			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_MUNICIPIO, request.getParentId()) + 1;

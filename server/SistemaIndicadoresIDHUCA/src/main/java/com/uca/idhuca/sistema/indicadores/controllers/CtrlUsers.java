@@ -27,6 +27,9 @@ import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -42,6 +45,24 @@ public class CtrlUsers {
 	
 	@Autowired
 	ObjectMapper mapper;
+
+	@GetMapping(value = "/get/current", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<GenericEntityResponse<Usuario>> getCurrent() {
+		String key =  "SYSTEM";
+		GenericEntityResponse<Usuario> response = new GenericEntityResponse<>();
+		try {
+			Usuario currentUser = utils.obtenerUsuarioAutenticado();
+			key = currentUser.getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/get/current/'");
+			response = new GenericEntityResponse<>(OK, "Data obtenida correctamente", currentUser);
+			return new ResponseEntity<GenericEntityResponse<Usuario>>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/get/current/'");
+		}
+	}
 	
 	@GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<List<Usuario>>> getAll() {
@@ -58,7 +79,7 @@ public class CtrlUsers {
 			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/get/all' ");
 		}
@@ -79,7 +100,7 @@ public class CtrlUsers {
 			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/get/one/'");
 		}
@@ -98,7 +119,7 @@ public class CtrlUsers {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/add'");
 		}
@@ -119,7 +140,7 @@ public class CtrlUsers {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/delete/'");
 		}
@@ -140,7 +161,7 @@ public class CtrlUsers {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/update' ");
 		}
@@ -161,7 +182,28 @@ public class CtrlUsers {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(-1, e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/update' ");
+		}
+	}
+	
+	@PutMapping(value = "/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> unlockUser(@RequestBody UserDto request) {
+		String key =  "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/update' " + mapper.writeValueAsString(request));
+			response = userServices.unlockUser(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		}  catch (NotFoundException e) {
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/update' ");
 		}

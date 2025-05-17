@@ -75,6 +75,7 @@ public class AuditoriaImpl implements IAuditoria {
 			return new SuperGenericResponse(OK, "Auditoría registrada correctamente.");
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ValidationException(ERROR, "Error al registrar auditoría: " + e.getMessage());
 		}
 	}

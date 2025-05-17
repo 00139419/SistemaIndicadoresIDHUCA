@@ -1,13 +1,23 @@
 package com.uca.idhuca.sistema.indicadores.controllers;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
+
+import java.util.List;
+
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
+import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
+import com.uca.idhuca.sistema.indicadores.dto.NotaDerechoDTO;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
+import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.services.IFichaDerecho;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
@@ -55,7 +68,96 @@ public class CtrlFichaDerecho {
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/save' ");
 		}
-
 	}
+	
+	@DeleteMapping(value = "/delete/post", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SuperGenericResponse> deletePost(@RequestBody NotaDerechoRequest request) {
+		String key = "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/delete/post " + mapper.writeValueAsString(request));
+			response = fichaDerechoService.deletePost(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/delete/post' ");
+		}
+	}
+	
+	@PutMapping(value = "/update/post/note", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SuperGenericResponse> updateNote(@RequestBody NotaDerechoRequest request) {
+		String key = "SYSTEM";
+		SuperGenericResponse response = new SuperGenericResponse();
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/update/note' " + mapper.writeValueAsString(request));
+			response = fichaDerechoService.updateNotePost(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/update/note' ");
+		}
+	}
+	
+	@GetMapping("/getAll/post/{codigo}")
+	public ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>> getAllPost(@PathVariable("codigo") String codigoDerecho) {
+	    String key = "SYSTEM";
+	    try {
+	        key = utils.obtenerUsuarioAutenticado().getEmail();
+	        log.info("[{}] Inicio de servicio '/getAll/post' con código: {}", key, codigoDerecho);
+	        GenericEntityResponse<List<NotaDerechoDTO>> response = fichaDerechoService.getAllPost(codigoDerecho);
+	        return new ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>>(response, HttpStatus.OK);
+	    } catch (ValidationException e) {
+			return new ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
+		}  catch (Exception e) {
+	    	e.printStackTrace();
+	        log.error("[{}] Error en servicio '/getAll/post': {}", key, e.getMessage(), e);
+	        return new ResponseEntity<>(new GenericEntityResponse<List<NotaDerechoDTO>>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+	    } finally {
+	        log.info("[{}] Fin de servicio '/getAll/post'", key);
+	    }
+	}
+	
+	@GetMapping("/get/file/{nombre}")
+	public ResponseEntity<Resource> getFile(@PathVariable("nombre") String nombreArchivo) {
+	    String key = "SYSTEM";
+	    try {
+	        key = utils.obtenerUsuarioAutenticado().getEmail();
+	        log.info("[{}] Inicio servicio '/get/file' para nombre: {}", key, nombreArchivo);
 
+	        Resource archivo = fichaDerechoService.getFile(nombreArchivo);
+
+	        String contentDisposition = "attachment; filename=\"" + archivo.getFilename() + "\"";
+	        return ResponseEntity.ok()
+	                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+	                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+	                .body(archivo);
+
+	    } catch (ValidationException e) {
+	    	e.printStackTrace();
+	        log.warn("[{}] Validación fallida en '/get/file': {}", key, e.getMessage());
+	        return ResponseEntity.badRequest().build();
+	    } catch (NotFoundException e) {
+	    	e.printStackTrace();
+	        log.warn("[{}] Archivo no encontrado en '/get/file': {}", key, e.getMessage());
+	        return ResponseEntity.noContent().build();
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	        log.error("[{}] Error en servicio '/archivo': {}", key, e.getMessage(), e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    } finally {
+	        log.info("[{}] Fin servicio '/get/file'", key);
+	    }
+	}
 }

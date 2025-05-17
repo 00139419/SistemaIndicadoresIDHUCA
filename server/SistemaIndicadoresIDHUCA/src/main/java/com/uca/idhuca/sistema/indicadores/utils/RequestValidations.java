@@ -148,6 +148,27 @@ public class RequestValidations {
 
 		return list;
 	}
+	
+	public static List<String> validarUnlockUser(UserDto request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		if (request.getId() == null || request.getId() < 0) {
+			error = "La propiedad 'id' es obligatoria y debe de ser numero valido.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		return list;
+	}
 
 	public static List<String> validarIdGiven(Integer id) {
 		List<String> list = new ArrayList<>();
@@ -416,6 +437,79 @@ public class RequestValidations {
 
 	    return list;
 	}
+	
+	public static List<String> validarObtenerDetalleArchivos(String derecho) {
+	    List<String> list = new ArrayList<>();
+	    String key = "SYSTEM";
 
+	    if (derecho == null || derecho.isEmpty() || !derecho.startsWith(Constantes.CATALOGO_DERECHO)) {
+	        String error = "El servicio necesita un JSON de request valido.";
+	        list.add(error);
+	        log.info("[{}] {}", key, error);
+	        return list;
+	    }
+	    
+	    return list;
+	}
+	
+	public static List<String> validarUpdateNote(NotaDerechoRequest request) {
+		List<String> list = new ArrayList<>();
+		String error = "";
+		String key = "SYSTEM";
+		
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
 
+		if(request.getId() == null) {
+			error = "La propiedad 'id' es obligatoria y debe de ser valida.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(request.getTitulo() == null || request.getTitulo().isEmpty()) {
+			error = "La propiedad 'titulo' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+
+		if(request.getDescripcion() == null || request.getDescripcion().isEmpty()) {
+			error = "La propiedad 'descripcion' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarDeleteNote(NotaDerechoRequest request) {
+		List<String> list = new ArrayList<>();
+		String error = "";
+		String key = "SYSTEM";
+		
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+
+		if(request.getId() == null) {
+			error = "La propiedad 'id' es obligatoria y debe de ser valida.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+
+		return list;
+	}
+	
 }

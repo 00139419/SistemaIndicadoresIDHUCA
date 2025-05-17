@@ -5,12 +5,16 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.DELETE;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
+
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarAddUser;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarEmailGiven;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarIdGiven;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarRecoveryPassword;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateUser;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarChangePassword;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUnlockUser;
+
+
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -121,22 +125,12 @@ public class UserImpl implements IUser {
 			System.out.println("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
-		
-		RecoveryPassword recovery;
-		try {
-			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
-		} catch (NoSuchElementException e) {
-			System.out.println("Usuario no existe.");
-			throw new NotFoundException(ERROR, "Recovery no existe.");
-		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
 		
-		recoveryPasswordRepo.delete(recovery);
 		userRepo.delete(usuario);
 		log.info("[{}] Usuario eliminado correctamente.", key);
 		
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, usuario));
-		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, recovery));
 		 log.info("[{}] Auditoria creada correctamente.",key);
 		
 		return new SuperGenericResponse(OK, "Usuario elimindo correctamente.");
@@ -364,6 +358,48 @@ public class UserImpl implements IUser {
 		 log.info("[{}] Auditoria creada correctamente.",key);
 		 
 		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
+	}
+	
+	@Override
+	public SuperGenericResponse unlockUser(UserDto request) throws ValidationException, NotFoundException {
+		List<String> errorsList = validarUnlockUser(request);
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
+
+		Usuario usuario = utils.obtenerUsuarioAutenticado();
+		
+		String key = usuario.getEmail();
+		log.info("[{}] Request válido", key);
+		
+		Usuario userFound;
+		try {
+			userFound = userRepo.findById(request.getId()).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Recovery no existe.");
+			throw new NotFoundException(ERROR, "Usuario no existe.");
+		}
+		log.info("[{}] Usuario encontrado correctamente.", key);
+		
+		RecoveryPassword recovery;
+		try {
+			recovery = recoveryPasswordRepo.findByUsuario(userFound).get();
+		} catch (NoSuchElementException e) {
+			System.out.println("Recovery no existe.");
+			throw new NotFoundException(ERROR, "Recovery no existe.");
+		}
+		log.info("[{}] Usuario encontrado correctamente.", key);
+		
+		recovery.setIntentosFallidos(0);
+		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
+		 
+		recoveryPasswordRepo.save(recovery);
+		log.info("[{}] Usuario actualizado correctamente.", key);
+		
+		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));
+		 log.info("[{}] Auditoria creada correctamente.",key);
+		 
+		return new SuperGenericResponse(OK, "Usuario desbloqueado correctamente.");
 	}
 
 }

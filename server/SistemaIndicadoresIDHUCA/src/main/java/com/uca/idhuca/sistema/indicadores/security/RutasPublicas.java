@@ -6,6 +6,6 @@ public class RutasPublicas {
 	public static final String[] SIN_AUTENTICACION = {
 	       Constantes.ROOT_CONTEXT +  "test/**",
 	       Constantes.ROOT_CONTEXT +  "auth/login/**",
-	      
+	       Constantes.ROOT_CONTEXT +  "fichaDerecho/**"
 	    };
 }
