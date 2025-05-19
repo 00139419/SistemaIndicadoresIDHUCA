@@ -13,7 +13,7 @@
 				{
 					"name": "testConnection",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/test/testConnection",
@@ -36,7 +36,7 @@
 				{
 					"name": "testDbConnection",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/test/testDbConnection",
@@ -59,7 +59,7 @@
 				{
 					"name": "testJwtGenerate",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/test/testJwtGenerate",
@@ -97,7 +97,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -127,9 +127,6 @@
 				},
 				{
 					"name": "getOne",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -141,7 +138,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -227,7 +224,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -269,7 +266,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -312,7 +309,7 @@
 								}
 							]
 						},
-						"method": "DELETE",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/users/delete/4",
@@ -346,7 +343,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -393,7 +390,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/auditoria/get",
@@ -533,9 +530,6 @@
 				},
 				{
 					"name": "getSecurityQuestion",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -547,7 +541,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -590,7 +584,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
@@ -713,7 +707,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -755,7 +749,7 @@
 								}
 							]
 						},
-						"method": "DELETE",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -856,7 +850,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho/getAll/post/DER_1",
@@ -891,7 +885,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho/get/file/6c620443-12dc-4ad0-bb5b-e727d470f942.docx",

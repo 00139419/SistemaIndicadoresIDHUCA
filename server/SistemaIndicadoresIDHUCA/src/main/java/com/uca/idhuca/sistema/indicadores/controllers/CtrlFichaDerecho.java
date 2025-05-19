@@ -70,7 +70,7 @@ public class CtrlFichaDerecho {
 		}
 	}
 	
-	@DeleteMapping(value = "/delete/post", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/delete/post", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SuperGenericResponse> deletePost(@RequestBody NotaDerechoRequest request) {
 		String key = "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
@@ -110,7 +110,7 @@ public class CtrlFichaDerecho {
 		}
 	}
 	
-	@GetMapping("/getAll/post/{codigo}")
+	@PostMapping("/getAll/post/{codigo}")
 	public ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>> getAllPost(@PathVariable("codigo") String codigoDerecho) {
 	    String key = "SYSTEM";
 	    try {
@@ -129,7 +129,7 @@ public class CtrlFichaDerecho {
 	    }
 	}
 	
-	@GetMapping("/get/file/{nombre}")
+	@PostMapping("/get/file/{nombre}")
 	public ResponseEntity<Resource> getFile(@PathVariable("nombre") String nombreArchivo) {
 	    String key = "SYSTEM";
 	    try {

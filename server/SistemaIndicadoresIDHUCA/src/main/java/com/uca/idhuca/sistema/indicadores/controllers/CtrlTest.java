@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class CtrlTest {
 	@Autowired
     private JwtUtils jwtUtils;
 	
-	@GetMapping(value = "/testConnection", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/testConnection", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> testConnection() {
 		SuperGenericResponse response = null;
 		String key = "SYSTEM";
@@ -42,7 +43,7 @@ public class CtrlTest {
 		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/testDbConnection", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/testDbConnection", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> testDbConnection() {
 		SuperGenericResponse response = null;
 		String key = "SYSTEM";
@@ -54,7 +55,7 @@ public class CtrlTest {
 		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/testJwtGenerate", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/testJwtGenerate", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> testJwtGenerate() {
 		SuperGenericResponse response = null;
 		String key = "SYSTEM";

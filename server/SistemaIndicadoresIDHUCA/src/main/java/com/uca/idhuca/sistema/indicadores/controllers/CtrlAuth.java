@@ -78,7 +78,7 @@ public class CtrlAuth {
 		}
 	}
 	
-	@GetMapping(value = "/get/securityQuestion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/get/securityQuestion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> getSecurityQuestion(@RequestBody UserDto request) {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();

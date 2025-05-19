@@ -84,7 +84,7 @@ public class CtrlCatalogo {
 		}
 	}
 	
-	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> update(@RequestBody CatalogoDto request) {
 		SuperGenericResponse response = new SuperGenericResponse();
 		String key =  "SYSTEM";
@@ -105,7 +105,7 @@ public class CtrlCatalogo {
 		}
 	}
 	
-	@DeleteMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> delete(@RequestBody CatalogoDto request) {
 		SuperGenericResponse response = new SuperGenericResponse();
 		String key =  "SYSTEM";

@@ -46,7 +46,7 @@ public class CtrlUsers {
 	@Autowired
 	ObjectMapper mapper;
 
-	@GetMapping(value = "/get/current", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/get/current", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<Usuario>> getCurrent() {
 		String key =  "SYSTEM";
 		GenericEntityResponse<Usuario> response = new GenericEntityResponse<>();
@@ -64,7 +64,7 @@ public class CtrlUsers {
 		}
 	}
 	
-	@GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<List<Usuario>>> getAll() {
 		GenericEntityResponse<List<Usuario>> response = new GenericEntityResponse<>();
 		String key =  "SYSTEM";
@@ -85,7 +85,7 @@ public class CtrlUsers {
 		}
 	}
 	
-	@GetMapping(value = "/get/one/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/get/one/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<Usuario>> getOne(@PathVariable Integer id) {
 		String key =  "SYSTEM";
 		GenericEntityResponse<Usuario> response = new GenericEntityResponse<>();
@@ -125,7 +125,7 @@ public class CtrlUsers {
 		}
 	}
 
-	@DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> deleteUser(@PathVariable Integer id) {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
@@ -146,7 +146,7 @@ public class CtrlUsers {
 		}
 	}
 
-	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> updateUser(@RequestBody UserDto request) {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
@@ -167,7 +167,7 @@ public class CtrlUsers {
 		}
 	}
 	
-	@PutMapping(value = "/change/password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/change/password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> changePassword(@RequestBody UserDto request) {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
@@ -188,7 +188,7 @@ public class CtrlUsers {
 		}
 	}
 	
-	@PutMapping(value = "/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> unlockUser(@RequestBody UserDto request) {
 		String key =  "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
