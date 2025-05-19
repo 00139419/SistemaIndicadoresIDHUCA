@@ -1,84 +1,80 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logoUCA from "../assets/idhuca-logo-blue.png";
+import axios from "axios";
 
 const VerifyIdentity = () => {
-  const [answer, setAnswer] = useState("");
+  const [securityAnswer, setSecurityAnswer] = useState("");
+  const [securityQuestion, setSecurityQuestion] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [error, setError] = useState(""); // State for error message
-  const [retryCounter, setRetryCounter] = useState(0); // State for retry countdown
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
-    if (location.state && location.state.email) {
-      setUserEmail(location.state.email);
-    } else {
-      const storedEmail = localStorage.getItem("userEmail");
-      if (storedEmail) {
-        setUserEmail(storedEmail);
-      } else {
-        setUserEmail("********91@gmail.com");
-      }
-    }
-  }, [location]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Simulate verification logic
-    const isAnswerCorrect = false; // Simulate a failed verification
-    if (!isAnswerCorrect) {
-      setError("No se pudo validar identidad. Inténtalo de nuevo.");
-      setRetryCounter(10); // Set retry countdown to 10 seconds
-
-      // Start countdown
-      const interval = setInterval(() => {
-        setRetryCounter((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            setError(""); // Clear error after countdown
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      // Navigate to the next page if verification succeeds
+    const email = localStorage.getItem("resetEmail");
+    const question = localStorage.getItem("securityQuestion");
+    
+    if (!email || !question) {
       navigate("/reset-password");
+      return;
     }
-  };
 
-  const handleLoginRedirect = () => {
-    navigate("/login");
+    setUserEmail(email);
+    setSecurityQuestion(question);
+  }, [navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.get(
+        "/idhuca-indicadores/api/srv/auth/get/securityQuestion",
+        {
+          email: userEmail,
+          securityAnswer
+        }
+      );
+
+      if (response.data) {
+        // Store the verification token if needed
+        localStorage.setItem("verifiedEmail", userEmail);
+        // Navigate to set new password
+        navigate("/set-new-password");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      setError("La respuesta de seguridad es incorrecta.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div
-      className="vh-100 d-flex align-items-center justify-content-center"
-      style={{ backgroundColor: "#003C71" }}
-    >
-      <div
-        className="bg-white rounded-4 p-4 p-md-5 shadow"
-        style={{ maxWidth: "500px", width: "100%" }}
-      >
-        <div className="text-center mb-4 mt-2">
-          <h1 className="fw-bold mb-5">Verificar Identidad</h1>
-          <p className="text-muted">
-            Responda la pregunta de seguridad para verificar la cuenta
-            <br />
+    <div className="vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#003C71" }}>
+      <div className="bg-white rounded-4 p-4 p-md-5 shadow" style={{ maxWidth: "500px", width: "100%" }}>
+        <div className="text-center mb-4">
+          <h1 className="fw-bold mb-2 mt-5">Verificar Identidad</h1>
+          <p className="text-muted mb-3 mt-3">
+            Responda la pregunta de seguridad para la cuenta:<br />
             <strong>{userEmail}</strong>
           </p>
         </div>
 
         <form onSubmit={handleSubmit}>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+
           <div className="mb-3">
-            <label htmlFor="securityQuestion" className="form-label fw-medium">
-              Pregunta
-            </label>
-            <div className="bg-light p-2 rounded mb-3">
-              ¿Cuál fue el nombre de tu primer mascota?
+            <label className="form-label fw-medium">Pregunta de seguridad:</label>
+            <div className="bg-light p-3 rounded mb-3">
+              {securityQuestion}
             </div>
           </div>
 
@@ -90,38 +86,19 @@ const VerifyIdentity = () => {
               type="text"
               className="form-control bg-light"
               id="securityAnswer"
-              placeholder="sanson"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
+              placeholder="Ingrese su respuesta"
+              value={securityAnswer}
+              onChange={(e) => setSecurityAnswer(e.target.value)}
               required
             />
-          </div>
-
-          {error && (
-            <div
-              className="alert alert-danger text-center"
-              role="alert"
-            >
-              {error} {retryCounter > 0 && `Puedes volver a intentar en ${retryCounter} segundos.`}
-            </div>
-          )}
-
-          <div className="text-center mb-4">
-            <button
-              type="button"
-              className="btn btn-link text-decoration-none p-0"
-              onClick={handleLoginRedirect}
-            >
-              ¿Recuerdas tu contraseña? Inicia sesión aquí
-            </button>
           </div>
 
           <button
             type="submit"
             className="btn btn-dark w-100 py-2"
-            disabled={retryCounter > 0} // Disable button during countdown
+            disabled={loading}
           >
-            Verificar cuenta
+            {loading ? "Verificando..." : "Verificar"}
           </button>
         </form>
 

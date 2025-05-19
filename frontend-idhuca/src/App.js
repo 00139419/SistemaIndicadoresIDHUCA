@@ -4,6 +4,7 @@ import LoginForm from './pages/Login';
 import Index from './pages/Index';
 import VerifyIdentity from './pages/VerifyIdentity';
 import ResetPassword from './pages/ResetPassword';
+import SetNewPassword from './pages/SetNewPassword';
 import ResetPasswordSuccess from './pages/ResetPasswordSuccess';
 import Form from './pages/Form';
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -31,8 +32,9 @@ function App() {
           </Route>
       
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/verify-identity" element={<VerifyIdentity />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/verify-identity" element={<VerifyIdentity />} />
+          <Route path="/set-new-password" element={<SetNewPassword />} />
           <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
         </Routes>
       </AuthProvider>
