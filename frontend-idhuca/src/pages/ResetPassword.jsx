@@ -8,6 +8,9 @@ const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [credentials, setCredentials] = useState({
+    email: ""
+  });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,10 +19,12 @@ const ResetPassword = () => {
     setError("");
 
     try {
-      const response = await axios.get(
-        'http://localhost:8080/idhuca-indicadores/api/srv/auth/get/securityQuestion',
+      const response = await axios.post(
+        '/idhuca-indicadores/api/srv/auth/get/securityQuestion',
         {
-          params: { email },
+          email:  '00139419@uca.edu.sv'
+        },
+        {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -28,7 +33,7 @@ const ResetPassword = () => {
 
       if (response.data) {
         localStorage.setItem("resetEmail", email);
-        localStorage.setItem("securityQuestion", response.data.securityQuestion);
+        localStorage.setItem("securityQuestion", response.data.entity.descripcion);
         navigate("/verify-identity");
       }
     } catch (err) {
