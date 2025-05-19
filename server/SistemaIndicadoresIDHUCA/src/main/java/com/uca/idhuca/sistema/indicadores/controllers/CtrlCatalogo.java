@@ -42,7 +42,7 @@ public class CtrlCatalogo {
 	@Autowired
 	ObjectMapper mapper;
 	
-	@GetMapping(value = "/get", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/get", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<List<Catalogo>>> get(@RequestBody CatalogoDto request) {
 		GenericEntityResponse<List<Catalogo>> response = new GenericEntityResponse<>();
 		String key =  "SYSTEM";

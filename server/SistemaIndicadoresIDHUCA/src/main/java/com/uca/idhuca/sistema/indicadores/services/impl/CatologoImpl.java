@@ -94,9 +94,9 @@ public class CatologoImpl implements ICatalogo {
 			list = repoCatalogo.obtenerCatalogo(CATALOGO_DEPARTAMENTO);
 			break;
 		case "municipios":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_MUNICIPIO + request.getParentId() + "_");
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_MUNICIPIO + request.getParentId().replace(CATALOGO_DEPARTAMENTO, "") + "_");
 			break;
-		case "securityQuestion":
+		case "securityQuestions":
 			list = repoCatalogo.obtenerCatalogo(CATALOGO_SECURITY_QUESTION);
 			break;
 		default:
@@ -157,7 +157,7 @@ public class CatologoImpl implements ICatalogo {
 			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_MUNICIPIO, request.getParentId()) + 1;
 			nuevoCatalogo.setCodigo(CATALOGO_MUNICIPIO + request.getParentId() + "_" + indice);
 			break;
-		case "securityQuestion":
+		case "securityQuestions":
 			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_SECURITY_QUESTION, null) + 1;
 			nuevoCatalogo.setCodigo(CATALOGO_SECURITY_QUESTION + indice);
 			break;
