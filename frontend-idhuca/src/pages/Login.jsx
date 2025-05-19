@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import logoUCA from "../assets/idhuca-logo-blue.png";
+import { useAuth } from "../components/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -17,31 +20,43 @@ export default function LoginForm() {
       ...credentials,
       [name]: value,
     });
-    // Limpiar el error cuando el usuario comienza a escribir de nuevo
     if (error) setError(false);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setError(false);
 
-    // Simulación de verificación de credenciales
-    setTimeout(() => {
-      // Simulamos un error - esto deberías reemplazarlo con tu lógica real de autenticación
-      if (credentials.username !== "usuario@correcto.com" || credentials.password !== "contraseña123") {
-        setError(true);
-        setIsLoading(false);
-      } else {
-        // Login exitoso
-        setError(false);
-        // Redirigir a la página principal o dashboard
-        navigate('/index');
-      }
-    }, 1000);
-  };
+  try {
+    // Usar la función login del contexto de autenticación
+    const result = await login(credentials.email, credentials.password);
+
+    // Primero verificar si el login fue exitoso
+    if (!result.success) {
+      throw new Error(result.error || 'Error al iniciar sesión');
+    }
+
+    // Si hay token, guardarlo en localStorage
+    if (result.token) {
+      localStorage.setItem("authToken", result.token); // Changed to authToken
+      console.log("Token de autenticación guardado:", result);
+      navigate("/index");
+    } else {
+      throw new Error('No se recibió token de autenticación');
+    }
+
+  } catch (err) {
+    setError(true);
+    setErrorMessage(err.message || "Error en inicio de sesión, verifique usuario o contraseña");
+    console.error('Error de login:', err);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleForgotPassword = () => {
-    navigate('/verify-identity');
+    navigate('/reset-password');
   };
 
   return (
@@ -97,21 +112,21 @@ export default function LoginForm() {
                 fontSize: "0.9rem"
               }}
             >
-              Error en inicio de sesión, verifique usuario o contraseña
+              {errorMessage || "Error en inicio de sesión, verifique usuario o contraseña"}
             </div>
           )}
 
           <div className="mb-3">
-            <label htmlFor="username" className="form-label">Usuario</label>
+            <label htmlFor="email" className="form-label">Usuario</label>
             <div className="input-group">
               <input
-                type="text"
+                type="email"
                 className="form-control form-control-lg bg-light"
-                id="username"
-                name="username"
-                value={credentials.username}
+                id="email"
+                name="email"
+                value={credentials.email}
                 onChange={handleChange}
-                placeholder="testsidhuca@uca.edu.sv"
+                placeholder="correo@uca.edu.sv"
                 style={{ marginBottom: "0.5rem" }}
               />
               <span className="input-group-text bg-light">

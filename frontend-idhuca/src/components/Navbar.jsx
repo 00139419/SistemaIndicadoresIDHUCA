@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logoIdhuca from '../assets/idhuca-logo-blue.png';
+import { useAuth } from './AuthContext'
+
 const Navbar = () => {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white py-2 shadow-sm">
       <div className="container">
@@ -42,7 +50,10 @@ const Navbar = () => {
               <Link className="nav-link mx-2" to="/auditoria">Auditoría</Link>
             </li>
           </ul>
-          <button className="btn btn-outline-secondary ms-3">
+          <button 
+            className="btn btn-outline-secondary ms-3" 
+            onClick={handleLogout}
+          >
             <i className="bi bi-box-arrow-right me-1"></i>
             Cerrar sesión
           </button>
