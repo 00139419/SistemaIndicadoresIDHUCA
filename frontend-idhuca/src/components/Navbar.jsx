@@ -4,11 +4,52 @@ import logoIdhuca from '../assets/idhuca-logo-blue.png';
 import { useAuth } from './AuthContext'
 
 const Navbar = () => {
-  const { logout } = useAuth();
+  const { logout, userRole } = useAuth();
 
   const handleLogout = () => {
     logout();
   };
+
+  const renderMenuItems = () => {
+  switch (userRole) {
+    case 'ROL_1':
+      return (
+        <>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/registros">Registros</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/ficha-de-derechos">Ficha de derechos</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/configuraciones">Configuraciones</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/usuarios">Usuarios</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/mantenimiento">Mantenimiento</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/auditoria">Auditoría</Link>
+          </li>
+        </>
+      );
+    case 'ROL_2':
+      return (
+        <>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/registros">Registros</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/ficha-de-derechos">Ficha de derechos</Link>
+          </li>
+        </>
+      );
+    default:
+      return null;
+  }
+};
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white py-2 shadow-sm">
@@ -31,24 +72,7 @@ const Navbar = () => {
         
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link mx-2" to="/registros">Registros</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link mx-2" to="/ficha-de-derechos">Ficha de derechos</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link mx-2" to="/configuraciones">Configuraciones</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link mx-2" to="/usuarios">Usuarios</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link mx-2" to="/mantenimiento">Mantenimiento</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link mx-2" to="/auditoria">Auditoría</Link>
-            </li>
+            {renderMenuItems()}
           </ul>
           <button 
             className="btn btn-outline-secondary ms-3" 

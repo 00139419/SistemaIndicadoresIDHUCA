@@ -55,7 +55,7 @@ const SetNewPassword = () => {
       localStorage.removeItem("verifiedEmail");
       localStorage.removeItem("userSecurityAnswer"); 
       
-      navigate("/login", { 
+      navigate("/reset-password-success", { 
         state: { message: "Contraseña actualizada con éxito" }
       });
     }
