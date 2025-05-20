@@ -20,7 +20,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        '/idhuca-indicadores/api/srv/auth/get/securityQuestion',
+        'http://localhost:8080/idhuca-indicadores/api/srv/auth/get/securityQuestion',
         {
           email:  '00139419@uca.edu.sv'
         },

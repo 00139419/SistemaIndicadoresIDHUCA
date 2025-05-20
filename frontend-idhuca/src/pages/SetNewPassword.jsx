@@ -19,44 +19,53 @@ const SetNewPassword = () => {
   }, [navigate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    if (newPassword !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
-      setLoading(false);
+  if (newPassword !== confirmPassword) {
+    setError("Las contraseñas no coinciden");
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const email = localStorage.getItem("verifiedEmail");
+    const securityAnswer = localStorage.getItem("userSecurityAnswer"); // Updated key name
+
+    if (!email || !securityAnswer) {
+      setError("Información de verificación incompleta");
+      navigate("/reset-password");
       return;
     }
 
-    try {
-      const email = localStorage.getItem("verifiedEmail");
-      const response = await axios.post(
-        "/idhuca-indicadores/api/srv/auth/recovery/password",
-        {
-          email,
-          newPassword
-        }
-      );
-
-      if (response.data) {
-        // Clear all stored data
-        localStorage.removeItem("resetEmail");
-        localStorage.removeItem("securityQuestion");
-        localStorage.removeItem("verifiedEmail");
-        
-        // Navigate to login with success message
-        navigate("/login", { 
-          state: { message: "Contraseña actualizada con éxito" }
-        });
+    const response = await axios.post(
+      "http://localhost:8080/idhuca-indicadores/api/srv/auth/recovery/password",
+      {
+        email,
+        newPassword,
+        securityAnswer
       }
-    } catch (err) {
-      console.error("Error:", err);
-      setError("Error al actualizar la contraseña. Intente nuevamente.");
-    } finally {
-      setLoading(false);
+    );
+
+    if (response.data) {
+    
+      localStorage.removeItem("resetEmail");
+      localStorage.removeItem("securityQuestion");
+      localStorage.removeItem("verifiedEmail");
+      localStorage.removeItem("userSecurityAnswer"); 
+      
+      navigate("/login", { 
+        state: { message: "Contraseña actualizada con éxito" }
+      });
     }
-  };
+  } catch (err) {
+    console.error("Error:", err);
+    setError("Error al actualizar la contraseña. Intente nuevamente.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#003C71" }}>

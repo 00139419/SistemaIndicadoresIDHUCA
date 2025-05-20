@@ -15,7 +15,7 @@ const VerifyIdentity = () => {
   useEffect(() => {
     const email = localStorage.getItem("resetEmail");
     const question = localStorage.getItem("securityQuestion");
-    
+
     if (!email || !question) {
       navigate("/reset-password");
       return;
@@ -31,18 +31,18 @@ const VerifyIdentity = () => {
     setError("");
 
     try {
-      const response = await axios.get(
-        "/idhuca-indicadores/api/srv/auth/get/securityQuestion",
+      const response = await axios.post(
+        "http://localhost:8080/idhuca-indicadores/api/srv/auth/get/securityQuestion",
         {
           email: userEmail,
-          securityAnswer
+          securityAnswer,
         }
       );
 
       if (response.data) {
-        // Store the verification token if needed
+        // Store the actual securityAnswer value, not the state variable name
         localStorage.setItem("verifiedEmail", userEmail);
-        // Navigate to set new password
+        localStorage.setItem("userSecurityAnswer", securityAnswer); // Changed key name for clarity
         navigate("/set-new-password");
       }
     } catch (err) {
@@ -54,12 +54,19 @@ const VerifyIdentity = () => {
   };
 
   return (
-    <div className="vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#003C71" }}>
-      <div className="bg-white rounded-4 p-4 p-md-5 shadow" style={{ maxWidth: "500px", width: "100%" }}>
+    <div
+      className="vh-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: "#003C71" }}
+    >
+      <div
+        className="bg-white rounded-4 p-4 p-md-5 shadow"
+        style={{ maxWidth: "500px", width: "100%" }}
+      >
         <div className="text-center mb-4">
           <h1 className="fw-bold mb-2 mt-5">Verificar Identidad</h1>
           <p className="text-muted mb-3 mt-3">
-            Responda la pregunta de seguridad para la cuenta:<br />
+            Responda la pregunta de seguridad para la cuenta:
+            <br />
             <strong>{userEmail}</strong>
           </p>
         </div>
@@ -72,10 +79,10 @@ const VerifyIdentity = () => {
           )}
 
           <div className="mb-3">
-            <label className="form-label fw-medium">Pregunta de seguridad:</label>
-            <div className="bg-light p-3 rounded mb-3">
-              {securityQuestion}
-            </div>
+            <label className="form-label fw-medium">
+              Pregunta de seguridad:
+            </label>
+            <div className="bg-light p-3 rounded mb-3">{securityQuestion}</div>
           </div>
 
           <div className="mb-4">
