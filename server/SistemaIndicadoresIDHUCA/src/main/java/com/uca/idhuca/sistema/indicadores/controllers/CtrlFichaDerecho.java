@@ -2,11 +2,13 @@ package com.uca.idhuca.sistema.indicadores.controllers;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
+import java.io.File;
 import java.util.List;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ import com.uca.idhuca.sistema.indicadores.dto.NotaDerechoDTO;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.repositories.NotaDerechoRepository;
 import com.uca.idhuca.sistema.indicadores.services.IFichaDerecho;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
@@ -46,6 +49,10 @@ public class CtrlFichaDerecho {
 	@Autowired
 	private IFichaDerecho fichaDerechoService;
 
+
+	@Autowired
+	private NotaDerechoRepository notaRepo;
+	
 	@Autowired
 	ObjectMapper mapper;
 
@@ -136,9 +143,14 @@ public class CtrlFichaDerecho {
 	        key = utils.obtenerUsuarioAutenticado().getEmail();
 	        log.info("[{}] Inicio servicio '/get/file' para nombre: {}", key, nombreArchivo);
 
+	        String nombreOriginal = notaRepo.findNombreOriginalByArchivoUrl(nombreArchivo);
+	        
 	        Resource archivo = fichaDerechoService.getFile(nombreArchivo);
-
-	        String contentDisposition = "attachment; filename=\"" + archivo.getFilename() + "\"";
+	
+	        String contentDisposition = "attachment; filename=\"" + nombreOriginal + "\"";
+	        
+	        log.info("contentDisposition " + contentDisposition);
+	        
 	        return ResponseEntity.ok()
 	                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
 	                .contentType(MediaType.APPLICATION_OCTET_STREAM)

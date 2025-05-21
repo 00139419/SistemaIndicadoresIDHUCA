@@ -77,7 +77,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	
 	@Override
 	public SuperGenericResponse save(NotaDerechoRequest request, MultipartFile[] archivos)
-	        throws ValidationException {
+	        throws ValidationException, Exception {
 
 	    List<String> errorsList = validarSaveFicha(request, archivos);
 	    if (!errorsList.isEmpty()) {
@@ -115,7 +115,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	        MultipartFile archivo = archivos[i];
 	        ArchivoAdjuntoRequest archivoReq = request.getArchivos().get(i);
 
-	        String hashNombre = UUID.randomUUID().toString();
+	        String hashNombre = utils.generarHashArchivo(archivo);
 	        String extension = utils.getExtension(archivo.getOriginalFilename());
 	        String nombreFisico = hashNombre + extension;
 	        Path destino = Paths.get(projectProperties.getRutaArchivosFisicos(), nombreFisico);
@@ -277,7 +277,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
         if (!recurso.exists() || !recurso.isReadable()) {
             throw new NotFoundException(ERROR, "No se puede leer el archivo solicitado");
         }
-
+        
         log.info("[{}] Archivo encontrado y listo para descarga: {}", key, nombreArchivo);
         return recurso;
 	}

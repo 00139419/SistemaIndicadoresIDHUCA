@@ -83,11 +83,11 @@ public class UserImpl implements IUser {
 					 .findByEmail(request.getEmail()).get();
 			
 			if(usuario != null) {
-				System.out.println("Usuario ya existe.");
+				log.info("Usuario ya existe.");
 				throw new ValidationException(ERROR, "Usuario ya existe.");
 			}
 		} catch (NoSuchElementException e) {
-			System.out.println("Usuario no existe.");
+			log.info("Usuario no existe.");
 		}
 		 log.info("[{}] Usuario válido", key);
 		 
@@ -122,7 +122,7 @@ public class UserImpl implements IUser {
 			usuario = userRepo
 					 .findById(id.longValue()).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Usuario no existe.");
+			log.info("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
@@ -151,7 +151,7 @@ public class UserImpl implements IUser {
 			usuario = userRepo
 					 .findById(request.getId()).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Usuario no existe.");
+			log.info("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		
@@ -159,7 +159,7 @@ public class UserImpl implements IUser {
 		try {
 			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Recovery no existe.");
+			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
@@ -196,7 +196,7 @@ public class UserImpl implements IUser {
 			usuario = userRepo
 					 .findById(id.longValue()).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Usuario no existe.");
+			log.info("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		
@@ -213,7 +213,7 @@ public class UserImpl implements IUser {
 		log.info("[{}] Request válido", key);
 		
 		if(users == null || users.size() == 0) {
-			System.out.println("No hay usuarios en la base de datos.");
+			log.info("No hay usuarios en la base de datos.");
 			throw new NotFoundException(ERROR, "No hay usuarios en la base de datos.");
 		}
 		log.info("[{}] Usuarios obtenidos correctamente.", key);
@@ -236,7 +236,7 @@ public class UserImpl implements IUser {
 			usuario = userRepo
 					 .findByEmail(request.getEmail()).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Usuario no existe.");
+			log.info("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		
@@ -244,7 +244,7 @@ public class UserImpl implements IUser {
 		try {
 			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Recovery no existe.");
+			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
 		}
 		
@@ -287,7 +287,7 @@ public class UserImpl implements IUser {
 			usuario = userRepo
 					 .findByEmail(request.getEmail()).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Usuario no existe.");
+			log.info("Usuario no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		
@@ -295,7 +295,7 @@ public class UserImpl implements IUser {
 		try {
 			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Recovery no existe.");
+			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
 		}
 		
@@ -303,7 +303,7 @@ public class UserImpl implements IUser {
 		try {
 			securityQuestion = catalogoRepo.findByCodigo(recovery.getPreguntaCodigo());
 		} catch (Exception e) {
-			System.out.println("Pregunta no existe.");
+			log.info("Pregunta no existe.");
 			throw new NotFoundException(ERROR, "Pregunta no existe.");
 		}
 		
@@ -328,7 +328,7 @@ public class UserImpl implements IUser {
 		try {
 			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Recovery no existe.");
+			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
@@ -376,7 +376,7 @@ public class UserImpl implements IUser {
 		try {
 			userFound = userRepo.findById(request.getId()).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Recovery no existe.");
+			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
@@ -385,7 +385,7 @@ public class UserImpl implements IUser {
 		try {
 			recovery = recoveryPasswordRepo.findByUsuario(userFound).get();
 		} catch (NoSuchElementException e) {
-			System.out.println("Recovery no existe.");
+			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);

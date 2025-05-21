@@ -27,6 +27,22 @@ import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_TIPO_PROCESO_JUDICIAL;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_TIPO_DENUNCIANTE;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DURACION_PROCESO;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_TIPO_DE_REPRESION;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_MEDIO_DE_EXPRESION;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_MOTIVO_DETENCION;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_TIPO_DE_ARMA;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_TIPO_DE_DETENCION;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_TIPO_DE_VIOLENCIA;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_ESTADO_SALUD;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_TIPO_PERSONA;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_GENERO;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_LUGAR_EXACTO;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_ESTADO_DEL_REGISTROS;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_FUENTE;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_PAISES;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_ROL;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_SECURITY_QUESTION;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DEPARTAMENTO;
@@ -82,8 +98,56 @@ public class CatologoImpl implements ICatalogo {
 		}
 
 		List<Catalogo> list = null;
-
+		
 		switch (nombreCampoActivo) {
+		case "tipoProcesoJudicial":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL);
+			break;
+		case "tipoDenunciante":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DENUNCIANTE);
+			break;
+		case "duracionProceso":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_DURACION_PROCESO);
+			break;
+		case "medioExpresion":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_MEDIO_DE_EXPRESION);
+			break;
+		case "tipoRepresion":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_REPRESION);
+			break;
+		case "motivoDetencion":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_MOTIVO_DETENCION);
+			break;
+		case "tipoArma":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_ARMA);
+			break;
+		case "tipoDetencion":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_DETENCION);
+			break;
+		case "tipoViolencia":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_VIOLENCIA);
+			break;
+		case "estadoSalud":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_ESTADO_SALUD);
+			break;
+		case "tipoPersona":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_PERSONA);
+			break;
+		case "genero":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_GENERO);
+			break;
+		case "lugarExacto":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_LUGAR_EXACTO);
+			break;
+		case "estadoRegistro":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_ESTADO_DEL_REGISTROS);
+			break;
+		case "paises":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_PAISES);
+			break;
+		case "fuentes":
+			list = repoCatalogo.obtenerCatalogo(CATALOGO_FUENTE);
+			break;
 		case "roles":
 			list = repoCatalogo.obtenerCatalogo(CATALOGO_ROL);
 			break;
@@ -135,12 +199,77 @@ public class CatologoImpl implements ICatalogo {
 		if (nombreCampoActivo == null) {
 			throw new IllegalArgumentException("Debe activar al menos un catálogo.");
 		}
-
+		
+		
 		Catalogo nuevoCatalogo = new Catalogo();
 		nuevoCatalogo.setDescripcion(request.getNuevoCatalogo());
 		int indice = 0;
-
+		
 		switch (nombreCampoActivo) {
+		case "tipoProcesoJudicial":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_TIPO_PROCESO_JUDICIAL + indice);
+			break;
+		case "tipoDenunciante":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_DENUNCIANTE, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_TIPO_DENUNCIANTE + indice);
+			break;
+		case "duracionProceso":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_DURACION_PROCESO, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_DURACION_PROCESO + indice);
+			break;
+		case "tipoRepresion":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_DE_REPRESION, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_TIPO_DE_REPRESION + indice);
+			break;
+		case "medioExpresion":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_MEDIO_DE_EXPRESION, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_MEDIO_DE_EXPRESION + indice);
+			break;
+		case "motivoDetencion":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_MOTIVO_DETENCION, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_MOTIVO_DETENCION + indice);
+			break;
+		case "tipoArma":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_DE_ARMA, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_TIPO_DE_ARMA + indice);
+			break;
+		case "tipoDetencion":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_DE_DETENCION, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_TIPO_DE_DETENCION + indice);
+			break;
+		case "tipoViolencia":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_DE_VIOLENCIA, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_TIPO_DE_VIOLENCIA + indice);
+			break;
+		case "estadoSalud":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_ESTADO_SALUD, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_ESTADO_SALUD + indice);
+			break;
+		case "tipoPersona":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_PERSONA, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_TIPO_PERSONA + indice);
+			break;
+		case "genero":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_GENERO, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_GENERO + indice);
+			break;
+		case "lugarExacto":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_LUGAR_EXACTO, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_LUGAR_EXACTO + indice);
+			break;
+		case "estadoRegistro":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_ESTADO_DEL_REGISTROS, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_ESTADO_DEL_REGISTROS + indice);
+			break;
+		case "fuentes":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_FUENTE, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_FUENTE + indice);
+			break;
+		case "paises":
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_PAISES, null) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_PAISES + indice);
+			break;
 		case "roles":
 			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_ROL, null) + 1;
 			nuevoCatalogo.setCodigo(CATALOGO_ROL + indice);

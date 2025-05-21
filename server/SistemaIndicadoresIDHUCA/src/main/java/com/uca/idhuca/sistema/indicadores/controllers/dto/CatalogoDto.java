@@ -6,6 +6,22 @@ import lombok.Data;
 
 @Data
 public class CatalogoDto {
+	Boolean tipoProcesoJudicial;
+	Boolean tipoDenunciante;
+	Boolean duracionProceso;
+	Boolean medioExpresion;
+	Boolean tipoRepresion;
+	Boolean motivoDetencion;
+	Boolean tipoArma;
+	Boolean tipoDetencion;
+	Boolean tipoViolencia;
+	Boolean estadoSalud;
+	Boolean tipoPersona;
+	Boolean genero;
+	Boolean lugarExacto;
+	Boolean estadoRegistro;
+	Boolean fuentes;
+	Boolean paises;
 	Boolean derechos;
 	Boolean roles;
 	Boolean departamentos;

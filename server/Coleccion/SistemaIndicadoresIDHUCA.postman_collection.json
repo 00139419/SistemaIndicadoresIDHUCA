@@ -627,7 +627,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"derechos\":false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": true,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\"\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": true,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -888,7 +888,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho/get/file/6c620443-12dc-4ad0-bb5b-e727d470f942.docx",
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho/get/file/0e3fa274-6529-4a8a-9aad-68543e5a0f44.docx",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -901,7 +901,7 @@
 								"fichaDerecho",
 								"get",
 								"file",
-								"6c620443-12dc-4ad0-bb5b-e727d470f942.docx"
+								"0e3fa274-6529-4a8a-9aad-68543e5a0f44.docx"
 							]
 						}
 					},
@@ -989,6 +989,88 @@
 								"fichaDerecho",
 								"delete",
 								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ParametroSistema",
+			"item": [
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"clave\": \"max_intentos_pregunta_seguridad\",\n    \"valor\": \"5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/parametros/sistema/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"parametros",
+								"sistema",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/parametros/sistema/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"parametros",
+								"sistema",
+								"getAll"
 							]
 						}
 					},

@@ -16,7 +16,7 @@ import com.uca.idhuca.sistema.indicadores.models.NotaDerechoArchivo;
 
 public interface IFichaDerecho {
 
-	SuperGenericResponse save(NotaDerechoRequest notaRequest, MultipartFile[] archivos) throws ValidationException;
+	SuperGenericResponse save(NotaDerechoRequest notaRequest, MultipartFile[] archivos) throws ValidationException, Exception;
 	
 	GenericEntityResponse<List<NotaDerechoDTO>> getAllPost(String codigoDerecho) throws ValidationException;
 

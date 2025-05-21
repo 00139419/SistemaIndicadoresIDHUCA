@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.ParametrosSistemaDto;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 
@@ -115,6 +116,33 @@ public class RequestValidations {
 
 		if (request.getId() == null || request.getId() < 1) {
 			error = "La propiedad 'email' es obligatoria y debe de ser numero valido.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarUpdateParametrosSistema(ParametrosSistemaDto request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		if (request.getClave() == null || request.getClave().isEmpty()) {
+			error = "La propiedad 'clave' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		if (request.getValor() == null || request.getValor().isEmpty()) {
+			error = "La propiedad 'valor' es obligatoria.";
 			list.add(error);
 			log.info("[" + key + "]" + " " + error);
 		}
