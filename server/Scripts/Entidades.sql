@@ -779,7 +779,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('FUENTE_40', 'Diario 1'),
 ('FUENTE_41', 'Agencia EFE(oficina El Salvador)'),
 ('FUENTE_42', 'Associated Press(AP)(cobertura El Salvador)'),
-('FUENTE_43', 'Reuters(cobertura El Salvador)')
+('FUENTE_43', 'Reuters(cobertura El Salvador)'),
 ('ESTREG_1', 'Caso en proceso judicial'),
 ('ESTREG_2', 'Caso cerrado'),
 ('ESTREG_3', 'Caso en investigación'),
@@ -854,7 +854,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('ARTEFACTO_6', 'Instrumento de tortura'),
 ('ARTEFACTO_7', 'Vehículo'),
 ('ARTEFACTO_8', 'Herramienta de inmovilización(esposas, grilletes, etc.)'),
-('ARTEFACTO_9', 'Dispositivo electrónico(taser, etc.)')
+('ARTEFACTO_9', 'Dispositivo electrónico(taser, etc.)'),
 ('DETENCION_0', 'Otro'),
 ('DETENCION_1', 'Detención en flagrancia'),
 ('DETENCION_2', 'Detención administrativa'),
@@ -920,7 +920,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('DURACION_PROCESO_5', 'Más de 2 años'),
 ('DURACION_PROCESO_6', 'En curso, sin información clara de tiempo');
  
- INSERT INTO parametro_sistema(clave, valor, descripcion)
+INSERT INTO parametro_sistema(clave, valor, descripcion)
 VALUES('max_intentos_pregunta_seguridad', '3', 'Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña');
  
 -- Insertar Adminitrador
