@@ -20,7 +20,7 @@ import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoCatalogo;
+import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.ICatalogo;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
@@ -61,7 +61,7 @@ public class CatologoImpl implements ICatalogo {
 	private Utilidades utils;
 
 	@Autowired
-	IRepoCatalogo repoCatalogo;
+	CatalogoRepository catalogoRepository;
 	
 	@Autowired
 	IAuditoria auditoriaService;
@@ -101,67 +101,67 @@ public class CatologoImpl implements ICatalogo {
 		
 		switch (nombreCampoActivo) {
 		case "tipoProcesoJudicial":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL);
 			break;
 		case "tipoDenunciante":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DENUNCIANTE);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DENUNCIANTE);
 			break;
 		case "duracionProceso":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_DURACION_PROCESO);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_DURACION_PROCESO);
 			break;
 		case "medioExpresion":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_MEDIO_DE_EXPRESION);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_MEDIO_DE_EXPRESION);
 			break;
 		case "tipoRepresion":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_REPRESION);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_REPRESION);
 			break;
 		case "motivoDetencion":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_MOTIVO_DETENCION);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_MOTIVO_DETENCION);
 			break;
 		case "tipoArma":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_ARMA);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_ARMA);
 			break;
 		case "tipoDetencion":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_DETENCION);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_DETENCION);
 			break;
 		case "tipoViolencia":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_DE_VIOLENCIA);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_VIOLENCIA);
 			break;
 		case "estadoSalud":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_ESTADO_SALUD);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_ESTADO_SALUD);
 			break;
 		case "tipoPersona":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_TIPO_PERSONA);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_PERSONA);
 			break;
 		case "genero":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_GENERO);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_GENERO);
 			break;
 		case "lugarExacto":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_LUGAR_EXACTO);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_LUGAR_EXACTO);
 			break;
 		case "estadoRegistro":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_ESTADO_DEL_REGISTROS);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_ESTADO_DEL_REGISTROS);
 			break;
 		case "paises":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_PAISES);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_PAISES);
 			break;
 		case "fuentes":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_FUENTE);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_FUENTE);
 			break;
 		case "roles":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_ROL);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_ROL);
 			break;
 		case "derechos":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_DERECHO);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_DERECHO);
 			break;
 		case "departamentos":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_DEPARTAMENTO);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_DEPARTAMENTO);
 			break;
 		case "municipios":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_MUNICIPIO + request.getParentId().replace(CATALOGO_DEPARTAMENTO, "") + "_");
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_MUNICIPIO + request.getParentId().replace(CATALOGO_DEPARTAMENTO, "") + "_");
 			break;
 		case "securityQuestions":
-			list = repoCatalogo.obtenerCatalogo(CATALOGO_SECURITY_QUESTION);
+			list = catalogoRepository.obtenerCatalogo(CATALOGO_SECURITY_QUESTION);
 			break;
 		default:
 			throw new NotFoundException(ERROR, "Catálogo no reconocido: " + nombreCampoActivo);
@@ -294,7 +294,7 @@ public class CatologoImpl implements ICatalogo {
 			throw new NotFoundException(ERROR, "Catálogo no reconocido: " + nombreCampoActivo);
 		}
 		
-		Catalogo catalogoSaved = repoCatalogo.save(nuevoCatalogo);
+		Catalogo catalogoSaved = catalogoRepository.save(nuevoCatalogo);
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, catalogoSaved));
 		log.info("[{}] Catalogo creada correctamente.",key);
 		
@@ -313,7 +313,7 @@ public class CatologoImpl implements ICatalogo {
 
 		Catalogo catalogo = null;
 		try {
-			catalogo = repoCatalogo
+			catalogo = catalogoRepository
 					 .findByCodigo(request.getCatalogo().getCodigo());
 		} catch (NoSuchElementException e) {
 			System.out.println("Catalogo no existe.");
@@ -322,7 +322,7 @@ public class CatologoImpl implements ICatalogo {
 		 log.info("[{}] Catalogo válido", key);
 		 
 		 catalogo.setDescripcion(request.getCatalogo().getDescripcion());
-		 repoCatalogo.save(catalogo);
+		 catalogoRepository.save(catalogo);
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, catalogo));
 		 log.info("[{}] Catalogo actualizado correctamente.",key);
 		 
@@ -341,7 +341,7 @@ public class CatologoImpl implements ICatalogo {
 
 		Catalogo catalogo = null;
 		try {
-			catalogo = repoCatalogo
+			catalogo = catalogoRepository
 					 .findByCodigo(request.getCatalogo().getCodigo());
 		} catch (NoSuchElementException e) {
 			System.out.println("Catalogo no existe.");
@@ -349,7 +349,7 @@ public class CatologoImpl implements ICatalogo {
 		}
 		 log.info("[{}] Catalogo válido", key);
 		 
-		 repoCatalogo.delete(catalogo);
+		 catalogoRepository.delete(catalogo);
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, catalogo));
 		 log.info("[{}] Catalogo eliminado correctamente.",key);
 		 

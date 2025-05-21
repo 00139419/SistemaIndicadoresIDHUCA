@@ -1,16 +1,14 @@
 package com.uca.idhuca.sistema.indicadores.services.impl;
 
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
-
-import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarSaveFicha;
-import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarObtenerDetalleArchivos;
-import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateNote;
-import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarDeleteNote;
-
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CREAR;
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.DELETE;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarDeleteNote;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarObtenerDetalleArchivos;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarSaveFicha;
+import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateNote;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +19,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +40,7 @@ import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.NotaDerecho;
 import com.uca.idhuca.sistema.indicadores.models.NotaDerechoArchivo;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoCatalogo;
+import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.NotaDerechoArchivoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.NotaDerechoRepository;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
@@ -61,10 +58,10 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	private Utilidades utils;
 
 	@Autowired
-	private NotaDerechoRepository notaRepo;
+	private NotaDerechoRepository notaRepository;
 
 	@Autowired
-	private NotaDerechoArchivoRepository archivoRepo;
+	private NotaDerechoArchivoRepository archivoRepository;
 
 	@Autowired
 	private ProjectProperties projectProperties;
@@ -73,7 +70,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	private IAuditoria auditoriaService;
 	
 	@Autowired
-	private IRepoCatalogo catalogoRepo;
+	private CatalogoRepository catalogoRepository;
 	
 	@Override
 	public SuperGenericResponse save(NotaDerechoRequest request, MultipartFile[] archivos)
@@ -90,7 +87,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	    
 	    Catalogo catalogo = null;
 		try {
-			catalogo = catalogoRepo
+			catalogo = catalogoRepository
 					 .findByCodigo(request.getDerecho().getCodigo());
 		} catch (NoSuchElementException e) {
 			System.out.println("catalogo no existe.");
@@ -107,7 +104,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	    nota.setModificadoEn(new Date(System.currentTimeMillis()));
 	    nota.setCreadoEn(new Date(System.currentTimeMillis()));
 
-	    NotaDerecho notaGuardada = notaRepo.save(nota);
+	    NotaDerecho notaGuardada = notaRepository.save(nota);
 	    auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, notaGuardada));
 	    log.info("[{}] Nota principal guardada correctamente con ID: {}", key, notaGuardada.getId());
 
@@ -134,7 +131,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	        meta.setArchivoUrl(nombreFisico);
 	        meta.setTipo(archivoReq.getTipo());
 
-	        NotaDerechoArchivo metaGuardada = archivoRepo.save(meta);
+	        NotaDerechoArchivo metaGuardada = archivoRepository.save(meta);
 	        auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, metaGuardada));
 	    }
 
@@ -155,7 +152,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	    
 	    NotaDerecho nota = null;
 		try {
-			nota = notaRepo.findById(request.getId()).get();
+			nota = notaRepository.findById(request.getId()).get();
 		} catch (Exception e) {
 			System.out.println("nota no existe.");
 			throw new NotFoundException(ERROR, "No existe la nota");
@@ -167,7 +164,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 		nota.setModificadoPor(usuarioAutenticado);
 		nota.setTitulo(request.getTitulo());
 		 
-		notaRepo.save(nota);
+		notaRepository.save(nota);
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, nota));
 		
 		return new SuperGenericResponse(OK, "Post actualizado correctamente");
@@ -185,7 +182,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	    
 	    NotaDerecho nota = null;
 		try {
-			nota = notaRepo.findById(request.getId()).get();
+			nota = notaRepository.findById(request.getId()).get();
 		} catch (Exception e) {
 			System.out.println("nota no existe.");
 			throw new NotFoundException(ERROR, "No existe la nota");
@@ -206,7 +203,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	        }
 	    }
 		
-		notaRepo.delete(nota);
+		notaRepository.delete(nota);
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, nota));
 		
 		log.info("[{}] Nota Eliminada correctamente.", key);
@@ -224,7 +221,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	    String key = utils.obtenerUsuarioAutenticado().getEmail();
 	    log.info("[{}] Request válido", key);
 
-	    List<NotaDerecho> notas = notaRepo.findByDerechoCodigo(codigoDerecho);
+	    List<NotaDerecho> notas = notaRepository.findByDerechoCodigo(codigoDerecho);
 
 	    List<NotaDerechoDTO> notaDTOs = notas.stream().map(nota -> {
 	        List<NotaDerechoArchivoDTO> archivosDTO = nota.getArchivos().stream()

@@ -12,7 +12,7 @@ import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Auditoria;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoAuditoria;
+import com.uca.idhuca.sistema.indicadores.repositories.AuditoriaRepository;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
@@ -32,7 +32,7 @@ public class AuditoriaImpl implements IAuditoria {
 	private ObjectMapper mapper;
 
 	@Autowired
-	private IRepoAuditoria auditoriaRepo;
+	private AuditoriaRepository auditoriaRepository;
 
 	@Autowired
 	private ObjectMapper objectMapper; // Asegúrate de tenerlo como @Bean o usar new ObjectMapper() si prefieres.
@@ -42,7 +42,7 @@ public class AuditoriaImpl implements IAuditoria {
 		String key = utils.obtenerUsuarioAutenticado().getEmail();
 		List<Auditoria> list = null;
 		try {
-			list = auditoriaRepo.findAll();
+			list = auditoriaRepository.findAll();
 		} catch (Exception e) {
 			log.info("[{}] No existe informacion en la audiotria con esos requisitos.", key);
 			throw new NotFoundException(ERROR, "No existe informacion en la audiotria con esos requisitos.");
@@ -69,7 +69,7 @@ public class AuditoriaImpl implements IAuditoria {
 			auditoria.setDescripcion(descripcion);
 			log.info("[{}] Auditoria creada {}", key, mapper.writeValueAsString(auditoria));
 
-			auditoriaRepo.save(auditoria);
+			auditoriaRepository.save(auditoria);
 			log.info("[{}] Auditoria guardada correctamente.", key);
 
 			return new SuperGenericResponse(OK, "Auditoría registrada correctamente.");

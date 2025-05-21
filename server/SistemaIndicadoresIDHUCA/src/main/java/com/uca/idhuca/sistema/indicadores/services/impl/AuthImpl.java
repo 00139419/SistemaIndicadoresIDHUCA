@@ -15,7 +15,7 @@ import com.uca.idhuca.sistema.indicadores.dto.Jwt;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoUsuario;
+import com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository;
 import com.uca.idhuca.sistema.indicadores.security.JwtUtils;
 import com.uca.idhuca.sistema.indicadores.services.IAuth;
 
@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthImpl implements IAuth{
 	
 	@Autowired
-	IRepoUsuario usuarioRepository;
+	UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	PasswordEncoder pEncoder;

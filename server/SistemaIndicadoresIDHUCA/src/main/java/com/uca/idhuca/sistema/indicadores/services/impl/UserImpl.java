@@ -31,9 +31,9 @@ import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.RecoveryPassword;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoCatalogo;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoRecoveryPassword;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoUsuario;
+import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.RecoveryPasswordRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
 import com.uca.idhuca.sistema.indicadores.useCase.UserUseCase;
@@ -49,13 +49,13 @@ public class UserImpl implements IUser {
 	PasswordEncoder pEncoder;
 
 	@Autowired
-	private IRepoUsuario userRepo;
+	private UsuarioRepository userRepository;
 
 	@Autowired
-	private IRepoCatalogo catalogoRepo;
+	private CatalogoRepository catalogoRepository;
 	
 	@Autowired
-	private IRepoRecoveryPassword recoveryPasswordRepo;
+	private RecoveryPasswordRepository recoveryPasswordRepository;
 	
 	@Autowired
 	private IAuditoria auditoriaService;
@@ -79,7 +79,7 @@ public class UserImpl implements IUser {
 		
 		Usuario usuario = null;
 		try {
-			usuario = userRepo
+			usuario = userRepository
 					 .findByEmail(request.getEmail()).get();
 			
 			if(usuario != null) {
@@ -94,10 +94,10 @@ public class UserImpl implements IUser {
 		 Usuario newUser = useCase.darFormatoInsert(request);
 		 log.info("[{}] Creando usuario...",key);
 		 
-		 Usuario usuarioSaved = userRepo.save(newUser);
+		 Usuario usuarioSaved = userRepository.save(newUser);
 		 
 		 RecoveryPassword recovery = useCase.darFormatoRecovery(request, usuarioSaved);
-		 recoveryPasswordRepo.save(recovery);
+		 recoveryPasswordRepository.save(recovery);
 		 log.info("[{}] Usuario guardado correctamente.",key);
 		 
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, newUser));
@@ -119,7 +119,7 @@ public class UserImpl implements IUser {
 		
 		Usuario usuario = null;
 		try {
-			usuario = userRepo
+			usuario = userRepository
 					 .findById(id.longValue()).get();
 		} catch (NoSuchElementException e) {
 			log.info("Usuario no existe.");
@@ -127,7 +127,7 @@ public class UserImpl implements IUser {
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
 		
-		userRepo.delete(usuario);
+		userRepository.delete(usuario);
 		log.info("[{}] Usuario eliminado correctamente.", key);
 		
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, usuario));
@@ -148,7 +148,7 @@ public class UserImpl implements IUser {
 		
 		Usuario usuario = null;
 		try {
-			usuario = userRepo
+			usuario = userRepository
 					 .findById(request.getId()).get();
 		} catch (NoSuchElementException e) {
 			log.info("Usuario no existe.");
@@ -157,7 +157,7 @@ public class UserImpl implements IUser {
 		
 		RecoveryPassword recovery;
 		try {
-			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+			recovery = recoveryPasswordRepository.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
 			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
@@ -170,8 +170,8 @@ public class UserImpl implements IUser {
 		useCase.darFormatoUpdateRecovery(request, recovery);
 		log.info("[{}] Actualizando recovery... [{}]", key, usuario);
 		
-		userRepo.save(usuario);
-		recoveryPasswordRepo.save(recovery);
+		userRepository.save(usuario);
+		recoveryPasswordRepository.save(recovery);
 		log.info("[{}] Usuario actualizado correctamente.", key);
 		
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
@@ -193,7 +193,7 @@ public class UserImpl implements IUser {
 		
 		Usuario usuario = null;
 		try {
-			usuario = userRepo
+			usuario = userRepository
 					 .findById(id.longValue()).get();
 		} catch (NoSuchElementException e) {
 			log.info("Usuario no existe.");
@@ -207,7 +207,7 @@ public class UserImpl implements IUser {
 
 	@Override
 	public GenericEntityResponse<List<Usuario>> getAll() throws ValidationException, NotFoundException {
-		List<Usuario> users = userRepo.findAll();
+		List<Usuario> users = userRepository.findAll();
 		
 		String key = utils.obtenerUsuarioAutenticado().getEmail();
 		log.info("[{}] Request válido", key);
@@ -233,7 +233,7 @@ public class UserImpl implements IUser {
 		
 		Usuario usuario = null;
 		try {
-			usuario = userRepo
+			usuario = userRepository
 					 .findByEmail(request.getEmail()).get();
 		} catch (NoSuchElementException e) {
 			log.info("Usuario no existe.");
@@ -242,7 +242,7 @@ public class UserImpl implements IUser {
 		
 		RecoveryPassword recovery;
 		try {
-			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+			recovery = recoveryPasswordRepository.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
 			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
@@ -257,15 +257,15 @@ public class UserImpl implements IUser {
 			
 			log.error("[{}] Password incorrecta.", key);
 			recovery.setIntentosFallidos(recovery.getIntentosFallidos() + 1);
-			recoveryPasswordRepo.save(recovery);
+			recoveryPasswordRepository.save(recovery);
 			
 			throw new ValidationException(ERROR, "Respuesta incorrecta.");
 		}
 		
 		recovery.setIntentosFallidos(0);
 		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
-		userRepo.save(usuario);
-		recoveryPasswordRepo.save(recovery);
+		userRepository.save(usuario);
+		recoveryPasswordRepository.save(recovery);
 		log.error("[{}] Contraseña actualizada.", key);
 		
 		return new SuperGenericResponse(OK, "Cambio de contraseña existoso.");
@@ -284,7 +284,7 @@ public class UserImpl implements IUser {
 		
 		Usuario usuario = null;
 		try {
-			usuario = userRepo
+			usuario = userRepository
 					 .findByEmail(request.getEmail()).get();
 		} catch (NoSuchElementException e) {
 			log.info("Usuario no existe.");
@@ -293,7 +293,7 @@ public class UserImpl implements IUser {
 		
 		RecoveryPassword recovery;
 		try {
-			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+			recovery = recoveryPasswordRepository.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
 			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
@@ -301,7 +301,7 @@ public class UserImpl implements IUser {
 		
 		Catalogo securityQuestion;
 		try {
-			securityQuestion = catalogoRepo.findByCodigo(recovery.getPreguntaCodigo());
+			securityQuestion = catalogoRepository.findByCodigo(recovery.getPreguntaCodigo());
 		} catch (Exception e) {
 			log.info("Pregunta no existe.");
 			throw new NotFoundException(ERROR, "Pregunta no existe.");
@@ -326,7 +326,7 @@ public class UserImpl implements IUser {
 		
 		RecoveryPassword recovery;
 		try {
-			recovery = recoveryPasswordRepo.findByUsuario(usuario).get();
+			recovery = recoveryPasswordRepository.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
 			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
@@ -340,7 +340,7 @@ public class UserImpl implements IUser {
 		if(!pEncoder.matches(request.getPassword(), usuario.getContrasenaHash())) {
 	        log.error("[{}] Password incorrecta.", key);
 	        recovery.setIntentosFallidos(recovery.getIntentosFallidos() + 1);
-	        recoveryPasswordRepo.save(recovery);
+	        recoveryPasswordRepository.save(recovery);
 	        throw new ValidationException(ERROR, "Error: usuario o contraseña no coinciden.");
 	    }
 	    log.info("[{}] Autenticación correcta.", key);
@@ -349,8 +349,8 @@ public class UserImpl implements IUser {
 		recovery.setIntentosFallidos(0);
 		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
 		 
-		userRepo.save(usuario);
-		recoveryPasswordRepo.save(recovery);
+		userRepository.save(usuario);
+		recoveryPasswordRepository.save(recovery);
 		log.info("[{}] Usuario actualizado correctamente.", key);
 		
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
@@ -374,7 +374,7 @@ public class UserImpl implements IUser {
 		
 		Usuario userFound;
 		try {
-			userFound = userRepo.findById(request.getId()).get();
+			userFound = userRepository.findById(request.getId()).get();
 		} catch (NoSuchElementException e) {
 			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
@@ -383,7 +383,7 @@ public class UserImpl implements IUser {
 		
 		RecoveryPassword recovery;
 		try {
-			recovery = recoveryPasswordRepo.findByUsuario(userFound).get();
+			recovery = recoveryPasswordRepository.findByUsuario(userFound).get();
 		} catch (NoSuchElementException e) {
 			log.info("Recovery no existe.");
 			throw new NotFoundException(ERROR, "Recovery no existe.");
@@ -393,7 +393,7 @@ public class UserImpl implements IUser {
 		recovery.setIntentosFallidos(0);
 		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
 		 
-		recoveryPasswordRepo.save(recovery);
+		recoveryPasswordRepository.save(recovery);
 		log.info("[{}] Usuario actualizado correctamente.", key);
 		
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));

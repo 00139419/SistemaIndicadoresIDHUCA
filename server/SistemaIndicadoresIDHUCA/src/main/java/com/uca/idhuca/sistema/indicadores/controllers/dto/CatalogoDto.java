@@ -30,4 +30,5 @@ public class CatalogoDto {
 	String parentId;
 	String nuevoCatalogo;
 	Catalogo catalogo;
+	Catalogo derecho;
 }

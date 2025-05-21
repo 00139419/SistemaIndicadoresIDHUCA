@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.models.RecoveryPassword;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoCatalogo;
+import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
 
 @Component
 public class UserUseCase {
@@ -18,7 +18,7 @@ public class UserUseCase {
 	PasswordEncoder pEncoder;
 	
 	@Autowired
-	private IRepoCatalogo reporCatalogo;
+	private CatalogoRepository reporCatalogo;
 
 	public Usuario darFormatoInsert(UserDto data) {
 		Usuario newUser = new Usuario();

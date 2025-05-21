@@ -89,8 +89,26 @@ public interface IUser {
 	 */
 	GenericEntityResponse<Catalogo> getSecurityQuestio(UserDto request) throws ValidationException, NotFoundException;
 	
+	/**
+	 * Cambia la contraseña de un usuario del sistema.
+	 *
+	 * @param request Objeto {@link UserDto} que contiene los datos necesarios,
+	 *                incluyendo la nueva contraseña y la identificación del usuario.
+	 * @return {@link SuperGenericResponse} indicando el resultado de la operación.
+	 * @throws ValidationException si los datos son inválidos o la nueva contraseña no cumple con los criterios establecidos.
+	 * @throws NotFoundException   si el usuario no existe en el sistema.
+	 */
 	SuperGenericResponse changePassword(UserDto request) throws ValidationException, NotFoundException;
-	
+
+	/**
+	 * Desbloquea a un usuario previamente bloqueado (por ejemplo, por múltiples intentos fallidos).
+	 *
+	 * @param request Objeto {@link UserDto} que identifica al usuario a desbloquear.
+	 * @return {@link SuperGenericResponse} indicando si el desbloqueo fue exitoso.
+	 * @throws ValidationException si los datos proporcionados no son válidos.
+	 * @throws NotFoundException   si el usuario no se encuentra en el sistema.
+	 */
 	SuperGenericResponse unlockUser(UserDto request) throws ValidationException, NotFoundException;
+
 
 }

@@ -1,21 +1,16 @@
 package com.uca.idhuca.sistema.indicadores.controllers;
 
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
-import java.io.File;
 import java.util.List;
 
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,7 +46,7 @@ public class CtrlFichaDerecho {
 
 
 	@Autowired
-	private NotaDerechoRepository notaRepo;
+	private NotaDerechoRepository notaRepository;
 	
 	@Autowired
 	ObjectMapper mapper;
@@ -143,7 +138,7 @@ public class CtrlFichaDerecho {
 	        key = utils.obtenerUsuarioAutenticado().getEmail();
 	        log.info("[{}] Inicio servicio '/get/file' para nombre: {}", key, nombreArchivo);
 
-	        String nombreOriginal = notaRepo.findNombreOriginalByArchivoUrl(nombreArchivo);
+	        String nombreOriginal = notaRepository.findNombreOriginalByArchivoUrl(nombreArchivo);
 	        
 	        Resource archivo = fichaDerechoService.getFile(nombreArchivo);
 	

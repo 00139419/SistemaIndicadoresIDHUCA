@@ -1,5 +1,7 @@
 package com.uca.idhuca.sistema.indicadores.controllers;
 
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
 import java.util.List;
@@ -8,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +25,6 @@ import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
-
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 
 import lombok.extern.slf4j.Slf4j;
 

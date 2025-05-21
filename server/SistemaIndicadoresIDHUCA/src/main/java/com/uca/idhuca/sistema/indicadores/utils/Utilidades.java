@@ -1,5 +1,14 @@
 package com.uca.idhuca.sistema.indicadores.utils;
 
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.MAX_INTENTOS_PREGUNTA_SEGURIDAD;
+
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,29 +19,24 @@ import com.uca.idhuca.sistema.indicadores.dto.AuditoriaDto;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoCatalogo;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoParametrosSistema;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoUsuario;
+import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.ParametrosSistemaRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository;
 
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.MAX_INTENTOS_PREGUNTA_SEGURIDAD;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
+@Slf4j
 @Component
 public class Utilidades {
 	
 	@Autowired
-	IRepoUsuario usuarioRepo;
+	UsuarioRepository usuarioRepository;
 	
 	@Autowired
-	IRepoParametrosSistema sistema;
+	ParametrosSistemaRepository sistema;
 	
 	@Autowired
-	IRepoCatalogo catalogoRepo;
+	CatalogoRepository catalogoRepository;
 	
 	/**
      * Obtiene el usuario autenticado a partir del JWT (usando el email del token).
@@ -47,7 +51,7 @@ public class Utilidades {
             email = principal.toString();
         }
 
-        return usuarioRepo.findByEmail(email)
+        return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ValidationException(Constantes.ERROR, "Usuario no encontrado con email: " + email));
     }
     
@@ -85,9 +89,9 @@ public class Utilidades {
     	List<Catalogo> lista = new ArrayList<>();
     	
     	if(parentId != null) {
-    		lista = catalogoRepo.obtenerCatalogo(prefijo + parentId + "_");
+    		lista = catalogoRepository.obtenerCatalogo(prefijo + parentId + "_");
     	} else {
-    		 lista = catalogoRepo.obtenerCatalogo(prefijo);
+    		 lista = catalogoRepository.obtenerCatalogo(prefijo);
     	}
     	
         if (lista.isEmpty()) return 0;
@@ -118,4 +122,24 @@ public class Utilidades {
         return "";
     }
 
+    public Catalogo obtenerCatalogoPorCodigo(String codigo, String key) throws ValidationException {
+    	Catalogo catalogo = null;
+		try {
+			catalogo = catalogoRepository
+					 .findByCodigo(codigo);
+			
+			if(catalogo == null) {
+				log.info("[{}] Catalogo con ID" + codigo + " no existe.", key);
+				throw new ValidationException(ERROR, "Catalogo con ID" + codigo + " no existe.");
+			}
+			
+			return catalogo;
+		} catch (ValidationException e) {
+			throw e;
+		} catch (Exception e) {
+			log.info("Catalogo con ID" + codigo + " no existe.");
+			throw new ValidationException(ERROR, "Catalogo con ID" + codigo + " no existe.");
+		}
+    }
+    
 }

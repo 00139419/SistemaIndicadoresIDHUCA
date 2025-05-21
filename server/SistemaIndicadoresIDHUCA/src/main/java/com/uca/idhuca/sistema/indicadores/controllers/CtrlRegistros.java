@@ -10,51 +10,53 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
-import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
-import com.uca.idhuca.sistema.indicadores.models.Auditoria;
-import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
+import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
+import com.uca.idhuca.sistema.indicadores.services.IRegistros;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(ROOT_CONTEXT + "auditoria")
-public class CtrlAuditoria {
+@RequestMapping(ROOT_CONTEXT + "registros")
+public class CtrlRegistros {
 	
 	@Autowired
-	private Utilidades utils;
+	private Utilidades utils;	
 
 	@Autowired
 	ObjectMapper mapper;
 	
 	@Autowired
-	IAuditoria auditoriaService;
+	IRegistros registrosServices;
 	
-	@PostMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<List<Auditoria>>> get() throws ValidationException {
-		GenericEntityResponse<List<Auditoria>> response = null;
+	@PostMapping(value = "/getAllByDerecho", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<GenericEntityResponse<List<RegistroEvento>>> get(@RequestBody CatalogoDto request) throws ValidationException {
+		GenericEntityResponse<List<RegistroEvento>> response = null;
 		String key = "ADMIN";
 		
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/get' ");
 			
-			response = auditoriaService.get();
-			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(response, HttpStatus.OK);
-		} catch (NotFoundException e) {
-			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.NO_CONTENT);
+			response = registrosServices.getAllByDerecho(request);
+			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/get'");
 		}
 	}
+	
 	
 }

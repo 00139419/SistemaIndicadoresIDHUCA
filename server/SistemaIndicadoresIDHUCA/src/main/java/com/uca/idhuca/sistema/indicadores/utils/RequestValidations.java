@@ -123,6 +123,35 @@ public class RequestValidations {
 		return list;
 	}
 	
+	public static List<String> validarGetAllRegistroPorDerecho(CatalogoDto request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		Catalogo derecho = request.getDerecho();
+		
+		if (derecho == null) {
+			error = "La propiedad 'derecho' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		if (derecho.getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'derecho' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		return list;
+	}
+	
 	public static List<String> validarUpdateParametrosSistema(ParametrosSistemaDto request) {
 		List<String> list = new ArrayList<>();
 

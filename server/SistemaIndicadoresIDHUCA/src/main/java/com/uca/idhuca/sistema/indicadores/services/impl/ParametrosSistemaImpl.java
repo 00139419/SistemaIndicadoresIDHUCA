@@ -1,12 +1,11 @@
 package com.uca.idhuca.sistema.indicadores.services.impl;
 
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateParametrosSistema;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.ParametroSistema;
-import com.uca.idhuca.sistema.indicadores.repositories.IRepoParametrosSistema;
+import com.uca.idhuca.sistema.indicadores.repositories.ParametrosSistemaRepository;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.IParametrosSistema;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
@@ -29,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ParametrosSistemaImpl implements IParametrosSistema {
 	
 	@Autowired
-	private IRepoParametrosSistema parametrosSistemaRepository;
+	private ParametrosSistemaRepository parametrosSistemaRepository;
 	
 	@Autowired
 	private IAuditoria auditoriaService;

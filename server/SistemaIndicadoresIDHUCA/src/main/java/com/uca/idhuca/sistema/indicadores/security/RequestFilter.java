@@ -17,39 +17,45 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class RequestFilter extends OncePerRequestFilter {
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
-            throws ServletException, IOException {
+	@Override
+	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
+	        throws ServletException, IOException {
 
-        ContentCachingRequestWrapper request = new ContentCachingRequestWrapper(req);
-        ContentCachingResponseWrapper response = new ContentCachingResponseWrapper(res);
+	    ContentCachingRequestWrapper request = new ContentCachingRequestWrapper(req);
+	    ContentCachingResponseWrapper response = new ContentCachingResponseWrapper(res);
 
-        String endpoint = request.getRequestURI();
-        String method = request.getMethod();
-        String ip = request.getRemoteAddr();
-        String userAgent = request.getHeader("User-Agent");
-        String authHeader = request.getHeader("Authorization");
+	    String endpoint = request.getRequestURI();
+	    String method = request.getMethod();
+	    String ip = request.getRemoteAddr();
+	    String userAgent = request.getHeader("User-Agent");
+	    String authHeader = request.getHeader("Authorization");
 
-        log.info("===========================================================================");
-        log.info("=========================== [Petición Entrante] ==========================");
-        log.info("Método: {}", method);
-        log.info("Endpoint: {}", endpoint);
-        log.info("IP: {}", ip);
-        log.info("User-Agent: {}", userAgent);
-        log.info("JWT: {}", authHeader != null ? authHeader : "No JWT");
+	    log.info("===========================================================================");
+	    log.info("=========================== [Petición Entrante] ==========================");
+	    log.info("Método: {}", method);
+	    log.info("Endpoint: {}", endpoint);
+	    log.info("IP: {}", ip);
+	    log.info("User-Agent: {}", userAgent);
+	    log.info("JWT: {}", authHeader != null ? authHeader : "No JWT");
 
-        filterChain.doFilter(request, response);
+	    filterChain.doFilter(request, response);
 
-        log.info("============================== [Respuesta] ===============================");
-        log.info("Status: {}", response.getStatus());
+	    log.info("============================== [Respuesta] ===============================");
+	    log.info("Status: {}", response.getStatus());
 
-        String responseBody = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
-        if (!responseBody.isBlank()) {
-            log.info("Body de la respuesta: {}", responseBody);
-        }
-        
-        log.info("===========================================================================");
+	    // Evitar loguear archivos binarios
+	    if (!endpoint.startsWith("/api/fichaDerecho/get/file")) {
+	        String responseBody = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
+	        if (!responseBody.isBlank()) {
+	            log.info("Body de la respuesta: {}", responseBody);
+	        }
+	    } else {
+	        log.info("Body de la respuesta: [omitido - archivo binario]");
+	    }
 
-        response.copyBodyToResponse();
-    }
+	    log.info("===========================================================================");
+
+	    response.copyBodyToResponse();
+	}
+
 }

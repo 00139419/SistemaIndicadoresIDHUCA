@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.uca.idhuca.sistema.indicadores.models.ParametroSistema;
 
-public interface IRepoParametrosSistema extends JpaRepository<ParametroSistema, Long> {
+public interface ParametrosSistemaRepository extends JpaRepository<ParametroSistema, Long> {
 	ParametroSistema findByClave(String clave);
 }
