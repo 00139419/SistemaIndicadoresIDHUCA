@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logoIdhuca from '../assets/idhuca-logo-blue.png';
-import { useUser } from '../Contexts/UserContext';
 import { useAuth } from './AuthContext'
 
 const Navbar = () => {
@@ -10,8 +9,6 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
   };
-
-const Navbar = () => {
 
   const links = [
     { to: '/registros', label: 'Registros', roles: ['ROL_1', 'ROL_2'] },
@@ -22,7 +19,8 @@ const Navbar = () => {
     { to: '/auditoria', label: 'Auditoría', roles: ['ROL_1'] },
   ];
 
-  const visibleLinks = links.filter(link => link.roles.includes(user?.role));
+  const visibleLinks = links.filter(link => link.roles.includes(userRole));
+  
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style={{ paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>
