@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Probar API GET Catálogo</title>
+</head>
+<body>
+  <h1>Probar API GET Catálogo</h1>
+
+  <label>JWT (Bearer Token):</label><br />
+  <input type="text" id="jwt" size="120" /><br /><br />
+
+  <fieldset>
+    <legend>Parámetros booleanos</legend>
+    
+    Derechos:
+    <label><input type="radio" name="derechos" value="true" />Sí</label>
+    <label><input type="radio" name="derechos" value="false" checked />No</label><br />
+
+    Roles:
+    <label><input type="radio" name="roles" value="true" />Sí</label>
+    <label><input type="radio" name="roles" value="false" checked />No</label><br />
+
+    Departamentos:
+    <label><input type="radio" name="departamentos" value="true" />Sí</label>
+    <label><input type="radio" name="departamentos" value="false" checked />No</label><br />
+
+    Municipios:
+    <label><input type="radio" name="municipios" value="true" checked />Sí</label>
+    <label><input type="radio" name="municipios" value="false" />No</label><br />
+
+    Security Questions:
+    <label><input type="radio" name="securityQuestions" value="true" />Sí</label>
+    <label><input type="radio" name="securityQuestions" value="false" checked />No</label><br />
+  </fieldset>
+
+  <br />
+  <label>Parent ID:</label><br />
+  <input type="text" id="parentId" value="DEP_1" /><br /><br />
+
+  <button onclick="enviarPeticion()">Enviar</button>
+
+  <pre id="resultado" style="margin-top:20px; background:#eee; padding:10px;"></pre>
+
+  <script>
+    function obtenerValor(name) {
+      return document.querySelector(`input[name="${name}"]:checked`).value === "true";
+    }
+
+    async function enviarPeticion() {
+      const jwt = document.getElementById("jwt").value;
+      const parentId = document.getElementById("parentId").value;
+
+      const body = {
+        derechos: obtenerValor("derechos"),
+        roles: obtenerValor("roles"),
+        departamentos: obtenerValor("departamentos"),
+        municipios: obtenerValor("municipios"),
+        securityQuestions: obtenerValor("securityQuestions"),
+        parentId: parentId
+      };
+
+      const resultado = document.getElementById("resultado");
+      resultado.textContent = "Enviando...";
+
+      try {
+        const response = await fetch("http://192.168.1.6:8080/idhuca-indicadores/api/srv/catalogo/get", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + jwt,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+        resultado.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultado.textContent = "Error: " + error;
+      }
+    }
+  </script>
+</body>
+</html>
