@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { InputText } from "primereact/inputtext";
-import { Password } from "primereact/password";
-import { Button } from "primereact/button";
 import logoUCA from "../assets/idhuca-logo-blue.png";
+import { useAuth } from "../components/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
   });
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,131 +20,184 @@ export default function LoginForm() {
       ...credentials,
       [name]: value,
     });
+    if (error) setError(false);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Credenciales enviadas:", credentials);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setError(false);
+
+  try {
+    // Usar la función login del contexto de autenticación
+    const result = await login(credentials.email, credentials.password);
+
+    // Primero verificar si el login fue exitoso
+    if (!result.success) {
+      throw new Error(result.error || 'Error al iniciar sesión');
+    }
+
+    // Si hay token, guardarlo en localStorage
+    if (result.token) {
+      localStorage.setItem("authToken", result.token); // Changed to authToken
+      console.log("Token de autenticación guardado:", result);
+      navigate("/index");
+    } else {
+      throw new Error('No se recibió token de autenticación');
+    }
+
+  } catch (err) {
+    setError(true);
+    setErrorMessage(err.message || "Error en inicio de sesión, verifique usuario o contraseña");
+    console.error('Error de login:', err);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+  const handleForgotPassword = () => {
+    navigate('/reset-password');
   };
 
   return (
-    <div
-    className="p-d-flex p-jc-center p-ai-center"
-    style={{
-      backgroundColor: "#1E3A8A",
-      minHeight: "100vh", // Ensures the container spans the full viewport height
-      display: "flex", // Explicitly set flexbox display
-      justifyContent: "center", // Centers horizontally
-      alignItems: "center", // Centers vertically
-    }}
-  >
-    <div
-      className="p-card p-shadow-3"
+    <div 
+      className="d-flex justify-content-center align-items-center"
       style={{
-        maxWidth: "500px", // Increased width for the white card
-        width: "100%",
-        padding: "4rem", // Increased padding for more spacing inside the card
-        borderRadius: "12px", // Slightly more rounded corners
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Optional: Add a subtle shadow
+        backgroundColor: "#003C71",
+        minHeight: "100vh"
       }}
     >
-      <div className="p-text-center p-mb-4">
-        <h1
-          className="p-text-bold"
-          style={{
-            fontSize: "2rem", // Increased font size for the title
-            marginBottom: "1rem",
-            textAlign: "center",
-          }}
-        >
-          Iniciar sesión
-        </h1>
-        <p
-          className="p-text-secondary"
-          style={{
-            fontSize: "1.125rem", // Slightly larger font size for the subtitle
-            marginBottom: "2rem",
-            textAlign: "center",
-          }}
-        >
-          Inicie sesión para continuar
-        </p>
-      </div>
-  
-      <form onSubmit={handleSubmit}>
-        <div className="p-field p-mb-3">
-          <label htmlFor="username" className="p-d-block" style={{ fontSize: "1rem" }}>
-            Usuario
-          </label>
-          <InputText
-            id="username"
-            name="username"
-            value={credentials.username}
-            onChange={handleChange}
-            placeholder="testsidhuea@uca.edu.sv"
-            className="p-inputtext-lg p-d-block" // Larger input size
-            style={{ width: "100%", marginBottom: "1.5rem" }}
-          />
-        </div>
-  
-        <div className="p-field p-mb-3">
-          <label htmlFor="password" className="p-d-block" style={{ fontSize: "1rem" }}>
-            Contraseña
-          </label>
-          <Password
-            id="password"
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            toggleMask
-            feedback={false}
-            className="p-inputtext-lg p-d-block" // Larger input size
-            style={{ width: "100%", marginBottom: "1.5rem" }}
-          />
-        </div>
-  
-        <div
-          className="p-d-flex p-jc-center p-ai-center"
-          style={{ height: "100%", textAlign: "center" }}
-        >
-          <a
-            href="#"
-            className="p-text-secondary"
-            style={{ fontSize: "1rem", marginBottom: "1.5rem" }} // Slightly larger font size
-          >
-            ¿Olvidaste tu contraseña?
-          </a>
-        </div>
-  
-        <div
-          className="p-d-flex p-jc-center p-ai-center"
-          style={{ height: "100%", textAlign: "center" }}
-        >
-          <Button
-            type="submit"
-            label="Iniciar sesión"
-            className="p-button-lg p-button-primary" // Larger button size
-            style={{
-              fontSize: "1.125rem", // Slightly larger font size for the button
-              padding: "1rem",
-              marginTop: "1rem",
-              width: "100%",
-            }}
-          />
-        </div>
-      </form>
-  
-      <div
-        className="p-d-flex p-jc-center p-ai-center"
-        style={{ marginTop: "2rem", textAlign: "center" }} // Increased margin for spacing
+      <div 
+        className="card shadow border-0"
+        style={{
+          maxWidth: "500px",
+          width: "100%",
+          padding: "4rem",
+          borderRadius: "12px"
+        }}
       >
-        <img
-          src={logoUCA}
-          alt="Instituto de Derechos Humanos de la UCA"
-          style={{ height: "50px", width: "auto" }} // Slightly larger logo
-        />
+        <div className="text-center mb-4">
+          <h1 
+            className="fw-bold"
+            style={{
+              fontSize: "2rem",
+              marginBottom: "1rem"
+            }}
+          >
+            Iniciar sesión
+          </h1>
+          <p 
+            className="text-secondary"
+            style={{
+              fontSize: "1.125rem",
+              marginBottom: "2rem"
+            }}
+          >
+            Inicie sesión para continuar
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          {error && (
+            <div 
+              className="alert alert-danger d-flex align-items-center" 
+              role="alert"
+              style={{
+                backgroundColor: "#f44336",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                padding: "0.75rem",
+                marginBottom: "1.5rem",
+                fontSize: "0.9rem"
+              }}
+            >
+              {errorMessage || "Error en inicio de sesión, verifique usuario o contraseña"}
+            </div>
+          )}
+
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Usuario</label>
+            <div className="input-group">
+              <input
+                type="email"
+                className="form-control form-control-lg bg-light"
+                id="email"
+                name="email"
+                value={credentials.email}
+                onChange={handleChange}
+                placeholder="correo@uca.edu.sv"
+                style={{ marginBottom: "0.5rem" }}
+              />
+              <span className="input-group-text bg-light">
+                <i className="bi bi-person"></i>
+              </span>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="password" className="form-label">Contraseña</label>
+            <div className="input-group">
+              <input
+                type="password"
+                className="form-control form-control-lg bg-light"
+                id="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleChange}
+                style={{ marginBottom: "0.5rem" }}
+              />
+              <span className="input-group-text bg-light">
+                <i className="bi bi-eye"></i>
+              </span>
+            </div>
+          </div>
+
+          <div className="text-center mb-4">
+            <a
+              href="#"
+              className="text-secondary text-decoration-none"
+              onClick={(e) => {
+                e.preventDefault();
+                handleForgotPassword();
+              }}
+              style={{ fontSize: "1rem" }}
+            >
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+
+          <div className="d-grid gap-2">
+            <button
+              type="submit"
+              className="btn btn-dark btn-lg"
+              style={{
+                fontSize: "1.125rem",
+                padding: "0.75rem",
+                backgroundColor: "#333333"
+              }}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Cargando...
+                </span>
+              ) : (
+                "iniciar sesión"
+              )}
+            </button>
+          </div>
+        </form>
+
+        <div className="text-center mt-5">
+          <img
+            src={logoUCA}
+            alt="Instituto de Derechos Humanos de la UCA"
+            style={{ height: "50px", width: "auto" }}
+          />
+        </div>
       </div>
     </div>
-  </div>
   );
 }

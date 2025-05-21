@@ -4,6 +4,15 @@ import LoginForm from './pages/Login';
 import Index from './pages/index/Index';
 import MaintenancePage from './pages/MaintenancePage';
 import RightSelection from './pages/RightSelection';
+import VerifyIdentity from './pages/VerifyIdentity';
+import ResetPassword from './pages/ResetPassword';
+import SetNewPassword from './pages/SetNewPassword';
+import ResetPasswordSuccess from './pages/ResetPasswordSuccess';
+import Form from './pages/Form';
+import ProtectedRoute from './routes/ProtectedRoute';
+import { AuthProvider } from './components/AuthContext';
+
+
 import { UserProvider } from './Contexts/UserContext';
 
 // Estilos de PrimeReact
@@ -14,19 +23,40 @@ import 'primeflex/primeflex.css';
 
 function App() {
   return (
-    <UserProvider> {/* all app inside context */}
       <Router>
+	  	<AuthProvider>
         <Routes>
-          <Route element={<MainLayout />}>
-            <Route path="/index" element={<Index />} />
-            <Route path="/mantenimiento" element={<MaintenancePage />} />
-            <Route path='/registros' element={<RightSelection />} />
+		<Route path="/login" element={<LoginForm />} />
+		 <Route element={<MainLayout />}>
+		 
+		 {/* Rutas protegidas */}
+		           <Route path="/index" element={
+		             <ProtectedRoute>
+		               <Index />
+		             </ProtectedRoute>
+		           } />
+				   
+				   <Route path="/mantenimiento" element={
+					<ProtectedRoute>
+						<MaintenancePage />
+					</ProtectedRoute>
+				} />
+				   <Route path='/registros' element={
+					<ProtectedRoute>
+					<RightSelection />
+				</ProtectedRoute>
+			} />
+			<Route path="/formulario-derecho" index element={<Form />} />
           </Route>
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/" element={<Navigate to="/login" />} />
-        </Routes>
-      </Router>
-    </UserProvider>
+          
+		  <Route path="/" element={<Navigate to="/login" />} />
+		  <Route path="/reset-password" element={<ResetPassword />} />
+		  <Route path="/verify-identity" element={<VerifyIdentity />} />
+		  <Route path="/set-new-password" element={<SetNewPassword />} />
+		  <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
+		 </Routes>
+	   </AuthProvider>
+	</Router>
   );
 }
 
