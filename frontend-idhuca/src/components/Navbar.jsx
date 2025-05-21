@@ -1,17 +1,25 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import logoIdhuca from '../assets/idhuca-logo-blue.png';
 import { useUser } from '../Contexts/UserContext';
+import { useAuth } from './AuthContext'
 
 const Navbar = () => {
-  const { user } = useUser();
+  const { logout, userRole } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
+const Navbar = () => {
 
   const links = [
-    { to: '/registros', label: 'Registros', roles: ['admin', 'user'] },
-    { to: '/ficha-de-derechos', label: 'Ficha de derechos', roles: ['admin', 'user'] },
-    { to: '/configuraciones', label: 'Configuraciones', roles: ['admin', 'user'] },
-    { to: '/usuarios', label: 'Usuarios', roles: ['admin'] },
-    { to: '/Mantenimiento', label: 'Mantenimiento', roles: ['admin'] },
-    { to: '/auditoria', label: 'Auditoría', roles: ['admin'] },
+    { to: '/registros', label: 'Registros', roles: ['ROL_1', 'ROL_2'] },
+    { to: '/ficha-de-derechos', label: 'Ficha de derechos', roles: ['ROL_1', 'ROL_2'] },
+    { to: '/configuraciones', label: 'Configuraciones', roles: ['ROL_1', 'ROL_2'] },
+    { to: '/usuarios', label: 'Usuarios', roles: ['ROL_1'] },
+    { to: '/Mantenimiento', label: 'Mantenimiento', roles: ['ROL_1'] },
+    { to: '/auditoria', label: 'Auditoría', roles: ['ROL_1'] },
   ];
 
   const visibleLinks = links.filter(link => link.roles.includes(user?.role));
@@ -45,7 +53,10 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <button className="btn btn-outline-secondary btn-sm">
+          <button 
+            className="btn btn-outline-secondary ms-3" 
+            onClick={handleLogout}
+          >
             <i className="bi bi-box-arrow-right me-1"></i>
             Cerrar sesión
           </button>
