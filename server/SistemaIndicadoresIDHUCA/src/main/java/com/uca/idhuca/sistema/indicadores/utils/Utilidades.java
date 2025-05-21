@@ -18,9 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.uca.idhuca.sistema.indicadores.dto.AuditoriaDto;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
+import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.ParametrosSistemaRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.RegistroEventoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,9 @@ public class Utilidades {
 	
 	@Autowired
 	CatalogoRepository catalogoRepository;
+	
+	@Autowired
+	RegistroEventoRepository eventoRepository;
 	
 	/**
      * Obtiene el usuario autenticado a partir del JWT (usando el email del token).
@@ -139,6 +144,27 @@ public class Utilidades {
 		} catch (Exception e) {
 			log.info("Catalogo con ID" + codigo + " no existe.");
 			throw new ValidationException(ERROR, "Catalogo con ID" + codigo + " no existe.");
+		}
+    }
+    
+    
+    public RegistroEvento obtenerEventoPorID(Long id, String key) throws ValidationException {
+    	RegistroEvento registroEvento = null;
+		try {
+			registroEvento = eventoRepository
+					.findById(id).get();
+					
+			if(registroEvento == null) {
+				log.info("[{}] Catalogo con ID" + id + " no existe.", key);
+				throw new ValidationException(ERROR, "Catalogo con ID" + id + " no existe.");
+			}
+			
+			return registroEvento;
+		} catch (ValidationException e) {
+			throw e;
+		} catch (Exception e) {
+			log.info("Catalogo con ID" + id + " no existe.");
+			throw new ValidationException(ERROR, "Catalogo con ID" + id + " no existe.");
 		}
     }
     

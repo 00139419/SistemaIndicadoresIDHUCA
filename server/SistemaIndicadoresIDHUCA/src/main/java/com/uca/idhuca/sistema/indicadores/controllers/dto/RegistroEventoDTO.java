@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 public class RegistroEventoDTO {
 
+	private Long id;
 	private LocalDate fechaHecho;
     private LocalDateTime fechaRegistro;
 

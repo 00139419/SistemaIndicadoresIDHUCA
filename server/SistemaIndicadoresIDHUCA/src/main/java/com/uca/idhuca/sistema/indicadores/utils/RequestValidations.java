@@ -10,6 +10,7 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ParametrosSistemaDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 
@@ -145,6 +146,27 @@ public class RequestValidations {
 		
 		if (derecho.getCodigo() == null) {
 			error = "La propiedad 'codigo' dentro del objeto 'derecho' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarDeleteEventoByID(RegistroEventoDTO request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		if (request.getId() == null || request.getId() < 0) {
+			error = "La propiedad 'id' es obligatoria.";
 			list.add(error);
 			log.info("[" + key + "]" + " " + error);
 		}

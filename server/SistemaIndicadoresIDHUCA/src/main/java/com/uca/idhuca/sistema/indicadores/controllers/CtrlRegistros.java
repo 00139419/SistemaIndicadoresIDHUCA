@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
+import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.services.IRegistros;
@@ -55,6 +57,26 @@ public class CtrlRegistros {
 			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/get'");
+		}
+	}
+	
+	@PostMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> delete(@RequestBody RegistroEventoDTO request) throws ValidationException {
+		SuperGenericResponse response = null;
+		String key = "ADMIN";
+		
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/delete' ");
+			
+			response = registrosServices.deleteEventoById(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/delete'");
 		}
 	}
 	
