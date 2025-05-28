@@ -74,19 +74,15 @@ const SistemaParametros = () => {
           "Content-Type": "application/json",
         },
         data: {
-          clave: updatedValues.clave,
+          clave: editingParam.clave, // Use the original clave
           valor: updatedValues.valor,
         },
       };
 
       await axios(config);
-
-      // Show success message
       setError(null);
-      // Close modal and clear editing state
       setShowModal(false);
       setEditingParam(null);
-      // Refresh the parameters list
       await fetchParametros();
     } catch (err) {
       console.error("Error al actualizar parámetro:", err);
@@ -97,6 +93,11 @@ const SistemaParametros = () => {
         logout();
       }
     }
+  };
+
+  const handleRetry = () => {
+    setError(null);
+    setShowModal(true);
   };
 
   const renderTable = () => {
@@ -158,7 +159,7 @@ const SistemaParametros = () => {
                 <td>
                   <button
                     className="btn btn-primary btn-sm"
-                    style={{ minWidth: '100px' }}
+                    style={{ minWidth: "100px" }}
                     onClick={() => {
                       setEditingParam(param);
                       setUpdatedValues({
@@ -198,13 +199,8 @@ const SistemaParametros = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={updatedValues.clave}
-                    onChange={(e) =>
-                      setUpdatedValues({
-                        ...updatedValues,
-                        clave: e.target.value,
-                      })
-                    }
+                    value={editingParam?.clave || ""}
+                    disabled
                   />
                 </div>
                 <div className="mb-3">
@@ -265,9 +261,18 @@ const SistemaParametros = () => {
                   </div>
                 </div>
               ) : error ? (
-                <div className="alert alert-danger d-flex align-items-center">
-                  <i className="bi bi-exclamation-triangle-fill me-2"></i>
-                  <strong>Error:</strong> {error}
+                <div className="alert alert-danger d-flex align-items-center justify-content-between">
+                  <div>
+                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>Error:</strong> {error}
+                  </div>
+                  <button
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={handleRetry}
+                  >
+                    <i className="bi bi-arrow-clockwise me-2"></i>
+                    Reintentar
+                  </button>
                 </div>
               ) : (
                 renderTable()
