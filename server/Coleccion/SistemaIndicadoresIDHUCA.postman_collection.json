@@ -425,7 +425,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"00139419@uca.edu.sv\",\n    \"password\":\"1234\"\n}",
+							"raw": "{\n    \"email\":\"00139419@uca.edu.sv\",\n    \"password\":\"123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -627,7 +627,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoProcesoJudicial\": true,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\"\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": true,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -669,7 +669,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"roles\": false,\n    \"departamentos\": true,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": true,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -16,4 +16,8 @@ public interface IRegistros {
 
 	SuperGenericResponse deleteEventoById(RegistroEventoDTO request) throws ValidationException;
 	
+	SuperGenericResponse updateEventoById(RegistroEvento request) throws ValidationException;
+	
+	SuperGenericResponse addEvento(RegistroEventoDTO request) throws ValidationException;
+	
 }

@@ -28,5 +28,4 @@ public class Ubicacion {
     @JoinColumn(name = "lugar_exacto_codigo", referencedColumnName = "codigo")
     private Catalogo lugarExacto;
 
-    // Getters y setters...
 }

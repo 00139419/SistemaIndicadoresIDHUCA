@@ -1,6 +1,7 @@
 package com.uca.idhuca.sistema.indicadores.utils;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +11,14 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ParametrosSistemaDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.UbicacionDTO;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
+import com.uca.idhuca.sistema.indicadores.models.DerechoVulnerado;
+import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
+import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -154,6 +160,27 @@ public class RequestValidations {
 	}
 	
 	public static List<String> validarDeleteEventoByID(RegistroEventoDTO request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		if (request.getId() == null || request.getId() < 0) {
+			error = "La propiedad 'id' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarUpdateEventoByID(RegistroEvento request) {
 		List<String> list = new ArrayList<>();
 
 		String error = "";
@@ -588,6 +615,256 @@ public class RequestValidations {
 			return list;
 		}
 
+		return list;
+	}
+	
+	public static List<String> validarAddRegistroEvento(RegistroEventoDTO request) {
+		List<String> list = new ArrayList<>();
+		
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(request.getFechaHecho() == null || request.getFechaHecho().isAfter(LocalDate.now())) {
+			error = "La propiedad 'fechaHecho' es obligatoria y debe de ser menor a la fecha actual.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		Catalogo fuente = request.getFuente();
+		
+		if(fuente == null) {
+			error = "El objeto 'fuente' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(fuente.getCodigo() == null || fuente.getCodigo().isEmpty()) {
+			error = "El propiedad 'codigo' dentro del objeto 'fuente' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		Catalogo estadoActual = request.getEstadoActual();
+		
+		if(estadoActual == null) {
+			error = "El objeto 'estadoActual' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(estadoActual.getCodigo() == null || estadoActual.getCodigo().isEmpty()) {
+			error = "El propiedad 'codigo' dentro del objeto 'estadoActual' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		Catalogo derechoAsociado = request.getDerechoAsociado();
+		
+		if(derechoAsociado == null) {
+			error = "El objeto 'derechoAsociado' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(derechoAsociado.getCodigo() == null || derechoAsociado.getCodigo().isEmpty()) {
+			error = "El propiedad 'codigo' dentro del objeto 'derechoAsociado' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		UbicacionDTO ubicacion = request.getUbicacion();
+		
+		if(ubicacion == null) {
+			error = "El objeto 'ubicacion' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		Catalogo departamentoHecho = request.getUbicacion().getDepartamento();
+		
+		if(departamentoHecho.getCodigo() == null || departamentoHecho.getCodigo().isEmpty()) {
+			error = "El propiedad 'codigo' dentro del objeto 'departamento' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		Catalogo municipioHecho = request.getUbicacion().getDepartamento();
+		
+		if(municipioHecho.getCodigo() == null || municipioHecho.getCodigo().isEmpty()) {
+			error = "El propiedad 'codigo' dentro del objeto 'municipio' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		String observaciones = request.getObservaciones();
+		
+		if(observaciones == null) {
+			observaciones = "Sin observaciones";
+			request.setObservaciones(observaciones);
+		}
+		
+		
+		List<PersonaAfectadaDTO> personasAfectadas = request.getPersonasAfectadas();
+	    List<PersonaAfectadaDTO> listaFormateada = new ArrayList<>();
+		
+		if(personasAfectadas == null) {
+			error = "La lista de 'personasAfectadas' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(personasAfectadas.isEmpty()) {
+			error = "La lista de 'personasAfectadas' debe de tener al menos una persona.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		boolean flagViolencia = request.isFlagViolencia();
+	    boolean flagDetencion = request.isFlagDetencion();
+	    boolean flagExpresion = request.isFlagExpresion();
+	    boolean flagJusticia = request.isFlagJusticia();
+	    boolean flagCensura = request.isFlagCensura();
+	    
+		for(PersonaAfectadaDTO persona: personasAfectadas) {
+			
+			if(persona.getNombre() == null) {
+				persona.setNombre("");
+			}
+			
+			List<DerechoVulnerado> derechosVulnerados = persona.getDerechosVulnerados();
+			
+			if(derechosVulnerados == null || derechosVulnerados.isEmpty()) {
+				error = "La lista de 'derechosVulnerados' dentro del objeto 'personasAfectadas' debe de tener al menos una derecho vulnerado.";
+				list.add(error);
+				log.info("[" + key + "]" + " " + error);
+				return list;
+			}
+			
+			for(DerechoVulnerado derechoVulnerado: derechosVulnerados) {
+				if(derechoVulnerado != null && derechoVulnerado.getDerecho() != null || 
+						derechoVulnerado.getDerecho().getCodigo() != null){
+					error = "La lista de 'derechosVulnerados' dentro del objeto 'personasAfectadas' "
+							+ "debe de tener al menos una derecho vulnerado con formato valido.";
+					list.add(error);
+					log.info("[" + key + "]" + " " + error);
+					return list;
+				}
+			}
+			
+			if(persona.getEdad() == null) {
+				persona.setEdad(-1);
+			}
+			
+			Catalogo genero = persona.getGenero();
+			
+			if(genero == null || genero.getCodigo() == null || genero.getCodigo().isEmpty()) {
+				Catalogo generoDesconocido = new Catalogo();
+				
+				generoDesconocido.setCodigo("GEN_0");
+				generoDesconocido.setDescripcion("Desconocido");
+				
+				persona.setGenero(generoDesconocido);
+			}
+			
+			Catalogo pais = persona.getNacionalidad();
+			
+			if(pais == null || pais.getCodigo() == null || pais.getCodigo().isEmpty()) {
+				Catalogo paisDesconocido = new Catalogo();
+				
+				paisDesconocido.setCodigo("PAIS_0");
+				paisDesconocido.setDescripcion("Otros paises");
+				
+				persona.setNacionalidad(paisDesconocido);
+			}
+			
+			Catalogo departamentoResidencia = persona.getDepartamentoResidencia();
+			
+			if(departamentoResidencia == null || departamentoResidencia.getCodigo() == null || departamentoResidencia.getCodigo().isEmpty()) {
+				Catalogo departamentoDesconocido = new Catalogo();
+				
+				departamentoDesconocido.setCodigo("DEP_0");
+				departamentoDesconocido.setDescripcion("OTROS PAISES");
+				
+				persona.setDepartamentoResidencia(departamentoDesconocido);
+			}
+			
+			Catalogo municipioResidencia = persona.getDepartamentoResidencia();
+			
+			if(municipioResidencia == null || municipioResidencia.getCodigo() == null || municipioResidencia.getCodigo().isEmpty()) {
+				Catalogo municipioDesconocido = new Catalogo();
+				
+				municipioDesconocido.setCodigo("MUN_0_0");
+				municipioDesconocido.setDescripcion("OTROS PAISES");
+				
+				persona.setMunicipioResidencia(municipioDesconocido);
+			}
+			
+			Catalogo tipoPersona = persona.getTipoPersona();
+			
+			if(tipoPersona == null || tipoPersona.getCodigo() == null || tipoPersona.getCodigo().isEmpty()) {
+				Catalogo tipoPersonaParticular = new Catalogo();
+				
+				tipoPersonaParticular.setCodigo("TIPOPER_1");
+				tipoPersonaParticular.setDescripcion("Persona particular");
+				
+				persona.setTipoPersona(tipoPersonaParticular);
+			}
+			
+			Catalogo estadoSalud = persona.getEstadoSalud();
+			
+			if(estadoSalud == null || estadoSalud.getCodigo() == null || estadoSalud.getCodigo().isEmpty()) {
+				Catalogo estadoSaludDesconocido = new Catalogo();
+				
+				estadoSaludDesconocido.setCodigo("ESTSALUD_7");
+				estadoSaludDesconocido.setDescripcion("Desconocido");
+				
+				persona.setEstadoSalud(estadoSaludDesconocido);
+			}
+			
+			if(!flagViolencia) {
+				persona.setViolencia(null);
+			}
+			
+			if(!flagDetencion) {
+				persona.setDetencion(null);
+			}
+			
+			if(!flagExpresion) {
+				persona.setExpresion(null);
+			}
+			
+			if(!flagJusticia) {
+				persona.setJusticia(null);
+			}
+			
+			if(!flagCensura) {
+				persona.setExpresion(null);
+			}
+			
+			listaFormateada.add(persona);
+		}
+		
+		request.setPersonasAfectadas(listaFormateada);
+		
 		return list;
 	}
 	

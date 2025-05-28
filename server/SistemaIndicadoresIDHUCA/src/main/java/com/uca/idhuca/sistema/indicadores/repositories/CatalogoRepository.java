@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 
 public interface CatalogoRepository extends JpaRepository<Catalogo, String> {
+	
 	Catalogo findByCodigo(String codigo);
 
 	@Query(value = """

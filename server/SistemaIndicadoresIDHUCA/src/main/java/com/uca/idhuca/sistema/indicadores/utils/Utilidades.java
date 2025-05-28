@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,6 +167,10 @@ public class Utilidades {
 			log.info("Catalogo con ID" + id + " no existe.");
 			throw new ValidationException(ERROR, "Catalogo con ID" + id + " no existe.");
 		}
+    }
+    
+    public Date fechaActual() {
+    	return new Date(System.currentTimeMillis());
     }
     
 }

@@ -19,7 +19,7 @@ public class RegistroEventoDTO {
 
     private Catalogo fuente;
     private Catalogo estadoActual;
-    private Catalogo derechoAsociadoCodigo;
+    private Catalogo derechoAsociado;
 
     private boolean flagViolencia;
     private boolean flagDetencion;

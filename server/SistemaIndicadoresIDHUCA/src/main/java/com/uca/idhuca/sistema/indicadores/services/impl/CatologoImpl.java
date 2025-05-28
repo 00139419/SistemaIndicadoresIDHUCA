@@ -283,8 +283,8 @@ public class CatologoImpl implements ICatalogo {
 			nuevoCatalogo.setCodigo(CATALOGO_DERECHO + indice);
 			break;
 		case "municipios":
-			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_MUNICIPIO, request.getParentId()) + 1;
-			nuevoCatalogo.setCodigo(CATALOGO_MUNICIPIO + request.getParentId() + "_" + indice);
+			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_MUNICIPIO, request.getParentId().replace(CATALOGO_DEPARTAMENTO, "")) + 1;
+			nuevoCatalogo.setCodigo(CATALOGO_MUNICIPIO + request.getParentId().replace(CATALOGO_DEPARTAMENTO, "") + "_" + indice);
 			break;
 		case "securityQuestions":
 			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_SECURITY_QUESTION, null) + 1;

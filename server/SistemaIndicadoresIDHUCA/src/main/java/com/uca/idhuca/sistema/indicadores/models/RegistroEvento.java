@@ -59,8 +59,8 @@ public class RegistroEvento {
     @JoinColumn(name = "creado_por")
     private Usuario creadoPor;
     
-    @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ubicacion> ubicaciones;
+    @OneToOne(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Ubicacion ubicacion;
 
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonaAfectada> personasAfectadas;
