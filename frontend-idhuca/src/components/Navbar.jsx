@@ -17,7 +17,8 @@ const Navbar = () => {
     { to: '/usuarios', label: 'Usuarios', roles: ['ROL_1'] },
     { to: '/Mantenimiento', label: 'Mantenimiento', roles: ['ROL_1'] },
     { to: '/auditoria', label: 'Auditoría', roles: ['ROL_1'] },
-  ];
+    { to: '/parametros', label: 'Parámetros', roles: ['ROL_1'] },
+    ];
 
   const visibleLinks = links.filter(link => link.roles.includes(userRole));
   
