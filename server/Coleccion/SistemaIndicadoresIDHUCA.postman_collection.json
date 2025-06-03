@@ -451,41 +451,6 @@
 					"response": []
 				},
 				{
-					"name": "login Copy",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\":\"maria123@gmail.com\",\n    \"password\":\"1234\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"idhuca-indicadores",
-								"api",
-								"srv",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "recoveryPassword",
 					"request": {
 						"auth": {
@@ -627,7 +592,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": true,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\"\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\":false,\n    \"derechos\": true,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DER_1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -669,7 +634,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": true,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\": true,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DER_1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1071,6 +1036,403 @@
 								"parametros",
 								"sistema",
 								"getAll"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Eventos",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fechaHecho\": \"2024-05-20\",\n    \"fuente\": {\n        \"codigo\": \"FUENTE_8\",\n        \"descripcion\": \"La Prensa Gráfica\"\n    },\n    \"estadoActual\": {\n        \"codigo\": \"ESTREG_3\",\n        \"descripcion\": \"Caso en investigación\"\n    },\n    \"derechoAsociado\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"flagViolencia\": true,\n    \"flagDetencion\": true,\n    \"flagExpresion\": true,\n    \"flagJusticia\": true,\n    \"flagCensura\": true,\n    \"flagRegimenExcepcion\": true,\n    \"observaciones\": \"Hecho en el que se violentarion todos los derechos posibles\",\n    \"ubicacion\": {\n        \"departamento\": {\n            \"codigo\": \"DEP_1\",\n            \"descripcion\": \"AHUACHAPAN\"\n        },\n        \"municipio\": {\n            \"codigo\": \"MUN_1_2\",\n            \"descripcion\": \"APANECA\"\n        },\n        \"lugarExacto\": {\n            \"codigo\": \"LUGEXAC_1\",\n            \"descripcion\": \"Fosa clandestina\"\n        }\n    },\n    \"personasAfectadas\": [\n        {\n            \"nombre\": \"Juan Pérez\",\n            \"edad\": 30,\n            \"genero\": {\n                \"codigo\": \"GEN_02\",\n                \"descripcion\": \"Hombre\"\n            },\n            \"nacionalidad\": {\n                \"codigo\": \"PAIS_9300\",\n                \"descripcion\": \"EL SALVADOR\"\n            },\n            \"departamentoResidencia\": {\n                \"codigo\": \"DEP_6\",\n                \"descripcion\": \"SAN SALVADOR\"\n            },\n            \"municipioResidencia\": {\n                \"codigo\": \"MUN_6_7\",\n                \"descripcion\": \"ILOPANGO\"\n            },\n            \"tipoPersona\": {\n                \"codigo\": \"TIPOPER_1\",\n                \"descripcion\": \"Persona particular\"\n            },\n            \"estadoSalud\": {\n                \"codigo\": \"ESTSALUD_6\",\n                \"descripcion\": \"Fallecida\"\n            },\n            \"derechosVulnerados\": [\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_1_1\",\n                        \"descripcion\": \"Detención arbitraria\"\n                    }\n                },\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_2_1\",\n                        \"descripcion\": \"Censura de medios\"\n                    }\n                }\n            ],\n            \"violencia\": {\n                \"esAsesinato\": true,\n                \"tipoViolencia\": {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                },\n                \"artefactoUtilizado\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"contexto\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"actorResponsable\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"estadoSaludActorResponsable\": {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                },\n                \"huboProteccion\": true,\n                \"investigacionAbierta\": true,\n                \"respuestaEstado\": \"Se abrió investigación preliminar.\"\n            },\n            \"detencion\": {\n                \"tipoDetencion\": {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                },\n                \"ordenJudicial\": false,\n                \"autoridadInvolucrada\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"huboTortura\": true,\n                \"duracionDias\": 5,\n                \"accesoAbogado\": true,\n                \"resultado\": \"Liberado sin cargos\",\n                \"motivoDetencion\": {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                }\n            },\n            \"expresion\": {\n                \"medioExpresion\": {\n                    \"codigo\": \"MEDIO_EXPRESION_0\",\n                    \"descripcion\": \"Otro\"\n                },\n                \"tipoRepresion\": {\n                    \"codigo\": \"TIPO_REPRESION_1\",\n                    \"descripcion\": \"Censura directa\"\n                },\n                \"represaliasLegales\": true,\n                \"represaliasFisicas\": true,\n                \"actorCensor\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"consecuencia\": \"Perdió su trabajo\"\n            },\n            \"justicia\": {\n                \"tipoProceso\": {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                },\n                \"fechaDenuncia\": \"2024-05-22T00:00:00.000+00:00\",\n                \"tipoDenunciante\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"duracionProceso\": {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                },\n                \"accesoAbogado\": true,\n                \"huboParcialidad\": true,\n                \"resultadoProceso\": \"Caso cerrado sin resolución\",\n                \"instancia\": \"Primera instancia\"\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"evento",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllByDerecho",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/getAllByDerecho",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"evento",
+								"getAllByDerecho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 23\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"evento",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 45\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/getOne",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"evento",
+								"getOne"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateGeneral",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 45,\n    \"fechaHecho\": \"2024-05-20\",\n    \"fuente\": {\n        \"codigo\": \"FUENTE_9\",\n        \"descripcion\": \"El Mundo\"\n    },\n    \"estadoActual\": {\n        \"codigo\": \"ESTREG_4\",\n        \"descripcion\": \"Caso archivado\"\n    },\n    \"derechoAsociado\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"flagRegimenExcepcion\": false,\n    \"observaciones\": \"Hecho en el que se violentarion todos los derechos posibles 2\",\n    \"ubicacion\": {\n        \"id\": 51,\n        \"departamento\": {\n            \"codigo\": \"DEP_2\",\n            \"descripcion\": \"SANTA ANA\"\n        },\n        \"municipio\": {\n            \"codigo\": \"MUN_2_6\",\n            \"descripcion\": \"MASAHUAT\"\n        },\n        \"lugarExacto\": {\n            \"codigo\": \"LUGEXAC_2\",\n            \"descripcion\": \"Lugar público\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"evento",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PersonasAfectadas",
+			"item": [
+				{
+					"name": "GetAllByDerecho",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/getAllByDerecho",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"personasAfectadas",
+								"getAllByDerecho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllByRegistroEvento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 43\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/getAllByRegistroEvento",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"personasAfectadas",
+								"getAllByRegistroEvento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePerson",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 43,\n    \"personasAfectadas\": [\n        {\n            \"id\": 48\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"personasAfectadas",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOneById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 47\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/getOneById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"personasAfectadas",
+								"getOneById"
 							]
 						}
 					},

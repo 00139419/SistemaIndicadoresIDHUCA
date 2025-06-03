@@ -1,13 +1,29 @@
 package com.uca.idhuca.sistema.indicadores.models;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
-@Data
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 @Entity
 @Table(name = "registro_evento")
 public class RegistroEvento {
@@ -64,6 +80,14 @@ public class RegistroEvento {
 
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonaAfectada> personasAfectadas;
-
+    
+    public RegistroEvento() {
+    	super();
+    }
+    
+    public RegistroEvento(Usuario creadoPor) {
+        this.fechaRegistro = Date.from(ZonedDateTime.now(ZoneId.of("America/El_Salvador")).toInstant()); // Fecha actual
+        this.creadoPor = creadoPor;  // Usuario autenticado pasado como parámetro
+    }
 
 }

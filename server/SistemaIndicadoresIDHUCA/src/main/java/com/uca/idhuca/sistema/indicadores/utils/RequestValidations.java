@@ -8,7 +8,11 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.ViolenciaDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.AccesoJusticiaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.DetencionIntegridadDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.ExpresionCensuraDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ParametrosSistemaDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
@@ -17,7 +21,6 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.UbicacionDTO;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.DerechoVulnerado;
-import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 
 import lombok.extern.slf4j.Slf4j;
@@ -177,6 +180,285 @@ public class RequestValidations {
 			log.info("[" + key + "]" + " " + error);
 		}
 
+		return list;
+	}
+	
+	public static List<String> validarDetelePersonByIDEvento(RegistroEventoDTO request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if (request.getId() == null || request.getId() < 0) {
+			error = "La propiedad 'id' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		for(PersonaAfectadaDTO persona: request.getPersonasAfectadas()) {
+			if(persona.getId() == null || persona.getId() < 1) {
+				error = "La propiedad 'id' dentro de la lista de personas afectadas es obligatoria.";
+				list.add(error);
+				log.info("[" + key + "]" + " " + error);
+				return list;
+			}
+		}
+
+		return list;
+	}
+	
+	public static List<String> validarUpdatePersonByIDEvento(PersonaAfectadaDTO persona) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (persona == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+
+		if(persona.getId() == null || persona.getId() < 1) {
+			error = "La propiedad 'id' dentro de la lista de personas afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(persona.getNombre() == null || persona.getNombre().isEmpty()) {
+			error = "La propiedad 'nombre' dentro del objeto persona dentro de la afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(persona.getGenero() == null || persona.getGenero().getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'genero' dentro de la personas afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(persona.getNacionalidad() == null || persona.getNacionalidad().getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'nacionalidad' dentro de la personas afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(persona.getDepartamentoResidencia() == null || persona.getDepartamentoResidencia().getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'departamentoResidencia' dentro de la personas afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(persona.getMunicipioResidencia() == null || persona.getMunicipioResidencia().getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'municipioResidencia' dentro de la personas afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(persona.getTipoPersona() == null || persona.getTipoPersona().getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'tipoPersona' dentro de la personas afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if(persona.getEstadoSalud() == null || persona.getEstadoSalud().getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'estadoSalud' dentro de la personas afectada es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		for(DerechoVulnerado derechos: persona.getDerechosVulnerados()) {
+			if(derechos.getDerecho() == null || derechos.getDerecho().getCodigo() == null) {
+				error = "La propiedad 'codigo' dentro del objeto 'derechosVulnerados' dentro de la personas afectada es obligatoria.";
+				list.add(error);
+				log.info("[" + key + "]" + " " + error);
+				return list;
+			}
+		}
+		
+		ViolenciaDTO violencia = persona.getViolencia();
+
+		if (violencia != null) {
+		    if (violencia.getActorResponsable() == null || violencia.getActorResponsable().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'actorResponsable' dentro del objeto 'violencia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (violencia.getArtefactoUtilizado() == null || violencia.getArtefactoUtilizado().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'artefactoUtilizado' dentro del objeto 'violencia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (violencia.getContexto() == null || violencia.getContexto().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'contexto' dentro del objeto 'violencia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (violencia.getEstadoSaludActorResponsable() == null || violencia.getEstadoSaludActorResponsable().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'estadoSaludActorResponsable' dentro del objeto 'violencia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (violencia.getRespuestaEstado() == null || violencia.getRespuestaEstado().isEmpty()) {
+		        error = "La propiedad 'respuestaEstado' dentro del objeto 'violencia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (violencia.getTipoViolencia() == null || violencia.getTipoViolencia().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'tipoViolencia' dentro del objeto 'violencia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+		}
+
+		AccesoJusticiaDTO justicia = persona.getJusticia();
+
+		if (justicia != null) {
+		    if (justicia.getTipoDenunciante() == null || justicia.getTipoDenunciante().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'tipoDenunciante' dentro del objeto 'accesoJusticia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (justicia.getDuracionProceso() == null || justicia.getDuracionProceso().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'duracionProceso' dentro del objeto 'accesoJusticia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (justicia.getResultadoProceso() == null || justicia.getResultadoProceso().isEmpty()) {
+		        error = "La propiedad 'resultadoProceso' dentro del objeto 'accesoJusticia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (justicia.getInstancia() == null || justicia.getInstancia().isEmpty()) {
+		        error = "La propiedad 'instancia' dentro del objeto 'accesoJusticia' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+		}
+		
+		DetencionIntegridadDTO integridad = persona.getDetencion();
+		
+		if(integridad != null) {
+			if (integridad.getTipoDetencion() == null || integridad.getTipoDetencion().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'tipoDetencion' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (integridad.getAutoridadInvolucrada() == null || integridad.getAutoridadInvolucrada().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'autoridadInvolucrada' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (integridad.getMotivoDetencion() == null || integridad.getMotivoDetencion().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'motivoDetencion' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (integridad.getResultado() == null) {
+		        error = "La propiedad 'resultado' dentro del objeto 'detencionIntegridad'dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+		}
+		
+		ExpresionCensuraDTO expresion = persona.getExpresion();
+		
+		if(expresion != null) {
+			if (expresion.getMedioExpresion() == null || expresion.getMedioExpresion().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'medioExpresion' dentro del objeto 'expresionCensura' dentro de la personas afectada es obligatoria";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (expresion.getTipoRepresion() == null || expresion.getTipoRepresion().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'tipoRepresion' dentro del objeto 'expresionCensura' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (expresion.getActorCensor() == null || expresion.getActorCensor().getCodigo() == null) {
+		        error = "La propiedad 'codigo' dentro del objeto 'actorCensor' dentro del objeto 'expresionCensura' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+
+		    if (expresion.getConsecuencia() == null) {
+		        error = "La propiedad 'consecuencia' dentro del objeto 'expresionCensura' dentro de la personas afectada es obligatoria.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+		    }
+		}
+		
+		return list;
+	}
+	
+	public static List<String> validarGetOnePersonaAfectadaById(PersonaAfectadaDTO request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
+		if (request.getId() == null || request.getId() < 0) {
+			error = "La propiedad 'id' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+			return list;
+		}
+		
 		return list;
 	}
 	
@@ -394,6 +676,14 @@ public class RequestValidations {
 		if(request.getMunicipios() != null && request.getMunicipios().equals(Boolean.TRUE)) {
 			if(request.getParentId() == null || request.getParentId().isEmpty()) {
 				error = "Si desea el catalogo de municipio debe de mandar en el parentId el codigo del departamento.";
+				list.add(error);
+				log.info("[" + key + "] " + error);
+			}
+		}
+		
+		if(request.getSubDerechos() != null && request.getSubDerechos().equals(Boolean.TRUE)) {
+			if(request.getParentId() == null || request.getParentId().isEmpty()) {
+				error = "Si desea el catalogo de subDerechos debe de mandar en el parentId el codigo del derecho.";
 				list.add(error);
 				log.info("[" + key + "] " + error);
 			}
@@ -752,7 +1042,7 @@ public class RequestValidations {
 			
 			List<DerechoVulnerado> derechosVulnerados = persona.getDerechosVulnerados();
 			
-			if(derechosVulnerados == null || derechosVulnerados.isEmpty()) {
+			if(derechosVulnerados == null || derechosVulnerados.size() < 0) {
 				error = "La lista de 'derechosVulnerados' dentro del objeto 'personasAfectadas' debe de tener al menos una derecho vulnerado.";
 				list.add(error);
 				log.info("[" + key + "]" + " " + error);
@@ -760,8 +1050,8 @@ public class RequestValidations {
 			}
 			
 			for(DerechoVulnerado derechoVulnerado: derechosVulnerados) {
-				if(derechoVulnerado != null && derechoVulnerado.getDerecho() != null || 
-						derechoVulnerado.getDerecho().getCodigo() != null){
+				if(derechoVulnerado == null || derechoVulnerado.getDerecho() == null || 
+						derechoVulnerado.getDerecho().getCodigo() == null){
 					error = "La lista de 'derechosVulnerados' dentro del objeto 'personasAfectadas' "
 							+ "debe de tener al menos una derecho vulnerado con formato valido.";
 					list.add(error);
@@ -860,6 +1150,148 @@ public class RequestValidations {
 				persona.setExpresion(null);
 			}
 			
+			ViolenciaDTO violencia = persona.getViolencia();
+
+			if (violencia != null) {
+			    if (violencia.getActorResponsable() == null || violencia.getActorResponsable().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'actorResponsable' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (violencia.getArtefactoUtilizado() == null || violencia.getArtefactoUtilizado().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'artefactoUtilizado' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (violencia.getContexto() == null || violencia.getContexto().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'contexto' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (violencia.getEstadoSaludActorResponsable() == null || violencia.getEstadoSaludActorResponsable().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'estadoSaludActorResponsable' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (violencia.getRespuestaEstado() == null || violencia.getRespuestaEstado().isEmpty()) {
+			        error = "La propiedad 'respuestaEstado' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (violencia.getTipoViolencia() == null || violencia.getTipoViolencia().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'tipoViolencia' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+			}
+
+			AccesoJusticiaDTO justicia = persona.getJusticia();
+
+			if (justicia != null) {
+			    if (justicia.getTipoDenunciante() == null || justicia.getTipoDenunciante().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'tipoDenunciante' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (justicia.getDuracionProceso() == null || justicia.getDuracionProceso().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'duracionProceso' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (justicia.getResultadoProceso() == null || justicia.getResultadoProceso().isEmpty()) {
+			        error = "La propiedad 'resultadoProceso' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (justicia.getInstancia() == null || justicia.getInstancia().isEmpty()) {
+			        error = "La propiedad 'instancia' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+			}
+			
+			DetencionIntegridadDTO integridad = persona.getDetencion();
+			
+			if(integridad != null) {
+				if (integridad.getTipoDetencion() == null || integridad.getTipoDetencion().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'tipoDetencion' dentro del objeto 'detencionIntegridad' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (integridad.getAutoridadInvolucrada() == null || integridad.getAutoridadInvolucrada().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'autoridadInvolucrada' dentro del objeto 'detencionIntegridad' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (integridad.getMotivoDetencion() == null || integridad.getMotivoDetencion().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'motivoDetencion' dentro del objeto 'detencionIntegridad' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (integridad.getResultado() == null) {
+			        error = "La propiedad 'resultado' dentro del objeto 'detencionIntegridad' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+			}
+			
+			ExpresionCensuraDTO expresion = persona.getExpresion();
+			
+			if(expresion != null) {
+				if (expresion.getMedioExpresion() == null || expresion.getMedioExpresion().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'medioExpresion' dentro del objeto 'expresionCensura' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (expresion.getTipoRepresion() == null || expresion.getTipoRepresion().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'tipoRepresion' dentro del objeto 'expresionCensura' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (expresion.getActorCensor() == null || expresion.getActorCensor().getCodigo() == null) {
+			        error = "La propiedad 'codigo' dentro del objeto 'actorCensor' dentro del objeto 'expresionCensura' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+
+			    if (expresion.getConsecuencia() == null) {
+			        error = "La propiedad 'consecuencia' dentro del objeto 'expresionCensura' es obligatoria.";
+			        list.add(error);
+			        log.info("[" + key + "] " + error);
+			        return list;
+			    }
+			}
+			
 			listaFormateada.add(persona);
 		}
 		
@@ -867,5 +1299,94 @@ public class RequestValidations {
 		
 		return list;
 	}
+	
+	public static List<String> validarUpdateRegistroEvento(RegistroEventoDTO request) {
+	    List<String> list = new ArrayList<>();
+	    String error = "";
+	    String key = "SYSTEM";
+
+	    if (request == null) {
+	        error = "El servicio necesita un json de request.";
+	        list.add(error);
+	        log.info("[" + key + "] " + error);
+	        return list;
+	    }
+
+	    if (request.getId() == null || request.getId() <= 0) {
+	        error = "La propiedad 'id' es obligatoria para actualizar un registro existente.";
+	        list.add(error);
+	        log.info("[" + key + "] " + error);
+	        return list;
+	    }
+	    
+	    if (request.getFechaHecho() == null) {
+	        error = "La propiedad 'fechaHecho' es obligatoria para actualizar un registro existente.";
+	        list.add(error);
+	        log.info("[" + key + "] " + error);
+	        return list;
+	    }
+
+	    if (request.getFuente() == null || request.getFuente().getCodigo() == null || request.getFuente().getCodigo().isEmpty()) {
+	        error = "La propiedad 'codigo' dentro del objeto 'fuente' es obligatoria para actualizar un registro existente.";
+	        list.add(error);
+	        log.info("[" + key + "] " + error);
+	        return list;
+	    }
+	    
+	    if (request.getEstadoActual() == null || request.getEstadoActual().getCodigo() == null || request.getEstadoActual().getCodigo().isEmpty()) {
+	        error = "La propiedad 'codigo' dentro del objeto 'EstadoActual' es obligatoria para actualizar un registro existente.";
+	        list.add(error);
+	        log.info("[" + key + "] " + error);
+	        return list;
+	    }
+	    
+	    if (request.getDerechoAsociado() == null || request.getDerechoAsociado().getCodigo() == null || request.getDerechoAsociado().getCodigo().isEmpty()) {
+	        error = "La propiedad 'codigo' dentro del objeto 'derechoAsociado' es obligatoria para actualizar un registro existente.";
+	        list.add(error);
+	        log.info("[" + key + "] " + error);
+	        return list;
+	    }
+
+	    if (request.getObservaciones() == null || request.getObservaciones().isEmpty()) {
+	        error = "La propiedad 'observaciones' es obligatoria para actualizar un registro existente.";
+	        list.add(error);
+	        log.info("[" + key + "] " + error);
+	        return list;
+	    }
+	    
+	    UbicacionDTO ubicaion = request.getUbicacion();
+	    
+	    if(ubicaion == null) {
+	    	 error = "La propiedad 'ubicaion' es obligatoria para actualizar un registro existente.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+	    }
+
+	    if(ubicaion.getDepartamento().getCodigo() == null || ubicaion.getDepartamento().getCodigo().isEmpty()) {
+	    	 error = "La propiedad 'codigo' dentro del objeto 'departamento' es obligatoria para actualizar un registro existente.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+	    }
+	    
+	    if(ubicaion.getMunicipio().getCodigo() == null || ubicaion.getMunicipio().getCodigo().isEmpty()) {
+	    	 error = "La propiedad 'codigo' dentro del objeto 'municipio' es obligatoria para actualizar un registro existente.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+	    }
+	    
+	    if(ubicaion.getLugarExacto().getCodigo() == null || ubicaion.getLugarExacto().getCodigo().isEmpty()) {
+	    	 error = "La propiedad 'codigo' dentro del objeto 'lugarExacto' es obligatoria para actualizar un registro existente.";
+		        list.add(error);
+		        log.info("[" + key + "] " + error);
+		        return list;
+	    }
+	    
+
+	    return list;
+	}
+
 	
 }

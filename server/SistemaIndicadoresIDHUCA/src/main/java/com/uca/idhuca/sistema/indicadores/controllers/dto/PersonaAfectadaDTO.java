@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class PersonaAfectadaDTO {
 
+	Long Id;
     private String nombre;
     private Integer edad;
     private Catalogo genero;

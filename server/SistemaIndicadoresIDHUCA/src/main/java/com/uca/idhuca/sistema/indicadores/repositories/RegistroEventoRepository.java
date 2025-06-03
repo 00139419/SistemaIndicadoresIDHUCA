@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RegistroEventoRepository extends JpaRepository<RegistroEvento, Long> {
     
-    List<RegistroEvento> findByDerechoAsociadoCodigo(Catalogo derechoAsociado);
-    
+	List<RegistroEvento> findByDerechoAsociado(Catalogo derechoAsociado);
+
 }

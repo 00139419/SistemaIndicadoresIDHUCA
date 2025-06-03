@@ -6,6 +6,8 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.MAX_INTENTOS_P
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.uca.idhuca.sistema.indicadores.auditoria.dto.AuditoriaRegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.dto.AuditoriaDto;
+import com.uca.idhuca.sistema.indicadores.dto.RegistroEventoAuditDto;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
@@ -156,21 +160,66 @@ public class Utilidades {
 					.findById(id).get();
 					
 			if(registroEvento == null) {
-				log.info("[{}] Catalogo con ID" + id + " no existe.", key);
-				throw new ValidationException(ERROR, "Catalogo con ID" + id + " no existe.");
+				log.info("[{}] Evento con ID " + id + " no existe.", key);
+				throw new ValidationException(ERROR, "Catalogo con ID " + id + " no existe.");
 			}
 			
 			return registroEvento;
 		} catch (ValidationException e) {
 			throw e;
 		} catch (Exception e) {
-			log.info("Catalogo con ID" + id + " no existe.");
-			throw new ValidationException(ERROR, "Catalogo con ID" + id + " no existe.");
+			log.info("Evento con ID " + id + " no existe.");
+			throw new ValidationException(ERROR, "Evento con ID " + id + " no existe.");
 		}
     }
     
     public Date fechaActual() {
-    	return new Date(System.currentTimeMillis());
+        return Date.from(ZonedDateTime.now(ZoneId.of("America/El_Salvador")).toInstant());
     }
+    
+    public RegistroEventoAuditDto toAuditDto(RegistroEvento evento) {
+        RegistroEventoAuditDto dto = new RegistroEventoAuditDto();
+        dto.setId(evento.getId());
+        dto.setFechaHecho(evento.getFechaHecho());
+        dto.setFuente(evento.getFuente().getDescripcion());
+        dto.setEstadoActual(evento.getEstadoActual().getDescripcion());
+        dto.setDerechoAsociado(evento.getDerechoAsociado().getDescripcion());
+        dto.setFlagViolencia(evento.getFlagViolencia());
+        dto.setFlagDetencion(evento.getFlagDetencion());
+        dto.setObservaciones(evento.getObservaciones());
+        return dto;
+    }
+
+    public AuditoriaRegistroEventoDTO fromRegistroEvento(RegistroEvento evento) throws ValidationException {
+        if (evento == null) {
+            return null;
+        }
+
+        AuditoriaRegistroEventoDTO dto = new AuditoriaRegistroEventoDTO();
+
+        dto.setId(evento.getId());
+        dto.setFechaHecho(evento.getFechaHecho());
+        dto.setFuente(evento.getFuente() != null ? evento.getFuente().getDescripcion() : null);
+        dto.setEstadoActual(evento.getEstadoActual() != null ? evento.getEstadoActual().getDescripcion() : null);
+        dto.setDerechoAsociado(evento.getDerechoAsociado() != null ? evento.getDerechoAsociado().getDescripcion() : null);
+
+        dto.setFlagViolencia(evento.getFlagViolencia());
+        dto.setFlagDetencion(evento.getFlagDetencion());
+        dto.setFlagExpresion(evento.getFlagExpresion());
+        dto.setFlagJusticia(evento.getFlagJusticia());
+        dto.setFlagCensura(evento.getFlagCensura());
+        dto.setFlagRegimenExcepcion(evento.getFlagRegimenExcepcion());
+        dto.setObservaciones(evento.getObservaciones());
+
+        dto.setTotalPersonasAfectadas(
+            evento.getPersonasAfectadas() != null ? evento.getPersonasAfectadas().size() : 0
+        );
+
+        dto.setCreadoPor(evento.getCreadoPor() != null ? evento.getCreadoPor().getEmail() : null);
+        dto.setFechaRegistro(evento.getFechaRegistro());
+
+        return dto;
+    }
+
     
 }

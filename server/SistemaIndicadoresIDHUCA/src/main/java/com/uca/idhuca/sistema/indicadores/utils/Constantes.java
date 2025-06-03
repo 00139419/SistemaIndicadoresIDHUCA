@@ -50,6 +50,7 @@ public class Constantes {
 	public static final String CATALOGO_DEPARTAMENTO = "DEP_";
 	public static final String CATALOGO_MUNICIPIO = "MUN_";
 	public static final String CATALOGO_DERECHO = "DER_";
+	public static final String CATALOGO_SUB_DERECHO = "SUBDER_";
 	public static final String CATALOGO_PAISES = "PAIS_";
 	public static final String CATALOGO_FUENTE = "FUENTE_";
 	public static final String CATALOGO_ESTADO_DEL_REGISTROS = "ESTREG_";

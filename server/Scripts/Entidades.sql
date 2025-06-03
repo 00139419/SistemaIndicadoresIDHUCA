@@ -922,7 +922,34 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('DURACION_PROCESO_3', 'Entre 6 meses y 1 año'),
 ('DURACION_PROCESO_4', 'Entre 1 y 2 años'),
 ('DURACION_PROCESO_5', 'Más de 2 años'),
-('DURACION_PROCESO_6', 'En curso, sin información clara de tiempo');
+('DURACION_PROCESO_6', 'En curso, sin información clara de tiempo'),
+('SUBDER_1_0', 'Otros'),
+('SUBDER_1_1', 'Detención arbitraria'),
+('SUBDER_1_2', 'Tortura o tratos crueles, inhumanos o degradantes'),
+('SUBDER_1_3', 'Desaparición forzada'),
+('SUBDER_1_4', 'Trato inhumano durante la detención'),
+('SUBDER_1_5', 'Privación de libertad sin orden judicial'),
+('SUBDER_2_0', 'Otros'),
+('SUBDER_2_1', 'Censura directa o indirecta'),
+('SUBDER_2_2', 'Amenazas o represalias por expresarse'),
+('SUBDER_2_3', 'Criminalización de periodistas o activistas'),
+('SUBDER_2_4', 'Cierre de medios de comunicación'),
+('SUBDER_2_5', 'Vigilancia o seguimiento por ejercer la libertad de expresión'),
+('SUBDER_3_0', 'Otros'),
+('SUBDER_3_1', 'Imposibilidad de presentar denuncia'),
+('SUBDER_3_2', 'Negación de acceso a mecanismos judiciales'),
+('SUBDER_3_3', 'Falta de imparcialidad judicial'),
+('SUBDER_3_4', 'Retrasos injustificados en procesos'),
+('SUBDER_3_5', 'Corrupción o influencia indebida'),
+('SUBDER_3_6', 'Falta de asistencia legal adecuada'),
+('SUBDER_3_7', 'Negación del recurso de hábeas corpus'),
+('SUBDER_4_0', 'Otros'),
+('SUBDER_4_1', 'Ejecución extrajudicial'),
+('SUBDER_4_2', 'Uso excesivo de la fuerza letal'),
+('SUBDER_4_3', 'Negligencia médica en custodia estatal'),
+('SUBDER_4_4', 'Feminicidio o violencia letal de género'),
+('SUBDER_4_5', 'Falta de investigación en muertes violentas');
+
  
 INSERT INTO parametro_sistema(clave, valor, descripcion)
 VALUES('max_intentos_pregunta_seguridad', '3', 'Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña');

@@ -2,10 +2,29 @@ package com.uca.idhuca.sistema.indicadores.models;
 
 import java.util.List;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Data
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "persona_afectada")
 public class PersonaAfectada {
@@ -16,6 +35,7 @@ public class PersonaAfectada {
 
     @ManyToOne
     @JoinColumn(name = "evento_id")
+    @JsonIgnore
     private RegistroEvento evento;
 
     @Column(name = "nombre")

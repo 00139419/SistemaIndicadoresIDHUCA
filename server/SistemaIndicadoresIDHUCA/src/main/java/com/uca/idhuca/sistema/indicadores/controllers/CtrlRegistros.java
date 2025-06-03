@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(ROOT_CONTEXT + "registros")
+@RequestMapping(ROOT_CONTEXT + "registros/evento")
 public class CtrlRegistros {
 	
 	@Autowired
@@ -40,23 +40,45 @@ public class CtrlRegistros {
 	@Autowired
 	IRegistros registrosServices;
 	
-	@PostMapping(value = "/getAllByDerecho", produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<List<RegistroEvento>>> get(@RequestBody CatalogoDto request) throws ValidationException {
+	@PostMapping(value = "/getAllByDerecho",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<GenericEntityResponse<List<RegistroEvento>>> getAll(@RequestBody CatalogoDto request) throws ValidationException {
 		GenericEntityResponse<List<RegistroEvento>> response = null;
 		String key = "ADMIN";
 		
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
-			log.info("[" + key + "] ------ Inicio de servicio '/get' ");
+			log.info("[" + key + "] ------ Inicio de servicio '/getAll' ");
 			
 			response = registrosServices.getAllByDerecho(request);
 			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(response, HttpStatus.OK);
 		} catch (ValidationException e) {
 			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
-			log.info("[" + key + "] ------ Fin de servicio '/get'");
+			log.info("[" + key + "] ------ Fin de servicio '/getAll'");
+		}
+	}
+	
+	@PostMapping(value = "/getOne",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<GenericEntityResponse<RegistroEvento>> getOne(@RequestBody RegistroEventoDTO request) throws ValidationException {
+		GenericEntityResponse<RegistroEvento> response = null;
+		String key = "ADMIN";
+		
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/getOne' " + mapper.writeValueAsString(request));
+			
+			response = registrosServices.getOne(request);
+			return new ResponseEntity<GenericEntityResponse<RegistroEvento>>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<GenericEntityResponse<RegistroEvento>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<GenericEntityResponse<RegistroEvento>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/getOne'");
 		}
 	}
 	
@@ -67,7 +89,7 @@ public class CtrlRegistros {
 		
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
-			log.info("[" + key + "] ------ Inicio de servicio '/delete' ");
+			log.info("[" + key + "] ------ Inicio de servicio '/delete' " + mapper.writeValueAsString(request));
 			
 			response = registrosServices.deleteEventoById(request);
 			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
@@ -80,5 +102,44 @@ public class CtrlRegistros {
 		}
 	}
 	
+	@PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> addEvento(@RequestBody RegistroEventoDTO request) throws ValidationException {
+		SuperGenericResponse response = null;
+		String key = "ADMIN";
+		
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/add' " + mapper.writeValueAsString(request));
+			
+			response = registrosServices.addEvento(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/add'");
+		}
+	}
+	
+	@PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> updateEvento(@RequestBody RegistroEventoDTO request) throws ValidationException {
+		SuperGenericResponse response = null;
+		String key = "ADMIN";
+		
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[" + key + "] ------ Inicio de servicio '/update' " + mapper.writeValueAsString(request));
+			
+			response = registrosServices.updateEvento(request);
+			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[" + key + "] ------ Fin de servicio '/update'");
+		}
+	}
 	
 }

@@ -13,11 +13,14 @@ import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 public interface IRegistros {
 	
 	GenericEntityResponse<List<RegistroEvento>> getAllByDerecho(CatalogoDto request) throws ValidationException, NotFoundException;
+	
+	GenericEntityResponse<RegistroEvento> getOne(RegistroEventoDTO request) throws ValidationException;
 
 	SuperGenericResponse deleteEventoById(RegistroEventoDTO request) throws ValidationException;
 	
-	SuperGenericResponse updateEventoById(RegistroEvento request) throws ValidationException;
+	SuperGenericResponse updateEvento(RegistroEventoDTO request) throws ValidationException;
 	
-	SuperGenericResponse addEvento(RegistroEventoDTO request) throws ValidationException;
+	SuperGenericResponse addEvento(RegistroEventoDTO request) throws ValidationException, Exception;
+	
 	
 }

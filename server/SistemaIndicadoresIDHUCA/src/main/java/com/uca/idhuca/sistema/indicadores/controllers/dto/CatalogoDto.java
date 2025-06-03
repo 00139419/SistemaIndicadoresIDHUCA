@@ -22,6 +22,7 @@ public class CatalogoDto {
 	Boolean estadoRegistro;
 	Boolean fuentes;
 	Boolean paises;
+	Boolean subDerechos;
 	Boolean derechos;
 	Boolean roles;
 	Boolean departamentos;

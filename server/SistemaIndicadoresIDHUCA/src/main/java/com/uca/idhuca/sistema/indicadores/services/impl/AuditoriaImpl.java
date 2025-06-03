@@ -58,6 +58,11 @@ public class AuditoriaImpl implements IAuditoria {
 
 		try {
 			String tablaAfectada = dto.getEntity().getClass().getSimpleName().toLowerCase() + "s";
+			
+			if(tablaAfectada.equalsIgnoreCase("auditoriaregistroeventodtos")) {
+				tablaAfectada = "Registro de eventos";
+			}
+			
 			auditoria.setTablaAfectada(tablaAfectada);
 			auditoria.setRegistroId(dto.getRegistroModificado());
 			auditoria.setUsuario(dto.getUsuario());
@@ -67,10 +72,9 @@ public class AuditoriaImpl implements IAuditoria {
 					+ "' con los datos: " + objectMapper.writeValueAsString(dto.getEntity());
 			
 			auditoria.setDescripcion(descripcion);
-			log.info("[{}] Auditoria creada {}", key, mapper.writeValueAsString(auditoria));
 
-			auditoriaRepository.save(auditoria);
-			log.info("[{}] Auditoria guardada correctamente.", key);
+			Auditoria auditoriaSaved = auditoriaRepository.save(auditoria);
+			log.info("[{}] Auditoria creada correctamente: {}", key, mapper.writeValueAsString(auditoriaSaved));
 
 			return new SuperGenericResponse(OK, "Auditoría registrada correctamente.");
 			
