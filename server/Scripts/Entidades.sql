@@ -12,6 +12,7 @@ CREATE TABLE usuario(
     contrasena_hash TEXT NOT NULL,
     ROL_codigo VARCHAR REFERENCES catalogo(codigo),
     activo BOOLEAN DEFAULT TRUE,
+    es_provisional BOOLEAN DEFAULT TRUE,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

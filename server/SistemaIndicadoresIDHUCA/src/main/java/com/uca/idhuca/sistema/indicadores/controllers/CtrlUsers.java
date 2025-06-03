@@ -183,6 +183,16 @@ public class CtrlUsers {
 			log.info("[" + key + "] ------ Fin de servicio '/update' ");
 		}
 	}
+
+	@PostMapping(value = "/change/provsional/password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> changeProvisionalPassword(@RequestBody UserDto request) {
+		try {
+			SuperGenericResponse response = userServices.changePassword(request);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (ValidationException | NotFoundException e) {
+			return new ResponseEntity<>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	@PostMapping(value = "/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> unlockUser(@RequestBody UserDto request) {

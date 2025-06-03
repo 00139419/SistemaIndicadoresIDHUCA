@@ -77,7 +77,7 @@ public class RequestValidations {
 
 		key = request.getEmail();
 
-		if (request.getPassword() == null || request.getPassword().isEmpty()) {
+		if (request.getProvisionalPassword() == null || request.getProvisionalPassword().isEmpty()) {
 			error = "La propiedad 'password' es obligatoria.";
 			list.add(error);
 			log.info("[" + key + "]" + " " + error);
