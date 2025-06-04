@@ -61,7 +61,7 @@ public class EventosUseCase {
 	        boolean flagJusticia
 	) throws ValidationException {
 	    PersonaAfectada persona = new PersonaAfectada();
-	    actualizarDatosPersonalesDesdeDTO(persona, dto);
+	    actualizarDatosPersonalesDesdeDTO(persona, dto, true);
 
 	    if (flagViolencia && dto.getViolencia() != null) {
 	        Violencia violencia = new Violencia();
@@ -70,23 +70,23 @@ public class EventosUseCase {
 	        persona.setViolencia(violencia);
 	    }
 
-	    if (flagDetencion && dto.getDetencion() != null) {
+	    if (flagDetencion && dto.getDetencionIntegridad() != null) {
 	        DetencionIntegridad detencion = new DetencionIntegridad();
-	        actualizarIntegridadDesdeDTO(detencion, dto.getDetencion());
+	        actualizarIntegridadDesdeDTO(detencion, dto.getDetencionIntegridad());
 	        detencion.setPersona(persona);
 	        persona.setDetencionIntegridad(detencion);
 	    }
 
-	    if (flagExpresion && dto.getExpresion() != null) {
+	    if (flagExpresion && dto.getExpresionCensura() != null) {
 	        ExpresionCensura expresion = new ExpresionCensura();
-	        actualizarExpresionDesdeDTO(expresion, dto.getExpresion());
+	        actualizarExpresionDesdeDTO(expresion, dto.getExpresionCensura());
 	        expresion.setPersona(persona);
 	        persona.setExpresionCensura(expresion);
 	    }
 
-	    if (flagJusticia && dto.getJusticia() != null) {
+	    if (flagJusticia && dto.getAccesoJusticia() != null) {
 	        AccesoJusticia justicia = new AccesoJusticia();
-	        actualizarJusticiaDesdeDTO(justicia, dto.getJusticia());
+	        actualizarJusticiaDesdeDTO(justicia, dto.getAccesoJusticia());
 	        justicia.setPersona(persona);
 	        persona.setAccesoJusticia(justicia);
 	    }
@@ -96,7 +96,7 @@ public class EventosUseCase {
 	}
 
 	
-	public void actualizarDatosPersonalesDesdeDTO(PersonaAfectada entidad, PersonaAfectadaDTO dto) throws ValidationException {
+	public void actualizarDatosPersonalesDesdeDTO(PersonaAfectada entidad, PersonaAfectadaDTO dto, boolean applyList) throws ValidationException {
 		entidad.setNombre(dto.getNombre());
 		entidad.setEdad(dto.getEdad());
 		entidad.setGenero(getCatalogoOrThrow(dto.getGenero().getCodigo(), "género"));
@@ -106,18 +106,20 @@ public class EventosUseCase {
 		entidad.setTipoPersona(getCatalogoOrThrow(dto.getTipoPersona().getCodigo(), "tipo de persona"));
 		entidad.setEstadoSalud(getCatalogoOrThrow(dto.getEstadoSalud().getCodigo(), "estado de salud"));
 		
-		List<DerechoVulnerado> derechos = new ArrayList<>();
-        for (DerechoVulnerado derechoDto : dto.getDerechosVulnerados()) {
-            String codigo = derechoDto.getDerecho().getCodigo();
-            Catalogo catalogo = getCatalogoOrThrow(codigo, "derecho vulnerado");
+		if(applyList) {
+			List<DerechoVulnerado> derechos = new ArrayList<>();
+	        for (DerechoVulnerado derechoDto : dto.getDerechosVulnerados()) {
+	            String codigo = derechoDto.getDerecho().getCodigo();
+	            Catalogo catalogo = getCatalogoOrThrow(codigo, "derecho vulnerado");
 
-            DerechoVulnerado derecho = new DerechoVulnerado();
-            derecho.setDerecho(catalogo);
-            derecho.setPersonaAfectada(entidad);
-            derechos.add(derecho);
-        }
+	            DerechoVulnerado derecho = new DerechoVulnerado();
+	            derecho.setDerecho(catalogo);
+	            derecho.setPersonaAfectada(entidad);
+	            derechos.add(derecho);
+	        }
 
-        entidad.setDerechosVulnerados(derechos);
+	        entidad.setDerechosVulnerados(derechos);
+		}
 	}
 	
 	public void actualizarDatosGeneralesDesdeDTO(RegistroEvento entidad, RegistroEventoDTO dto) throws ValidationException {

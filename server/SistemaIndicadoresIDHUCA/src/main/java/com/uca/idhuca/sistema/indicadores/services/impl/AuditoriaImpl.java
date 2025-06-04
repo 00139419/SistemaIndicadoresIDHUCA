@@ -63,6 +63,10 @@ public class AuditoriaImpl implements IAuditoria {
 				tablaAfectada = "Registro de eventos";
 			}
 			
+			if(tablaAfectada.equalsIgnoreCase("PersonaAfectadaAuditoriaDTO")) {
+				tablaAfectada = "Persona afectada";
+			}
+			
 			auditoria.setTablaAfectada(tablaAfectada);
 			auditoria.setRegistroId(dto.getRegistroModificado());
 			auditoria.setUsuario(dto.getUsuario());

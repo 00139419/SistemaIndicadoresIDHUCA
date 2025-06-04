@@ -23,8 +23,8 @@ public class PersonaAfectadaDTO {
     private List<DerechoVulnerado> derechosVulnerados;
     
     private ViolenciaDTO violencia;
-    private DetencionIntegridadDTO detencion;
-    private ExpresionCensuraDTO expresion;
-    private AccesoJusticiaDTO justicia;
+    private DetencionIntegridadDTO detencionIntegridad;
+    private ExpresionCensuraDTO expresionCensura;
+    private AccesoJusticiaDTO accesoJusticia;
     
 }

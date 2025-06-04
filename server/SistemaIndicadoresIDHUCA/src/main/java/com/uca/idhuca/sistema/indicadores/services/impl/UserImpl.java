@@ -84,7 +84,7 @@ public class UserImpl implements IUser {
 		newUser.setContrasenaHash(pEncoder.encode(provisionalPassword));
 		newUser.setActivo(true);
 		newUser.setCreadoEn(new Date());
-		newUser.setEsProvisional(true);
+		newUser.setEsPasswordProvisional(true);
 		log.info("[{}] Creando usuario... [{}]", key, newUser);
 
 		Usuario savedUser = userRepository.save(newUser);
@@ -343,7 +343,7 @@ public class UserImpl implements IUser {
 		}
 
 		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
-		usuario.setEsProvisional(false); // Marcar como no provisional
+		usuario.setEsPasswordProvisional(false); // Marcar como no provisional
 		userRepository.save(usuario);
 
 		return new SuperGenericResponse(OK, "Contraseña actualizada correctamente.");

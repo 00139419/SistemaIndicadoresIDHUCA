@@ -19,10 +19,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.uca.idhuca.sistema.indicadores.auditoria.dto.AuditoriaRegistroEventoDTO;
+import com.uca.idhuca.sistema.indicadores.auditoria.dto.PersonaAfectadaAuditoriaDTO;
 import com.uca.idhuca.sistema.indicadores.dto.AuditoriaDto;
 import com.uca.idhuca.sistema.indicadores.dto.RegistroEventoAuditDto;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
+import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
@@ -220,6 +222,26 @@ public class Utilidades {
 
         return dto;
     }
-
     
+    public PersonaAfectadaAuditoriaDTO crearAuditoriaDesdePersona(PersonaAfectada persona) {
+        if (persona == null) return null;
+
+        return new PersonaAfectadaAuditoriaDTO(
+            persona.getId(),
+            persona.getEvento() != null ? persona.getEvento().getId() : null,
+            persona.getNombre(),
+            persona.getEdad(),
+            persona.getGenero() != null ? persona.getGenero().getCodigo() : null,
+            persona.getNacionalidad() != null ? persona.getNacionalidad().getCodigo() : null,
+            persona.getDepartamentoResidencia() != null ? persona.getDepartamentoResidencia().getCodigo() : null,
+            persona.getMunicipioResidencia() != null ? persona.getMunicipioResidencia().getCodigo() : null,
+            persona.getTipoPersona() != null ? persona.getTipoPersona().getCodigo() : null,
+            persona.getEstadoSalud() != null ? persona.getEstadoSalud().getCodigo() : null,
+            persona.getDerechosVulnerados() != null ? persona.getDerechosVulnerados().size() : 0,
+            persona.getViolencia() != null,
+            persona.getDetencionIntegridad() != null,
+            persona.getExpresionCensura() != null,
+            persona.getAccesoJusticia() != null
+        );
+    }
 }

@@ -340,7 +340,7 @@ public class RequestValidations {
 		    }
 		}
 
-		AccesoJusticiaDTO justicia = persona.getJusticia();
+		AccesoJusticiaDTO justicia = persona.getAccesoJusticia();
 
 		if (justicia != null) {
 		    if (justicia.getTipoDenunciante() == null || justicia.getTipoDenunciante().getCodigo() == null) {
@@ -372,7 +372,7 @@ public class RequestValidations {
 		    }
 		}
 		
-		DetencionIntegridadDTO integridad = persona.getDetencion();
+		DetencionIntegridadDTO integridad = persona.getDetencionIntegridad();
 		
 		if(integridad != null) {
 			if (integridad.getTipoDetencion() == null || integridad.getTipoDetencion().getCodigo() == null) {
@@ -404,7 +404,7 @@ public class RequestValidations {
 		    }
 		}
 		
-		ExpresionCensuraDTO expresion = persona.getExpresion();
+		ExpresionCensuraDTO expresion = persona.getExpresionCensura();
 		
 		if(expresion != null) {
 			if (expresion.getMedioExpresion() == null || expresion.getMedioExpresion().getCodigo() == null) {
@@ -1135,19 +1135,19 @@ public class RequestValidations {
 			}
 			
 			if(!flagDetencion) {
-				persona.setDetencion(null);
+				persona.setDetencionIntegridad(null);
 			}
 			
 			if(!flagExpresion) {
-				persona.setExpresion(null);
+				persona.setExpresionCensura(null);
 			}
 			
 			if(!flagJusticia) {
-				persona.setJusticia(null);
+				persona.setAccesoJusticia(null);
 			}
 			
 			if(!flagCensura) {
-				persona.setExpresion(null);
+				persona.setExpresionCensura(null);
 			}
 			
 			ViolenciaDTO violencia = persona.getViolencia();
@@ -1196,7 +1196,7 @@ public class RequestValidations {
 			    }
 			}
 
-			AccesoJusticiaDTO justicia = persona.getJusticia();
+			AccesoJusticiaDTO justicia = persona.getAccesoJusticia();
 
 			if (justicia != null) {
 			    if (justicia.getTipoDenunciante() == null || justicia.getTipoDenunciante().getCodigo() == null) {
@@ -1228,7 +1228,7 @@ public class RequestValidations {
 			    }
 			}
 			
-			DetencionIntegridadDTO integridad = persona.getDetencion();
+			DetencionIntegridadDTO integridad = persona.getDetencionIntegridad();
 			
 			if(integridad != null) {
 				if (integridad.getTipoDetencion() == null || integridad.getTipoDetencion().getCodigo() == null) {
@@ -1260,7 +1260,7 @@ public class RequestValidations {
 			    }
 			}
 			
-			ExpresionCensuraDTO expresion = persona.getExpresion();
+			ExpresionCensuraDTO expresion = persona.getExpresionCensura();
 			
 			if(expresion != null) {
 				if (expresion.getMedioExpresion() == null || expresion.getMedioExpresion().getCodigo() == null) {
