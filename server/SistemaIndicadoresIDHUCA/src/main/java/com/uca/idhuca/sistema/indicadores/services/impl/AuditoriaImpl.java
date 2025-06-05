@@ -8,11 +8,16 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.dto.AuditoriaDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
+import com.uca.idhuca.sistema.indicadores.dto.PaginacionInfo;
+import com.uca.idhuca.sistema.indicadores.dto.ResultadoPaginado;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Paginacion;
 import com.uca.idhuca.sistema.indicadores.models.Auditoria;
 import com.uca.idhuca.sistema.indicadores.repositories.AuditoriaRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.custom.AuditoriaRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
@@ -33,24 +38,54 @@ public class AuditoriaImpl implements IAuditoria {
 
 	@Autowired
 	private AuditoriaRepository auditoriaRepository;
+	
+	@Autowired AuditoriaRepositoryCustom auditoriaRepositoryCustom;
 
 	@Autowired
 	private ObjectMapper objectMapper; // Asegúrate de tenerlo como @Bean o usar new ObjectMapper() si prefieres.
 
 	@Override
-	public GenericEntityResponse<List<Auditoria>> get() throws NotFoundException, ValidationException {
-		String key = utils.obtenerUsuarioAutenticado().getEmail();
-		List<Auditoria> list = null;
-		try {
-			list = auditoriaRepository.findAll();
-		} catch (Exception e) {
-			log.info("[{}] No existe informacion en la audiotria con esos requisitos.", key);
-			throw new NotFoundException(ERROR, "No existe informacion en la audiotria con esos requisitos.");
-		}
-		log.info("[{}] Auditoria obtenida correctamente.", key);
+	public GenericEntityResponse<List<Auditoria>> get(Filtros filtros) throws NotFoundException, ValidationException {
+	    String key = utils.obtenerUsuarioAutenticado().getEmail();
 
-		return new GenericEntityResponse<List<Auditoria>>(OK, "Auditoria obtenida correctamente.", list);
+	    ResultadoPaginado<Auditoria> resultado = auditoriaRepositoryCustom.findByFiltros(filtros);
+	    List<Auditoria> list = resultado.getResultados();
+	    Long total = resultado.getTotalRegistros();
+
+	    if (list == null || list.isEmpty()) {
+	        log.info("[{}] No existe información en la auditoría con esos requisitos.", key);
+	        throw new ValidationException(ERROR, "No existe información en la auditoría con esos requisitos.");
+	    }
+
+	    Paginacion pag = filtros.getPaginacion();
+	    int paginaActual;
+	    int registrosPorPagina;
+	    int totalPaginas;
+
+	    if (pag == null) {
+	        paginaActual = 1;
+	        registrosPorPagina = total.intValue();
+	        totalPaginas = 1;
+	    } else {
+	        paginaActual = pag.getPaginaActual() > 0 ? pag.getPaginaActual() : 1;
+	        registrosPorPagina = pag.getRegistrosPorPagina() > 0 ? pag.getRegistrosPorPagina() : 10;
+	        totalPaginas = (int) Math.ceil((double) total / registrosPorPagina);
+	    }
+
+
+	    PaginacionInfo paginacionInfo = new PaginacionInfo();
+	    paginacionInfo.setPaginaActual(paginaActual);
+	    paginacionInfo.setTotalPaginas(totalPaginas);
+	    paginacionInfo.setTotalRegistros(total);
+	    paginacionInfo.setRegistrosPorPagina(registrosPorPagina);
+
+	    GenericEntityResponse<List<Auditoria>> response =
+	        new GenericEntityResponse<>(OK, "Auditoría obtenida correctamente.", list, paginacionInfo);
+
+	    log.info("[{}] Auditoría obtenida correctamente.", key);
+	    return response;
 	}
+
 
 	public <E> SuperGenericResponse add(AuditoriaDto<E> dto) throws ValidationException {
 		Auditoria auditoria = new Auditoria();

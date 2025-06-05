@@ -10,17 +10,22 @@ import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.valida
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
+import com.uca.idhuca.sistema.indicadores.dto.PaginacionInfo;
+import com.uca.idhuca.sistema.indicadores.dto.ResultadoCatalogo;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Paginacion;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.custom.CatalogoRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.ICatalogo;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
@@ -67,6 +72,9 @@ public class CatologoImpl implements ICatalogo {
 	CatalogoRepository catalogoRepository;
 	
 	@Autowired
+	CatalogoRepositoryCustom catalogoRepositoryCustom;
+	
+	@Autowired
 	IAuditoria auditoriaService;
 
 	@Override
@@ -100,80 +108,110 @@ public class CatologoImpl implements ICatalogo {
 			throw new IllegalArgumentException("Debe activar al menos un catálogo.");
 		}
 
-		List<Catalogo> list = null;
+		ResultadoCatalogo rc = null;
 		
 		switch (nombreCampoActivo) {
-		case "tipoProcesoJudicial":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL);
-			break;
-		case "tipoDenunciante":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DENUNCIANTE);
-			break;
-		case "duracionProceso":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_DURACION_PROCESO);
-			break;
-		case "medioExpresion":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_MEDIO_DE_EXPRESION);
-			break;
-		case "tipoRepresion":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_REPRESION);
-			break;
-		case "motivoDetencion":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_MOTIVO_DETENCION);
-			break;
-		case "tipoArma":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_ARMA);
-			break;
-		case "tipoDetencion":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_DETENCION);
-			break;
-		case "tipoViolencia":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_DE_VIOLENCIA);
-			break;
-		case "estadoSalud":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_ESTADO_SALUD);
-			break;
-		case "tipoPersona":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_TIPO_PERSONA);
-			break;
-		case "genero":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_GENERO);
-			break;
-		case "lugarExacto":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_LUGAR_EXACTO);
-			break;
-		case "estadoRegistro":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_ESTADO_DEL_REGISTROS);
-			break;
-		case "paises":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_PAISES);
-			break;
-		case "fuentes":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_FUENTE);
-			break;
-		case "roles":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_ROL);
-			break;
-		case "derechos":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_DERECHO);
-			break;
-		case "subDerechos":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_SUB_DERECHO + request.getParentId().replace(CATALOGO_DERECHO, "") + "_");
-			break;
-		case "departamentos":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_DEPARTAMENTO);
-			break;
-		case "municipios":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_MUNICIPIO + request.getParentId().replace(CATALOGO_DEPARTAMENTO, "") + "_");
-			break;
-		case "securityQuestions":
-			list = catalogoRepository.obtenerCatalogo(CATALOGO_SECURITY_QUESTION);
-			break;
-		default:
-			throw new NotFoundException(ERROR, "Catálogo no reconocido: " + nombreCampoActivo);
+	    case "tipoProcesoJudicial":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL, request.getFiltros());
+	        break;
+	    case "tipoDenunciante":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_DENUNCIANTE, request.getFiltros());
+	        break;
+	    case "duracionProceso":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_DURACION_PROCESO, request.getFiltros());
+	        break;
+	    case "medioExpresion":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_MEDIO_DE_EXPRESION, request.getFiltros());
+	        break;
+	    case "tipoRepresion":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_DE_REPRESION, request.getFiltros());
+	        break;
+	    case "motivoDetencion":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_MOTIVO_DETENCION, request.getFiltros());
+	        break;
+	    case "tipoArma":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_DE_ARMA, request.getFiltros());
+	        break;
+	    case "tipoDetencion":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_DE_DETENCION, request.getFiltros());
+	        break;
+	    case "tipoViolencia":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_DE_VIOLENCIA, request.getFiltros());
+	        break;
+	    case "estadoSalud":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_ESTADO_SALUD, request.getFiltros());
+	        break;
+	    case "tipoPersona":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_PERSONA, request.getFiltros());
+	        break;
+	    case "genero":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_GENERO, request.getFiltros());
+	        break;
+	    case "lugarExacto":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_LUGAR_EXACTO, request.getFiltros());
+	        break;
+	    case "estadoRegistro":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_ESTADO_DEL_REGISTROS, request.getFiltros());
+	        break;
+	    case "paises":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_PAISES, request.getFiltros());
+	        break;
+	    case "fuentes":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_FUENTE, request.getFiltros());
+	        break;
+	    case "roles":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_ROL, request.getFiltros());
+	        break;
+	    case "derechos":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_DERECHO, request.getFiltros());
+	        break;
+	    case "subDerechos":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(
+	            CATALOGO_SUB_DERECHO + request.getParentId().replace(CATALOGO_DERECHO, "") + "_", 
+	            request.getFiltros());
+	        break;
+	    case "departamentos":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_DEPARTAMENTO, request.getFiltros());
+	        break;
+	    case "municipios":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(
+	            CATALOGO_MUNICIPIO + request.getParentId().replace(CATALOGO_DEPARTAMENTO, "") + "_", 
+	            request.getFiltros());
+	        break;
+	    case "securityQuestions":
+	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_SECURITY_QUESTION, request.getFiltros());
+	        break;
+	    default:
+	        throw new NotFoundException(ERROR, "Catálogo no reconocido: " + nombreCampoActivo);
 		}
+		List<Catalogo> list = rc.getDatos();                             
+	    long total          = rc.getTotalRegistros();                   
 
-		return new GenericEntityResponse<List<Catalogo>>(OK, "Catalogo obtenido correctamente.", list);
+	    list = list.stream()
+	               .filter(c -> c.getCodigo() == null || !c.getCodigo().endsWith("_0"))
+	               .collect(Collectors.toList());
+
+	    if (list.isEmpty()) {
+	        throw new ValidationException(ERROR, "No hay más catálogos disponibles");
+	    }
+
+	    PaginacionInfo pi = new PaginacionInfo();
+	    Paginacion pag   = request.getFiltros() != null ? request.getFiltros().getPaginacion() : null;
+
+	    if (pag == null) {                        
+	        pi.setPaginaActual(0);
+	        pi.setRegistrosPorPagina(-1);
+	        pi.setTotalRegistros(total);
+	        pi.setTotalPaginas(1);
+	    } else {
+	        int size = pag.getRegistrosPorPagina() > 0 ? pag.getRegistrosPorPagina() : 10;
+	        pi.setPaginaActual(pag.getPaginaActual());
+	        pi.setRegistrosPorPagina(size);
+	        pi.setTotalRegistros(total);
+	        pi.setTotalPaginas((int) Math.ceil((double) total / size));
+	    }
+
+	    return new GenericEntityResponse<>(OK, "Catálogo obtenido correctamente.", list, pi);
 	}
 
 	@Override

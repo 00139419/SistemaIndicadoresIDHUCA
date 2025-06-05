@@ -21,6 +21,4 @@ public interface CatalogoRepository extends JpaRepository<Catalogo, String> {
 		    """, nativeQuery = true)
 		List<Catalogo> obtenerCatalogo(@Param("prefijo") String prefijo);
 
-
-
 }

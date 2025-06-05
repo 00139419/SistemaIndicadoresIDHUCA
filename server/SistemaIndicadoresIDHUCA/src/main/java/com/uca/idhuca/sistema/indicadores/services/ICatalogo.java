@@ -20,7 +20,7 @@ public interface ICatalogo {
 	 * @throws ValidationException Si se activan múltiples campos o si no se activa ninguno.
 	 * @throws NotFoundException Si el campo solicitado no corresponde a ningún catálogo conocido.
 	 */
-	GenericEntityResponse<List<Catalogo>> get(CatalogoDto request) throws ValidationException, NotFoundException;
+	GenericEntityResponse<List<Catalogo>> get(CatalogoDto request) throws ValidationException, Exception;
 
 	/**
 	 * Agrega un nuevo elemento al catálogo indicado en el DTO.

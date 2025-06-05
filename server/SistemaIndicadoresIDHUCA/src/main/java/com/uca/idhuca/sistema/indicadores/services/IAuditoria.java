@@ -7,18 +7,20 @@ import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
 import com.uca.idhuca.sistema.indicadores.models.Auditoria;
 
 public interface IAuditoria {
 	
 	/**
 	 * Obtiene la lista de registros de auditoría almacenados en el sistema.
+	 * @param filtros 
 	 *
 	 * @return una respuesta genérica que contiene una lista de objetos Auditoria.
 	 * @throws NotFoundException si no se encuentran registros de auditoría.
 	 * @throws ValidationException si ocurre un error de validación al procesar la solicitud.
 	 */
-	GenericEntityResponse<List<Auditoria>> get() throws NotFoundException, ValidationException;
+	GenericEntityResponse<List<Auditoria>> get(Filtros filtros) throws NotFoundException, ValidationException;
 
 	/**
 	 * Agrega un nuevo registro de auditoría al sistema.

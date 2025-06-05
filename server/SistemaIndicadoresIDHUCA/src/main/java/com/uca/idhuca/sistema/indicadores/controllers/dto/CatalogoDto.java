@@ -1,5 +1,6 @@
 package com.uca.idhuca.sistema.indicadores.controllers.dto;
 
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 
 import lombok.Data;
@@ -32,4 +33,5 @@ public class CatalogoDto {
 	String nuevoCatalogo;
 	Catalogo catalogo;
 	Catalogo derecho;
+	Filtros filtros;
 }

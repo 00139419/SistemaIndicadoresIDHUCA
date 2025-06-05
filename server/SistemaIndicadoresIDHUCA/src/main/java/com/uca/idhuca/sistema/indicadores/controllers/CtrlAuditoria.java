@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
 import com.uca.idhuca.sistema.indicadores.models.Auditoria;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
@@ -38,7 +40,7 @@ public class CtrlAuditoria {
 	IAuditoria auditoriaService;
 	
 	@PostMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<List<Auditoria>>> get() throws ValidationException {
+	ResponseEntity<GenericEntityResponse<List<Auditoria>>> get(@RequestBody Filtros filtros) throws ValidationException {
 		GenericEntityResponse<List<Auditoria>> response = null;
 		String key = "ADMIN";
 		
@@ -46,8 +48,10 @@ public class CtrlAuditoria {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/get' ");
 			
-			response = auditoriaService.get();
+			response = auditoriaService.get(filtros);
 			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

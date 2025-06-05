@@ -2,6 +2,8 @@ package com.uca.idhuca.sistema.indicadores.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -48,5 +50,6 @@ public class Auditoria {
 
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/El_Salvador")
     private Date fecha = new Date();
 }

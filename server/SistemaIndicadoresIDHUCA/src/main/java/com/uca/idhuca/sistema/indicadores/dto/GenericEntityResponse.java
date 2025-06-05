@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=true)
 public class GenericEntityResponse<T> extends SuperGenericResponse {
 	T entity;
+	PaginacionInfo paginacionInfo;
 	
 	public String toJson() {
         try {
@@ -30,5 +31,11 @@ public class GenericEntityResponse<T> extends SuperGenericResponse {
 	public GenericEntityResponse(int codigo, String mensaje, T entity) {
 		super(codigo,mensaje);
 		this.entity = entity;
+	}
+	
+	public GenericEntityResponse(int codigo, String mensaje, T entity, PaginacionInfo paginacionInfo) {
+		super(codigo,mensaje);
+		this.entity = entity;
+		this.paginacionInfo = paginacionInfo;
 	}
 }
