@@ -13,6 +13,7 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.AccesoJusticiaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.DetencionIntegridadDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ExpresionCensuraDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.FichaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ParametrosSistemaDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
@@ -834,11 +835,11 @@ public class RequestValidations {
 	    return list;
 	}
 	
-	public static List<String> validarObtenerDetalleArchivos(String derecho) {
+	public static List<String> validarObtenerDetalleArchivos(FichaDerechoRequest request) {
 	    List<String> list = new ArrayList<>();
 	    String key = "SYSTEM";
 
-	    if (derecho == null || derecho.isEmpty() || !derecho.startsWith(Constantes.CATALOGO_DERECHO)) {
+	    if (request == null || request.getCodigoDerecho().isEmpty()|| !request.getCodigoDerecho().startsWith(Constantes.CATALOGO_DERECHO)) {
 	        String error = "El servicio necesita un JSON de request valido.";
 	        list.add(error);
 	        log.info("[{}] {}", key, error);

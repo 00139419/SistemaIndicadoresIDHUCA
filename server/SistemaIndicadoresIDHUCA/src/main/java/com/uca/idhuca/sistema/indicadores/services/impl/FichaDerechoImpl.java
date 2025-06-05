@@ -27,15 +27,21 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ArchivoAdjuntoRequest;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.FichaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UsuarioSimple;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.NotaDerechoArchivoDTO;
 import com.uca.idhuca.sistema.indicadores.dto.NotaDerechoDTO;
+import com.uca.idhuca.sistema.indicadores.dto.PaginacionInfo;
+import com.uca.idhuca.sistema.indicadores.dto.ResultadoPaginado;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Paginacion;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.NotaDerecho;
 import com.uca.idhuca.sistema.indicadores.models.NotaDerechoArchivo;
@@ -43,6 +49,7 @@ import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.NotaDerechoArchivoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.NotaDerechoRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.custom.NotaDerechoRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.IFichaDerecho;
 import com.uca.idhuca.sistema.indicadores.utils.ProjectProperties;
@@ -59,6 +66,9 @@ public class FichaDerechoImpl implements IFichaDerecho{
 
 	@Autowired
 	private NotaDerechoRepository notaRepository;
+	
+	@Autowired
+	private NotaDerechoRepositoryCustom notaRepositoryCustom;
 
 	@Autowired
 	private NotaDerechoArchivoRepository archivoRepository;
@@ -71,6 +81,9 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	
 	@Autowired
 	private CatalogoRepository catalogoRepository;
+	
+	@Autowired
+	private ObjectMapper mapper;
 	
 	@Override
 	public SuperGenericResponse save(NotaDerechoRequest request, MultipartFile[] archivos)
@@ -212,8 +225,8 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	}
 	
 	@Override
-	public GenericEntityResponse<List<NotaDerechoDTO>> getAllPost(String codigoDerecho) throws ValidationException {
-	    List<String> errorsList = validarObtenerDetalleArchivos(codigoDerecho);
+	public GenericEntityResponse<List<NotaDerechoDTO>> getAllPost(FichaDerechoRequest request) throws ValidationException {
+	    List<String> errorsList = validarObtenerDetalleArchivos(request);
 	    if (!errorsList.isEmpty()) {
 	        throw new ValidationException(ERROR, errorsList.get(0));
 	    }
@@ -221,38 +234,69 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	    String key = utils.obtenerUsuarioAutenticado().getEmail();
 	    log.info("[{}] Request válido", key);
 
-	    List<NotaDerecho> notas = notaRepository.findByDerechoCodigo(codigoDerecho);
+	    ResultadoPaginado<NotaDerecho> res = notaRepositoryCustom.findNotas(request); // ⬅️ nuevo
+	    List<NotaDerecho> notas = res.getResultados();
+	    long total             = res.getTotalRegistros();
 
-	    List<NotaDerechoDTO> notaDTOs = notas.stream().map(nota -> {
-	        List<NotaDerechoArchivoDTO> archivosDTO = nota.getArchivos().stream()
-	            .filter(archivo -> {
-	                String rutaCompleta = projectProperties.getRutaArchivosFisicos() + File.separator + archivo.getArchivoUrl();
-	                return new File(rutaCompleta).exists();
-	            })
-	            .map(archivo -> new NotaDerechoArchivoDTO(
-	                archivo.getNombreOriginal(),
-	                archivo.getTipo(),
-	                archivo.getArchivoUrl()
-	            ))
-	            .collect(Collectors.toList());
+	    List<NotaDerechoDTO> dto = notas.stream()
+	    	    .map(nota -> this.toDto(nota))
+	    	    .collect(Collectors.toList());
 
-	        return new NotaDerechoDTO(
-	            nota.getId(),
-	            nota.getDerecho().getCodigo(),
-	            nota.getFecha(),
-	            nota.getTitulo(),
-	            nota.getDescripcion(),
-	            archivosDTO,
-	            new UsuarioSimple(nota.getCreadoPor().getId(), nota.getCreadoPor().getEmail(), nota.getCreadoPor().getNombre()),
-	            nota.getCreadoEn(),
-	            new UsuarioSimple(nota.getModificadoPor().getId(), nota.getModificadoPor().getEmail(), nota.getCreadoPor().getNombre()),
-	            nota.getModificadoEn());
-	    }).collect(Collectors.toList());
+	    
+	    if(dto.isEmpty()) {
+	    	log.info("[{}] Lista vacia", key);
+	    	throw new ValidationException(ERROR, "No hay mas registros que mostrar");
+	    }
 
-	    log.info("[{}] Se encontraron {} notas para el derecho '{}'", key, notaDTOs.size(), codigoDerecho);
-	    return new GenericEntityResponse<>(OK, "Datos obtenidos correctamente", notaDTOs);
+	    Filtros filtros = request.getFiltros();
+	    
+	    PaginacionInfo pi = new PaginacionInfo();
+	    Paginacion pag    = filtros != null ? filtros.getPaginacion() : null;
+
+	    if (pag == null) {                   
+	        pi.setPaginaActual(0);
+	        pi.setRegistrosPorPagina(-1);
+	        pi.setTotalRegistros(total);
+	        pi.setTotalPaginas(1);
+	    } else {
+	        int size = pag.getRegistrosPorPagina() > 0 ? pag.getRegistrosPorPagina() : 10;
+	        pi.setPaginaActual(pag.getPaginaActual());
+	        pi.setRegistrosPorPagina(size);
+	        pi.setTotalRegistros(total);
+	        pi.setTotalPaginas((int) Math.ceil((double) total / size));
+	    }
+	    
+	    return new GenericEntityResponse<>(OK, "Datos obtenidos correctamente", dto, pi);
 	}
 
+	private NotaDerechoDTO toDto(NotaDerecho nota) {
+	    List<NotaDerechoArchivoDTO> archivosDTO = nota.getArchivos().stream()
+	        .filter(archivo -> {
+	            String rutaCompleta = projectProperties.getRutaArchivosFisicos() + File.separator + archivo.getArchivoUrl();
+	            return new File(rutaCompleta).exists();
+	        })
+	        .map(archivo -> new NotaDerechoArchivoDTO(
+	            archivo.getNombreOriginal(),
+	            archivo.getTipo(),
+	            archivo.getArchivoUrl()
+	        ))
+	        .collect(Collectors.toList());
+
+	    return new NotaDerechoDTO(
+	        nota.getId(),
+	        nota.getDerecho().getCodigo(),
+	        nota.getFecha(),
+	        nota.getTitulo(),
+	        nota.getDescripcion(),
+	        archivosDTO,
+	        new UsuarioSimple(nota.getCreadoPor().getId(), nota.getCreadoPor().getEmail(), nota.getCreadoPor().getNombre()),
+	        nota.getCreadoEn(),
+	        new UsuarioSimple(nota.getModificadoPor().getId(), nota.getModificadoPor().getEmail(), nota.getModificadoPor().getNombre()),
+	        nota.getModificadoEn()
+	    );
+	}
+
+	
 	@Override
 	public Resource getFile(String nombreArchivo) throws ValidationException, NotFoundException, Exception {
 		if (nombreArchivo == null || nombreArchivo.isBlank()) {

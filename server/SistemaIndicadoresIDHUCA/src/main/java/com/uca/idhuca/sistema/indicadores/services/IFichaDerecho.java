@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.uca.idhuca.sistema.indicadores.controllers.dto.FichaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.NotaDerechoDTO;
@@ -32,7 +33,7 @@ public interface IFichaDerecho {
 	 * @return Una respuesta genérica con la lista de notas correspondientes al derecho.
 	 * @throws ValidationException Si el código del derecho es inválido o nulo.
 	 */
-	GenericEntityResponse<List<NotaDerechoDTO>> getAllPost(String codigoDerecho) throws ValidationException;
+	GenericEntityResponse<List<NotaDerechoDTO>> getAllPost(FichaDerechoRequest request) throws ValidationException;
 
 	/**
 	 * Recupera un archivo físico asociado a una nota, dado su nombre en el sistema.

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.FichaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.NotaDerechoDTO;
@@ -112,13 +113,13 @@ public class CtrlFichaDerecho {
 		}
 	}
 	
-	@PostMapping("/getAll/post/{codigo}")
-	public ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>> getAllPost(@PathVariable("codigo") String codigoDerecho) {
+	@PostMapping("/getAll/post")
+	public ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>> getAllPost(@RequestBody FichaDerechoRequest request) {
 	    String key = "SYSTEM";
 	    try {
 	        key = utils.obtenerUsuarioAutenticado().getEmail();
-	        log.info("[{}] Inicio de servicio '/getAll/post' con código: {}", key, codigoDerecho);
-	        GenericEntityResponse<List<NotaDerechoDTO>> response = fichaDerechoService.getAllPost(codigoDerecho);
+	        log.info("[{}] Inicio de servicio '/getAll/post' con código: {}", key, request);
+	        GenericEntityResponse<List<NotaDerechoDTO>> response = fichaDerechoService.getAllPost(request);
 	        return new ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>>(response, HttpStatus.OK);
 	    } catch (ValidationException e) {
 			return new ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
