@@ -11,7 +11,6 @@ public class EventoFiltro {
     private RangoFechas fechaHechoRango;
     private List<Catalogo> fuentes;
     private List<Catalogo> estadosActuales;
-    private List<Catalogo> derechosAsociados;
     private Boolean flagViolencia;
     private Boolean flagDetencion;
     private Boolean flagExpresion;

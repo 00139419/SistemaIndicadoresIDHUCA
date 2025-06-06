@@ -391,6 +391,15 @@
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rangoFechas\": {\r\n    \"fechaInicio\": \"2025-06-02\",\r\n    \"fechaFin\": \"2025-06-03\"\r\n  },\r\n  \"paginacion\": {\r\n    \"registrosPorPagina\": 10,\r\n    \"paginaActual\": 1\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/auditoria/get",
 							"protocol": "http",
@@ -591,7 +600,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\":false,\n    \"derechos\": true,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DER_1\"\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\": false,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": true,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\",\n    \"filtros\": {\n        \"paginacion\": {\n            \"paginaActual\": 1,\n            \"registrosPorPagina\": 10\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -816,8 +825,17 @@
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"codigoDerecho\": \"DER_1\",\r\n    \"filtros\": {\r\n        \"rangoFechas\": {\r\n            \"fechaInicio\": \"2025-04-02\",\r\n            \"fechaFin\": \"2025-06-07\"\r\n        },\r\n        \"paginacion\": {\r\n            \"registrosPorPagina\": 2,\r\n            \"paginaActual\": 0\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho/getAll/post/DER_1",
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho/getAll/post",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -829,8 +847,7 @@
 								"srv",
 								"fichaDerecho",
 								"getAll",
-								"post",
-								"DER_1"
+								"post"
 							]
 						}
 					},
@@ -1105,7 +1122,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    }\n}",
+							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"filtros\": {\n        \"paginacion\": {\n            \"registrosPorPagina\": 10,\n            \"paginaActual\": 0\n        },\n        \"rangoFechas\": {\n            \"fechaInicio\": \"2024-04-02\",\n            \"fechaFin\": \"2026-04-05\"\n        },\n        \"eventoFiltro\": {\n            \"fechaHechoRango\": {\n                \"fechaInicio\": \"2024-05-20\",\n                \"fechaFin\": \"2024-05-20\"\n            },\n            \"fuentes\": [\n                {\n                    \"codigo\": \"FUENTE_7\",\n                    \"descripcion\": \"El Diario de Hoy\"\n                }\n            ],\n            \"estadosActuales\": [\n                {\n                    \"codigo\": \"ESTREG_3\",\n                    \"descripcion\": \"Caso en investigación\"\n                }\n            ],\n            \"departamentos\": [\n                {\n                    \"codigo\": \"DEP_1\",\n                    \"descripcion\": \"AHUACHAPAN\"\n                }\n            ],\n            \"municipios\": [\n                {\n                    \"codigo\": \"MUN_1_2\",\n                    \"descripcion\": \"APANECA\"\n                }\n            ],\n            \"lugaresExactos\": [\n                {\n                    \"codigo\": \"LUGEXAC_1\",\n                    \"descripcion\": \"Fosa clandestina\"\n                }\n            ],\n            \"flagViolencia\": true,\n            \"flagDetencion\": true,\n            \"flagExpresion\": true,\n            \"flagJusticia\": true,\n            \"flagCensura\": true,\n            \"flagRegimenExcepcion\": false\n        },\n        \"afectadaFiltro\": {\n            \"nombres\": [\n                \"Juan Pérez\"\n            ],\n            \"generos\": [\n                {\n                    \"codigo\": \"GEN_2\",\n                    \"descripcion\": \"Hombre\"\n                }\n            ],\n            \"nacionalidades\": [\n                {\n                    \"codigo\": \"PAIS_9300\",\n                    \"descripcion\": \"EL SALVADOR\"\n                }\n            ],\n            \"departamentosResidencia\": [\n                {\n                    \"codigo\": \"DEP_6\",\n                    \"descripcion\": \"SAN SALVADOR\"\n                }\n            ],\n            \"municipiosResidencia\": [\n                {\n                    \"codigo\": \"MUN_6_7\",\n                    \"descripcion\": \"ILOPANGO\"\n                }\n            ],\n            \"tiposPersona\": [\n                {\n                    \"codigo\": \"TIPOPER_1\",\n                    \"descripcion\": \"Persona particular\"\n                }\n            ],\n            \"estadosSalud\": [\n                {\n                    \"codigo\": \"ESTSALUD_6\",\n                    \"descripcion\": \"Fallecida\"\n                }\n            ],\n            \"rangoEdad\": {\n                \"desde\": 30,\n                \"hasta\": 30\n            }\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
