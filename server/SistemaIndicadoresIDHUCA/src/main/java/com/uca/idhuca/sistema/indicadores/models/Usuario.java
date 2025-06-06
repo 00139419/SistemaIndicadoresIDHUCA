@@ -2,6 +2,7 @@ package com.uca.idhuca.sistema.indicadores.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,6 +41,7 @@ public class Usuario {
 	private boolean activo;
 
 	@Column(name = "creado_en")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/El_Salvador")
 	private Date creadoEn;
 
 	@Column(name = "es_provisional")

@@ -13,8 +13,7 @@ public class DetencionFiltro {
     private List<Catalogo> autoridadesInvolucradas;
     private Boolean huboTortura;
     private List<Catalogo> motivosDetencion;
-    private Integer duracionDiasExactos;
-    private Catalogo rangoDiasDetencion;
+    private RangoNumero duracionDiasExactos;
     private Boolean accesoAbogado;
     private List<String> resultados;
 }

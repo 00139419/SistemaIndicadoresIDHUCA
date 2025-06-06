@@ -2,6 +2,7 @@ package com.uca.idhuca.sistema.indicadores.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -40,6 +41,7 @@ public class AccesoJusticia {
     private Catalogo tipoProceso;
 
     @Column(name = "fecha_denuncia")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/El_Salvador")
     private Date fechaDenuncia;
 
     @ManyToOne
