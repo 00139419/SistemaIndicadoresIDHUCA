@@ -1,7 +1,6 @@
 package com.uca.idhuca.sistema.indicadores.filtros.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import lombok.Data;
 

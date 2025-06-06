@@ -6,6 +6,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +35,7 @@ public class RegistroEvento {
     private Long id;
 
     @Column(name = "fecha_registro")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/El_Salvador")
     private Date fechaRegistro;
 
     @Column(name = "fecha_hecho")

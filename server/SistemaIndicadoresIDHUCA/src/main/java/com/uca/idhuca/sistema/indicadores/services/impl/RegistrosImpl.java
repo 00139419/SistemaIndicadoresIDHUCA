@@ -21,15 +21,19 @@ import com.uca.idhuca.sistema.indicadores.auditoria.dto.AuditoriaRegistroEventoD
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
+import com.uca.idhuca.sistema.indicadores.dto.BusquedaRegistroEventoResultado;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
+import com.uca.idhuca.sistema.indicadores.dto.PaginacionInfo;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Paginacion;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.repositories.RegistroEventoRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.custom.RegistroEventoRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.IRegistros;
 import com.uca.idhuca.sistema.indicadores.useCase.EventosUseCase;
@@ -46,6 +50,9 @@ public class RegistrosImpl implements IRegistros{
 
 	@Autowired
 	private RegistroEventoRepository registroEventoRepository;
+	
+	@Autowired
+	private RegistroEventoRepositoryCustom registroEventoRepositoryCustom;
 	
 	@Autowired
 	private EventosUseCase eventoUseCase;
@@ -65,17 +72,35 @@ public class RegistrosImpl implements IRegistros{
 
 		String key = utils.obtenerUsuarioAutenticado().getEmail();
 
-		Catalogo derecho = utils.obtenerCatalogoPorCodigo(request.getDerecho().getCodigo(), key);
+		Catalogo derechoAsociado = utils.obtenerCatalogoPorCodigo(request.getDerecho().getCodigo(), key);
+		request.setDerecho(derechoAsociado);
+
 		log.info("[{}] Request válido", key);
-		
-		List<RegistroEvento> ls = registroEventoRepository.findByDerechoAsociado(derecho);
-		
-		if(ls == null || ls.isEmpty()) {
-			log.info("[{}] No se encontraron registros", key);
-			throw new ValidationException(ERROR, "No se encontraron registros");
+
+		BusquedaRegistroEventoResultado resultado = registroEventoRepositoryCustom.buscarEventos(request);
+
+		List<RegistroEvento> registros = resultado.getResultados();
+		if (registros == null || registros.isEmpty()) {
+			log.info("[{}] No hay mas registros que mostrar", key);
+			throw new ValidationException(ERROR, "No hay mas registros que mostrar");
 		}
 		
-		return new GenericEntityResponse<List<RegistroEvento>>(OK, "Datos obtenidos correctamente", ls);
+		Paginacion pag = request.getFiltros() != null ? request.getFiltros().getPaginacion() : null;
+		PaginacionInfo info = new PaginacionInfo();
+		
+		if(pag == null) {
+			info.setPaginaActual(0);
+			info.setRegistrosPorPagina(registros.size());
+			info.setTotalRegistros(registros.size());
+			info.setTotalPaginas(1);
+		} else {
+			info.setPaginaActual(pag.getPaginaActual());
+			info.setRegistrosPorPagina(pag.getRegistrosPorPagina());
+			info.setTotalRegistros(resultado.getTotal());
+			info.setTotalPaginas((int) Math.ceil((double) resultado.getTotal() / pag.getRegistrosPorPagina()));
+		}
+		
+		return new GenericEntityResponse<>(OK, "Datos obtenidos correctamente", registros, info);
 	}
 
 	@Override

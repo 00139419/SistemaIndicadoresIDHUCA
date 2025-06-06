@@ -27,7 +27,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ArchivoAdjuntoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.FichaDerechoRequest;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.NotaDerechoRequest;
@@ -81,10 +80,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	
 	@Autowired
 	private CatalogoRepository catalogoRepository;
-	
-	@Autowired
-	private ObjectMapper mapper;
-	
+
 	@Override
 	public SuperGenericResponse save(NotaDerechoRequest request, MultipartFile[] archivos)
 	        throws ValidationException, Exception {

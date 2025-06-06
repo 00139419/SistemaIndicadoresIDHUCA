@@ -11,4 +11,11 @@ public class Filtros {
 	private RangoFechas rangoFechas;
 	private UsuarioSimple creador;
 	private Catalogo derechoAsociado;
+	private EventoFiltro eventoFiltro;
+	private PersonaAfectadaFiltro afectadaFiltro;
+	private DerechosVulneradosFiltro derechosVulneradosFiltro;
+	private ViolenciaFiltro violenciaFiltro;
+	private DetencionFiltro detencionFiltro;
+	private ExpresionCensuraFiltro censuraFiltro;
+	private AccesoJusticiaFiltro accesoJusticiaFiltro;
 }

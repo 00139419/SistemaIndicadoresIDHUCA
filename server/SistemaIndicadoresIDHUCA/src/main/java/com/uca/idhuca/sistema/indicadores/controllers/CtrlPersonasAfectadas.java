@@ -22,7 +22,6 @@ import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
-import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.services.IPersonasAfectadas;
 import com.uca.idhuca.sistema.indicadores.services.IRegistros;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;

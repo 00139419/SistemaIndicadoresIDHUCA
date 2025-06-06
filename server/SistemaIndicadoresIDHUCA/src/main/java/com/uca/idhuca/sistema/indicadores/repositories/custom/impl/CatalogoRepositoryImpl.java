@@ -3,12 +3,10 @@ package com.uca.idhuca.sistema.indicadores.repositories.custom.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import com.uca.idhuca.sistema.indicadores.dto.ResultadoCatalogo;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
-import com.uca.idhuca.sistema.indicadores.filtros.dto.Paginacion;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.repositories.custom.CatalogoRepositoryCustom;
 
@@ -49,7 +47,8 @@ public class CatalogoRepositoryImpl implements CatalogoRepositoryCustom {
         Query cntQ  = entityManager.createNativeQuery(countSql)
                                    .setParameter("prefijo", prefijo);
 
-        List<Catalogo> datos    = dataQ.getResultList();
+        @SuppressWarnings("unchecked")
+		List<Catalogo> datos    = dataQ.getResultList();
         long totalRegistros     = ((Number) cntQ.getSingleResult()).longValue();
 
         return new ResultadoCatalogo(datos, totalRegistros);

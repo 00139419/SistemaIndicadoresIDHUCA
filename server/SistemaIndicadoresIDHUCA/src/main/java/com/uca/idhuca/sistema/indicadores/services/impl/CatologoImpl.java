@@ -185,7 +185,7 @@ public class CatologoImpl implements ICatalogo {
 	        throw new NotFoundException(ERROR, "Catálogo no reconocido: " + nombreCampoActivo);
 		}
 		List<Catalogo> list = rc.getDatos();                             
-	    long total          = rc.getTotalRegistros();                   
+	    Long total          = rc.getTotalRegistros();                   
 
 	    list = list.stream()
 	               .filter(c -> c.getCodigo() == null || !c.getCodigo().endsWith("_0"))
@@ -200,7 +200,7 @@ public class CatologoImpl implements ICatalogo {
 
 	    if (pag == null) {                        
 	        pi.setPaginaActual(0);
-	        pi.setRegistrosPorPagina(-1);
+	        pi.setRegistrosPorPagina(total.intValue());
 	        pi.setTotalRegistros(total);
 	        pi.setTotalPaginas(1);
 	    } else {
