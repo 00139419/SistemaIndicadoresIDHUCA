@@ -35,6 +35,7 @@ import com.uca.idhuca.sistema.indicadores.graphics.dto.StyleDTO;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
+import com.uca.idhuca.sistema.indicadores.models.Ubicacion;
 import com.uca.idhuca.sistema.indicadores.models.Violencia;
 import com.uca.idhuca.sistema.indicadores.repositories.custom.RegistroEventoRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IGraphics;
@@ -59,7 +60,7 @@ public class GraphicsImpl implements IGraphics {
 	private GraphicsGeneratorService generatorService;
 
 	@Override
-	public GenericEntityResponse<List<RegistroEvento>> generate(CreateGraphicsDto request)
+	public GenericEntityResponse<GraphicsResponseDTO> generate(CreateGraphicsDto request)
 	        throws ValidationException, NotFoundException, Exception {
 	    log.info("Inicia método generate para usuario {}", utils.obtenerUsuarioAutenticado().getEmail());
 
@@ -123,39 +124,48 @@ public class GraphicsImpl implements IGraphics {
 	    log.info("[{}] Base64: {}", key, response.getBase64());
 	    
 	    // Respuesta temporal, luego cambiar el tipo de respuesta
-	    return new GenericEntityResponse<>(OK, "Datos obtenidos correctamente", registros);
+	    return new GenericEntityResponse<>(OK, "Datos obtenidos correctamente", response);
 	}
 
 
-	public CampoSeleccionado detectarCampo(Filtros catEjeX) throws Exception {
-		for (Field sf : Filtros.class.getDeclaredFields()) {
-			sf.setAccessible(true);
-			Object sub = sf.get(catEjeX);
-			if (sub == null)
-				continue;
+	private CampoSeleccionado detectarCampo(Filtros ejeX) throws Exception {
 
-			for (Field campo : sub.getClass().getDeclaredFields()) {
-				campo.setAccessible(true);
-				Object valor = campo.get(sub);
+	    for (Field sf : Filtros.class.getDeclaredFields()) {
+	        sf.setAccessible(true);
+	        Object sub = sf.get(ejeX);
+	        if (sub == null) continue;          // sub-filtro no usado
 
-				boolean tieneContenido = false;
+	        for (Field campo : sub.getClass().getDeclaredFields()) {
+	            campo.setAccessible(true);
+	            Object v = campo.get(sub);
+	            if (v == null) continue;
 
-				if (valor != null) {
-					if (valor instanceof Collection) {
-						tieneContenido = !((Collection<?>) valor).isEmpty();
-					} else {
-						tieneContenido = true;
-					}
-				}
+	            boolean conValor = (v instanceof Collection<?> col)
+	                                ? !col.isEmpty()
+	                                : true;
 
-				if (tieneContenido) {
-					String pretty = campo.getName();
-					return new CampoSeleccionado(sf.getName(), campo.getName(), pretty);
-				}
-			}
-		}
-		throw new IllegalStateException("No se pudo determinar eje X");
+	            if (conValor) {
+	                List<String> codigos = null;
+
+	                // Si el campo es una lista de Catálogos, guarda sus códigos
+	                if (v instanceof List<?> lista && !lista.isEmpty()
+	                    && lista.get(0) instanceof Catalogo cat) {
+	                    codigos = lista.stream()
+	                                   .map(c -> ((Catalogo) c).getCodigo())
+	                                   .toList();
+	                }
+	                return new CampoSeleccionado(
+	                          sf.getName(),          // eventoFiltro / …
+	                          campo.getName(),       // municipios / …
+	                          campo.getName(),       // etiqueta “bonita”
+	                          codigos                // ← puede ser null
+	                       );
+	            }
+	        }
+	    }
+	    throw new IllegalStateException("No se pudo determinar eje X");
 	}
+
 
 	private GraphicsRequest buildGraphicsRequest(Map<String, Long> data, String axisLabel) {
 
@@ -184,83 +194,114 @@ public class GraphicsImpl implements IGraphics {
 		return gr;
 	}
 
-	private Map<String, Long> agruparPorCampo(CampoSeleccionado eje, List<RegistroEvento> registros) {
+	/* =========================================================
+	 * MÉTODO PRINCIPAL  ───────────── mantiene sólo el “router”
+	 * ========================================================= */
+	private Map<String,Long> agruparPorCampo(CampoSeleccionado eje,
+            List<RegistroEvento> registros) {
 
-		Function<RegistroEvento, List<String>> extractor;
+		Function<RegistroEvento,List<String>> extractor = switch (eje.getSubFiltro()) {
+		case "eventoFiltro"    -> extractorEvento(eje.getNombreCampo(), eje.getCodigosPermitidos());
+		case "afectadaFiltro"  -> extractorPersona(eje.getNombreCampo());
+		case "violenciaFiltro" -> extractorViolencia(eje.getNombreCampo());
+		// …otros sub-filtros
+		default                -> re -> List.of("Sin dato");
+		};
+		
+		return registros.stream()
+	            .flatMap(re -> extractor.apply(re).stream())
+	            .filter(label -> !"Sin dato".equals(label))          // <─ NUEVO
+	            .collect(Collectors.groupingBy(Function.identity(),
+	                                           Collectors.counting()));
+}
 
-		String subFiltro = eje.getSubFiltro();
-		String nombreCampo = eje.getNombreCampo();
+	/* =========================================================
+	 * 1. Helpers por sub-filtro
+	 * ========================================================= */
+	private Function<RegistroEvento,List<String>> extractorEvento(String campo,
+        List<String> permitidos) {
 
-		if ("eventoFiltro".equals(subFiltro)) {
-
-			if ("departamentos".equals(nombreCampo)) {
-				extractor = re -> {
-					if (re.getUbicacion() == null)
-						return List.of("Sin dato");
-					var depto = re.getUbicacion().getDepartamento();
-					if (depto == null || depto.getDescripcion() == null)
-						return List.of("Sin dato");
-					return List.of(depto.getDescripcion());
+		return switch (campo) {
+				/* ----------  Departamentos  ---------- */
+				case "departamentos" -> re -> {
+				Ubicacion u = re.getUbicacion();
+				return (u == null || u.getDepartamento() == null)
+				? List.of("Sin dato")
+				: List.of(u.getDepartamento().getDescripcion());
 				};
-
-			} else if ("municipios".equals(nombreCampo)) {
-				extractor = re -> {
-					if (re.getUbicacion() == null)
-						return List.of("Sin dato");
-					var municipio = re.getUbicacion().getMunicipio();
-					if (municipio == null || municipio.getDescripcion() == null)
-						return List.of("Sin dato");
-					return List.of(municipio.getDescripcion());
+				
+				/* ----------  Municipios  ---------- */
+				case "municipios" -> re -> {
+				Ubicacion u = re.getUbicacion();
+				if (u == null || u.getMunicipio() == null) return List.of("Sin dato");
+				
+				String cod  = u.getMunicipio().getCodigo();
+				String desc = u.getMunicipio().getDescripcion();
+				
+				// ▸ Si hay lista de códigos y este municipio NO está allí → se ignora
+				if (permitidos != null && !permitidos.contains(cod)) return List.of("Sin dato");
+				
+				return desc == null ? List.of("Sin dato") : List.of(desc);
 				};
-
-			} else if ("flagViolencia".equals(nombreCampo)) {
-				extractor = re -> {
-					String label = booleanLabel(re.getFlagViolencia());
-					return label != null ? List.of(label) : List.of("Sin dato");
-				};
-
-			} else {
-				extractor = re -> List.of("Sin dato");
-			}
-
-		} else if ("afectadaFiltro".equals(subFiltro)) {
-
-			if ("generos".equals(nombreCampo)) {
-				extractor = re -> {
-					if (re.getPersonasAfectadas() == null || re.getPersonasAfectadas().isEmpty())
-						return List.of("Sin dato");
-					return re.getPersonasAfectadas().stream().map(PersonaAfectada::getGenero).filter(Objects::nonNull)
-							.map(Catalogo::getDescripcion).filter(Objects::nonNull).toList();
-				};
-
-			} else {
-				extractor = re -> List.of("Sin dato");
-			}
-
-		} else if ("violenciaFiltro".equals(subFiltro)) {
-
-			if ("esAsesinato".equals(nombreCampo)) {
-				extractor = re -> {
-					if (re.getPersonasAfectadas() == null || re.getPersonasAfectadas().isEmpty())
-						return List.of("Sin dato");
-					return re.getPersonasAfectadas().stream().map(PersonaAfectada::getViolencia)
-							.filter(Objects::nonNull).map(Violencia::getEsAsesinato).map(this::booleanLabel)
-							.filter(Objects::nonNull).toList();
-				};
-
-			} else {
-				extractor = re -> List.of("Sin dato");
-			}
-
-		} else {
-			extractor = re -> List.of("Sin dato");
+				
+				/* ----------  Flag violencia  ---------- */
+				case "flagViolencia" -> re -> List.of(booleanLabel(re.getFlagViolencia()));
+				
+				default -> re -> List.of("Sin dato");
+			};
 		}
 
-		return registros.stream().flatMap(re -> extractor.apply(re).stream())
-				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+	private Function<RegistroEvento, List<String>> extractorPersona(String campo) {
+
+	    return switch (campo) {
+	        case "generos" -> re -> re.getPersonasAfectadas() == null
+	                ? List.of("Sin dato")
+	                : re.getPersonasAfectadas().stream()
+	                      .map(PersonaAfectada::getGenero)
+	                      .filter(Objects::nonNull)
+	                      .map(Catalogo::getDescripcion)
+	                      .filter(Objects::nonNull)
+	                      .toList();
+
+	        // …otros campos: nacionalidades, tiposPersona, etc.
+	        default -> re -> List.of("Sin dato");
+	    };
 	}
 
-	private String booleanLabel(Boolean b) {
-		return b == null ? "Sin dato" : (b ? "Sí" : "No");
+	private Function<RegistroEvento, List<String>> extractorViolencia(String campo) {
+
+	    return switch (campo) {
+	        case "esAsesinato" -> re -> re.getPersonasAfectadas() == null
+	                ? List.of("Sin dato")
+	                : re.getPersonasAfectadas().stream()
+	                      .map(PersonaAfectada::getViolencia)
+	                      .filter(Objects::nonNull)
+	                      .map(Violencia::getEsAsesinato)
+	                      .map(this::booleanLabel)
+	                      .filter(Objects::nonNull)
+	                      .toList();
+
+	        case "tiposViolencia" -> re -> re.getPersonasAfectadas() == null
+	                ? List.of("Sin dato")
+	                : re.getPersonasAfectadas().stream()
+	                      .map(PersonaAfectada::getViolencia)
+	                      .filter(Objects::nonNull)
+	                      .map(Violencia::getTipoViolencia)
+	                      .filter(Objects::nonNull)
+	                      .map(Catalogo::getDescripcion)
+	                      .toList();
+
+	        // …otros campos de Violencia
+	        default -> re -> List.of("Sin dato");
+	    };
 	}
+
+	/* =========================================================
+	 * Helper para Boolean a “Sí/No/Sin dato”
+	 * ========================================================= */
+	private String booleanLabel(Boolean b) {
+	    return b == null ? "Sin dato" : (b ? "Sí" : "No");
+	}
+
 }

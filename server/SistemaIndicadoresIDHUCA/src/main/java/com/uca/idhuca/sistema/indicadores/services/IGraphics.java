@@ -7,8 +7,9 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.CreateGraphicsDto;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.graphics.dto.GraphicsResponseDTO;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 
 public interface IGraphics {
-	GenericEntityResponse<List<RegistroEvento>> generate(CreateGraphicsDto request) throws ValidationException, NotFoundException, Exception;
+	GenericEntityResponse<GraphicsResponseDTO> generate(CreateGraphicsDto request) throws ValidationException, NotFoundException, Exception;
 }

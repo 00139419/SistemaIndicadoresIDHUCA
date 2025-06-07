@@ -21,6 +21,7 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.graphics.dto.GraphicsResponseDTO;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.services.IGraphics;
 import com.uca.idhuca.sistema.indicadores.services.IRegistros;
@@ -43,8 +44,8 @@ public class CtrlGraficos {
 	IGraphics graphicsServices;
 	
 	@PostMapping(value = "/generate",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<GenericEntityResponse<List<RegistroEvento>>> getAll(@RequestBody CreateGraphicsDto request) throws ValidationException {
-		GenericEntityResponse<List<RegistroEvento>> response = null;
+	ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>> getAll(@RequestBody CreateGraphicsDto request) throws ValidationException {
+		GenericEntityResponse<GraphicsResponseDTO> response = null;
 		String key = "ADMIN";
 		
 		try {
@@ -52,12 +53,12 @@ public class CtrlGraficos {
 			log.info("[" + key + "] ------ Inicio de servicio '/getAll' ");
 			
 			response = graphicsServices.generate(request);
-			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(response, HttpStatus.OK);
+			return new ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>>(response, HttpStatus.OK);
 		} catch (ValidationException e) {
-			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/getAll'");
 		}

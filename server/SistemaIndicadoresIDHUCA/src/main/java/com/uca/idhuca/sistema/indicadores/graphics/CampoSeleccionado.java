@@ -1,5 +1,7 @@
 package com.uca.idhuca.sistema.indicadores.graphics;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,4 +11,5 @@ public class CampoSeleccionado {
 	private final String subFiltro;
 	private final String nombreCampo;
 	private final String etiquetaVisible;
+	List<String> codigosPermitidos;
 }
