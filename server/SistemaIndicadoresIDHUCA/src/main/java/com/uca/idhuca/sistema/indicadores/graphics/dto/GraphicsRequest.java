@@ -8,7 +8,6 @@ import lombok.Data;
 public class GraphicsRequest {
 
 	public enum ChartType { PIE, BAR, STACKED_BAR, LINE, AREA, STACKED_AREA }
-	private boolean defaultStyle; // usar estilos por default
 	private ChartType chartType;
 	private String title; // Título principal
 	private String subtitle; // Descripción (opcional)

@@ -3,6 +3,7 @@ package com.uca.idhuca.sistema.indicadores.utils;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,7 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.UserDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ViolenciaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.AccesoJusticiaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.CreateGraphicsDto;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.DetencionIntegridadDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.ExpresionCensuraDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.FichaDerechoRequest;
@@ -20,6 +22,7 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UbicacionDTO;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.DerechoVulnerado;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
@@ -159,6 +162,97 @@ public class RequestValidations {
 			list.add(error);
 			log.info("[" + key + "]" + " " + error);
 		}
+
+		return list;
+	}
+	
+	public static List<String> validarCreateGraphics(CreateGraphicsDto request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		Catalogo derecho = request.getDerecho();
+		
+		if (derecho == null) {
+			error = "La propiedad 'derecho' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		if (derecho.getCodigo() == null) {
+			error = "La propiedad 'codigo' dentro del objeto 'derecho' es obligatoria.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+	    Filtros categoriaEjeX = request.getCategoriaEjeX();
+	    if (categoriaEjeX == null) {
+	        list.add("Debes especificar un filtro para elegir el eje X.");
+	        return list;
+	    }
+
+	    // 1. Contar cuántos sub-filtros vienen instanciados
+	    Object subFiltroSeleccionado = null;
+	    int subFiltrosInstanciados = 0;
+
+	    for (Field field : Filtros.class.getDeclaredFields()) {
+	        field.setAccessible(true);
+	        try {
+	            Object valor = field.get(categoriaEjeX);
+	            if (valor != null) {
+	                subFiltrosInstanciados++;
+	                subFiltroSeleccionado = valor;
+	            }
+	        } catch (IllegalAccessException e) {
+	            // nunca debería ocurrir
+	        }
+	    }
+
+	    if (subFiltrosInstanciados == 0) {
+	        list.add("Debes seleccionar una categoría (un sub-filtro) para el eje X.");
+	        return list;
+	    }
+	    if (subFiltrosInstanciados > 1) {
+	        list.add("Solo puedes seleccionar **una** categoría a la vez para el eje X.");
+	        return list;
+	    }
+
+	    // 2. Dentro del sub-filtro elegido, validar que solo un campo contenga datos
+	    int camposConValor = 0;
+	    for (Field f : subFiltroSeleccionado.getClass().getDeclaredFields()) {
+	        f.setAccessible(true);
+	        try {
+	            Object v = f.get(subFiltroSeleccionado);
+	            if (v == null) continue;
+
+	            boolean tieneValor;
+	            if (v instanceof Collection<?>) {
+	                tieneValor = !((Collection<?>) v).isEmpty();
+	            } else {
+	                // Boolean, Catalogo, RangoFechas, String, etc.
+	                // Consideramos que Boolean tiene valor si no es null
+	                tieneValor = true;
+	            }
+
+	            if (tieneValor) camposConValor++;
+
+	        } catch (IllegalAccessException ignored) {}
+	    }
+
+	    if (camposConValor == 0) {
+	        list.add("La categoría elegida no contiene ningún valor; debes indicar al menos uno.");
+	    }
+	    if (camposConValor > 1) {
+	        list.add("Solo puedes indicar **un** campo dentro de la categoría seleccionada para el eje X.");
+	    }
+
 
 		return list;
 	}

@@ -128,13 +128,13 @@ public class GraphicsGeneratorService {
 
             case BAR:
                 renderer = req.isThreeD()
-                        ? new BarRenderer3D()             // 3-D disponible
+                        ? new BarRenderer3D()             
                         : new BarRenderer();
                 break;
 
             case STACKED_BAR:
                 renderer = req.isThreeD()
-                        ? new StackedBarRenderer3D()      // 3-D disponible en 1.0.19
+                        ? new StackedBarRenderer3D()      
                         : new StackedBarRenderer();
                 break;
 

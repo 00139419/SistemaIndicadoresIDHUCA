@@ -34,4 +34,10 @@ public class CatalogoDto {
 	Catalogo catalogo;
 	Catalogo derecho;
 	Filtros filtros;
+	
+	public CatalogoDto(Catalogo derecho, Filtros filtros) {
+		super();
+		this.derecho = derecho;
+		this.filtros = filtros;
+	}
 }
