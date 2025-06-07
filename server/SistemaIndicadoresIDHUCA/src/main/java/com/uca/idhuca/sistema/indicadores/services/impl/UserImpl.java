@@ -27,6 +27,7 @@ import com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
 import com.uca.idhuca.sistema.indicadores.useCase.UserUseCase;
+import com.uca.idhuca.sistema.indicadores.utils.RequestValidations;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,14 +67,16 @@ public class UserImpl implements IUser {
 		String key = utils.obtenerUsuarioAutenticado().getEmail();
 		log.info("[{}] Request válido", key);
 
+		if (request == null || request.getNombre() == null || request.getNombre().isEmpty()
+				|| request.getEmail() == null || request.getEmail().isEmpty()
+				|| request.getRol() == null || request.getRol().getCodigo() == null) {
+			throw new ValidationException(ERROR, "Nombre, email y rol son campos obligatorios");
+		}
+
 		Optional<Usuario> existingUser = userRepository.findByEmail(request.getEmail());
 		if (existingUser.isPresent()) {
 			log.info("Usuario ya existe.");
-			throw new ValidationException(ERROR, "Usuario ya existe.");
-		}
-
-		if (request.getNombre() == null || request.getEmail() == null) {
-			throw new ValidationException(ERROR, "El nombre y el correo son obligatorios.");
+			throw new ValidationException(ERROR, "El usuario con email " + request.getEmail() + " ya existe");
 		}
 
 		String provisionalPassword = UUID.randomUUID().toString().substring(0, 8);
@@ -81,6 +84,7 @@ public class UserImpl implements IUser {
 		Usuario newUser = new Usuario();
 		newUser.setNombre(request.getNombre());
 		newUser.setEmail(request.getEmail());
+		newUser.setRol(request.getRol());
 		newUser.setContrasenaHash(pEncoder.encode(provisionalPassword));
 		newUser.setActivo(true);
 		newUser.setCreadoEn(new Date());
@@ -89,17 +93,17 @@ public class UserImpl implements IUser {
 
 		Usuario savedUser = userRepository.save(newUser);
 
-		RecoveryPassword recovery = new RecoveryPassword();
-		recovery.setUsuario(savedUser);
-		recovery.setPreguntaCodigo(request.getSecurityQuestion() != null ? request.getSecurityQuestion().getCodigo() : null);
-		recovery.setRespuestaHash(request.getSecurityAnswer() != null ? pEncoder.encode(request.getSecurityAnswer()) : null);
-		recoveryPasswordRepository.save(recovery);
-		log.info("[{}] Creando recovery... [{}]", key, recovery);
+		String createdKey = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Usuario creado: {}", createdKey, savedUser.getEmail());
 
-		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, newUser));
-		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, recovery));
 
-		return new SuperGenericResponse(OK, "Usuario creado exitosamente. Contraseña provisional: " + provisionalPassword);
+		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), CREAR, savedUser));
+		return new SuperGenericResponse(
+				OK,
+				String.format("Usuario %s creado exitosamente. Contraseña provisional: %s",
+						savedUser.getEmail(),
+						provisionalPassword)
+		);
 	}
 
 	@Override
@@ -201,44 +205,52 @@ public class UserImpl implements IUser {
 		String key  = request.getEmail() != null ?  request.getEmail() : "SYSTEM";
 		log.info("[{}] Request válido", key);
 
-		Usuario usuario = null;
-		try {
-			usuario = userRepository
-					.findByEmail(request.getEmail()).get();
-		} catch (NoSuchElementException e) {
-			log.info("Usuario no existe.");
-			throw new NotFoundException(ERROR, "Usuario no existe.");
-		}
 
 		RecoveryPassword recovery;
-		try {
-			recovery = recoveryPasswordRepository.findByUsuario(usuario).get();
-		} catch (NoSuchElementException e) {
-			log.info("Recovery no existe.");
-			throw new NotFoundException(ERROR, "Recovery no existe.");
+
+		Usuario usuario = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new NotFoundException(ERROR, "Usuario no encontrado."));
+
+		recovery = recoveryPasswordRepository.findByUsuario(usuario)
+				.orElseThrow(() -> new ValidationException(ERROR, "Para acceder a esta opcion, por favor incie sesion por primera vez. " +
+						"Si ha olvidado su contraseña provisional, por favor contacte al administrador del sistema."));
+
+
+		if (recovery.getIntentosFallidos() >= utils.maximoIntentosPreguntaSeguridad()) {
+			log.error("[{}] Usuario alcanzó el máximo de intentos permitidos", key);
+			usuario.setActivo(false);
+			userRepository.save(usuario);
+			throw new ValidationException(ERROR, "Usuario bloqueado por exceder el máximo de intentos permitidos.");
 		}
 
-		if(recovery.getIntentosFallidos() >= utils.maximoIntentosPreguntaSeguridad()) {
-			throw new ValidationException(ERROR, "Usuario alcanzo el maximo de intentos permitidos.");
-		}
-		log.error("[{}] Usuario puede intentar validar pregunta de seguridad.", key);
-
-		if(!pEncoder.matches(request.getSecurityAnswer(), recovery.getRespuestaHash())) {
-
-			log.error("[{}] Password incorrecta.", key);
+		if (!pEncoder.matches(request.getSecurityAnswer(), recovery.getRespuestaHash())) {
 			recovery.setIntentosFallidos(recovery.getIntentosFallidos() + 1);
 			recoveryPasswordRepository.save(recovery);
 
+			if (recovery.getIntentosFallidos() >= utils.maximoIntentosPreguntaSeguridad()) {
+				log.error("[{}] Usuario alcanzó el máximo de intentos permitidos", key);
+				usuario.setActivo(false);
+				userRepository.save(usuario);
+				throw new ValidationException(ERROR, "Usuario bloqueado por exceder el máximo de intentos permitidos.");
+			}
+
+			log.error("[{}] Respuesta incorrecta. Intentos fallidos: {}", key, recovery.getIntentosFallidos());
 			throw new ValidationException(ERROR, "Respuesta incorrecta.");
 		}
 
 		recovery.setIntentosFallidos(0);
-		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
-		userRepository.save(usuario);
 		recoveryPasswordRepository.save(recovery);
-		log.error("[{}] Contraseña actualizada.", key);
 
-		return new SuperGenericResponse(OK, "Cambio de contraseña existoso.");
+		if (!validatePasswordPolicy(request.getNewPassword())) {
+			throw new ValidationException(ERROR, "La nueva contraseña no cumple con los requisitos mínimos de seguridad.");
+		}
+
+		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
+		usuario.setEsPasswordProvisional(false);
+		userRepository.save(usuario);
+
+		log.info("[{}] Contraseña actualizada exitosamente", key);
+		return new SuperGenericResponse(OK, "Contraseña actualizada exitosamente.");
 	}
 
 	@Override
@@ -284,69 +296,54 @@ public class UserImpl implements IUser {
 
 	@Override
 	public SuperGenericResponse changePassword(UserDto request) throws ValidationException, NotFoundException {
-		List<String> errorsList = validarChangePassword(request);
-		if (!errorsList.isEmpty()) {
-			throw new ValidationException(ERROR, errorsList.get(0));
+		// Validate request
+		List<String> validations = RequestValidations.validarChangePassword(request);
+		if (!validations.isEmpty()) {
+			throw new ValidationException(ERROR, validations.get(0));
 		}
 
-		Usuario usuario = utils.obtenerUsuarioAutenticado();
+		Usuario usuario = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new NotFoundException(ERROR, "Usuario no encontrado"));
 
-		String key = usuario.getEmail();
-		log.info("[{}] Request válido", key);
-
-		RecoveryPassword recovery;
-		try {
-			recovery = recoveryPasswordRepository.findByUsuario(usuario).get();
-		} catch (NoSuchElementException e) {
-			log.info("Recovery no existe.");
-			throw new NotFoundException(ERROR, "Recovery no existe.");
+		if (!pEncoder.matches(request.getPassword(), usuario.getContrasenaHash())) {
+			throw new ValidationException(ERROR, "La contraseña actual es incorrecta");
 		}
-		log.info("[{}] Usuario encontrado correctamente.", key);
+		log.info("[{}] Contraseña actual válida.", request.getPassword());
 
-		if(recovery.getIntentosFallidos() >= utils.maximoIntentosPreguntaSeguridad()) {
-			throw new ValidationException(ERROR, "Usuario alcanzo el maximo de intentos permitidos.");
+		if (!validatePasswordPolicy(request.getNewPassword())) {
+			throw new ValidationException(ERROR, "La nueva contraseña no cumple con los requisitos de seguridad");
 		}
-
-		if(!pEncoder.matches(request.getProvisionalPassword(), usuario.getContrasenaHash())) {
-			log.error("[{}] Password incorrecta.", key);
-			recovery.setIntentosFallidos(recovery.getIntentosFallidos() + 1);
-			recoveryPasswordRepository.save(recovery);
-			throw new ValidationException(ERROR, "Error: usuario o contraseña no coinciden.");
-		}
-		log.info("[{}] Autenticación correcta.", key);
+		log.info("[{}] Nueva contraseña válida.", request.getEmail());
 
 		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
-		recovery.setIntentosFallidos(0);
-		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
-
+		usuario.setEsPasswordProvisional(false);
 		userRepository.save(usuario);
-		recoveryPasswordRepository.save(recovery);
-		log.info("[{}] Usuario actualizado correctamente.", key);
-
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
+
+		RecoveryPassword recovery = null;
+
+		boolean hasRecoveryConfig = hasRecoveryConfig(usuario);
+		if (hasRecoveryConfig) {
+			recovery = recoveryPasswordRepository.findByUsuario(usuario)
+					.orElseThrow(() -> new NotFoundException(ERROR, "No existe configuración de recuperación para este usuario"));
+
+			log.info("[{}] Configuración de recuperación obtenida correctamente.", request.getEmail());
+		} else{
+			recovery = new RecoveryPassword();
+			log.info("[{}] Usuario no tiene configuración de recuperación, se creará una nueva.", request.getEmail());
+		}
+
+		recovery.setPreguntaCodigo(request.getSecurityQuestion().getCodigo());
+		recovery.setRespuestaHash(pEncoder.encode(request.getSecurityAnswer()));
+		recovery.setUsuario(usuario);
+		
+		recoveryPasswordRepository.save(recovery);
+		log.info("[{}] Configuración de recuperación actualizada correctamente.", request.getEmail());
+
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));
-		log.info("[{}] Auditoria creada correctamente.",key);
-
-		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
-	}
-
-	public SuperGenericResponse changeProvisionalPassword(UserDto request) throws ValidationException, NotFoundException {
-		if (request.getNewPassword() == null || request.getNewPassword().isEmpty()) {
-			throw new ValidationException(ERROR, "La nueva contraseña es obligatoria.");
-		}
-
-		Usuario usuario = userRepository.findById(request.getId())
-				.orElseThrow(() -> new NotFoundException(ERROR, "Usuario no existe."));
-
-		if (!pEncoder.matches(request.getProvisionalPassword(), usuario.getContrasenaHash())) {
-			throw new ValidationException(ERROR, "La contraseña actual es incorrecta.");
-		}
-
-		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
-		usuario.setEsPasswordProvisional(false); // Marcar como no provisional
-		userRepository.save(usuario);
-
-		return new SuperGenericResponse(OK, "Contraseña actualizada correctamente.");
+		log.info("[{}] Auditoria creada correctamente.", request.getEmail());
+		
+		return new SuperGenericResponse(OK, "Contraseña actualizada exitosamente");
 	}
 
 	@Override
@@ -386,9 +383,52 @@ public class UserImpl implements IUser {
 		log.info("[{}] Usuario actualizado correctamente.", key);
 
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));
-		log.info("[{}] Auditoria creada correctamente.",key);
+		log.info("[{}] Auditoria de recovery creada correctamente.",key);
 
+		String provisionalPassword = UUID.randomUUID().toString().substring(0, 8);
+		
+		usuario.setContrasenaHash(pEncoder.encode(provisionalPassword));
+		usuario.setEsPasswordProvisional(true);
+		
+		userRepository.save(usuario);
+		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
+		log.info("[{}] Contraseña provisional agregada correctamente.", key);
+		
 		return new SuperGenericResponse(OK, "Usuario desbloqueado correctamente.");
+	}
+	
+	private boolean validatePasswordPolicy(String password) {
+		if (password == null || password.length() < 8) {
+			return false;
+		}
+
+		boolean hasLetter = false;
+		boolean hasNumber = false;
+
+		for (char c : password.toCharArray()) {
+			if (Character.isLetter(c)) {
+				hasLetter = true;
+			}
+			if (Character.isDigit(c)) {
+				hasNumber = true;
+			}
+			if (hasLetter && hasNumber) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean hasRecoveryConfig(Usuario user) throws NotFoundException {
+		if (user.getEmail()== null) {
+			throw new NotFoundException(ERROR, "Usuario no encontrado");
+		}
+
+		RecoveryPassword recovery = recoveryPasswordRepository.findByUsuario(user)
+				.orElse(null);
+
+		return recovery != null && recovery.getPreguntaCodigo() != null && !recovery.getPreguntaCodigo().isEmpty();
 	}
 
 }

@@ -17,8 +17,6 @@ public class UserDto {
 	private String newPassword;
 	private boolean debloquearUsuario;
 
-
-	//New constructor for creating a user with just name and email
 	public UserDto(String nombre, String email) {
 		this.nombre = nombre;
 		this.email = email;
