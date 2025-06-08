@@ -3,6 +3,7 @@ package com.uca.idhuca.sistema.indicadores.graphics;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.*;
 import org.jfree.chart.title.TextTitle;
@@ -29,6 +30,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.imageio.ImageIO;
 
@@ -70,6 +73,12 @@ public class GraphicsGeneratorService {
     }
     
     private JFreeChart buildPieChart(GraphicsRequest req) {
+    	NumberFormat valueFormat = NumberFormat.getNumberInstance();
+    	NumberFormat percentFormat = NumberFormat.getPercentInstance();
+    	percentFormat.setMinimumFractionDigits(1);
+    	percentFormat.setMaximumFractionDigits(1);
+
+    	
         SeriesDTO serie = req.getSeries().get(0); // solo se usa una serie
         DefaultPieDataset ds = new DefaultPieDataset();
         serie.getData().forEach(ds::setValue);
@@ -87,6 +96,13 @@ public class GraphicsGeneratorService {
             plot.setStartAngle(290);
             plot.setDirection(Rotation.CLOCKWISE);
             plot.setForegroundAlpha(0.6f);
+            plot.setLabelGenerator(
+            	    new StandardPieSectionLabelGenerator(
+            	        "{0}: {1} ({2})",
+            	        new DecimalFormat("#,##0"),
+            	        new DecimalFormat("0.00%")
+            	    )
+            	);
             plot.setBackgroundPaint(Color.decode(req.getStyle().getBackgroundColor()));
         } else {
             chart = ChartFactory.createPieChart(
@@ -163,7 +179,7 @@ public class GraphicsGeneratorService {
         // fondo y rejilla
         plot.setBackgroundPaint(Color.decode(s.getBackgroundColor()));
         plot.setRangeGridlinePaint(new Color(220, 220, 220));
-        plot.setOutlineVisible(false);
+        plot.setOutlineVisible(true);
 
         // paleta por serie
         for (int i = 0; i < s.getPalette().length && i < ds.getRowCount(); i++) {

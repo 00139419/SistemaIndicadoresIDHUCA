@@ -184,17 +184,70 @@ public class GraphicsUseUcase {
 	            return java.util.Collections.nCopies(personas, desc);
 	        };
 
-	        /* ---------- Flags booleanos ---------- */
-	        case "flagViolencia" -> re -> {
+	        /* ---------- Flags flagRegimenExcepcion ---------- */
+	        case "flagRegimenExcepcion" -> re -> {
 	            int personas = re.getPersonasAfectadas() == null ? 0 : re.getPersonasAfectadas().size();
 	            if (personas == 0)
 	                return List.of();
 
-	            Boolean flag = re.getFlagViolencia(); // nunca null
+	            Boolean flag = re.getFlagRegimenExcepcion(); // nunca null
 	            String label = booleanLabel(flag);    // "Sí" o "No"
 	            return java.util.Collections.nCopies(personas, label);
 	        };
 
+	        
+	        case "fuentes" -> re -> {
+	            String desc = null;
+	            if (re != null && re.getFuente().getDescripcion() != null)
+	                desc = re.getFuente().getDescripcion();
+
+	            int personas = re.getPersonasAfectadas() == null ? 0 : re.getPersonasAfectadas().size();
+	            if (personas == 0 || desc == null)
+	                return List.of();
+
+	            if (permitidos != null && !permitidos.isEmpty()) {
+	                String cod = re.getFuente().getCodigo();
+	                if (!permitidos.contains(cod))
+	                    return List.of();
+	            }
+	            return java.util.Collections.nCopies(personas, desc);
+	        };
+	        
+	        case "estadosActuales" -> re -> {
+	            String desc = null;
+	            if (re != null && re.getEstadoActual().getDescripcion() != null)
+	                desc = re.getEstadoActual().getDescripcion();
+
+	            int personas = re.getPersonasAfectadas() == null ? 0 : re.getPersonasAfectadas().size();
+	            if (personas == 0 || desc == null)
+	                return List.of();
+
+	            if (permitidos != null && !permitidos.isEmpty()) {
+	                String cod = re.getEstadoActual().getCodigo();
+	                if (!permitidos.contains(cod))
+	                    return List.of();
+	            }
+	            return java.util.Collections.nCopies(personas, desc);
+	        };
+	        
+	        case "lugaresExactos" -> re -> {
+	            String desc = null;
+	            if (re != null && re.getUbicacion().getLugarExacto().getDescripcion() != null)
+	                desc = re.getUbicacion().getLugarExacto().getDescripcion();
+
+	            int personas = re.getPersonasAfectadas() == null ? 0 : re.getPersonasAfectadas().size();
+	            if (personas == 0 || desc == null)
+	                return List.of();
+
+	            if (permitidos != null && !permitidos.isEmpty()) {
+	                String cod = re.getUbicacion().getLugarExacto().getCodigo();
+	                if (!permitidos.contains(cod))
+	                    return List.of();
+	            }
+	            return java.util.Collections.nCopies(personas, desc);
+	        };
+	        
+	        // Fin
 	        default -> re -> List.of();
 	    };
 
