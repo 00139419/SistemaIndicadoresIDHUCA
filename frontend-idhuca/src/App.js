@@ -15,6 +15,7 @@ import SetNewPassword from "./pages/SetNewPassword";
 import ResetPasswordSuccess from "./pages/ResetPasswordSuccess";
 import Form from "./pages/Form";
 import Parameter from "./pages/Parameters";
+import Users from "./pages/users/Users";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider } from "./components/AuthContext";
 
@@ -39,6 +40,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Index />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <Users />
                 </ProtectedRoute>
               }
             />

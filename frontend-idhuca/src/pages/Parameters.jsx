@@ -74,7 +74,7 @@ const SistemaParametros = () => {
           "Content-Type": "application/json",
         },
         data: {
-          clave: editingParam.clave, // Use the original clave
+          clave: editingParam.clave, 
           valor: updatedValues.valor,
         },
       };
@@ -119,13 +119,13 @@ const SistemaParametros = () => {
     return (
       <div className="table-responsive px-3">
         {" "}
-        {/* Added padding */}
+       
         <table
           className="table table-striped table-hover table-bordered"
           style={{ minWidth: "1000px" }}
         >
           {" "}
-          {/* Added minWidth */}
+         
           <thead className="table-dark">
             <tr>
               <th scope="col" className="text-center" style={{ width: "5%" }}>
@@ -176,7 +176,7 @@ const SistemaParametros = () => {
             ))}
           </tbody>
         </table>
-        {/* Edit Modal */}
+       
         <div
           className={`modal fade ${showModal ? "show" : ""}`}
           style={{ display: showModal ? "block" : "none" }}
