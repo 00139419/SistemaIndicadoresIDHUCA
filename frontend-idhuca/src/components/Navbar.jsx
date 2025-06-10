@@ -21,7 +21,7 @@ const Navbar = () => {
     ];
 
   const visibleLinks = links.filter(link => link.roles.includes(userRole));
-  
+
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style={{ paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>
@@ -44,16 +44,23 @@ const Navbar = () => {
 
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav me-auto">
-            {visibleLinks.map(({ to, label }) => (
-              <li className="nav-item" key={to}>
-                <Link className="nav-link px-3 small" to={to}>
-                  {label}
-                </Link>
-              </li>
-            ))}
+            {visibleLinks.map(({ to, label }) => {
+              const isFichaOrRegistros = to === '/ficha-de-derechos' || to === '/registros';
+              const target = isFichaOrRegistros ? '/seleccion-derecho' : to;
+              const state = isFichaOrRegistros ? { from: to === '/ficha-de-derechos' ? 'ficha' : 'registros' } : undefined;
+
+              return (
+                <li className="nav-item" key={to}>
+                  <Link className="nav-link px-3 small" to={target} state={state}>
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
+
           </ul>
-          <button 
-            className="btn btn-outline-secondary ms-3" 
+          <button
+            className="btn btn-outline-secondary ms-3"
             onClick={handleLogout}
           >
             <i className="bi bi-box-arrow-right me-1"></i>
