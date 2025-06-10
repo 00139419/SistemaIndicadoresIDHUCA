@@ -26,73 +26,73 @@ import "primeflex/primeflex.css";
 
 function App() {
   return (
-      <Router>
-	  	<AuthProvider>
+    <Router>
+      <AuthProvider>
         <Routes>
-		<Route path="/login" element={<LoginForm />} />
-		 <Route element={<MainLayout />}>
-		 
-		 {/* Rutas protegidas */}
-		           <Route path="/index" element={
-		             <ProtectedRoute>
-		               <Index />
-		             </ProtectedRoute>
-		           } />
-				    <Route
-              path="/users"
-              element={
-                <ProtectedRoute>
-                  <Users />
-                </ProtectedRoute>
-              }
-            />
-							{/* FLUJO */}
-						<Route path="/seleccion-derecho" element={
-							<ProtectedRoute>
-								<RightSelection />
-							</ProtectedRoute>
-						} />
-						/*
-						<Route path='/registros' element={
-							<ProtectedRoute>
-								<Registros />
-							</ProtectedRoute>
-						} />
-						*/
-						<Route path="/ficha-de-derechos" element={
-							<ProtectedRoute>
-								<FichaPage />
-							</ProtectedRoute>
-						} />
-						{/* FLUJO */}
-						<Route path="/auditoria" element={
-							<ProtectedRoute>
-								<AuditoriaPage />
-							</ProtectedRoute>
-						} />
-				   <Route path="/mantenimiento" element={
-					<ProtectedRoute>
-						<MaintenancePage />
-					</ProtectedRoute>
-				} />
-				   <Route path='/registros' element={
-					<ProtectedRoute>
-					<RightSelection />
-				</ProtectedRoute>
-			} />
-			<Route path="/formulario-derecho" index element={<Form />} />
+          <Route path="/login" element={<LoginForm />} />
+          
+          {/* MainLayout wrapper */}
+          <Route element={<MainLayout />}>
+            {/* Protected routes */}
+            <Route path="/index" element={
+              <ProtectedRoute>
+                <Index />
+              </ProtectedRoute>
+            } />
+            <Route path="/users" element={
+              <ProtectedRoute>
+                <Users />
+              </ProtectedRoute>
+            } />
+            <Route path="/seleccion-derecho" element={
+              <ProtectedRoute>
+                <RightSelection />
+              </ProtectedRoute>
+            } />
+            <Route path="/ficha-de-derechos" element={
+              <ProtectedRoute>
+                <FichaPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/auditoria" element={
+              <ProtectedRoute>
+                <AuditoriaPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/mantenimiento" element={
+              <ProtectedRoute>
+                <MaintenancePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/registros" element={
+              <ProtectedRoute>
+                <RightSelection />
+              </ProtectedRoute>
+            } />
+            <Route path="/formulario-derecho" element={
+              <ProtectedRoute>
+                <Form />
+              </ProtectedRoute>
+            } />
+            <Route path="/parametros" element={
+              <ProtectedRoute>
+                <Parameter />
+              </ProtectedRoute>
+            } />
           </Route>
-          			<Route path="/parametros" element={
-				<Parameter />
-		  } />
-		  <Route path="/" element={<Navigate to="/login" />} />
-		  <Route path="/reset-password" element={<ResetPassword />} />
-		  <Route path="/verify-identity" element={<VerifyIdentity />} />
-		  <Route path="/set-new-password" element={<SetNewPassword />} />
-		  <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
-		 </Routes>
-	   </AuthProvider>
-	</Router>
+
+          {/* Public routes */}
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/verify-identity" element={<VerifyIdentity />} />
+          <Route path="/set-new-password" element={<SetNewPassword />} />
+          <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
+      
+          
+          {/* Catch-all route */}
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
 }
 
