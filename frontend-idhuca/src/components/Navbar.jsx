@@ -46,6 +46,14 @@ const Navbar = () => {
           </li>
         </>
       );
+    case 'ROL_3':
+      return (
+        <>
+          <li className="nav-item">
+            <Link className="nav-link mx-2" to="/registros">Registros</Link>
+          </li>
+        </>
+      );
     default:
       return null;
   }
