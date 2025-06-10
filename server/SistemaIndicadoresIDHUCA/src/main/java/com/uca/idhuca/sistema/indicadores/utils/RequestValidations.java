@@ -81,11 +81,6 @@ public class RequestValidations {
 
 		key = request.getEmail();
 
-		if (request.getProvisionalPassword() == null || request.getProvisionalPassword().isEmpty()) {
-			error = "La propiedad 'password' es obligatoria.";
-			list.add(error);
-			log.info("[" + key + "]" + " " + error);
-		}
 
 		if (request.getNombre() == null || request.getNombre().isEmpty()) {
 			error = "La propiedad 'nombre' es obligatoria.";
@@ -107,11 +102,6 @@ public class RequestValidations {
 			log.info("[" + key + "]" + " " + error);
 		}
 
-		if (rol.getDescripcion() == null || rol.getDescripcion().isEmpty()) {
-			error = "La propiedad 'descripcion' dentro del objeto 'rol' es obligatoria.";
-			list.add(error);
-			log.info("[" + key + "]" + " " + error);
-		}
 
 		return list;
 	}

@@ -45,5 +45,5 @@ public class Usuario {
 	private Date creadoEn;
 
 	@Column(name = "es_provisional")
-	private boolean esPasswordProvisional;
+	private Boolean esPasswordProvisional;
 }
