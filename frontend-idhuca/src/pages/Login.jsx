@@ -2,6 +2,7 @@ import { useState } from "react";
 import logoUCA from "../assets/idhuca-logo-blue.png";
 import { useAuth } from "../components/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -23,74 +24,108 @@ export default function LoginForm() {
     if (error) setError(false);
   };
 
+  const checkProvisionalStatus = async (token) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Check the esPasswordProvisional field from the entity
+      return response.data.entity.esPasswordProvisional || false;
+    } catch (error) {
+      console.error("Error checking provisional status:", error);
+      throw new Error("Error verificando estado de la cuenta");
+    }
+  };
+
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsLoading(true);
-  setError(false);
+    e.preventDefault();
+    setIsLoading(true);
+    setError(false);
 
-  try {
-    // Usar la función login del contexto de autenticación
-    const result = await login(credentials.email, credentials.password);
+    try {
+      const result = await login(credentials.email, credentials.password);
 
-    // Primero verificar si el login fue exitoso
-    if (!result.success) {
-      throw new Error(result.error || 'Error al iniciar sesión');
-    }
+      if (!result.success || !result.token) {
+        throw new Error(result.error || "Error al iniciar sesión");
+      }
 
-    // Si hay token, guardarlo en localStorage
-    if (result.token) {
-      localStorage.setItem("authToken", result.token); // Changed to authToken
-      console.log("Token de autenticación guardado:", result);
+      // Store token temporarily until we verify provisional status
+      const token = result.token;
+
+      // Check provisional status using the token
+      const isProvisional = await checkProvisionalStatus(token);
+
+      if (isProvisional) {
+        // Store necessary data for password reset
+        localStorage.setItem("tempAuthToken", token);
+        localStorage.setItem("userEmail", credentials.email);
+        setErrorMessage(
+          "Cuenta provisional detectada - Redirigiendo para cambiar contraseña"
+        );
+        setError(true);
+        setTimeout(() => {
+          navigate("/reset-password");
+        }, 2000);
+        return;
+      }
+
+      // If not provisional, proceed with normal login
+      localStorage.setItem("authToken", token);
       navigate("/index");
-    } else {
-      throw new Error('No se recibió token de autenticación');
+    } catch (err) {
+      setError(true);
+      setErrorMessage(
+        err.message || "Error en inicio de sesión, verifique usuario o contraseña"
+      );
+      console.error("Error de login:", err);
+    } finally {
+      setIsLoading(false);
     }
-
-  } catch (err) {
-    setError(true);
-    setErrorMessage(err.message || "Error en inicio de sesión, verifique usuario o contraseña");
-    console.error('Error de login:', err);
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
   const handleForgotPassword = () => {
-    navigate('/reset-password');
+    navigate("/reset-password");
   };
 
   return (
-    <div 
+    <div
       className="d-flex justify-content-center align-items-center"
       style={{
         backgroundColor: "#003C71",
-        minHeight: "100vh"
+        minHeight: "100vh",
       }}
     >
-      <div 
+      <div
         className="card shadow border-0"
         style={{
           maxWidth: "500px",
           width: "100%",
           padding: "4rem",
-          borderRadius: "12px"
+          borderRadius: "12px",
         }}
       >
         <div className="text-center mb-4">
-          <h1 
+          <h1
             className="fw-bold"
             style={{
               fontSize: "2rem",
-              marginBottom: "1rem"
+              marginBottom: "1rem",
             }}
           >
             Iniciar sesión
           </h1>
-          <p 
+          <p
             className="text-secondary"
             style={{
               fontSize: "1.125rem",
-              marginBottom: "2rem"
+              marginBottom: "2rem",
             }}
           >
             Inicie sesión para continuar
@@ -99,8 +134,8 @@ export default function LoginForm() {
 
         <form onSubmit={handleSubmit}>
           {error && (
-            <div 
-              className="alert alert-danger d-flex align-items-center" 
+            <div
+              className="alert alert-danger d-flex align-items-center"
               role="alert"
               style={{
                 backgroundColor: "#f44336",
@@ -109,15 +144,20 @@ export default function LoginForm() {
                 borderRadius: "4px",
                 padding: "0.75rem",
                 marginBottom: "1.5rem",
-                fontSize: "0.9rem"
+                fontSize: "0.9rem",
               }}
             >
-              {errorMessage || "Error en inicio de sesión, verifique usuario o contraseña"}
+              {
+                errorMessage ||
+                "Error en inicio de sesión, verifique usuario o contraseña"
+              }
             </div>
           )}
 
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Usuario</label>
+            <label htmlFor="email" className="form-label">
+              Usuario
+            </label>
             <div className="input-group">
               <input
                 type="email"
@@ -136,7 +176,9 @@ export default function LoginForm() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="password" className="form-label">Contraseña</label>
+            <label htmlFor="password" className="form-label">
+              Contraseña
+            </label>
             <div className="input-group">
               <input
                 type="password"
@@ -174,13 +216,17 @@ export default function LoginForm() {
               style={{
                 fontSize: "1.125rem",
                 padding: "0.75rem",
-                backgroundColor: "#333333"
+                backgroundColor: "#333333",
               }}
               disabled={isLoading}
             >
               {isLoading ? (
                 <span>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
                   Cargando...
                 </span>
               ) : (
