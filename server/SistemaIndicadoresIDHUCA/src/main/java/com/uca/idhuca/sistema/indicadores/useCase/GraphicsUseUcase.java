@@ -19,6 +19,7 @@ import com.uca.idhuca.sistema.indicadores.graphics.dto.GraphicsRequest;
 import com.uca.idhuca.sistema.indicadores.graphics.dto.SeriesDTO;
 import com.uca.idhuca.sistema.indicadores.graphics.dto.StyleDTO;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
+import com.uca.idhuca.sistema.indicadores.models.DerechoVulnerado;
 import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.models.Violencia;
@@ -57,6 +58,13 @@ public class GraphicsUseUcase {
 						codigos = lista
 									.stream()
 									.map(c -> ((Catalogo) c).getCodigo())
+									.toList();
+					}
+					
+					if (v instanceof List<?> lista && !lista.isEmpty() && lista.get(0) instanceof Integer) {
+						codigos = lista
+									.stream()
+									.map(c -> ((Integer) c).toString())
 									.toList();
 					}
 					return new CampoSeleccionado(sf.getName(), // eventoFiltro / …
@@ -104,13 +112,18 @@ public class GraphicsUseUcase {
 	 */
 	public Map<String, Long> agruparPorCampo(CampoSeleccionado eje, List<RegistroEvento> registros) {
 
+		log.info("Campos permitidos " + eje.getCodigosPermitidos());
+		
 		Function<RegistroEvento, List<String>> extractor = 
 				switch (eje.getSubFiltro()) {
 					case "eventoFiltro" -> extractorEvento(eje.getNombreCampo(), eje.getCodigosPermitidos());
-					case "afectadaFiltro" -> extractorPersona(eje.getNombreCampo());
-					case "violenciaFiltro" -> extractorViolencia(eje.getNombreCampo());
-					// …otros sub-filtros
-					default -> re -> List.of();
+					case "afectadaFiltro" -> extractorPersona(eje.getNombreCampo(), eje.getCodigosPermitidos());
+					case "derechosVulneradosFiltro" -> extractorDerechosVulnerados(eje.getNombreCampo(), eje.getCodigosPermitidos());
+					case "violenciaFiltro" -> extractorViolencia(eje.getNombreCampo(), eje.getCodigosPermitidos()); 
+					
+					
+					
+ 					default -> re -> List.of();
 		};
 
 		// 1. Conteo real por persona
@@ -123,9 +136,17 @@ public class GraphicsUseUcase {
 		List<String> permitidos = eje.getCodigosPermitidos();
 		if (permitidos != null && !permitidos.isEmpty()) {
 			for (String cod : permitidos) {
-				String desc = catalogoRepository.findByCodigo(cod).getDescripcion();
-				if (desc != null && !conteo.containsKey(desc)) {
-					conteo.put(desc, 0L);
+				
+				if(eje.getNombreCampo().equalsIgnoreCase("edades")) {
+					String desc = cod;
+					if (desc != null && !conteo.containsKey(desc)) {
+						conteo.put(desc, 0L);
+					}
+				} else {
+					String desc = catalogoRepository.findByCodigo(cod).getDescripcion();
+					if (desc != null && !conteo.containsKey(desc)) {
+						conteo.put(desc, 0L);
+					}
 				}
 			}
 		}
@@ -135,7 +156,7 @@ public class GraphicsUseUcase {
 			conteo.putIfAbsent("Sí", 0L);
 			conteo.putIfAbsent("No", 0L);
 		}
-
+		
 		return conteo;
 	}
 
@@ -260,16 +281,117 @@ public class GraphicsUseUcase {
 	}
 
 
-	public Function<RegistroEvento, List<String>> extractorPersona(String campo) {
+	/* =========================================================
+	 *  Personas afectadas  (género, nacionalidad, …)
+	 * ========================================================= */
+	private Function<RegistroEvento, List<String>> extractorPersona(String campo,
+	                                                                List<String> permitidos) {
 
-		return switch (campo) {
-		case "generos" -> re -> re.getPersonasAfectadas() == null ? List.of("Sin dato")
-				: re.getPersonasAfectadas().stream().map(PersonaAfectada::getGenero).filter(Objects::nonNull)
-						.map(Catalogo::getDescripcion).filter(Objects::nonNull).toList();
+	    return switch (campo) {
+	        /* ----------  Géneros  ---------- */
+	        case "generos" -> re -> {
+	            if (re.getPersonasAfectadas()==null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
 
-		// …otros campos: nacionalidades, tiposPersona, etc.
-		default -> re -> List.of("Sin dato");
-		};
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getGenero)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))   // ⬅️ filtrar
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Nacionalidades  ---------- */
+	        case "nacionalidades" -> re -> {
+	            if (re.getPersonasAfectadas()==null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getNacionalidad)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))   // ⬅️ filtrar
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+	        
+	        /* ----------  departamentosResidencia  ---------- */
+	        case "departamentosResidencia" -> re -> {
+	            if (re.getPersonasAfectadas()==null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDepartamentoResidencia)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))   // ⬅️ filtrar
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+	        
+	        /* ----------  departamentosResidencia  ---------- */
+	        case "municipiosResidencia" -> re -> {
+	            if (re.getPersonasAfectadas()==null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getMunicipioResidencia)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))   // ⬅️ filtrar
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+	        
+	        /* ----------  departamentosResidencia  ---------- */
+	        case "tiposPersona" -> re -> {
+	            if (re.getPersonasAfectadas()==null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getTipoPersona)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))   // ⬅️ filtrar
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+	        
+	        /* ----------  departamentosResidencia  ---------- */
+	        case "estadosSalud" -> re -> {
+	            if (re.getPersonasAfectadas()==null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getEstadoSalud)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))   // ⬅️ filtrar
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+	        
+	        case "edades" -> re -> {
+	            if (re.getPersonasAfectadas() == null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
+
+	            // lista de edades permitidas (puede estar vacía)
+	            List<String> permitidosSet = permitidos == null ? List.of() : permitidos;
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getEdad)          // Integer
+	                    .filter(Objects::nonNull)
+	                    .map(String::valueOf)                   // "30"
+	                    .filter(ed -> permitidosSet.isEmpty()   // ⬅️  SOLO filtra si hay permitidos
+	                                  || permitidosSet.contains(ed))
+	                    .toList();
+	        };
+
+
+
+	        default -> re -> List.of();
+	    };
 	}
 
 	public Function<RegistroEvento, List<String>> extractorViolencia(String campo) {
@@ -288,6 +410,145 @@ public class GraphicsUseUcase {
 		default -> re -> List.of("Sin dato");
 		};
 	}
+	
+	private Function<RegistroEvento, List<String>> extractorDerechosVulnerados(String nombreCampo, List<String> permitidos) {
+	    return re -> {
+	        if (re.getPersonasAfectadas() == null || re.getPersonasAfectadas().isEmpty())
+	            return List.of();
+
+	        return re.getPersonasAfectadas().stream()
+	                 .filter(p -> p.getDerechosVulnerados() != null && !p.getDerechosVulnerados().isEmpty())
+	                 .flatMap(p -> p.getDerechosVulnerados().stream())
+	                 .map(DerechoVulnerado::getDerecho)
+	                 .filter(Objects::nonNull)
+	                 .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                 .map(Catalogo::getDescripcion)
+	                 .filter(Objects::nonNull)
+	                 .toList();
+	    };
+	}
+	
+	public Function<RegistroEvento, List<String>> extractorViolencia(String campo, List<String> permitidos) {
+	    return switch (campo) {
+
+	        case "esAsesinato" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getEsAsesinato)
+	                .map(this::booleanLabel)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        case "tiposViolencia" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getTipoViolencia)
+	                .filter(Objects::nonNull)
+	                .filter(cat -> permitido(cat.getCodigo(), permitidos)) 
+	                .map(Catalogo::getDescripcion)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        case "artefactosUtilizados" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getArtefactoUtilizado)
+	                .filter(Objects::nonNull)
+	                .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                .map(Catalogo::getDescripcion)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        case "contextos" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getContexto)
+	                .filter(Objects::nonNull)
+	                .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                .map(Catalogo::getDescripcion)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        case "actoresResponsables" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getActorResponsable)
+	                .filter(Objects::nonNull)
+	                .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                .map(Catalogo::getDescripcion)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        case "estadosSaludActorResponsable" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getEstadoSaludActorResponsable)
+	                .filter(Objects::nonNull)
+	                .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                .map(Catalogo::getDescripcion)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        case "huboProteccion" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getHuboProteccion)
+	                .map(this::booleanLabel)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        case "investigacionAbierta" -> re -> {
+	            if (re.getPersonasAfectadas() == null)
+	                return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                .map(PersonaAfectada::getViolencia)
+	                .filter(Objects::nonNull)
+	                .map(Violencia::getInvestigacionAbierta)
+	                .map(this::booleanLabel)
+	                .filter(Objects::nonNull)
+	                .toList();
+	        };
+
+	        default -> re -> List.of("Sin dato");
+	    };
+	}
+
 
 	/*
 	 * ========================================================= Helper para Boolean
@@ -305,6 +566,11 @@ public class GraphicsUseUcase {
 			// Agrega más si necesitas
 			default -> false;
 		};
+	}
+	
+	/* Helper reutilizable */
+	public boolean permitido(String codigo, List<String> permitidos) {
+	    return permitidos==null || permitidos.isEmpty() || permitidos.contains(codigo);
 	}
 
 }
