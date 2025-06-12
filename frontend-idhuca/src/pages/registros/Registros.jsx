@@ -39,9 +39,11 @@ const Registros = () => {
   const handleGenerateChart = () => {
     navigate('/graphs');
   };
+  
 
   const handleFilter = () => {
     // Implementar lógica de filtrado
+    navigate('/filter');
     console.log('Aplicando filtros...');
   };
 

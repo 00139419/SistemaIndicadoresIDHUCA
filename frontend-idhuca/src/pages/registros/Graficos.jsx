@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../components/AuthContext';
+import graphImage from '../../assets/image.png'; // Imagen de ejemplo para el gráfico
 
 const Graficos = () => {
   const { userRole } = useAuth();
@@ -74,42 +75,11 @@ Título: ${chartConfig.titulo}`;
     const total = chartData.reduce((sum, item) => sum + item.value, 0);
     let currentAngle = 0;
     
-    const segments = chartData.map((item, index) => {
-      const percentage = (item.value / total) * 100;
-      const angle = (item.value / total) * 360;
-      const startAngle = currentAngle;
-      currentAngle += angle;
-      
-      const x1 = 150 + 120 * Math.cos((startAngle - 90) * Math.PI / 180);
-      const y1 = 150 + 120 * Math.sin((startAngle - 90) * Math.PI / 180);
-      const x2 = 150 + 120 * Math.cos((startAngle + angle - 90) * Math.PI / 180);
-      const y2 = 150 + 120 * Math.sin((startAngle + angle - 90) * Math.PI / 180);
-      
-      const largeArcFlag = angle > 180 ? 1 : 0;
-      
-      const pathData = [
-        `M 150 150`,
-        `L ${x1} ${y1}`,
-        `A 120 120 0 ${largeArcFlag} 1 ${x2} ${y2}`,
-        'Z'
-      ].join(' ');
-      
-      return (
-        <path
-          key={index}
-          d={pathData}
-          fill={item.color}
-          stroke="white"
-          strokeWidth="2"
-        />
-      );
-    });
+  
 
     return (
       <div className="d-flex flex-column align-items-center">
-        <svg width="300" height="300" viewBox="0 0 300 300">
-          {segments}
-        </svg>
+       
         <h5 className="mt-3 mb-4 fw-bold">{chartConfig.titulo}</h5>
       </div>
     );
@@ -278,40 +248,45 @@ Título: ${chartConfig.titulo}`;
               border: '1px solid #e0e0e0'
             }}>
               <div className="flex-grow-1 d-flex align-items-center justify-content-center">
-                {renderPieChart()}
-              </div>
-         
-              {/* Botones de exportación - Solo mostrar si tiene permiso */}
-              {hasPermission('export') && (
-                <div className="d-flex gap-3 justify-content-center mt-4">
-                  <button 
-                    className="btn btn-primary px-4 py-2"
-                    onClick={copyToClipboard}
-                    style={{
-                      borderRadius: '8px',
-                      backgroundColor: '#1a237e',
-                      border: 'none',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    <i className="bi bi-clipboard me-2"></i>
-                    Copiar
-                  </button>
-                  <button 
-                    className="btn btn-primary px-4 py-2"
-                    onClick={downloadAsPNG}
-                    style={{
-                      borderRadius: '8px',
-                      backgroundColor: '#1a237e',
-                      border: 'none',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    <i className="bi bi-download me-2"></i>
-                    Descargar PNG
-                  </button>
-                </div>
-              )}
+      <img 
+        src={graphImage}
+        alt="Gráfico de ejemplo"
+        className="img-fluid"
+        style={{ minHeight: '300px', minWidth: '100%', maxWidth: '120%', maxHeight: '120%' }}
+      />
+    </div>
+
+    {/* Botones de exportación - Solo mostrar si tiene permiso */}
+    {hasPermission('export') && (
+      <div className="d-flex gap-3 justify-content-center mt-4">
+        <button 
+          className="btn btn-primary px-4 py-2"
+          onClick={copyToClipboard}
+          style={{
+            borderRadius: '8px',
+            backgroundColor: '#1a237e',
+            border: 'none',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}
+        >
+          <i className="bi bi-clipboard me-2"></i>
+          Copiar
+        </button>
+        <button 
+          className="btn btn-primary px-4 py-2"
+          onClick={downloadAsPNG}
+          style={{
+            borderRadius: '8px',
+            backgroundColor: '#1a237e',
+            border: 'none',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}
+        >
+          <i className="bi bi-download me-2"></i>
+          Descargar PNG
+        </button>
+      </div>
+    )}
             </div>
           </div>
         </div>

@@ -45,6 +45,10 @@ const VistaRegistrosDinamica = ({
     navigate('/formulario-derecho');
   };
 
+  const handleFilter = () => {
+    navigate('/filter'); 
+  };
+
   const handleAction = (action, item, index) => {
     switch (action) {
       case "view":
@@ -156,7 +160,7 @@ const VistaRegistrosDinamica = ({
           {onFilter && hasPermission('filter') && (
             <button
               className="btn btn-info text-white"
-              onClick={onFilter}
+              onClick={handleFilter}
               style={{ fontSize: "14px" }}
             >
               Filtrar

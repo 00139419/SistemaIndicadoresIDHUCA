@@ -17,6 +17,7 @@ import AuditoriaPage from './pages/auditoria/AuditoriaPage';
 import FichaPage from './pages/FichaPage';
 import Registros from './pages/registros/Registros';
 import Graficos from './pages/registros/Graficos';
+import Filtros from './pages/registros/Filtros';
 import { UserProvider } from './Contexts/UserContext';
 
 // Estilos de PrimeReact
@@ -88,6 +89,11 @@ function App() {
             <Route path="/graphs" element={
               <ProtectedRoute>
                 <Graficos />
+              </ProtectedRoute>
+            } />
+            <Route path="/filter" element={
+              <ProtectedRoute>
+                <Filtros />
               </ProtectedRoute>
             } />
           </Route>
