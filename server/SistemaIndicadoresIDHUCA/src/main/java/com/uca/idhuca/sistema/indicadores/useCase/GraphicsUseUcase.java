@@ -2,6 +2,7 @@ package com.uca.idhuca.sistema.indicadores.useCase;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,11 @@ import com.uca.idhuca.sistema.indicadores.graphics.CampoSeleccionado;
 import com.uca.idhuca.sistema.indicadores.graphics.dto.GraphicsRequest;
 import com.uca.idhuca.sistema.indicadores.graphics.dto.SeriesDTO;
 import com.uca.idhuca.sistema.indicadores.graphics.dto.StyleDTO;
+import com.uca.idhuca.sistema.indicadores.models.AccesoJusticia;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.DerechoVulnerado;
+import com.uca.idhuca.sistema.indicadores.models.DetencionIntegridad;
+import com.uca.idhuca.sistema.indicadores.models.ExpresionCensura;
 import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.models.Violencia;
@@ -30,7 +34,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class GraphicsUseUcase {
-
+	
+	HashMap<String , String> CAMPOS_NUMERICOS = new HashMap<>();
+	
+	{
+		CAMPOS_NUMERICOS.put("edades", "edades");
+		CAMPOS_NUMERICOS.put("diasExactos", "diasExactos");
+	}
+	
 	@Autowired
 	private CatalogoRepository catalogoRepository;
 
@@ -59,9 +70,7 @@ public class GraphicsUseUcase {
 									.stream()
 									.map(c -> ((Catalogo) c).getCodigo())
 									.toList();
-					}
-					
-					if (v instanceof List<?> lista && !lista.isEmpty() && lista.get(0) instanceof Integer) {
+					} else if (v instanceof List<?> lista && !lista.isEmpty() && lista.get(0) instanceof Integer) {
 						codigos = lista
 									.stream()
 									.map(c -> ((Integer) c).toString())
@@ -120,9 +129,9 @@ public class GraphicsUseUcase {
 					case "afectadaFiltro" -> extractorPersona(eje.getNombreCampo(), eje.getCodigosPermitidos());
 					case "derechosVulneradosFiltro" -> extractorDerechosVulnerados(eje.getNombreCampo(), eje.getCodigosPermitidos());
 					case "violenciaFiltro" -> extractorViolencia(eje.getNombreCampo(), eje.getCodigosPermitidos()); 
-					
-					
-					
+					case "detencionFiltro" -> extractorDetencion(eje.getNombreCampo(), eje.getCodigosPermitidos());
+					case "censuraFiltro"  -> extractorCensura(eje.getNombreCampo(), eje.getCodigosPermitidos());
+					case "accesoJusticiaFiltro" -> extractorJusticia(eje.getNombreCampo(), eje.getCodigosPermitidos());
  					default -> re -> List.of();
 		};
 
@@ -131,13 +140,15 @@ public class GraphicsUseUcase {
 										.stream()
 										.flatMap(re -> extractor.apply(re).stream())
 										.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		
+		log.info("Conteo actual sin filltrar " + conteo.toString());
 
 		// 2. Añadir elementos “permitidos” sin datos (valor 0)
 		List<String> permitidos = eje.getCodigosPermitidos();
 		if (permitidos != null && !permitidos.isEmpty()) {
 			for (String cod : permitidos) {
 				
-				if(eje.getNombreCampo().equalsIgnoreCase("edades")) {
+				if(CAMPOS_NUMERICOS.containsKey(eje.getNombreCampo())) {
 					String desc = cod;
 					if (desc != null && !conteo.containsKey(desc)) {
 						conteo.put(desc, 0L);
@@ -394,23 +405,6 @@ public class GraphicsUseUcase {
 	    };
 	}
 
-	public Function<RegistroEvento, List<String>> extractorViolencia(String campo) {
-
-		return switch (campo) {
-		case "esAsesinato" -> re -> re.getPersonasAfectadas() == null ? List.of("Sin dato")
-				: re.getPersonasAfectadas().stream().map(PersonaAfectada::getViolencia).filter(Objects::nonNull)
-						.map(Violencia::getEsAsesinato).map(this::booleanLabel).filter(Objects::nonNull).toList();
-
-		case "tiposViolencia" -> re -> re.getPersonasAfectadas() == null ? List.of("Sin dato")
-				: re.getPersonasAfectadas().stream().map(PersonaAfectada::getViolencia).filter(Objects::nonNull)
-						.map(Violencia::getTipoViolencia).filter(Objects::nonNull).map(Catalogo::getDescripcion)
-						.toList();
-
-		// …otros campos de Violencia
-		default -> re -> List.of("Sin dato");
-		};
-	}
-	
 	private Function<RegistroEvento, List<String>> extractorDerechosVulnerados(String nombreCampo, List<String> permitidos) {
 	    return re -> {
 	        if (re.getPersonasAfectadas() == null || re.getPersonasAfectadas().isEmpty())
@@ -548,7 +542,343 @@ public class GraphicsUseUcase {
 	        default -> re -> List.of("Sin dato");
 	    };
 	}
+	
+	/* =========================================================
+	 *  Detención / Integridad   (evento.persona.detencionIntegridad)
+	 * ========================================================= */
+	private Function<RegistroEvento, List<String>> extractorDetencion(String campo,
+	                                                                  List<String> permitidos) {
 
+	    return switch (campo) {
+	    
+	        /* ----------  Catálogo: tipoDetencion  ---------- */
+	        case "tiposDetencion" -> re -> {
+	            if (re.getPersonasAfectadas() == null)  
+	            	return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getTipoDetencion)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Booleano: ordenJudicial  ---------- */
+	        case "ordenJudicial" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getOrdenJudicial)
+	                     .map(this::booleanLabel)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Catálogo: autoridadInvolucrada  ---------- */
+	        case "autoridadesInvolucradas" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getAutoridadInvolucrada)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Booleano: huboTortura  ---------- */
+	        case "huboTortura" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getHuboTortura)
+	                     .map(this::booleanLabel)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Catálogo: motivoDetencion  ---------- */
+	        case "motivosDetencion" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getMotivoDetencion)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Número: duracionDiasExactos  ---------- */
+	        case "diasExactos" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            List<String> permitidosStr = permitidos == null ? List.of() : permitidos;
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getDuracionDias)
+	                     .filter(Objects::nonNull)
+	                     .map(String::valueOf)
+	                     .filter(s -> permitidosStr.isEmpty() || permitidosStr.contains(s))
+	                     .toList();
+	        };
+
+	        /* ----------  Booleano: accesoAbogado  ---------- */
+	        case "accesoAbogado" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getAccesoAbogado)
+	                     .map(this::booleanLabel)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Texto libre: resultado  ---------- */
+	        case "resultados" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getResultado)
+	                     .filter(Objects::nonNull)
+	                     .filter(res -> permitido(res, permitidos))  // aquí comparamos literal
+	                     .toList();
+	        };
+
+	        /* ----------  Por defecto ---------- */
+	        default -> re -> List.of();
+	    };
+	}
+
+
+	/* =========================================================
+	 *  Expresión / Censura  (evento → persona → expresionCensura)
+	 * ========================================================= */
+	private Function<RegistroEvento, List<String>> extractorCensura(
+	        String campo,
+	        List<String> permitidos) {
+
+	    return switch (campo) {
+
+	        /* ----------  Catálogo: medioExpresion  ---------- */
+	        case "mediosExpresion" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getExpresionCensura)
+	                     .filter(Objects::nonNull)
+	                     .map(ExpresionCensura::getMedioExpresion)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Catálogo: tipoRepresion  ---------- */
+	        case "tiposRepresion" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getExpresionCensura)
+	                     .filter(Objects::nonNull)
+	                     .map(ExpresionCensura::getTipoRepresion)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Booleano: represaliasLegales  ---------- */
+	        case "represaliasLegales" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getExpresionCensura)
+	                     .filter(Objects::nonNull)
+	                     .map(ExpresionCensura::getRepresaliasLegales)
+	                     .map(this::booleanLabel)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Booleano: represaliasFisicas  ---------- */
+	        case "represaliasFisicas" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getExpresionCensura)
+	                     .filter(Objects::nonNull)
+	                     .map(ExpresionCensura::getRepresaliasFisicas)
+	                     .map(this::booleanLabel)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Catálogo: actorCensor  ---------- */
+	        case "actoresCensores" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getExpresionCensura)
+	                     .filter(Objects::nonNull)
+	                     .map(ExpresionCensura::getActorCensor)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+
+	        /* ----------  Texto libre: consecuencia  ---------- */
+	        case "consecuencias" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getExpresionCensura)
+	                     .filter(Objects::nonNull)
+	                     .map(ExpresionCensura::getConsecuencia)
+	                     .filter(Objects::nonNull)
+	                     .filter(txt -> permitido(txt, permitidos))   // comparación literal
+	                     .toList();
+	        };
+
+	        /* ----------  Por defecto  ---------- */
+	        default -> re -> List.of();
+	    };
+	}
+	
+	/* =========================================================
+	 *  Acceso a la Justicia  (evento → persona → accesoJusticia)
+	 * ========================================================= */
+	private Function<RegistroEvento, List<String>> extractorJusticia(
+	        String campo,
+	        List<String> permitidos) {
+
+	    return switch (campo) {
+
+	        /* ---------- Catálogo: tipoProceso ---------- */
+	        case "tiposProceso" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getAccesoJusticia)
+	                    .filter(Objects::nonNull)
+	                    .map(AccesoJusticia::getTipoProceso)
+	                    .filter(Objects::nonNull)
+	                    .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                    .map(Catalogo::getDescripcion)
+	                    .filter(Objects::nonNull)
+	                    .toList();
+	        };
+
+	        /* ---------- Catálogo: tipoDenunciante ---------- */
+	        case "tiposDenunciante" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getAccesoJusticia)
+	                    .filter(Objects::nonNull)
+	                    .map(AccesoJusticia::getTipoDenunciante)
+	                    .filter(Objects::nonNull)
+	                    .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                    .map(Catalogo::getDescripcion)
+	                    .filter(Objects::nonNull)
+	                    .toList();
+	        };
+
+	        /* ---------- Catálogo: duracionProceso ---------- */
+	        case "duracionesProceso" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getAccesoJusticia)
+	                    .filter(Objects::nonNull)
+	                    .map(AccesoJusticia::getDuracionProceso)
+	                    .filter(Objects::nonNull)
+	                    .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                    .map(Catalogo::getDescripcion)
+	                    .filter(Objects::nonNull)
+	                    .toList();
+	        };
+
+	        /* ---------- Booleano: accesoAbogado ---------- */
+	        case "accesoAbogado" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getAccesoJusticia)
+	                    .filter(Objects::nonNull)
+	                    .map(AccesoJusticia::getAccesoAbogado)
+	                    .map(this::booleanLabel)
+	                    .filter(Objects::nonNull)
+	                    .toList();
+	        };
+
+	        /* ---------- Booleano: huboParcialidad ---------- */
+	        case "huboParcialidad" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getAccesoJusticia)
+	                    .filter(Objects::nonNull)
+	                    .map(AccesoJusticia::getHuboParcialidad)
+	                    .map(this::booleanLabel)
+	                    .filter(Objects::nonNull)
+	                    .toList();
+	        };
+
+	        /* ---------- Texto libre: resultadoProceso ---------- */
+	        case "resultadosProceso" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getAccesoJusticia)
+	                    .filter(Objects::nonNull)
+	                    .map(AccesoJusticia::getResultadoProceso)
+	                    .filter(Objects::nonNull)
+	                    .filter(txt -> permitido(txt, permitidos))   // comparación literal
+	                    .toList();
+	        };
+
+	        /* ---------- Texto libre: instancia ---------- */
+	        case "instancias" -> re -> {
+	            if (re.getPersonasAfectadas() == null) return List.of();
+
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getAccesoJusticia)
+	                    .filter(Objects::nonNull)
+	                    .map(AccesoJusticia::getInstancia)
+	                    .filter(Objects::nonNull)
+	                    .filter(txt -> permitido(txt, permitidos))
+	                    .toList();
+	        };
+
+	        /* ---------- Por defecto ---------- */
+	        default -> re -> List.of();
+	    };
+	}
 
 	/*
 	 * ========================================================= Helper para Boolean

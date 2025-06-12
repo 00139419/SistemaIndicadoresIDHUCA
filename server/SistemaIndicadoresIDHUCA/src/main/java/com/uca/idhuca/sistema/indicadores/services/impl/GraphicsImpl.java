@@ -83,7 +83,7 @@ public class GraphicsImpl implements IGraphics {
 			throw new ValidationException(ERROR, "No hay más registros que mostrar");
 		}
 		log.info("[{}] Registros obtenidos: {}", key, registros.size());
-
+		
 		/* ---------- 1. Detectar campo eje X ------------ */
 		CampoSeleccionado ejeX = null;
 		try {

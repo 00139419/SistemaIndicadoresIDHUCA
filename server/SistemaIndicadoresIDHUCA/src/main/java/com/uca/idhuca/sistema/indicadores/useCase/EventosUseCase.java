@@ -63,32 +63,48 @@ public class EventosUseCase {
 	    PersonaAfectada persona = new PersonaAfectada();
 	    actualizarDatosPersonalesDesdeDTO(persona, dto, true);
 
+	    log.info("[{}] Primero if violencia: " + (flagViolencia && dto.getViolencia() != null), "SISTEM");
+	    
 	    if (flagViolencia && dto.getViolencia() != null) {
 	        Violencia violencia = new Violencia();
 	        actualizarViolenciaDesdeDTO(violencia, dto.getViolencia());
 	        violencia.setPersona(persona);
 	        persona.setViolencia(violencia);
+	        
+	        log.info("[{}] Primero if violencia resultado: " + (violencia.toString()), "SISTEM");
 	    }
 
+	    log.info("[{}] Primero if detencion: " + (flagDetencion && dto.getDetencionIntegridad() != null), "SISTEM");
+	    
 	    if (flagDetencion && dto.getDetencionIntegridad() != null) {
 	        DetencionIntegridad detencion = new DetencionIntegridad();
 	        actualizarIntegridadDesdeDTO(detencion, dto.getDetencionIntegridad());
 	        detencion.setPersona(persona);
 	        persona.setDetencionIntegridad(detencion);
+	        
+	        log.info("[{}] Primero if detencion resultado: " + (detencion.toString()), "SISTEM");
 	    }
 
+	    log.info("[{}] Primero if expresion: " + (flagExpresion && dto.getExpresionCensura() != null), "SISTEM");
+	    
 	    if (flagExpresion && dto.getExpresionCensura() != null) {
 	        ExpresionCensura expresion = new ExpresionCensura();
 	        actualizarExpresionDesdeDTO(expresion, dto.getExpresionCensura());
 	        expresion.setPersona(persona);
 	        persona.setExpresionCensura(expresion);
+	        
+	        log.info("[{}] Primero if expresion resultado: " + (expresion.toString()), "SISTEM");
 	    }
 
+	    log.info("[{}] Primero if justicia: " + (flagJusticia && dto.getAccesoJusticia() != null), "SISTEM");
+	    
 	    if (flagJusticia && dto.getAccesoJusticia() != null) {
 	        AccesoJusticia justicia = new AccesoJusticia();
 	        actualizarJusticiaDesdeDTO(justicia, dto.getAccesoJusticia());
 	        justicia.setPersona(persona);
 	        persona.setAccesoJusticia(justicia);
+	        
+	        log.info("[{}] Primero if justicia resultado: " + (justicia.toString()), "SISTEM");
 	    }
 
 	    persona.setEvento(evento);
