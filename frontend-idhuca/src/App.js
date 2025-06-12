@@ -15,7 +15,8 @@ import Parameter from "./pages/Parameters";
 import Users from "./pages/users/Users";
 import AuditoriaPage from './pages/AuditoriaPage';
 import FichaPage from './pages/FichaPage';
-import Registros from './pages/Registros';
+import Registros from './pages/registros/Registros';
+import Graficos from './pages/registros/Graficos';
 import { UserProvider } from './Contexts/UserContext';
 
 // Estilos de PrimeReact
@@ -77,6 +78,16 @@ function App() {
             <Route path="/parametros" element={
               <ProtectedRoute>
                 <Parameter />
+              </ProtectedRoute>
+            } />
+            <Route path="/select-register" element={
+              <ProtectedRoute>
+                <Registros />
+              </ProtectedRoute>
+            } />
+            <Route path="/graphs" element={
+              <ProtectedRoute>
+                <Graficos />
               </ProtectedRoute>
             } />
           </Route>
