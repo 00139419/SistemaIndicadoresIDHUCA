@@ -15,7 +15,7 @@ const Navbar = () => {
     { to: '/ficha-de-derechos', label: 'Ficha de derechos', roles: ['ROL_1', 'ROL_2', 'ROL_3'] },
     { to: '/configuraciones', label: 'Configuraciones', roles: ['ROL_1', 'ROL_2'] },
     { to: '/users', label: 'Usuarios', roles: ['ROL_1'] },
-    { to: '/Mantenimiento', label: 'Mantenimiento', roles: ['ROL_1'] },
+    { to: '/Mantenimiento', label: 'Mantenimiento', roles: ['ROL_1', 'ROL_2'] },
     { to: '/auditoria', label: 'Auditoría', roles: ['ROL_1'] },
     { to: '/parametros', label: 'Parámetros', roles: ['ROL_1'] },
     ];

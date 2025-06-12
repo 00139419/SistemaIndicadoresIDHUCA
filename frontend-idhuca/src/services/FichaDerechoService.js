@@ -12,7 +12,12 @@ export const fetchFichasByDerecho = async (derechoCodigo) => {
   }
   
   try {
-    const response = await axios.post(`${API_BASE_URL}/getAll/post/${derechoCodigo}`, {}, {
+   
+    const requestBody = {
+      codigoDerecho: derechoCodigo
+    };
+
+    const response = await axios.post(`${API_BASE_URL}/getAll/post`, requestBody, {
       headers: {
         Authorization: `Bearer ${TOKEN}`,
         'Content-Type': 'application/json'
