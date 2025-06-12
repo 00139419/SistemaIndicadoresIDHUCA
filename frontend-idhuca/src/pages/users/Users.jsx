@@ -137,10 +137,10 @@ const GestionUsuarios = () => {
   return (
     <div className="container-fluid px-4 py-3">
       {/* Header */}
-      <div className="row mb-4">
+      <div className="row mb-1">
         <div className="col-12">
           <h2
-            className="text-center mb-4"
+            className="text-center mb-1"
             style={{ fontSize: "2.5rem", fontWeight: "bold" }}
           >
             Usuarios
