@@ -15,17 +15,17 @@ const VistaRegistrosDinamica = ({
   onGenerateChart = null,
   onFilter = null,
   showActions = true,
-  itemsPerPage = 15,
+  currentPage,
+  totalPages,
+  onPageChange,
+  itemsPerPage = 10
 }) => {
   const { userRole } = useAuth(); // Obtener el rol del usuario
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+ // const [currentPage, setCurrentPage] = useState(1);
+  //const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate(); 
   
 
-  useEffect(() => {
-    setTotalPages(Math.ceil(data.length / itemsPerPage));
-  }, [data.length, itemsPerPage]);
 
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -34,7 +34,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    onPageChange(pageNumber);
   };
 
   const handleGenerateChart = () => {
