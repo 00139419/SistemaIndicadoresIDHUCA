@@ -9,8 +9,6 @@ const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
@@ -20,8 +18,6 @@ const GestionUsuarios = () => {
   const [userIdToView, setUserIdToView] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [userToChangePassword, setUserToChangePassword] = useState(null);
-
-  const usersPerPage = 15;
 
   useEffect(() => {
     fetchUsuarios();
@@ -35,7 +31,6 @@ const GestionUsuarios = () => {
     return rol;
   };
 
-  // Modify the fetchUsuarios function
   const fetchUsuarios = async () => {
     try {
       setIsLoading(true);
@@ -69,7 +64,6 @@ const GestionUsuarios = () => {
       // Ensure we're working with an array
       const usuariosArray = Array.isArray(data.entity) ? data.entity : [];
       setUsuarios(usuariosArray);
-      setTotalPages(Math.ceil(usuariosArray.length / usersPerPage));
     } catch (err) {
       console.error("Error fetching users:", err);
       setError(err.message);
@@ -91,255 +85,280 @@ const GestionUsuarios = () => {
     });
   };
 
-  const getCurrentPageUsers = () => {
-    const startIndex = (currentPage - 1) * usersPerPage;
-    const endIndex = startIndex + usersPerPage;
-    return usuarios.slice(startIndex, endIndex);
-  };
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const renderPagination = () => {
-    if (totalPages <= 1) return null;
-
-    return (
-      <div className="d-flex justify-content-between align-items-center mt-3">
-        <div className="text-muted">
-          Mostrar {Math.min(usersPerPage, usuarios.length)} de {usuarios.length}
-        </div>
-        <div>
-          <span className="me-2">
-            Página {currentPage} de {totalPages}
-          </span>
-          <div className="btn-group">
-            <button
-              className="btn btn-outline-secondary btn-sm"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              ‹
-            </button>
-            <button
-              className="btn btn-outline-secondary btn-sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              ›
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <div className="container-fluid px-4 py-3">
-      {/* Header */}
-      <div className="row mb-1">
-        <div className="col-12">
-          <h2
-            className="text-center mb-1"
-            style={{ fontSize: "2.5rem", fontWeight: "bold" }}
-          >
-            Usuarios
-          </h2>
-        </div>
+    <div className="d-flex flex-column" style={{ height: 'calc(100vh - 160px)' }}>
+      {/* Header fijo */}
+      <div className="px-4 py-3 border-bottom bg-white">
+        <h1 className="mb-0">
+          <i className="bi bi-people-fill me-2 text-primary"></i>
+          Gestión de Usuarios
+        </h1>
       </div>
 
-      {/* Action Buttons */}
-      <div className="row mb-3">
-        <div className="col-12">
-          <div className="d-flex gap-2 flex-wrap">
+      {/* Contenido con scroll */}
+      <div className="flex-grow-1 px-4 py-3" style={{ overflowY: 'auto', height: '100%' }}>
+
+        {/* Botón de acción */}
+        <div className="mb-3">
+          <div className="d-flex justify-content-between align-items-center mb-3">
             <button
               className="btn btn-primary"
               onClick={() => setShowCreateModal(true)}
             >
-              <i className="bi bi-plus-circle me-2"></i>
-              Crear Usuario
+              <i className="bi bi-person-plus-fill me-2"></i>
+              Nuevo Usuario
             </button>
 
-            <CreateUserModal
-              show={showCreateModal}
-              onClose={() => setShowCreateModal(false)}
-              onSuccess={() => {
-                fetchUsuarios();
-                setShowCreateModal(false);
-              }}
-            />
+            <button
+              className="btn btn-outline-primary btn-sm"
+              onClick={fetchUsuarios}
+              disabled={isLoading}
+            >
+              <i className="bi bi-arrow-clockwise me-1"></i>
+              Actualizar
+            </button>
+          </div>
+
+          {/* Información de registros */}
+          <div className="mb-3 small text-muted">
+            <i className="bi bi-info-circle me-1"></i>
+            {usuarios.length > 0 ?
+              `Total de usuarios: ${usuarios.length}` :
+              'No hay usuarios para mostrar'}
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="row">
-        <div className="col-12">
-          {isLoading ? (
-            <div className="d-flex justify-content-center py-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Cargando...</span>
-              </div>
+        {isLoading ? (
+          <div className="d-flex justify-content-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Cargando...</span>
             </div>
-          ) : error ? (
-            <div className="alert alert-danger">
-              <strong>Error:</strong> {error}
-            </div>
-          ) : (
-            <>
-              {/* Table */}
-              <div className="table-responsive">
-                <table className="table table-hover mb-0">
-                  <thead style={{ backgroundColor: "#2c3e50", color: "white" }}>
-                    <tr>
-                      <th>ID</th>
-                      <th>Nombre</th>
-                      <th>Email</th>
-                      <th>Rol</th>
-                      <th>Estado</th>
-                      <th>Fecha Creación</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {getCurrentPageUsers().length > 0 ? (
-                      getCurrentPageUsers().map((usuario, index) => (
-                        <tr key={usuario.id || index}>
-                          <td>{usuario.id}</td>
-                          <td>
-                            {usuario.nombre ||
-                              `${usuario.firstName} ${usuario.lastName}`.trim()}
-                          </td>
-                          <td>{usuario.email}</td>
-                          <td>
-                            <span className="badge bg-secondary">
-                              {getRoleDisplay(usuario.rol)}
-                            </span>
-                          </td>
-                          <td>
-                            <span
-                              className={`badge ${
-                                usuario.activo || usuario.active
-                                  ? "bg-success"
-                                  : "bg-danger"
-                              }`}
-                            >
-                              {usuario.activo || usuario.active
-                                ? "Activo"
-                                : "Inactivo"}
-                            </span>
-                          </td>
-                          <td>{formatDate(usuario.creadoEn)}</td>
-                          <td>
-                            <div className="d-flex gap-1">
-                              <button
-                                className="btn btn-sm btn-outline-primary"
-                                title="Ver"
-                                onClick={() => {
-                                  setUserIdToView(usuario.id);
-                                  setShowViewModal(true);
-                                }}
-                              >
-                                👁️
-                              </button>
-                              <ViewUserModal
-                                show={showViewModal}
-                                onClose={() => {
-                                  setShowViewModal(false);
-                                  setUserIdToView(null);
-                                }}
-                                userId={userIdToView}
-                              />
-                              <button
-                                className="btn btn-sm btn-outline-warning"
-                                title="Cambiar Contraseña"
-                                onClick={() => {
-                                  setUserToChangePassword(usuario);
-                                  setShowPasswordModal(true);
-                                }}
-                              >
-                                🔑
-                              </button>
-                              <ChangePasswordModal
-                                show={showPasswordModal}
-                                onClose={() => {
-                                  setShowPasswordModal(false);
-                                  setUserToChangePassword(null);
-                                }}
-                                onSuccess={() => {
-                                  fetchUsuarios();
-                                  setShowPasswordModal(false);
-                                  setUserToChangePassword(null);
-                                }}
-                                user={userToChangePassword}
-                              />
-                              <button
-                                className="btn btn-sm btn-outline-success"
-                                title="Editar"
-                                onClick={() => {
-                                  setUserToUpdate(usuario);
-                                  setShowUpdateModal(true);
-                                }}
-                              >
-                                ✏️
-                              </button>
-                              <UpdateUserModal
-                                show={showUpdateModal}
-                                onClose={() => {
-                                  setShowUpdateModal(false);
-                                  setUserToUpdate(null);
-                                }}
-                                onSuccess={() => {
-                                  fetchUsuarios();
-                                  setShowUpdateModal(false);
-                                  setUserToUpdate(null);
-                                }}
-                                user={userToUpdate}
-                              />
-                              <button
-                                className="btn btn-sm btn-outline-danger"
-                                title="Eliminar"
-                                onClick={() => {
-                                  setUserToDelete(usuario);
-                                  setShowDeleteModal(true);
-                                }}
-                              >
-                                🗑️
-                              </button>
-                              <DeleteUserModal
-                                show={showDeleteModal}
-                                onClose={() => {
-                                  setShowDeleteModal(false);
-                                  setUserToDelete(null);
-                                }}
-                                onSuccess={() => {
-                                  fetchUsuarios();
-                                  setShowDeleteModal(false);
-                                  setUserToDelete(null);
-                                }}
-                                user={userToDelete}
-                              />
+          </div>
+        ) : error ? (
+          <div className="alert alert-danger">
+            <i className="bi bi-exclamation-triangle me-2"></i>
+            <strong>Error:</strong> {error}
+            <button
+              className="btn btn-sm btn-outline-danger ms-2"
+              onClick={fetchUsuarios}
+            >
+              <i className="bi bi-arrow-clockwise me-1"></i>
+              Reintentar
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Tabla de usuarios */}
+            <div className="table-responsive">
+              <table className="table table-bordered table-hover mb-0">
+                <thead className="table-dark">
+                  <tr>
+                    <th style={{ width: '60px', minWidth: '60px' }}>
+                      <i className="bi bi-hash me-1"></i>ID
+                    </th>
+                    <th style={{ minWidth: '150px' }}>
+                      <i className="bi bi-person me-1"></i>Nombre
+                    </th>
+                    <th style={{ minWidth: '200px' }}>
+                      <i className="bi bi-envelope me-1"></i>Email
+                    </th>
+                    <th style={{ width: '120px', minWidth: '120px' }}>
+                      <i className="bi bi-tags me-1"></i>Rol
+                    </th>
+                    <th style={{ width: '100px', minWidth: '100px' }}>
+                      <i className="bi bi-toggle-on me-1"></i>Estado
+                    </th>
+                    <th style={{ width: '140px', minWidth: '140px' }}>
+                      <i className="bi bi-calendar-plus me-1"></i>Fecha Creación
+                    </th>
+                    <th style={{ width: '240px', minWidth: '240px' }}>
+                      <i className="bi bi-gear me-1"></i>Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usuarios.length > 0 ? (
+                    usuarios.map((usuario, index) => (
+                      <tr key={usuario.id || index}>
+                        <td>
+                          <span className="badge bg-light text-dark">
+                            {usuario.id}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <div className="avatar-circle me-2">
+                              <i className="bi bi-person-circle fs-4 text-secondary"></i>
                             </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="7" className="text-center py-4 text-muted">
-                          No hay usuarios disponibles
+                            <div className="small">
+                              <strong>
+                                {usuario.nombre ||
+                                  `${usuario.firstName} ${usuario.lastName}`.trim()}
+                              </strong>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <i className="bi bi-envelope me-2 text-muted"></i>
+                            <span className="small">{usuario.email}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <span className="badge bg-secondary">
+                            <i className="bi bi-tags me-1"></i>
+                            {getRoleDisplay(usuario.rol)}
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            className={`badge ${usuario.activo || usuario.active
+                                ? "bg-success"
+                                : "bg-danger"
+                              }`}
+                          >
+                            <i className={`bi ${usuario.activo || usuario.active
+                                ? "bi-check-circle"
+                                : "bi-x-circle"
+                              } me-1`}></i>
+                            {usuario.activo || usuario.active
+                              ? "Activo"
+                              : "Inactivo"}
+                          </span>
+                        </td>
+                        <td className="small">
+                          <i className="bi bi-calendar me-1 text-muted"></i>
+                          {formatDate(usuario.creadoEn)}
+                        </td>
+                        <td>
+                          <div className="btn-group" role="group">
+                            {/* Ver detalles */}
+                            <button
+                              className="btn btn-sm btn-outline-info"
+                              title="Ver detalles del usuario"
+                              onClick={() => {
+                                setUserIdToView(usuario.id);
+                                setShowViewModal(true);
+                              }}
+                            >
+                              <i className="bi bi-eye"></i>
+                            </button>
+                            
+                            {/* Cambiar contraseña */}
+                            <button
+                              className="btn btn-sm btn-outline-warning"
+                              title="Cambiar contraseña"
+                              onClick={() => {
+                                setUserToChangePassword(usuario);
+                                setShowPasswordModal(true);
+                              }}
+                            >
+                              <i className="bi bi-key"></i>
+                            </button>
+                            
+                            {/* Editar usuario */}
+                            <button
+                              className="btn btn-sm btn-outline-primary"
+                              title="Editar usuario"
+                              onClick={() => {
+                                setUserToUpdate(usuario);
+                                setShowUpdateModal(true);
+                              }}
+                            >
+                              <i className="bi bi-pencil-square"></i>
+                            </button>
+                            
+                            {/* Eliminar usuario */}
+                            <button
+                              className="btn btn-sm btn-outline-danger"
+                              title="Eliminar usuario"
+                              onClick={() => {
+                                setUserToDelete(usuario);
+                                setShowDeleteModal(true);
+                              }}
+                            >
+                              <i className="bi bi-trash"></i>
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Pagination */}
-              {renderPagination()}
-            </>
-          )}
-        </div>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="7" className="text-center py-4 text-muted">
+                        <i className="bi bi-people fs-1 mb-3 d-block text-muted"></i>
+                        No hay usuarios disponibles
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </div>
+
+      {/* Modales */}
+      <CreateUserModal
+        show={showCreateModal}
+        onClose={() => {
+          setShowCreateModal(false);
+        }}
+        onSuccess={() => {
+          fetchUsuarios();
+        }}
+      />
+
+      <ViewUserModal
+        show={showViewModal}
+        onClose={() => {
+          setShowViewModal(false);
+          setUserIdToView(null);
+        }}
+        userId={userIdToView}
+      />
+
+      <ChangePasswordModal
+        show={showPasswordModal}
+        onClose={() => {
+          setShowPasswordModal(false);
+          setUserToChangePassword(null);
+        }}
+        onSuccess={() => {
+          fetchUsuarios();
+          setShowPasswordModal(false);
+          setUserToChangePassword(null);
+        }}
+        user={userToChangePassword}
+      />
+
+      <UpdateUserModal
+        show={showUpdateModal}
+        onClose={() => {
+          setShowUpdateModal(false);
+          setUserToUpdate(null);
+        }}
+        onSuccess={() => {
+          fetchUsuarios();
+          setShowUpdateModal(false);
+          setUserToUpdate(null);
+        }}
+        user={userToUpdate}
+      />
+
+      <DeleteUserModal
+        show={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+          setUserToDelete(null);
+        }}
+        onSuccess={() => {
+          fetchUsuarios();
+          setShowDeleteModal(false);
+          setUserToDelete(null);
+        }}
+        user={userToDelete}
+      />
     </div>
   );
 };

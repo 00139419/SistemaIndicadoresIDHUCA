@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CreateUserModal = ({ show, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -50,7 +50,7 @@ const CreateUserModal = ({ show, onClose, onSuccess }) => {
       setSuccessMessage(data.mensaje);
       setShowCloseButton(true);
 
-      //Call onSuccess to refresh the users list
+      // Call onSuccess to refresh the users list
       onSuccess();
   
     } catch (err) {
@@ -61,16 +61,34 @@ const CreateUserModal = ({ show, onClose, onSuccess }) => {
     }
   };
 
-const handleClose = () => {
-  setSuccessMessage("");
-  setError(null);
-  setFormData({
-    nombre: "",
-    email: "",
-    rol: { codigo: "ROL_1" },
-  });
-  onClose();
-};
+  const handleClose = () => {
+    setSuccessMessage("");
+    setError(null);
+    setFormData({
+      nombre: "",
+      email: "",
+      rol: { codigo: "ROL_1" },
+    });
+    setIsLoading(false);
+    setShowCloseButton(true);
+    onClose();
+  };
+
+  // Reset states when modal is shown/hidden
+  useEffect(() => {
+    if (show) {
+      // Reset all states when modal opens
+      setSuccessMessage("");
+      setError(null);
+      setIsLoading(false);
+      setShowCloseButton(true);
+      setFormData({
+        nombre: "",
+        email: "",
+        rol: { codigo: "ROL_1" },
+      });
+    }
+  }, [show]);
 
   if (!show) return null;
 

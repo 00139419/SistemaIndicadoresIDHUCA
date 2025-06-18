@@ -8,6 +8,8 @@ import JusticiaIcon from '../assets/icons/justicia.png';
 import VidaIcon from '../assets/icons/vida.png';
 
 const FichaDerechoView = () => {
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [createResult, setCreateResult] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterDate, setFilterDate] = useState('');
   const [filterDateEnd, setFilterDateEnd] = useState('');
@@ -17,13 +19,18 @@ const FichaDerechoView = () => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [totalEntries, setTotalEntries] = useState(0);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteResult, setDeleteResult] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [paginacionInfo, setPaginacionInfo] = useState({
+    paginaActual: 0,
+    totalPaginas: 1,
+    totalRegistros: 0,
+    registrosPorPagina: 10
+  });
   const fileInputRef = useRef(null);
 
   const location = useLocation();
@@ -44,7 +51,7 @@ const FichaDerechoView = () => {
     if (derechoId) {
       loadFichas();
     }
-  }, [derechoId]);
+  }, [derechoId, currentPage, showCount, filterDate, filterDateEnd]);
 
   const loadFichas = async () => {
     try {
@@ -52,7 +59,29 @@ const FichaDerechoView = () => {
       setError(null);
 
       const derechoCodigo = generateDerechoCodigo(derechoId);
-      const response = await fetchFichasByDerecho(derechoCodigo);
+
+      // Preparar opciones con filtros para el servidor
+      const options = {
+        filtros: {
+          paginacion: {
+            registrosPorPagina: showCount,
+            paginaActual: currentPage - 1 // El servidor usa base 0
+          }
+        }
+      };
+
+      // Agregar filtros de fecha si están presentes
+      if (filterDate || filterDateEnd) {
+        options.filtros.rangoFechas = {};
+        if (filterDate) {
+          options.filtros.rangoFechas.fechaInicio = filterDate;
+        }
+        if (filterDateEnd) {
+          options.filtros.rangoFechas.fechaFin = filterDateEnd;
+        }
+      }
+
+      const response = await fetchFichasByDerecho(derechoCodigo, options);
 
       if (response.success) {
         const transformedEntries = response.data.map(ficha => ({
@@ -71,7 +100,7 @@ const FichaDerechoView = () => {
         }));
 
         setEntries(transformedEntries);
-        setTotalEntries(transformedEntries.length);
+        setPaginacionInfo(response.paginacionInfo);
       } else {
         setError(response.message || 'Error al cargar las fichas');
       }
@@ -105,10 +134,12 @@ const FichaDerechoView = () => {
         setTimeout(async () => {
           setShowDeleteModal(false);
           setItemToDelete(null);
+
+          // Recargar datos desde el servidor después de eliminar
           await loadFichas();
 
-          const newTotalEntries = entries.length - 1;
-          const newTotalPages = Math.ceil(newTotalEntries / showCount);
+          // Ajustar página actual si es necesario
+          const newTotalPages = Math.ceil((paginacionInfo.totalRegistros - 1) / showCount);
           if (currentPage > newTotalPages && newTotalPages > 0) {
             setCurrentPage(newTotalPages);
           }
@@ -166,43 +197,19 @@ const FichaDerechoView = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const getFilteredEntries = () => {
-    let filtered = [...entries];
-
-    if (filterDate) {
-      filtered = filtered.filter(entry => {
-        const entryDate = new Date(entry.fecha);
-        const filterDateObj = new Date(filterDate);
-        return entryDate >= filterDateObj;
-      });
-    }
-
-    if (filterDateEnd) {
-      filtered = filtered.filter(entry => {
-        const entryDate = new Date(entry.fecha);
-        const filterDateEndObj = new Date(filterDateEnd);
-        return entryDate <= filterDateEndObj;
-      });
-    }
-
-    filtered.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-    return filtered;
-  };
-
-  const filteredEntries = getFilteredEntries();
-  const startIndex = (currentPage - 1) * showCount;
-  const endIndex = startIndex + showCount;
-  const currentEntries = filteredEntries.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filteredEntries.length / showCount);
-
   const handleSaveNewPost = async () => {
     if (!newTitle.trim() || !newPost.trim()) {
-      alert('Por favor ingresa tanto el título como el contenido para la nueva ficha');
+      setCreateResult({
+        success: false,
+        message: 'Por favor ingresa tanto el título como el contenido para la nueva ficha'
+      });
+      setShowResultModal(true);
       return;
     }
 
     try {
       setSaving(true);
+      setCreateResult(null);
 
       const fichaData = {
         derechoCodigo: generateDerechoCodigo(derechoId),
@@ -214,21 +221,50 @@ const FichaDerechoView = () => {
 
       const response = await createFicha(fichaData, selectedFiles);
 
+      setCreateResult(response);
+      setShowResultModal(true);
+
       if (response.success) {
         setNewTitle('');
         setNewPost('');
         setSelectedFiles([]);
-        await loadFichas();
-        alert('Ficha creada exitosamente');
-      } else {
-        alert(response.message || 'Error al crear la ficha');
+
+        // Recargar desde el servidor después de crear
+        setTimeout(async () => {
+          setShowResultModal(false);
+          await loadFichas();
+        }, 1500);
       }
     } catch (error) {
       console.error('Error al crear ficha:', error);
-      alert(error.message || 'Error al crear la ficha');
+      setCreateResult({
+        success: false,
+        message: error.message || 'Error al crear la ficha'
+      });
+      setShowResultModal(true);
     } finally {
       setSaving(false);
     }
+  };
+
+  // Manejadores para filtros y paginación
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleShowCountChange = (newCount) => {
+    setShowCount(Number(newCount));
+    setCurrentPage(1); // Resetear a primera página
+  };
+
+  const handleFilterDateChange = (newDate) => {
+    setFilterDate(newDate);
+    setCurrentPage(1); // Resetear a primera página cuando cambian los filtros
+  };
+
+  const handleFilterDateEndChange = (newDate) => {
+    setFilterDateEnd(newDate);
+    setCurrentPage(1); // Resetear a primera página cuando cambian los filtros
   };
 
   if (loading) {
@@ -323,7 +359,7 @@ const FichaDerechoView = () => {
                     <input
                       type="date"
                       value={filterDate}
-                      onChange={(e) => setFilterDate(e.target.value)}
+                      onChange={(e) => handleFilterDateChange(e.target.value)}
                       className="form-control form-control-sm"
                       style={{ fontSize: '10px', width: '130px' }}
                     />
@@ -335,7 +371,7 @@ const FichaDerechoView = () => {
                     <input
                       type="date"
                       value={filterDateEnd}
-                      onChange={(e) => setFilterDateEnd(e.target.value)}
+                      onChange={(e) => handleFilterDateEndChange(e.target.value)}
                       className="form-control form-control-sm"
                       style={{ fontSize: '10px', width: '130px' }}
                     />
@@ -344,10 +380,7 @@ const FichaDerechoView = () => {
                     <select
                       className="form-select form-select-sm"
                       value={showCount}
-                      onChange={(e) => {
-                        setShowCount(Number(e.target.value));
-                        setCurrentPage(1);
-                      }}
+                      onChange={(e) => handleShowCountChange(e.target.value)}
                       style={{ width: '90px' }}
                     >
                       <option value={5}>5</option>
@@ -357,32 +390,32 @@ const FichaDerechoView = () => {
                   </div>
                   <div className="col-auto">
                     <div className="d-flex align-items-center bg-light px-2 py-1 rounded">
-                      <span className="fw-semibold text-primary me-1 small">{filteredEntries.length}</span>
+                      <span className="fw-semibold text-primary me-1 small">{paginacionInfo.totalRegistros}</span>
                       <span className="small text-dark">entradas</span>
                     </div>
                   </div>
                   <div className="col-auto ms-auto">
                     <span className="small text-muted">
-                      Pág {currentPage}/{totalPages || 1}
+                      Pág {paginacionInfo.paginaActual + 1}/{paginacionInfo.totalPaginas || 1}
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Lista de entradas - área scrolleable principal */}
-              <div className="card-body p-2" style={{ 
-                flex: '1 1 auto', 
+              <div className="card-body p-2" style={{
+                flex: '1 1 auto',
                 overflow: 'auto',
                 minHeight: '0'
               }}>
-                {currentEntries.length === 0 ? (
+                {entries.length === 0 ? (
                   <div className="text-center py-4">
                     <FileText size={32} className="text-muted mb-2" />
                     <p className="text-muted small">No se encontraron entradas</p>
                   </div>
                 ) : (
                   <div className="d-flex flex-column gap-2">
-                    {currentEntries.map((entry) => (
+                    {entries.map((entry) => (
                       <div key={entry.id} className="card border-0 shadow-sm">
                         <div className="card-body p-2" style={{ backgroundColor: '#f8f9fa' }}>
                           <div className="d-flex justify-content-between align-items-start mb-1">
@@ -540,10 +573,10 @@ const FichaDerechoView = () => {
               </div>
 
               {/* Paginación fija al final */}
-              {totalPages > 1 && (
+              {paginacionInfo.totalPaginas > 1 && (
                 <div className="card-footer bg-white border-top p-2 d-flex justify-content-between align-items-center" style={{ flexShrink: 0 }}>
                   <button
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
                     className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                   >
@@ -552,14 +585,14 @@ const FichaDerechoView = () => {
                   </button>
 
                   <div className="d-flex align-items-center gap-1">
-                    {[...Array(Math.min(3, totalPages))].map((_, i) => {
+                    {[...Array(Math.min(3, paginacionInfo.totalPaginas))].map((_, i) => {
                       let pageNum;
-                      if (totalPages <= 3) {
+                      if (paginacionInfo.totalPaginas <= 3) {
                         pageNum = i + 1;
                       } else if (currentPage <= 2) {
                         pageNum = i + 1;
-                      } else if (currentPage >= totalPages - 1) {
-                        pageNum = totalPages - 2 + i;
+                      } else if (currentPage >= paginacionInfo.totalPaginas - 1) {
+                        pageNum = paginacionInfo.totalPaginas - 2 + i;
                       } else {
                         pageNum = currentPage - 1 + i;
                       }
@@ -567,7 +600,7 @@ const FichaDerechoView = () => {
                       return (
                         <button
                           key={pageNum}
-                          onClick={() => setCurrentPage(pageNum)}
+                          onClick={() => handlePageChange(pageNum)}
                           className={`btn btn-sm ${currentPage === pageNum ? 'btn-primary' : 'btn-outline-secondary'}`}
                           style={{ width: '28px', height: '28px', fontSize: '11px' }}
                         >
@@ -578,8 +611,8 @@ const FichaDerechoView = () => {
                   </div>
 
                   <button
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage === totalPages}
+                    onClick={() => handlePageChange(Math.min(paginacionInfo.totalPaginas, currentPage + 1))}
+                    disabled={currentPage === paginacionInfo.totalPaginas}
                     className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                   >
                     Sig
@@ -647,6 +680,54 @@ const FichaDerechoView = () => {
                   disabled={deleting}
                 >
                   {deleting ? 'Eliminando...' : 'Eliminar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Modal para resultado de creación */}
+      {showResultModal && (
+        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-sm">
+            <div className="modal-content">
+              <div className="modal-header py-2">
+                <h6 className="modal-title">
+                  {createResult?.success ? 'Éxito' : 'Error'}
+                </h6>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => {
+                    setShowResultModal(false);
+                    setCreateResult(null);
+                  }}
+                  disabled={saving}
+                ></button>
+              </div>
+              <div className="modal-body py-2">
+                <div className={`alert alert-sm ${createResult?.success ? 'alert-success' : 'alert-danger'} py-2 mb-0`}>
+                  <div className="d-flex align-items-center">
+                    {createResult?.success ? (
+                      <i className="bi bi-check-circle-fill me-2"></i>
+                    ) : (
+                      <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                    )}
+                    {createResult?.message}
+                  </div>
+                </div>
+              </div>
+              <div className="modal-footer py-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary"
+                  onClick={() => {
+                    setShowResultModal(false);
+                    setCreateResult(null);
+                  }}
+                  disabled={saving}
+                >
+                  Aceptar
                 </button>
               </div>
             </div>

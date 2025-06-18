@@ -6,14 +6,15 @@ const API_ADD_URL = `${API_BASE_URL}/add`;
 const API_UPDATE_URL = `${API_BASE_URL}/update`;
 const API_DELETE_URL = `${API_BASE_URL}/delete`;
 
-// Función para obtener el catálogo desde la API
-export const fetchCatalog = async (catalogKey, parentId = "1") => {
+// En CatalogService.js, reemplaza la función fetchCatalog con esta versión corregida:
+
+export const fetchCatalog = async (catalogKey, parentId = "1", paginaActual = 0, registrosPorPagina = 20) => {
   // Obtener el token del almacenamiento local
   const TOKEN = localStorage.getItem('authToken');
   
   if (!TOKEN) {
     console.error('No se encontró token de autenticación');
-    return [];
+    return { entity: [], paginacionInfo: {} };
   }
   
   // Creamos un objeto base con todos los catálogos establecidos en false
@@ -40,7 +41,13 @@ export const fetchCatalog = async (catalogKey, parentId = "1") => {
     municipios: false,
     securityQuestions: false,
     instituciones: false,
-    parentId: parentId
+    parentId: parentId,
+    filtros: {
+      paginacion: {
+        paginaActual: paginaActual,
+        registrosPorPagina: registrosPorPagina
+      }
+    }
   };
   
   // Si el catalogKey es válido, lo activamos en el objeto de solicitud
@@ -59,15 +66,29 @@ export const fetchCatalog = async (catalogKey, parentId = "1") => {
       }
     });
     
-    // Devolver la propiedad entity que contiene los datos del catálogo
-    return response.data.entity || [];
+    console.log('Respuesta completa del servidor:', response.data);
+    
+    // CORRECCIÓN: Devolver la estructura completa que incluye entity y paginacionInfo
+    if (response.data && response.data.codigo === 0) {
+      return {
+        entity: response.data.entity || [],
+        paginacionInfo: response.data.paginacionInfo || {
+          paginaActual: 1,
+          totalPaginas: 1,
+          totalRegistros: 0,
+          registrosPorPagina: registrosPorPagina
+        }
+      };
+    } else {
+      console.warn('Respuesta del servidor no exitosa:', response.data);
+      return { entity: [], paginacionInfo: {} };
+    }
     
   } catch (error) {
     console.error(`Error al obtener catálogo "${catalogKey}":`, error);
-    return [];
+    return { entity: [], paginacionInfo: {} };
   }
 };
-
 // Función para agregar un nuevo registro al catálogo
 export const addCatalogItem = async (catalogKey, newItemDescription, parentId = "1") => {
   // Obtener el token del almacenamiento local
