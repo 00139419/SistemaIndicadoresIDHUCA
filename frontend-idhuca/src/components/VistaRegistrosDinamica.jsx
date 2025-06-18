@@ -194,11 +194,11 @@ const VistaRegistrosDinamica = ({
                             backgroundColor: "#000000",
                             color: "white",
                             fontSize: "14px",
+                            lineHeight: "14px",
                             fontWeight: "600",
                             border: "none",
-                            width: showActions ? `${95/columns.length}%` : `${100/columns.length}%`,
-                            whiteSpace: "nowrap" 
-                        
+                            width: showActions ? `${150/columns.length}%` : `${100/columns.length}%`,
+                            textAlign: "center"
                           }}
                         >
                           {column.title || column.key}

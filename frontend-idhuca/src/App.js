@@ -8,7 +8,7 @@ import VerifyIdentity from './pages/VerifyIdentity';
 import ResetPassword from './pages/ResetPassword';
 import SetNewPassword from './pages/SetNewPassword';
 import ResetPasswordSuccess from './pages/ResetPasswordSuccess';
-import AgregarRegistro from './pages/registros/AgregarRegistro';
+import AgregarRegistro from './pages/registros/AgregarRegistro.jsx';
 import DetalleRegistro from './pages/registros/DetalleRegistro';
 import Form from './pages/Form';
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -96,7 +96,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-                        <Route
+            <Route
               path="/registros/add"
               element={
                 <ProtectedRoute>

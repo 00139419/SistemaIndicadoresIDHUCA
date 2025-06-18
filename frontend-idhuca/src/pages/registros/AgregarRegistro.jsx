@@ -1,190 +1,154 @@
-import React, { useState } from 'react';
-import { Form, Button, Row, Col, Card } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Calendar } from "primereact/calendar";
+import { Dropdown } from "primereact/dropdown";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Button } from "primereact/button";
+import { Card } from "primereact/card";
+
+import "primereact/resources/themes/lara-light-indigo/theme.css"; 
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
 
 const AgregarRegistro = () => {
-  const [formData, setFormData] = useState({
-    fechaHecho: '',
-    fuente: '',
-    estadoActual: '',
-    derechoAsociado: '',
-    observaciones: '',
-    departamento: '',
-    municipio: '',
-    lugarExacto: '',
-    personasAfectadas: [],
-  });
+  const [fechaHecho, setFechaHecho] = useState(null);
+  const [fuente, setFuente] = useState(null);
+  const [estadoActual, setEstadoActual] = useState(null);
+  const [derechoAsociado, setDerechoAsociado] = useState(null);
+  const [observaciones, setObservaciones] = useState("");
+  const [departamento, setDepartamento] = useState(null);
+  const [municipio, setMunicipio] = useState(null);
+  const [lugarExacto, setLugarExacto] = useState(null);
 
-  const [catalogos, setCatalogos] = useState({
-    fuentes: [],
-    estados: [],
-    derechos: [],
-    departamentos: [],
-    municipios: [],
-    lugaresExactos: [],
-    // Agregar más catálogos si es necesario
-  });
+  // Catálogos simulados
+  const fuentes = [{ codigo: "FUENTE_8", nombre: "Fuente 8" }];
+  const estados = [{ codigo: "ESTREG_3", nombre: "Estado 3" }];
+  const departamentos = [{ codigo: "DEP_1", nombre: "San Salvador" }];
+  const municipios = [{ codigo: "MUN_1_7", nombre: "Mejicanos" }];
+  const lugaresExactos = [{ codigo: "LUGEXAC_1", nombre: "Parque Central" }];
 
-  // Métodos para obtener los catálogos
-  const obtenerCatalogos = () => {
-    // Lógica futura para cargar los catálogos desde el backend
-    setCatalogos({
-      fuentes: [
-        { codigo: 'FUENTE_8', descripcion: 'Fuente 8' },
-        { codigo: 'FUENTE_9', descripcion: 'Fuente 9' },
-      ],
-      estados: [
-        { codigo: 'ESTREG_3', descripcion: 'Estado 3' },
-        { codigo: 'ESTREG_4', descripcion: 'Estado 4' },
-      ],
-      derechos: [
-        { codigo: 'DER_4', descripcion: 'Derecho 4' },
-        { codigo: 'DER_5', descripcion: 'Derecho 5' },
-      ],
-      departamentos: [
-        { codigo: 'DEP_1', descripcion: 'San Salvador' },
-        { codigo: 'DEP_6', descripcion: 'La Libertad' },
-      ],
-      municipios: [
-        { codigo: 'MUN_1_7', descripcion: 'Mejicanos' },
-        { codigo: 'MUN_6_7', descripcion: 'Santa Tecla' },
-      ],
-      lugaresExactos: [
-        { codigo: 'LUGEXAC_1', descripcion: 'Parque Central' },
-        { codigo: 'LUGEXAC_2', descripcion: 'Zona Universitaria' },
-      ],
-    });
-  };
-
-  // Llamar a los catálogos al cargar
-  React.useEffect(() => {
-    obtenerCatalogos();
-  }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = () => {
-    // Aquí generas el JSON final
-    const jsonFinal = {
-      fechaHecho: formData.fechaHecho,
-      fuente: { codigo: formData.fuente },
-      estadoActual: { codigo: formData.estadoActual },
-      derechoAsociado: { codigo: formData.derechoAsociado },
-      flagViolencia: false,
-      flagDetencion: false,
-      flagExpresion: false,
-      flagJusticia: false,
-      flagCensura: false,
-      flagRegimenExcepcion: false,
-      observaciones: formData.observaciones,
+  const handleGuardar = () => {
+    const json = {
+      fechaHecho: fechaHecho?.toISOString().split("T")[0],
+      fuente: { codigo: fuente?.codigo },
+      estadoActual: { codigo: estadoActual?.codigo },
+      derechoAsociado: { codigo: derechoAsociado?.codigo },
+      observaciones,
       ubicacion: {
-        departamento: { codigo: formData.departamento },
-        municipio: { codigo: formData.municipio },
-        lugarExacto: { codigo: formData.lugarExacto },
+        departamento: { codigo: departamento?.codigo },
+        municipio: { codigo: municipio?.codigo },
+        lugarExacto: { codigo: lugarExacto?.codigo },
       },
-      personasAfectadas: [], // Se agregará por separado
     };
-    console.log(jsonFinal);
-  };
+
+    console.log("JSON final (sin personas aún):", json);
+  }; 
 
   return (
-    <div className="container mt-4">
-      <Card className="p-4 shadow">
-        <h3>Registro de Hecho</h3>
-        <Form>
-          <Row>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Fecha del Hecho</Form.Label>
-                <Form.Control type="date" name="fechaHecho" value={formData.fechaHecho} onChange={handleInputChange} />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Fuente</Form.Label>
-                <Form.Select name="fuente" value={formData.fuente} onChange={handleInputChange}>
-                  <option value="">Seleccione</option>
-                  {catalogos.fuentes.map(f => (
-                    <option key={f.codigo} value={f.codigo}>{f.descripcion}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Estado Actual</Form.Label>
-                <Form.Select name="estadoActual" value={formData.estadoActual} onChange={handleInputChange}>
-                  <option value="">Seleccione</option>
-                  {catalogos.estados.map(e => (
-                    <option key={e.codigo} value={e.codigo}>{e.descripcion}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row className="mt-3">
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label>Derecho Asociado</Form.Label>
-                <Form.Select name="derechoAsociado" value={formData.derechoAsociado} onChange={handleInputChange}>
-                  <option value="">Seleccione</option>
-                  {catalogos.derechos.map(d => (
-                    <option key={d.codigo} value={d.codigo}>{d.descripcion}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label>Observaciones</Form.Label>
-                <Form.Control as="textarea" rows={2} name="observaciones" value={formData.observaciones} onChange={handleInputChange} />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row className="mt-3">
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Departamento</Form.Label>
-                <Form.Select name="departamento" value={formData.departamento} onChange={handleInputChange}>
-                  <option value="">Seleccione</option>
-                  {catalogos.departamentos.map(dep => (
-                    <option key={dep.codigo} value={dep.codigo}>{dep.descripcion}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Municipio</Form.Label>
-                <Form.Select name="municipio" value={formData.municipio} onChange={handleInputChange}>
-                  <option value="">Seleccione</option>
-                  {catalogos.municipios.map(mun => (
-                    <option key={mun.codigo} value={mun.codigo}>{mun.descripcion}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Lugar Exacto</Form.Label>
-                <Form.Select name="lugarExacto" value={formData.lugarExacto} onChange={handleInputChange}>
-                  <option value="">Seleccione</option>
-                  {catalogos.lugaresExactos.map(lug => (
-                    <option key={lug.codigo} value={lug.codigo}>{lug.descripcion}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <div className="mt-4 text-end">
-            <Button variant="primary" onClick={handleSubmit}>Guardar Hecho</Button>
+    <div className="p-4 surface-100 min-h-screen">
+      <Card title="📝 Registro del Hecho" className="shadow-4 border-round-lg">
+        <div className="formgrid grid p-fluid gap-4">
+          {/* Fecha del hecho */}
+          <div className="col-12 md:col-4">
+            <label className="font-semibold mb-2 block">
+              Fecha del hecho
+            </label>
+            <Calendar
+              value={fechaHecho}
+              onChange={(e) => setFechaHecho(e.value)}
+              dateFormat="yy-mm-dd"
+              showIcon
+              className="w-full"
+            />
           </div>
-        </Form>
+
+          {/* Fuente */}
+          <div className="col-12 md:col-4">
+            <label className="font-semibold mb-2 block">Fuente</label>
+            <Dropdown
+              value={fuente}
+              onChange={(e) => setFuente(e.value)}
+              options={fuentes}
+              optionLabel="nombre"
+              placeholder="Seleccione una fuente"
+              className="w-full"
+            />
+          </div>
+
+          {/* Estado Actual */}
+          <div className="col-12 md:col-4">
+            <label className="font-semibold mb-2 block">Estado Actual</label>
+            <Dropdown
+              value={estadoActual}
+              onChange={(e) => setEstadoActual(e.value)}
+              options={estados}
+              optionLabel="nombre"
+              placeholder="Seleccione un estado"
+              className="w-full"
+            />
+          </div>
+
+          {/* Departamento */}
+          <div className="col-12 md:col-4">
+            <label className="font-semibold mb-2 block">Departamento</label>
+            <Dropdown
+              value={departamento}
+              onChange={(e) => setDepartamento(e.value)}
+              options={departamentos}
+              optionLabel="nombre"
+              placeholder="Seleccione un departamento"
+              className="w-full"
+            />
+          </div>
+
+          {/* Municipio */}
+          <div className="col-12 md:col-4">
+            <label className="font-semibold mb-2 block">Municipio</label>
+            <Dropdown
+              value={municipio}
+              onChange={(e) => setMunicipio(e.value)}
+              options={municipios}
+              optionLabel="nombre"
+              placeholder="Seleccione un municipio"
+              className="w-full"
+            />
+          </div>
+
+          {/* Lugar exacto */}
+          <div className="col-12 md:col-4">
+            <label className="font-semibold mb-2 block">Lugar Exacto</label>
+            <Dropdown
+              value={lugarExacto}
+              onChange={(e) => setLugarExacto(e.value)}
+              options={lugaresExactos}
+              optionLabel="nombre"
+              placeholder="Seleccione un lugar"
+              className="w-full"
+            />
+          </div>
+
+          {/* Observaciones */}
+          <div className="col-12">
+            <label className="font-semibold mb-2 block">Observaciones</label>
+            <InputTextarea
+              value={observaciones}
+              onChange={(e) => setObservaciones(e.target.value)}
+              rows={4}
+              className="w-full"
+              autoResize
+            />
+          </div>
+        </div>
+
+        {/* Botón */}
+        <div className="flex justify-content-center mt-4">
+          <Button
+            label="Guardar datos generales"
+            icon="pi pi-save"
+            className="p-button-primary px-6 py-2 font-bold"
+            onClick={handleGuardar}
+          />
+        </div>
       </Card>
     </div>
   );
