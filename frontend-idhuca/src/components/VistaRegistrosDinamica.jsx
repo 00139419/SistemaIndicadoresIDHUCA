@@ -42,7 +42,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handleCreateRegister = () => {
-    navigate('/formulario-derecho');
+    navigate('/registros/add');
   };
 
   const handleFilter = () => {
@@ -169,7 +169,7 @@ const VistaRegistrosDinamica = ({
           </div>
         </div>
 
-        <div className="bg-white rounded shadow-sm" style={{ overflow: "hidden", width: "98%", margin: "0 auto", maxWidth: "2000px" }}>
+        <div className="bg-white rounded shadow-sm" style={{ overflow: "hidden", width: "100%", margin: "0 auto", maxWidth: "2400px" }}>
           {isLoading ? (
             <div className="d-flex justify-content-center py-5">
               <div className="spinner-border text-primary" role="status">
@@ -196,7 +196,7 @@ const VistaRegistrosDinamica = ({
                             fontSize: "14px",
                             fontWeight: "600",
                             border: "none",
-                            width: showActions ? `${85/columns.length}%` : `${100/columns.length}%`,
+                            width: showActions ? `${95/columns.length}%` : `${100/columns.length}%`,
                             whiteSpace: "nowrap" 
                         
                           }}
@@ -211,7 +211,7 @@ const VistaRegistrosDinamica = ({
                             backgroundColor: "#000000",
                             color: "white",
                             fontSize: "14px",
-                            fontWeight: "600",
+                            fontWeight: "650",
                             border: "none",
                             width: "15%",
                             minWidth: "120px",

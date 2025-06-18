@@ -59,8 +59,6 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
   }
 };
 
-
-
 export const fetchCatalog = async (params) => {
   try {
     const token = localStorage.getItem('authToken');
@@ -90,7 +88,7 @@ export const fetchCatalog = async (params) => {
     }
 
     const data = await response.json();
-    
+
     if (data.codigo === 0) {
       return {
         items: data.entity,
@@ -103,3 +101,114 @@ export const fetchCatalog = async (params) => {
     throw new Error(error.message || 'Error al obtener el catálogo');
   }
 };
+
+export const deleteEvent = async (eventId) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      throw new Error('No hay token de autenticación');
+    }
+
+    const response = await fetch(`${API_URL}/registros/evento/delete`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: eventId })
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al obtener respuesta del servicio');
+    }
+
+    const data = await response.json();
+
+    if (data.codigo === 0) {
+      return true;
+    } else {
+      throw new Error(data.mensaje || 'Error al eliminar registros del evento');
+    }
+
+  } catch (error) {
+    throw new Error(error.message || 'Error al eliminar registros del evento');
+  }
+};
+
+export const detailEvent = async (eventId) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      throw new Error('No hay token de autenticación');
+    }
+
+    const response = await fetch(`${API_URL}/registros/evento/getOne`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: eventId })
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al obtener respuesta del servicio');
+    }
+
+    const data = await response.json();
+
+    if (data.codigo === 0) {
+      console.log("data " + JSON.stringify(data))
+      return data;
+    } else {
+      throw new Error(data.mensaje || 'Error al eliminar registros del evento');
+    }
+
+  } catch (error) {
+    throw new Error(error.message || 'Error al eliminar registros del evento');
+  }
+};
+
+export const getDerechosCatalog = async () => {
+  const params = {
+    derechos: true,
+    tipoProcesoJudicial: false,
+    tipoDenunciante: false,
+    duracionProceso: false,
+    tipoRepresion: false,
+    medioExpresion: false,
+    motivoDetencion: false,
+    tipoArma: false,
+    tipoDetencion: false,
+    tipoViolencia: false,
+    estadoSalud: false,
+    tipoPersona: false,
+    genero: false,
+    lugarExacto: false,
+    estadoRegistro: false,
+    fuentes: false,
+    paises: false,
+    subDerechos: false,
+    roles: false,
+    departamentos: false,
+    municipios: false,
+    securityQuestions: false,
+    parentId: "",
+    filtros: {
+      paginacion: {
+        paginaActual: 0,
+        registrosPorPagina: 100
+      }
+    }
+  };
+
+  const response = await fetchCatalog(params);
+  return response.items;
+};
+
+export const renderCheck = (value) => (
+  value ?
+    <span className="d-flex justify-content-center align-items-center" style={{ color: 'green' }}>✔️</span>
+        :
+    <span className="d-flex justify-content-center align-items-center" style={{ color: 'red' }}>❌</span>
+);
