@@ -1,175 +1,201 @@
-/* AuditoriaPage.css - Estilos específicos para el componente de auditoría */
+/* auditoria.css - Estilos para el componente de auditoría con layout fijo */
 
-/* Contenedor principal de auditoría */
-.auditoria-page-container {
-  position: fixed;
-  top: 100px; /* Altura del navbar */
-  left: 0;
-  right: 0;
-  bottom: 100px; /* Altura del footer */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Header con filtros */
-.auditoria-header {
-  flex-shrink: 0;
-  padding: 1rem 0;
-  background: white;
-  border-bottom: 1px solid #dee2e6;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.auditoria-header .container {
-  padding-left: var(--bs-gutter-x, 0.75rem);
-  padding-right: var(--bs-gutter-x, 0.75rem);
-}
-
-/* Contenedor principal del contenido */
-.auditoria-content-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0;
-}
-
-.auditoria-content-wrapper .container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding-left: var(--bs-gutter-x, 0.75rem);
-  padding-right: var(--bs-gutter-x, 0.75rem);
-}
-
-/* Contenedor de la tabla con scroll */
-.auditoria-table-container {
-  flex: 1;
-  overflow-y: auto;
-  border: 1px solid #dee2e6;
-  border-radius: 0.375rem;
-  margin-bottom: 1rem;
-}
-
-/* Tabla con scroll y header fijo */
-.auditoria-table-sticky {
-  table-layout: fixed;
-  margin-bottom: 0;
-}
-
-.auditoria-table-sticky thead th {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: #212529 !important;
-  color: white !important;
-  border-bottom: 2px solid #dee2e6;
-}
-
-/* Asegurar que el contenido de las celdas no se desborde */
-.auditoria-table-sticky td {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  vertical-align: middle;
-}
-
-/* Área de paginación fija */
-.auditoria-pagination-container {
-  flex-shrink: 0;
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 0.375rem;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
+/* Avatar circle para consistencia con Users */
+.avatar-circle {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
 }
 
-/* Estilos para el scroll personalizado */
-.auditoria-table-container::-webkit-scrollbar {
+/* Mejoras para badges en la tabla */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
+}
+
+/* Contenedor de tabla con scroll personalizado */
+.table-container {
+  position: relative;
+}
+
+.table-container::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
-.auditoria-table-container::-webkit-scrollbar-track {
+.table-container::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.auditoria-table-container::-webkit-scrollbar-thumb {
+.table-container::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-.auditoria-table-container::-webkit-scrollbar-thumb:hover {
+.table-container::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
-.auditoria-header::-webkit-scrollbar {
-  width: 6px;
+/* Header sticky para la tabla */
+.table thead.sticky-top th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--bs-dark) !important;
+  border-color: var(--bs-dark) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.auditoria-header::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
+/* Mejoras para la experiencia visual de la tabla */
+.table-hover tbody tr {
+  transition: all 0.2s ease;
 }
 
-.auditoria-header::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Ajustes para dispositivos móviles */
-@media (max-width: 768px) {
-  .auditoria-page-container {
-    top: 80px; /* Navbar más pequeño en móvil */
-    bottom: 80px; /* Footer más pequeño en móvil */
-  }
-  
-  .auditoria-header {
-    padding: 0.75rem 0;
-    max-height: 250px;
-  }
-  
-  .auditoria-header .container,
-  .auditoria-content-wrapper .container {
-    padding-left: var(--bs-gutter-x, 0.75rem);
-    padding-right: var(--bs-gutter-x, 0.75rem);
-  }
-  
-  .auditoria-table-sticky {
-    font-size: 0.875rem;
-  }
-  
-  .auditoria-table-sticky th,
-  .auditoria-table-sticky td {
-    padding: 0.5rem 0.25rem;
-  }
-  
-  .auditoria-pagination-container {
-    padding: 0.5rem;
-    font-size: 0.875rem;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-/* Ajustes para tablets */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .auditoria-page-container {
-    top: 90px;
-    bottom: 90px;
-  }
-  
-  .auditoria-header {
-    padding: 0.875rem 0;
-  }
-}
-
-/* Asegurar que el modal tenga mayor z-index que el contenedor fixed */
+/* Asegurar que el modal tenga mayor z-index */
 .modal {
   z-index: 1055 !important;
+}
+
+/* Estilos para las secciones fijas */
+.filters-section {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.pagination-section {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+}
+
+/* Mejorar el scroll en Firefox */
+.table-container {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* Ajustes para el contenedor principal */
+.main-container {
+  height: calc(100vh - 160px);
+  overflow: hidden;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .table-container {
+    font-size: 0.875rem;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.25em 0.5em;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.775rem;
+  }
+  
+  /* En móviles, reducir padding para aprovechar espacio */
+  .main-container .px-4 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Ajustar filtros en móviles */
+  .filters-section .row > div {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Ajustar paginación en móviles */
+  .pagination-section .d-flex {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center !important;
+  }
+  
+  .pagination-section .btn-group {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  /* En pantallas muy pequeñas, hacer la tabla más compacta */
+  .table td, .table th {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8rem;
+  }
+  
+  .table .badge {
+    font-size: 0.65rem;
+    padding: 0.2em 0.4em;
+  }
+  
+  /* Ocultar algunas columnas en móviles muy pequeños */
+  .table th:nth-child(5),
+  .table td:nth-child(5) {
+    display: none;
+  }
+}
+
+/* Animaciones suaves */
+.table-container {
+  transition: all 0.3s ease;
+}
+
+.filters-section,
+.pagination-section {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Estado de carga mejorado */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+/* Mejoras para accesibilidad */
+.table th {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Estilos para estados vacíos */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6c757d;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  display: block;
+  opacity: 0.5;
 }

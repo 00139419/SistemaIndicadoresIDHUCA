@@ -1,50 +1,28 @@
-import { 
-  FaHome, 
-  FaBuilding, 
-  FaMapMarkerAlt, 
-  FaTransgender, 
-  FaUniversity,
-  FaGavel,
-  FaUserAlt,
-  FaClock,
-  FaHandPaper,
-  FaNewspaper,
-  FaProcedures,
-  FaUserInjured,
-  FaMapMarked,
-  FaCheck,
-  FaBook,
-  FaGlobe,
-  FaShieldAlt,
-  FaUserTag,
-  FaQuestion
-} from 'react-icons/fa';
-
 const Sidenav = ({ onSelectCatalog }) => {
   const catalogOptions = [
-    { name: 'Catalogos', label: 'Catálogos', icon: <FaHome size={20} />, key: 'catalogos' },
-    { name: 'Departamentos', label: 'Departamentos', icon: <FaBuilding size={20} />, key: 'departamentos' },
-    { name: 'Municipios', label: 'Municipios', icon: <FaMapMarkerAlt size={20} />, key: 'municipios' },
-    { name: 'Genero', label: 'Género', icon: <FaTransgender size={20} />, key: 'genero' },
-    { name: 'Instituciones', label: 'Instituciones', icon: <FaUniversity size={20} />, key: 'instituciones' },
-    { name: 'TipoProcesoJudicial', label: 'Tipo Proceso Judicial', icon: <FaGavel size={20} />, key: 'tipoProcesoJudicial' },
-    { name: 'TipoDenunciante', label: 'Tipo Denunciante', icon: <FaUserAlt size={20} />, key: 'tipoDenunciante' },
-    { name: 'DuracionProceso', label: 'Duración Proceso', icon: <FaClock size={20} />, key: 'duracionProceso' },
-    { name: 'TipoRepresion', label: 'Tipo Represión', icon: <FaHandPaper size={20} />, key: 'tipoRepresion' },
-    { name: 'MedioExpresion', label: 'Medio Expresión', icon: <FaNewspaper size={20} />, key: 'medioExpresion' },
-    { name: 'MotivoDetencion', label: 'Motivo Detención', icon: <FaHandPaper size={20} />, key: 'motivoDetencion' },
-    { name: 'TipoArma', label: 'Tipo Arma', icon: <FaHandPaper size={20} />, key: 'tipoArma' },
-    { name: 'TipoDetencion', label: 'Tipo Detención', icon: <FaHandPaper size={20} />, key: 'tipoDetencion' },
-    { name: 'TipoViolencia', label: 'Tipo Violencia', icon: <FaHandPaper size={20} />, key: 'tipoViolencia' },
-    { name: 'EstadoSalud', label: 'Estado Salud', icon: <FaProcedures size={20} />, key: 'estadoSalud' },
-    { name: 'TipoPersona', label: 'Tipo Persona', icon: <FaUserInjured size={20} />, key: 'tipoPersona' },
-    { name: 'LugarExacto', label: 'Lugar Exacto', icon: <FaMapMarked size={20} />, key: 'lugarExacto' },
-    { name: 'EstadoRegistro', label: 'Estado Registro', icon: <FaCheck size={20} />, key: 'estadoRegistro' },
-    { name: 'Fuentes', label: 'Fuentes', icon: <FaBook size={20} />, key: 'fuentes' },
-    { name: 'Paises', label: 'Países', icon: <FaGlobe size={20} />, key: 'paises' },
-    { name: 'Derechos', label: 'Derechos', icon: <FaShieldAlt size={20} />, key: 'derechos' },
-    { name: 'Roles', label: 'Roles', icon: <FaUserTag size={20} />, key: 'roles' },
-    { name: 'SecurityQuestions', label: 'Preguntas de Seguridad', icon: <FaQuestion size={20} />, key: 'securityQuestions' },
+    { name: 'Catalogos', label: 'Catálogos', icon: 'bi-house-fill', key: 'catalogos' },
+    { name: 'Departamentos', label: 'Departamentos', icon: 'bi-building', key: 'departamentos' },
+    { name: 'Municipios', label: 'Municipios', icon: 'bi-geo-alt-fill', key: 'municipios' },
+    { name: 'Genero', label: 'Género', icon: 'bi-gender-ambiguous', key: 'genero' },
+    { name: 'Instituciones', label: 'Instituciones', icon: 'bi-bank', key: 'instituciones' },
+    { name: 'TipoProcesoJudicial', label: 'Tipo Proceso Judicial', icon: 'bi-hammer', key: 'tipoProcesoJudicial' },
+    { name: 'TipoDenunciante', label: 'Tipo Denunciante', icon: 'bi-person-exclamation', key: 'tipoDenunciante' },
+    { name: 'DuracionProceso', label: 'Duración Proceso', icon: 'bi-clock-history', key: 'duracionProceso' },
+    { name: 'TipoRepresion', label: 'Tipo Represión', icon: 'bi-shield-exclamation', key: 'tipoRepresion' },
+    { name: 'MedioExpresion', label: 'Medio Expresión', icon: 'bi-newspaper', key: 'medioExpresion' },
+    { name: 'MotivoDetencion', label: 'Motivo Detención', icon: 'bi-person-x', key: 'motivoDetencion' },
+    { name: 'TipoArma', label: 'Tipo Arma', icon: 'bi-exclamation-triangle', key: 'tipoArma' },
+    { name: 'TipoDetencion', label: 'Tipo Detención', icon: 'bi-person-lock', key: 'tipoDetencion' },
+    { name: 'TipoViolencia', label: 'Tipo Violencia', icon: 'bi-exclamation-octagon', key: 'tipoViolencia' },
+    { name: 'EstadoSalud', label: 'Estado Salud', icon: 'bi-heart-pulse', key: 'estadoSalud' },
+    { name: 'TipoPersona', label: 'Tipo Persona', icon: 'bi-person-badge', key: 'tipoPersona' },
+    { name: 'LugarExacto', label: 'Lugar Exacto', icon: 'bi-pin-map', key: 'lugarExacto' },
+    { name: 'EstadoRegistro', label: 'Estado Registro', icon: 'bi-check-circle', key: 'estadoRegistro' },
+    { name: 'Fuentes', label: 'Fuentes', icon: 'bi-book', key: 'fuentes' },
+    { name: 'Paises', label: 'Países', icon: 'bi-globe', key: 'paises' },
+    { name: 'Derechos', label: 'Derechos', icon: 'bi-shield-check', key: 'derechos' },
+    { name: 'Roles', label: 'Roles', icon: 'bi-person-badge-fill', key: 'roles' },
+    { name: 'SecurityQuestions', label: 'Preguntas de Seguridad', icon: 'bi-question-circle', key: 'securityQuestions' },
   ];
 
   return (
@@ -76,7 +54,7 @@ const Sidenav = ({ onSelectCatalog }) => {
             }}
           >
             <div className="me-3 text-secondary d-flex align-items-center justify-content-center" style={{ minWidth: '24px' }}>
-              {icon}
+              <i className={`bi ${icon}`} style={{ fontSize: '18px' }}></i>
             </div>
             <span className="text-truncate" title={label}>{label}</span>
           </button>

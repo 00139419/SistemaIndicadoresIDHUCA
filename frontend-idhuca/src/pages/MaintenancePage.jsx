@@ -7,8 +7,6 @@ const MaintenancePage = () => {
   const [selectedCatalog, setSelectedCatalog] = useState('departamentos');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Estados para el selector de departamentos (cuando se selecciona municipios)
   const [departamentos, setDepartamentos] = useState([]);
@@ -34,69 +32,122 @@ const MaintenancePage = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteResult, setDeleteResult] = useState(null);
 
+  // Estado para paginación del servidor
+  const [serverPagination, setServerPagination] = useState({
+    paginaActual: 1, // UI usa base 1
+    totalPaginas: 0,
+    totalRegistros: 0,
+    registrosPorPagina: 10
+  });
+
   // Función para determinar si un catálogo requiere parentId específico
   const needsParentId = useCallback((catalogKey) => {
     return catalogKey === 'municipios';
   }, []);
 
+  // Nombre del departamento seleccionado
   const selectedDepartamentoNombre = useMemo(() => {
+    if (!Array.isArray(departamentos) || departamentos.length === 0) {
+      return '';
+    }
     return departamentos.find(d => d.codigo === selectedDepartamento)?.descripcion || '';
   }, [departamentos, selectedDepartamento]);
 
-  // Cargar departamentos para el selector
-const loadDepartamentos = useCallback(async () => {
-  setLoadingDepartamentos(true);
-  try {
-    const result = await fetchCatalog('departamentos', "1");
-    setDepartamentos(result || []);
+  // Función para cargar departamentos
+  const loadDepartamentos = useCallback(async () => {
+    setLoadingDepartamentos(true);
+    try {
+      const result = await fetchCatalog('departamentos', "1");
 
-    // 🛠️ Solo establecer el primero por defecto si no hay ninguno seleccionado
-    setSelectedDepartamento((prev) => prev || (result?.[0]?.codigo ?? ''));
-  } catch (err) {
-    console.error('Error al cargar departamentos:', err);
-    setDepartamentos([]);
-  } finally {
-    setLoadingDepartamentos(false);
-  }
-}, []);
+      console.log('Resultado de departamentos:', result);
 
-  // Cargar datos del catálogo seleccionado
+      let departamentosData = [];
+
+      if (result && result.entity && Array.isArray(result.entity)) {
+        departamentosData = result.entity;
+      } else if (Array.isArray(result)) {
+        departamentosData = result;
+      }
+
+      console.log('Departamentos procesados:', departamentosData);
+      setDepartamentos(departamentosData);
+
+      if (departamentosData.length > 0) {
+        setSelectedDepartamento((prev) => prev || departamentosData[0]?.codigo || '');
+      }
+
+    } catch (err) {
+      console.error('Error al cargar departamentos:', err);
+      setDepartamentos([]);
+    } finally {
+      setLoadingDepartamentos(false);
+    }
+  }, []);
+
+  // Función principal para cargar catálogo
   const loadCatalog = useCallback(async () => {
     setLoading(true);
-    setCatalogData([]); // Limpiar datos anteriores
-    setCurrentPage(1); // Resetear a la primera página
-    setError(null); // Limpiar errores anteriores
+    setCatalogData([]);
+    setError(null);
 
     try {
-      // Determinar el parentId adecuado según el catálogo
       let parentId = "1";
       if (needsParentId(selectedCatalog)) {
         parentId = selectedDepartamento || "DEP_1";
       }
 
-      // Obtener datos del servicio
-      const result = await fetchCatalog(selectedCatalog, parentId);
+      // Convertir a índice base 0 para el servidor (UI base 1 -> servidor base 0)
+      const result = await fetchCatalog(
+        selectedCatalog,
+        parentId,
+        serverPagination.paginaActual - 1, // UI página 1 = servidor página 0
+        serverPagination.registrosPorPagina
+      );
 
-      // Imprimir para depuración
-      console.log(`Datos de ${selectedCatalog} recibidos:`, result);
+      console.log('Resultado completo de fetchCatalog:', result);
 
-      // Actualizar el estado con los datos recibidos
-      setCatalogData(result || []);
+      if (result && typeof result === 'object') {
+        if (result.entity && result.paginacionInfo) {
+          setCatalogData(result.entity || []);
+          setServerPagination(prev => ({
+            ...prev,
+            // Convertir respuesta del servidor (base 0) a UI (base 1)
+            paginaActual: (result.paginacionInfo.paginaActual || 0) + 1, // servidor página 0 = UI página 1
+            totalPaginas: result.paginacionInfo.totalPaginas || 1,
+            totalRegistros: result.paginacionInfo.totalRegistros || 0,
+            registrosPorPagina: result.paginacionInfo.registrosPorPagina || prev.registrosPorPagina
+          }));
+        } else if (Array.isArray(result)) {
+          setCatalogData(result);
+        } else if (result.data) {
+          setCatalogData(result.data || []);
+          if (result.paginacionInfo) {
+            setServerPagination(prev => ({
+              ...prev,
+              paginaActual: (result.paginacionInfo.paginaActual || 0) + 1,
+              totalPaginas: result.paginacionInfo.totalPaginas || 1,
+              totalRegistros: result.paginacionInfo.totalRegistros || 0,
+              registrosPorPagina: result.paginacionInfo.registrosPorPagina || prev.registrosPorPagina
+            }));
+          }
+        }
+      } else {
+        setCatalogData([]);
+      }
+
     } catch (err) {
+      console.error('Error en loadCatalog:', err);
       setError('Error al cargar datos: ' + (err.message || 'Error desconocido'));
-      console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [selectedCatalog, selectedDepartamento, needsParentId]);
+  }, [selectedCatalog, selectedDepartamento, needsParentId, serverPagination.paginaActual, serverPagination.registrosPorPagina]);
 
   // Cargar catálogo cuando cambia la selección
   useEffect(() => {
     if (needsParentId(selectedCatalog)) {
-      // Si se selecciona un catálogo que necesita parentId, primero cargar departamentos
       loadDepartamentos();
     } else {
-      // Para otros catálogos, cargar directamente
       loadCatalog();
     }
   }, [selectedCatalog, loadDepartamentos, loadCatalog, needsParentId]);
@@ -112,7 +163,6 @@ const loadDepartamentos = useCallback(async () => {
   const handleAddItem = async (e) => {
     e.preventDefault();
 
-    // Validar entrada
     if (!newItemDescription.trim()) {
       setAddResult({
         success: false,
@@ -125,24 +175,20 @@ const loadDepartamentos = useCallback(async () => {
     setAddResult(null);
 
     try {
-      // Determinar el parentId adecuado según el catálogo
       let parentId = "1";
       if (needsParentId(selectedCatalog)) {
         parentId = selectedDepartamento || "DEP_1";
       }
 
-      // Llamar al servicio para agregar el elemento
       const result = await addCatalogItem(selectedCatalog, newItemDescription, parentId);
 
-      // Establecer resultado
       setAddResult(result);
 
-      // Si fue exitoso, limpiar el campo y cerrar el modal después de un breve retraso
       if (result.success) {
         setNewItemDescription('');
         setTimeout(() => {
           setShowModal(false);
-          loadCatalog(); // Recargar el catálogo para mostrar el nuevo elemento
+          loadCatalog();
         }, 1500);
       }
 
@@ -168,7 +214,6 @@ const loadDepartamentos = useCallback(async () => {
   const handleUpdateItem = async (e) => {
     e.preventDefault();
 
-    // Validar entrada
     if (!editDescription.trim()) {
       setUpdateResult({
         success: false,
@@ -181,19 +226,16 @@ const loadDepartamentos = useCallback(async () => {
     setUpdateResult(null);
 
     try {
-      // Llamar al servicio para actualizar el elemento
       const result = await updateCatalogItem(editingItem.codigo, editDescription);
 
-      // Establecer resultado
       setUpdateResult(result);
 
-      // Si fue exitoso, cerrar el modal después de un breve retraso
       if (result.success) {
         setTimeout(() => {
           setShowEditModal(false);
           setEditingItem(null);
           setEditDescription('');
-          loadCatalog(); // Recargar el catálogo para mostrar los cambios
+          loadCatalog();
         }, 1500);
       }
 
@@ -220,18 +262,15 @@ const loadDepartamentos = useCallback(async () => {
     setDeleteResult(null);
 
     try {
-      // Llamar al servicio para eliminar el elemento
       const result = await deleteCatalogItem(itemToDelete.codigo);
 
-      // Establecer resultado
       setDeleteResult(result);
 
-      // Si fue exitoso, cerrar el modal después de un breve retraso
       if (result.success) {
         setTimeout(() => {
           setShowDeleteModal(false);
           setItemToDelete(null);
-          loadCatalog(); // Recargar el catálogo para mostrar los cambios
+          loadCatalog();
         }, 1500);
       }
 
@@ -245,30 +284,31 @@ const loadDepartamentos = useCallback(async () => {
     }
   };
 
-  // Calcular datos paginados
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = catalogData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(catalogData.length / itemsPerPage);
-
   // Manejar cambio de página
   const handlePageChange = (pageNumber) => {
-    if (pageNumber < 1 || pageNumber > totalPages) return;
-    setCurrentPage(pageNumber);
+    if (pageNumber < 1 || pageNumber > serverPagination.totalPaginas) return;
+    setServerPagination(prev => ({
+      ...prev,
+      paginaActual: pageNumber
+    }));
   };
 
-  // Manejar cambio de items por página
+  // Manejar cambio de registros por página
   const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(parseInt(e.target.value));
-    setCurrentPage(1); // Resetear a la primera página
+    const newItemsPerPage = parseInt(e.target.value);
+    setServerPagination(prev => ({
+      ...prev,
+      registrosPorPagina: newItemsPerPage,
+      paginaActual: 1 // Resetear a la primera página
+    }));
   };
 
   return (
     <div className="d-flex" style={{ height: 'calc(100vh - 160px)' }}>
       <Sidenav onSelectCatalog={setSelectedCatalog} />
-      <div 
-        className="flex-grow-1 d-flex flex-column" 
-        style={{ 
+      <div
+        className="flex-grow-1 d-flex flex-column"
+        style={{
           height: '100%',
           overflow: 'hidden'
         }}
@@ -279,9 +319,9 @@ const loadDepartamentos = useCallback(async () => {
         </div>
 
         {/* Contenido con scroll */}
-        <div 
-          className="flex-grow-1 px-4 py-3" 
-          style={{ 
+        <div
+          className="flex-grow-1 px-4 py-3"
+          style={{
             overflowY: 'auto',
             height: '100%'
           }}
@@ -316,30 +356,37 @@ const loadDepartamentos = useCallback(async () => {
                     {loadingDepartamentos ? (
                       <option>Cargando departamentos...</option>
                     ) : (
-                      departamentos.map((dept) => (
-                        <option key={dept.codigo} value={dept.codigo}>
-                          {dept.descripcion}
-                        </option>
-                      ))
+                      Array.isArray(departamentos) && departamentos.length > 0 ? (
+                        departamentos.map((dept) => (
+                          <option key={dept.codigo} value={dept.codigo}>
+                            {dept.descripcion}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="">No hay departamentos disponibles</option>
+                      )
                     )}
                   </select>
                 </div>
               )}
 
               {/* Botón para agregar nuevo registro */}
-              <div className="mb-3">
+               <div className="d-flex justify-content-between align-items-center mb-3">
                 <button
                   className="btn btn-primary"
                   onClick={() => setShowModal(true)}
                 >
-                  <i className="fas fa-plus me-1"></i> Nuevo Registro
+                  <i className="bi bi-plus-circle me-2"></i>
+                  Nuevo Registro
                 </button>
               </div>
 
               {/* Información de registros */}
+              {/* Información de registros */}
               <div className="mb-3 small text-muted">
+                <i className="bi bi-info-circle me-1"></i>
                 {catalogData && catalogData.length > 0 ?
-                  `Mostrando ${Math.min(currentItems.length, itemsPerPage)} de ${catalogData.length} registros` :
+                  `Total de registros: ${catalogData.length} de ${serverPagination.totalRegistros}` :
                   'No hay datos para mostrar'}
                 {needsParentId(selectedCatalog) && selectedDepartamento && departamentos.length > 0 && (
                   <span className="ms-2">
@@ -350,33 +397,50 @@ const loadDepartamentos = useCallback(async () => {
 
               {/* Tabla de registros */}
               <div className="table-responsive">
-                <table className="table table-bordered table-hover">
+                <table className="table table-bordered table-hover mb-0">
                   <thead className="table-dark">
                     <tr>
-                      <th>Código</th>
-                      <th>Descripción</th>
-                      <th>Acciones</th>
+                      <th style={{ width: '120px', minWidth: '120px' }}>
+                        <i className="bi bi-hash me-1"></i>Código
+                      </th>
+                      <th style={{ minWidth: '200px' }}>
+                        <i className="bi bi-text-left me-1"></i>Descripción
+                      </th>
+                      <th style={{ width: '160px', minWidth: '160px' }}>
+                        <i className="bi bi-gear me-1"></i>Acciones
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {currentItems && currentItems.length > 0 ? (
-                      currentItems.map((item, index) => (
+                    {catalogData && catalogData.length > 0 ? (
+                      catalogData.map((item, index) => (
                         <tr key={item.codigo || index}>
-                          <td>{item.codigo}</td>
-                          <td>{item.descripcion}</td>
                           <td>
-                            <div className="btn-group">
+                            <span className="badge bg-light text-dark">
+                              {item.codigo}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <i className="bi bi-tag me-2 text-muted"></i>
+                              <span>{item.descripcion}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="btn-group" role="group">
                               <button
-                                className="btn btn-sm btn-warning"
+                                className="btn btn-sm btn-outline-primary"
+                                title="Editar registro"
                                 onClick={() => handleEditClick(item)}
                               >
-                                <i className="fas fa-edit"></i> Editar
+                                <i className="bi bi-pencil-square"></i>
                               </button>
                               <button
-                                className="btn btn-sm btn-danger ms-1"
+                                className="btn btn-sm btn-outline-danger"
+                                title="Eliminar registro"
                                 onClick={() => handleDeleteClick(item)}
                               >
-                                <i className="fas fa-trash"></i> Eliminar
+                                <i className="bi bi-trash"></i>
                               </button>
                             </div>
                           </td>
@@ -384,7 +448,10 @@ const loadDepartamentos = useCallback(async () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="3" className="text-center">No hay datos disponibles</td>
+                        <td colSpan="3" className="text-center py-4 text-muted">
+                          <i className="bi bi-folder-x fs-1 mb-3 d-block text-muted"></i>
+                          No hay datos disponibles
+                        </td>
                       </tr>
                     )}
                   </tbody>
@@ -413,7 +480,7 @@ const loadDepartamentos = useCallback(async () => {
                 <select
                   className="form-select form-select-sm d-inline-block mx-2"
                   style={{ width: "80px" }}
-                  value={itemsPerPage}
+                  value={serverPagination.registrosPorPagina}
                   onChange={handleItemsPerPageChange}
                 >
                   <option value="5">5</option>
@@ -426,19 +493,19 @@ const loadDepartamentos = useCallback(async () => {
               </div>
 
               <div>
-                Página {currentPage} de {totalPages}
+                Página {serverPagination.paginaActual} de {serverPagination.totalPaginas}
                 <div className="btn-group ms-2">
                   <button
                     className="btn btn-sm btn-outline-secondary"
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
+                    onClick={() => handlePageChange(serverPagination.paginaActual - 1)}
+                    disabled={serverPagination.paginaActual === 1}
                   >
                     &lt;
                   </button>
                   <button
                     className="btn btn-sm btn-outline-secondary"
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages || totalPages === 0}
+                    onClick={() => handlePageChange(serverPagination.paginaActual + 1)}
+                    disabled={serverPagination.paginaActual === serverPagination.totalPaginas || serverPagination.totalPaginas === 0}
                   >
                     &gt;
                   </button>
