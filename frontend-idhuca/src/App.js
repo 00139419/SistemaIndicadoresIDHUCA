@@ -8,6 +8,8 @@ import VerifyIdentity from './pages/VerifyIdentity';
 import ResetPassword from './pages/ResetPassword';
 import SetNewPassword from './pages/SetNewPassword';
 import ResetPasswordSuccess from './pages/ResetPasswordSuccess';
+import AgregarRegistro from './pages/registros/AgregarRegistro.jsx';
+import DetalleRegistro from './pages/registros/DetalleRegistro';
 import Form from './pages/Form';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { AuthProvider } from './components/AuthContext';
@@ -32,7 +34,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
-          
+
           {/* MainLayout wrapper */}
           <Route element={<MainLayout />}>
             {/* Protected routes */}
@@ -86,6 +88,22 @@ function App() {
                 <Registros />
               </ProtectedRoute>
             } />
+            <Route
+              path="/registros/detalle/:id"
+              element={
+                <ProtectedRoute>
+                  <DetalleRegistro />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/registros/add"
+              element={
+                <ProtectedRoute>
+                  <AgregarRegistro />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/graphs" element={
               <ProtectedRoute>
                 <Graficos />
@@ -104,8 +122,8 @@ function App() {
           <Route path="/verify-identity" element={<VerifyIdentity />} />
           <Route path="/set-new-password" element={<SetNewPassword />} />
           <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
-      
-          
+
+
           {/* Catch-all route */}
         </Routes>
       </AuthProvider>

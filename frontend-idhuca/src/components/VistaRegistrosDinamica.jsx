@@ -15,17 +15,17 @@ const VistaRegistrosDinamica = ({
   onGenerateChart = null,
   onFilter = null,
   showActions = true,
-  itemsPerPage = 15,
+  currentPage,
+  totalPages,
+  onPageChange,
+  itemsPerPage = 10
 }) => {
   const { userRole } = useAuth(); // Obtener el rol del usuario
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+ // const [currentPage, setCurrentPage] = useState(1);
+  //const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate(); 
   
 
-  useEffect(() => {
-    setTotalPages(Math.ceil(data.length / itemsPerPage));
-  }, [data.length, itemsPerPage]);
 
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -34,7 +34,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    onPageChange(pageNumber);
   };
 
   const handleGenerateChart = () => {
@@ -42,7 +42,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handleCreateRegister = () => {
-    navigate('/formulario-derecho');
+    navigate('/registros/add');
   };
 
   const handleFilter = () => {
@@ -169,7 +169,7 @@ const VistaRegistrosDinamica = ({
           </div>
         </div>
 
-        <div className="bg-white rounded shadow-sm" style={{ overflow: "hidden", width: "98%", margin: "0 auto", maxWidth: "2000px" }}>
+        <div className="bg-white rounded shadow-sm" style={{ overflow: "hidden", width: "100%", margin: "0 auto", maxWidth: "2400px" }}>
           {isLoading ? (
             <div className="d-flex justify-content-center py-5">
               <div className="spinner-border text-primary" role="status">
@@ -194,11 +194,11 @@ const VistaRegistrosDinamica = ({
                             backgroundColor: "#000000",
                             color: "white",
                             fontSize: "14px",
+                            lineHeight: "14px",
                             fontWeight: "600",
                             border: "none",
-                            width: showActions ? `${85/columns.length}%` : `${100/columns.length}%`,
-                            whiteSpace: "nowrap" 
-                        
+                            width: showActions ? `${150/columns.length}%` : `${100/columns.length}%`,
+                            textAlign: "center"
                           }}
                         >
                           {column.title || column.key}
@@ -211,7 +211,7 @@ const VistaRegistrosDinamica = ({
                             backgroundColor: "#000000",
                             color: "white",
                             fontSize: "14px",
-                            fontWeight: "600",
+                            fontWeight: "650",
                             border: "none",
                             width: "15%",
                             minWidth: "120px",
