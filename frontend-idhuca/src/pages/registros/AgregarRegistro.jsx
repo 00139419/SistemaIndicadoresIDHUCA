@@ -38,6 +38,15 @@ const AgregarRegistro = () => {
   const [derechos, setDerechos] = useState([]);
   const [paises, setPaises] = useState([]);
   const [tiposPersona, setTiposPersona] = useState([]);
+  const [tiposViolencia, setTiposViolencia] = useState([]);
+  const [artefactos, setArtefactos] = useState([]);
+  const [contextosViolencia, setContextosViolencia] = useState([]);
+  const [tiposDetencion, setTiposDetencion] = useState([]);
+  const [motivosDetencion, setMotivosDetencion] = useState([]);
+  const [mediosExpresion, setMediosExpresion] = useState([]);
+  const [tiposRepresion, setTiposRepresion] = useState([]);
+  const [tiposProcesoJudicial, setTiposProcesoJudicial] = useState([]);
+  const [duracionesProceso, setDuracionesProceso] = useState([]);
 
   const [loadingCatalogos, setLoadingCatalogos] = useState(true);
 
@@ -47,7 +56,26 @@ const AgregarRegistro = () => {
 
   const cargarCatalogos = async () => {
     try {
-      const [d, f, e, l, g, sd, p, ss, tp] = await Promise.all([
+      const [
+        d,
+        f,
+        e,
+        l,
+        g,
+        sd,
+        p,
+        ss,
+        tp,
+        tv,
+        ar,
+        cv,
+        td,
+        md,
+        me,
+        tr,
+        tpJud,
+        dp,
+      ] = await Promise.all([
         getCatalogo({ departamentos: true }),
         getCatalogo({ fuentes: true }),
         getCatalogo({ estadoRegistro: true }),
@@ -57,6 +85,15 @@ const AgregarRegistro = () => {
         getCatalogo({ paises: true }),
         getCatalogo({ estadoSalud: true }),
         getCatalogo({ tipoPersona: true }),
+        getCatalogo({ tipoViolencia: true }),
+        getCatalogo({ tipoArma: true }),
+        getCatalogo({ tipoPersona: true }),
+        getCatalogo({ tipoDetencion: true }),
+        getCatalogo({ motivoDetencion: true }),
+        getCatalogo({ medioExpresion: true }),
+        getCatalogo({ tipoRepresion: true }),
+        getCatalogo({ tipoProcesoJudicial: true }),
+        getCatalogo({ duracionProceso: true }),
       ]);
 
       setTiposPersona(tp);
@@ -68,6 +105,15 @@ const AgregarRegistro = () => {
       setGeneros(g);
       setDerechos(sd);
       setPaises(p);
+      setTiposViolencia(tv);
+      setArtefactos(ar);
+      setContextosViolencia(cv);
+      setTiposDetencion(td);
+      setMotivosDetencion(md);
+      setMediosExpresion(me);
+      setTiposRepresion(tr);
+      setTiposProcesoJudicial(tpJud);
+      setDuracionesProceso(dp);
     } catch (error) {
       console.error("Error al cargar catálogos", error);
     } finally {
@@ -467,24 +513,683 @@ const AgregarRegistro = () => {
                 />
               </TabPanel>
 
-              {/* Tab: Violencia */}
               <TabPanel header="Violencia">
-                {/* Campos como tipo de violencia, artefacto, actor responsable, etc */}
+                <div className="mb-3">
+                  <label className="mr-2">¿Desea registrar violencia?</label>
+                  <Button
+                    label={
+                      persona.violencia
+                        ? "Quitar violencia"
+                        : "Agregar violencia"
+                    }
+                    icon={persona.violencia ? "pi pi-times" : "pi pi-plus"}
+                    className={`p-button-${
+                      persona.violencia ? "danger" : "success"
+                    }`}
+                    onClick={() =>
+                      actualizarPersona(
+                        index,
+                        "violencia",
+                        persona.violencia
+                          ? null
+                          : {
+                              esAsesinato: false,
+                              tipoViolencia: null,
+                              artefactoUtilizado: null,
+                              contexto: null,
+                              actorResponsable: null,
+                              estadoSaludActorResponsable: null,
+                              huboProteccion: false,
+                              investigacionAbierta: false,
+                              respuestaEstado: "",
+                            }
+                      )
+                    }
+                  />
+                </div>
+
+                {persona.violencia && (
+                  <div className="formgrid grid">
+                    <div className="field col-12 md:col-4">
+                      <label>¿Hubo asesinato?</label>
+                      <Dropdown
+                        value={persona.violencia.esAsesinato}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            esAsesinato: e.value,
+                          })
+                        }
+                        placeholder="Seleccione una opción"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Tipo de violencia</label>
+                      <Dropdown
+                        value={persona.violencia.tipoViolencia}
+                        options={tiposViolencia}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            tipoViolencia: e.value,
+                          })
+                        }
+                        placeholder="Seleccione tipo"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Artefacto utilizado</label>
+                      <Dropdown
+                        value={persona.violencia.artefactoUtilizado}
+                        options={artefactos}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            artefactoUtilizado: e.value,
+                          })
+                        }
+                        placeholder="Seleccione artefacto"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Contexto</label>
+                      <Dropdown
+                        value={persona.violencia.contexto}
+                        options={contextosViolencia}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            contexto: e.value,
+                          })
+                        }
+                        placeholder="Seleccione contexto"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Actor responsable</label>
+                      <Dropdown
+                        value={persona.violencia.actorResponsable}
+                        options={tiposPersona}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            actorResponsable: e.value,
+                          })
+                        }
+                        placeholder="Seleccione actor"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Estado salud actor</label>
+                      <Dropdown
+                        value={persona.violencia.estadoSaludActorResponsable}
+                        options={estadosSalud}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            estadoSaludActorResponsable: e.value,
+                          })
+                        }
+                        placeholder="Seleccione estado"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Hubo protección?</label>
+                      <Dropdown
+                        value={persona.violencia.huboProteccion}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            huboProteccion: e.value,
+                          })
+                        }
+                        placeholder="Seleccione una opción"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Investigación abierta?</label>
+                      <Dropdown
+                        value={persona.violencia.investigacionAbierta}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            investigacionAbierta: e.value,
+                          })
+                        }
+                        placeholder="Seleccione una opción"
+                      />
+                    </div>
+
+                    <div className="field col-12">
+                      <label>Respuesta del Estado</label>
+                      <InputTextarea
+                        value={persona.violencia.respuestaEstado}
+                        onChange={(e) =>
+                          actualizarPersona(index, "violencia", {
+                            ...persona.violencia,
+                            respuestaEstado: e.target.value,
+                          })
+                        }
+                        rows={3}
+                        autoResize
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+                )}
               </TabPanel>
 
-              {/* Tab: Justicia */}
               <TabPanel header="Acceso a Justicia">
-                {/* Campos relacionados al proceso judicial */}
+                <div className="mb-3">
+                  <label className="mr-2">
+                    ¿Desea registrar acceso a justicia?
+                  </label>
+                  <Button
+                    label={
+                      persona.accesoJusticia
+                        ? "Quitar sección"
+                        : "Agregar sección"
+                    }
+                    icon={persona.accesoJusticia ? "pi pi-times" : "pi pi-plus"}
+                    className={`p-button-${
+                      persona.accesoJusticia ? "danger" : "success"
+                    }`}
+                    onClick={() =>
+                      actualizarPersona(
+                        index,
+                        "accesoJusticia",
+                        persona.accesoJusticia
+                          ? null
+                          : {
+                              tipoProceso: null,
+                              fechaDenuncia: null,
+                              tipoDenunciante: null,
+                              duracionProceso: null,
+                              accesoAbogado: false,
+                              huboParcialidad: false,
+                              resultadoProceso: "",
+                              instancia: "",
+                            }
+                      )
+                    }
+                  />
+                </div>
+
+                {persona.accesoJusticia && (
+                  <div className="formgrid grid">
+                    <div className="field col-12 md:col-4">
+                      <label>Tipo de proceso judicial</label>
+                      <Dropdown
+                        value={persona.accesoJusticia.tipoProceso}
+                        options={tiposProcesoJudicial}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            tipoProceso: e.value,
+                          })
+                        }
+                        placeholder="Seleccione tipo"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Fecha de denuncia</label>
+                      <Calendar
+                        value={
+                          persona.accesoJusticia.fechaDenuncia
+                            ? new Date(persona.accesoJusticia.fechaDenuncia)
+                            : null
+                        }
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            fechaDenuncia: e.value,
+                          })
+                        }
+                        dateFormat="yy-mm-dd"
+                        showIcon
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Tipo de denunciante</label>
+                      <Dropdown
+                        value={persona.accesoJusticia.tipoDenunciante}
+                        options={tiposPersona}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            tipoDenunciante: e.value,
+                          })
+                        }
+                        placeholder="Seleccione"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Duración del proceso</label>
+                      <Dropdown
+                        value={persona.accesoJusticia.duracionProceso}
+                        options={duracionesProceso}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            duracionProceso: e.value,
+                          })
+                        }
+                        placeholder="Seleccione duración"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Tuvo acceso a abogado?</label>
+                      <Dropdown
+                        value={persona.accesoJusticia.accesoAbogado}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            accesoAbogado: e.value,
+                          })
+                        }
+                        placeholder="Seleccione"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Hubo parcialidad?</label>
+                      <Dropdown
+                        value={persona.accesoJusticia.huboParcialidad}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            huboParcialidad: e.value,
+                          })
+                        }
+                        placeholder="Seleccione"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-6">
+                      <label>Resultado del proceso</label>
+                      <InputTextarea
+                        value={persona.accesoJusticia.resultadoProceso}
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            resultadoProceso: e.target.value,
+                          })
+                        }
+                        rows={2}
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-6">
+                      <label>Instancia</label>
+                      <InputText
+                        value={persona.accesoJusticia.instancia}
+                        onChange={(e) =>
+                          actualizarPersona(index, "accesoJusticia", {
+                            ...persona.accesoJusticia,
+                            instancia: e.target.value,
+                          })
+                        }
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+                )}
               </TabPanel>
 
-              {/* Tab: Detención */}
               <TabPanel header="Detención / Integridad">
-                {/* Campos como tipoDetencion, orden judicial, tortura, etc */}
+                <div className="mb-3">
+                  <label className="mr-2">
+                    ¿Desea registrar información de detención?
+                  </label>
+                  <Button
+                    label={
+                      persona.detencionIntegridad
+                        ? "Quitar sección"
+                        : "Agregar sección"
+                    }
+                    icon={
+                      persona.detencionIntegridad ? "pi pi-times" : "pi pi-plus"
+                    }
+                    className={`p-button-${
+                      persona.detencionIntegridad ? "danger" : "success"
+                    }`}
+                    onClick={() =>
+                      actualizarPersona(
+                        index,
+                        "detencionIntegridad",
+                        persona.detencionIntegridad
+                          ? null
+                          : {
+                              tipoDetencion: null,
+                              ordenJudicial: false,
+                              autoridadInvolucrada: null,
+                              huboTortura: false,
+                              duracionDias: null,
+                              accesoAbogado: false,
+                              resultado: "",
+                              motivoDetencion: null,
+                            }
+                      )
+                    }
+                  />
+                </div>
+
+                {persona.detencionIntegridad && (
+                  <div className="formgrid grid">
+                    <div className="field col-12 md:col-4">
+                      <label>Tipo de detención</label>
+                      <Dropdown
+                        value={persona.detencionIntegridad.tipoDetencion}
+                        options={tiposDetencion}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            tipoDetencion: e.value,
+                          })
+                        }
+                        placeholder="Seleccione tipo"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Existió orden judicial?</label>
+                      <Dropdown
+                        value={persona.detencionIntegridad.ordenJudicial}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            ordenJudicial: e.value,
+                          })
+                        }
+                        placeholder="Seleccione una opción"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Autoridad involucrada</label>
+                      <Dropdown
+                        value={persona.detencionIntegridad.autoridadInvolucrada}
+                        options={tiposPersona}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            autoridadInvolucrada: e.value,
+                          })
+                        }
+                        placeholder="Seleccione autoridad"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Hubo tortura?</label>
+                      <Dropdown
+                        value={persona.detencionIntegridad.huboTortura}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            huboTortura: e.value,
+                          })
+                        }
+                        placeholder="Seleccione una opción"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Días de duración</label>
+                      <InputNumber
+                        value={persona.detencionIntegridad.duracionDias}
+                        onValueChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            duracionDias: e.value,
+                          })
+                        }
+                        showButtons
+                        min={0}
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Tuvo acceso a abogado?</label>
+                      <Dropdown
+                        value={persona.detencionIntegridad.accesoAbogado}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            accesoAbogado: e.value,
+                          })
+                        }
+                        placeholder="Seleccione una opción"
+                      />
+                    </div>
+
+                    <div className="field col-12">
+                      <label>Resultado</label>
+                      <InputTextarea
+                        value={persona.detencionIntegridad.resultado}
+                        onChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            resultado: e.target.value,
+                          })
+                        }
+                        rows={2}
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-6">
+                      <label>Motivo de detención</label>
+                      <Dropdown
+                        value={persona.detencionIntegridad.motivoDetencion}
+                        options={motivosDetencion}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "detencionIntegridad", {
+                            ...persona.detencionIntegridad,
+                            motivoDetencion: e.value,
+                          })
+                        }
+                        placeholder="Seleccione motivo"
+                      />
+                    </div>
+                  </div>
+                )}
               </TabPanel>
 
-              {/* Tab: Censura y Expresión */}
               <TabPanel header="Expresión / Censura">
-                {/* Campos como tipoRepresion, medioExpresion, actorCensor, consecuencia */}
+                <div className="mb-3">
+                  <label className="mr-2">
+                    ¿Desea registrar censura/represión?
+                  </label>
+                  <Button
+                    label={
+                      persona.expresionCensura
+                        ? "Quitar sección"
+                        : "Agregar sección"
+                    }
+                    icon={
+                      persona.expresionCensura ? "pi pi-times" : "pi pi-plus"
+                    }
+                    className={`p-button-${
+                      persona.expresionCensura ? "danger" : "success"
+                    }`}
+                    onClick={() =>
+                      actualizarPersona(
+                        index,
+                        "expresionCensura",
+                        persona.expresionCensura
+                          ? null
+                          : {
+                              medioExpresion: null,
+                              tipoRepresion: null,
+                              represaliasLegales: false,
+                              represaliasFisicas: false,
+                              actorCensor: null,
+                              consecuencia: "",
+                            }
+                      )
+                    }
+                  />
+                </div>
+
+                {persona.expresionCensura && (
+                  <div className="formgrid grid">
+                    <div className="field col-12 md:col-4">
+                      <label>Medio de expresión</label>
+                      <Dropdown
+                        value={persona.expresionCensura.medioExpresion}
+                        options={mediosExpresion}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "expresionCensura", {
+                            ...persona.expresionCensura,
+                            medioExpresion: e.value,
+                          })
+                        }
+                        placeholder="Seleccione medio"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Tipo de represión</label>
+                      <Dropdown
+                        value={persona.expresionCensura.tipoRepresion}
+                        options={tiposRepresion}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "expresionCensura", {
+                            ...persona.expresionCensura,
+                            tipoRepresion: e.value,
+                          })
+                        }
+                        placeholder="Seleccione tipo"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>Actor censor</label>
+                      <Dropdown
+                        value={persona.expresionCensura.actorCensor}
+                        options={tiposPersona}
+                        optionLabel="descripcion"
+                        onChange={(e) =>
+                          actualizarPersona(index, "expresionCensura", {
+                            ...persona.expresionCensura,
+                            actorCensor: e.value,
+                          })
+                        }
+                        placeholder="Seleccione actor"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Represalias legales?</label>
+                      <Dropdown
+                        value={persona.expresionCensura.represaliasLegales}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "expresionCensura", {
+                            ...persona.expresionCensura,
+                            represaliasLegales: e.value,
+                          })
+                        }
+                        placeholder="Seleccione"
+                      />
+                    </div>
+
+                    <div className="field col-12 md:col-4">
+                      <label>¿Represalias físicas?</label>
+                      <Dropdown
+                        value={persona.expresionCensura.represaliasFisicas}
+                        options={[
+                          { label: "Sí", value: true },
+                          { label: "No", value: false },
+                        ]}
+                        onChange={(e) =>
+                          actualizarPersona(index, "expresionCensura", {
+                            ...persona.expresionCensura,
+                            represaliasFisicas: e.value,
+                          })
+                        }
+                        placeholder="Seleccione"
+                      />
+                    </div>
+
+                    <div className="field col-12">
+                      <label>Consecuencia</label>
+                      <InputTextarea
+                        value={persona.expresionCensura.consecuencia}
+                        onChange={(e) =>
+                          actualizarPersona(index, "expresionCensura", {
+                            ...persona.expresionCensura,
+                            consecuencia: e.target.value,
+                          })
+                        }
+                        rows={2}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+                )}
               </TabPanel>
             </TabView>
           </Card>
