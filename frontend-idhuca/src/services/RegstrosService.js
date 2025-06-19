@@ -66,28 +66,28 @@ export const fetchCatalog = async (params) => {
       throw new Error('No hay token de autenticación');
     }
 
-    const response = await fetch(`${API_URL}/catalogo/get`, {
+    const url = `${API_URL}/catalogo/get`;
+    const requestBody = {
+      ...params
+    };
+
+  
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        ...params,
-        filtros: {
-          paginacion: {
-            paginaActual: 0,
-            registrosPorPagina: 10
-          }
-        }
-      })
+      body: JSON.stringify(requestBody)
     });
+
+    const responseText = await response.text();
 
     if (!response.ok) {
       throw new Error('Error al obtener el catálogo');
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
 
     if (data.codigo === 0) {
       return {
@@ -98,9 +98,11 @@ export const fetchCatalog = async (params) => {
       throw new Error(data.mensaje || 'Error al obtener el catálogo');
     }
   } catch (error) {
+    console.error('❌ Error en fetchCatalog:', error);
     throw new Error(error.message || 'Error al obtener el catálogo');
   }
 };
+
 
 export const deleteEvent = async (eventId) => {
   try {
@@ -205,6 +207,45 @@ export const getDerechosCatalog = async () => {
   const response = await fetchCatalog(params);
   return response.items;
 };
+
+export const getCatalogo = async (paramsOverrides) => {
+  const baseParams = {
+    derechos: false,
+    tipoProcesoJudicial: false,
+    tipoDenunciante: false,
+    duracionProceso: false,
+    tipoRepresion: false,
+    medioExpresion: false,
+    motivoDetencion: false,
+    tipoArma: false,
+    tipoDetencion: false,
+    tipoViolencia: false,
+    estadoSalud: false,
+    tipoPersona: false,
+    genero: false,
+    lugarExacto: false,
+    estadoRegistro: false,
+    fuentes: false,
+    paises: false,
+    subDerechos: false,
+    roles: false,
+    departamentos: false,
+    municipios: false,
+    securityQuestions: false,
+    parentId: "",
+    filtros: {
+      paginacion: {
+        paginaActual: 0,
+        registrosPorPagina: 1000
+      }
+    }
+  };
+
+  const params = { ...baseParams, ...paramsOverrides };
+  const response = await fetchCatalog(params);
+  return response.items;
+};
+
 
 export const renderCheck = (value) => (
   value ?
