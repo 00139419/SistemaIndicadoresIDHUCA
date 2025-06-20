@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from './AuthContext'; // Asegúrate de importar useAuth
 
 const VistaRegistrosDinamica = ({
+  derechoId,
   title = "Registros",
   columns = [],
   data = [],
@@ -46,7 +47,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handleFilter = () => {
-    navigate('/filter'); 
+  navigate('/filter', { state: { derechoId } });  // Pasamos derechoId en el state
   };
 
   const handleAction = (action, item, index) => {

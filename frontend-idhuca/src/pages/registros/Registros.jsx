@@ -8,15 +8,21 @@ import {
   renderCheck,
   deleteEvent,
   getDerechosCatalog,
-  detailEvent
+  detailEvent,
 } from "../../services/RegstrosService";
 import { useLocation } from "react-router-dom";
 
 const Registros = () => {
   const location = useLocation();
-  let { derechoId, derechoTitle } = location.state || {};
+  let { filtros, derechoId } = location.state || {};
 
-  derechoId = "DER_" + derechoId;
+  derechoId = String(derechoId || "");
+
+  if (!derechoId.startsWith("DER_")) {
+    derechoId = "DER_" + derechoId;
+  }
+
+  console.log("derechoId start: " + derechoId);
 
   const [registroSeleccionado, setRegistroSeleccionado] = useState(null);
   const { userRole } = useAuth();
@@ -145,7 +151,7 @@ const Registros = () => {
     fetchRegistros(newPage - 1);
   };
 
-const handleView = (item) => {
+  const handleView = (item) => {
     navigate(`/registros/detalle/${item.id}`);
   };
 
@@ -220,6 +226,7 @@ const handleView = (item) => {
         />
       ) : (
         <VistaRegistrosDinamica
+          derechoId={derechoId}
           title="Registros"
           columns={columns}
           data={data}
