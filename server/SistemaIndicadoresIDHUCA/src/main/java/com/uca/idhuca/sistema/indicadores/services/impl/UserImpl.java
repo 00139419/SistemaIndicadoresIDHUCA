@@ -386,15 +386,16 @@ public class UserImpl implements IUser {
 		log.info("[{}] Auditoria de recovery creada correctamente.",key);
 
 		String provisionalPassword = UUID.randomUUID().toString().substring(0, 8);
+
+		userFound.setContrasenaHash(pEncoder.encode(provisionalPassword));
+		userFound.setEsPasswordProvisional(true);
+		userFound.setActivo(true);
 		
-		usuario.setContrasenaHash(pEncoder.encode(provisionalPassword));
-		usuario.setEsPasswordProvisional(true);
-		
-		userRepository.save(usuario);
-		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
+		userRepository.save(userFound);
+		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, userFound));
 		log.info("[{}] Contraseña provisional agregada correctamente.", key);
 		
-		return new SuperGenericResponse(OK, "Usuario desbloqueado correctamente.");
+		return new SuperGenericResponse(OK, "Usuario desbloqueado correctamente. Contraseña provisional: " + provisionalPassword);
 	}
 	
 	private boolean validatePasswordPolicy(String password) {
