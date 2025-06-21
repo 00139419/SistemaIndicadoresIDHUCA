@@ -5,7 +5,18 @@ const Index = () => {
       {/* Título principal */}
       <div className="row mb-5">
         <div className="col-12 text-center">
-          <h1 className="display-4 fw-bold">Bienvenido al sistema de indicadores<br />del IDHUCA</h1>
+          <h1
+            className="fw-bold"
+            style={{
+              fontSize: '2.2rem',           // Más pequeño que display-4
+              letterSpacing: '0.5px',       // Espaciado de medio pixel
+              lineHeight: '1.2'
+            }}
+          >
+            Bienvenido al Sistema de Registros de Vulnerabilidades
+            <br />
+            de Derechos Humanos del IDHUCA
+          </h1>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../components/AuthContext';
-import graphImage from '../../assets/image.png'; // Imagen de ejemplo para el gráfico
+import graphImage from '../../assets/image.png'; 
 
 const Graficos = () => {
   const { userRole } = useAuth();
@@ -18,11 +18,13 @@ const Graficos = () => {
   };
 
   const [chartConfig, setChartConfig] = useState({
-    ejeX: '',
+    ejeX: 'Cantidad de personas afectadas de departamento de Ahuachapán',
     delimitador: '',
     tipoGrafico: 'Pastel',
     paletaColores: 'Paleta 1',
-    titulo: 'Grafico de ejemplo'
+    titulo: 'Gráfico de ejemplo',
+    subtitulo: 'Datos estadísticos del departamento',
+    dimension: '2D' 
   });
 
   const [chartData, setChartData] = useState([
@@ -32,7 +34,11 @@ const Graficos = () => {
   ]);
 
   const [filtrosEjeX, setFiltrosEjeX] = useState([
-    'Filtro 1', 'Fecha', 'Departamento', 'Tipo'
+    'Cantidad de personas afectadas de departamento de Ahuachapán', 
+    'Filtro 1', 
+    'Fecha', 
+    'Departamento', 
+    'Tipo'
   ]);
 
   const [filtrosDelimitador, setFiltrosDelimitador] = useState([
@@ -51,13 +57,15 @@ const Graficos = () => {
 
   const copyToClipboard = async () => {
     try {
-      // En una implementación real, aquí copiarías la configuración del gráfico
+      // En ls implementación real copiar aqui la configuración del gráfico
       const configText = `Configuración del gráfico:
 Eje X: ${chartConfig.ejeX}
 Delimitador: ${chartConfig.delimitador}
 Tipo: ${chartConfig.tipoGrafico}
 Paleta: ${chartConfig.paletaColores}
-Título: ${chartConfig.titulo}`;
+Título: ${chartConfig.titulo}
+Subtítulo: ${chartConfig.subtitulo}
+Dimensión: ${chartConfig.dimension}`;
       
       await navigator.clipboard.writeText(configText);
       alert('Configuración copiada al portapapeles');
@@ -67,7 +75,7 @@ Título: ${chartConfig.titulo}`;
   };
 
   const downloadAsPNG = () => {
-    // En una implementación real, aquí generarías y descargarías el PNG del gráfico
+    // En la implementación real, aquí generar y descargar el PNG del gráfico
     alert('Descargando gráfico como PNG...');
   };
 
@@ -75,11 +83,8 @@ Título: ${chartConfig.titulo}`;
     const total = chartData.reduce((sum, item) => sum + item.value, 0);
     let currentAngle = 0;
     
-  
-
     return (
       <div className="d-flex flex-column align-items-center">
-       
         <h5 className="mt-3 mb-4 fw-bold">{chartConfig.titulo}</h5>
       </div>
     );
@@ -87,9 +92,9 @@ Título: ${chartConfig.titulo}`;
 
   return (
     <div className="container-fluid px-0" style={{ 
-      minHeight: '100%', 
-      width: '100%', 
-      maxWidth: '120%',
+      minHeight: '100vh', 
+      width: '100%',
+      maxWidth: '100%',
     }}>
       <div className="container-fluid px-4 py-5" style={{ minHeight: '100%' }}> 
         {/* Título mejorado */}
@@ -104,36 +109,31 @@ Título: ${chartConfig.titulo}`;
           <p className="text-muted">Visualiza tus datos de forma interactiva</p>
         </div>
 
-        <div className="row g-4">
-          {/* Panel izquierdo - Configuración */}
+        <div className="row g-4" style={{ minHeight: '80vh' }}>
+          {/* Panel izquierdo - Configuración - Reducido */}
           {hasPermission('modify') && (
-            <div className="col-md-6">
-              <div className="bg-white p-4 rounded-lg shadow-sm h-100" style={{
+            <div className="col-md-4 col-lg-3">
+              <div className="bg-white p-3 rounded-lg shadow-sm h-100" style={{
                 borderRadius: '15px',
-                border: '1px solid #e0e0e0'
+                border: '1px solid #e0e0e0',
+                maxHeight: '80vh',
+                overflowY: 'auto'
               }}>
                 {/* Sección Dimensiones */}
                 <div className="mb-4">
-                  <h5 className="fw-bold mb-3" style={{ color: '#1a237e' }}>
+                  <h6 className="fw-bold mb-3" style={{ color: '#1a237e', fontSize: '1rem' }}>
                     <i className="bi bi-sliders me-2"></i>Dimensiones
-                  </h5>
+                  </h6>
                   
-                  <div className="mb-4">
-                    <label className="form-label"
-                    style={{
-                        
-                        borderRadius: '8px',
-                        padding: '0.75rem',
-                        fontSize: '1.2rem'
-                      }}>Eje X</label>
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold" style={{ fontSize: '0.9rem' }}>Eje X</label>
                     <select 
-                      className="form-select"
+                      className="form-select form-select-sm"
                       style={{
                         backgroundColor: '#f8f9fa',
                         border: '1px solid #ced4da',
-                        borderRadius: '8px',
-                        padding: '0.75rem',
-                        fontSize: '1rem'
+                        borderRadius: '6px',
+                        fontSize: '0.85rem'
                       }}
                       value={chartConfig.ejeX}
                       onChange={(e) => handleConfigChange('ejeX', e.target.value)}
@@ -145,16 +145,15 @@ Título: ${chartConfig.titulo}`;
                     </select>
                   </div>
 
-                  <div className="mb-7">
-                    <label className="form-label fw-semibold">Delimitador</label>
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold" style={{ fontSize: '0.9rem' }}>Delimitador</label>
                     <select 
-                      className="form-select"
-                       style={{
+                      className="form-select form-select-sm"
+                      style={{
                         backgroundColor: '#f8f9fa',
                         border: '1px solid #ced4da',
-                        borderRadius: '8px',
-                        padding: '0.75rem',
-                        fontSize: '1rem'
+                        borderRadius: '6px',
+                        fontSize: '0.85rem'
                       }}
                       value={chartConfig.delimitador}
                       onChange={(e) => handleConfigChange('delimitador', e.target.value)}
@@ -169,26 +168,19 @@ Título: ${chartConfig.titulo}`;
 
                 {/* Sección Propiedades */}
                 <div className="mb-4">
-                  <h5 className="fw-bold mb-3" style={{ color: '#1a237e' }}>
+                  <h6 className="fw-bold mb-3" style={{ color: '#1a237e', fontSize: '1rem' }}>
                     <i className="bi bi-gear me-2"></i>Propiedades
-                  </h5>
+                  </h6>
                   
                   <div className="mb-3">
-                    <label className="form-label"
-                    style={{
-                        
-                        borderRadius: '8px',
-                        padding: '0.75rem',
-                        fontSize: '1.2rem'
-                      }}>Tipo de gráfico</label>
+                    <label className="form-label fw-semibold" style={{ fontSize: '0.9rem' }}>Tipo de gráfico</label>
                     <select 
-                      className="form-select"
-                       style={{
+                      className="form-select form-select-sm"
+                      style={{
                         backgroundColor: '#f8f9fa',
-                        border: '1px solid rgb(255, 255, 255)',
-                        borderRadius: '8px',
-                        padding: '0.75rem',
-                        fontSize: '1rem'
+                        border: '1px solid #ced4da',
+                        borderRadius: '6px',
+                        fontSize: '0.85rem'
                       }}
                       value={chartConfig.tipoGrafico}
                       onChange={(e) => handleConfigChange('tipoGrafico', e.target.value)}
@@ -199,16 +191,46 @@ Título: ${chartConfig.titulo}`;
                     </select>
                   </div>
 
+                  {/* Botones 2D/3D */}
                   <div className="mb-3">
-                    <label className="form-label fw-semibold">Paleta de colores</label>
+                    <label className="form-label fw-semibold" style={{ fontSize: '0.9rem' }}>Dimensión</label>
+                    <div className="btn-group w-100" role="group">
+                      <button
+                        type="button"
+                        className={`btn btn-sm ${chartConfig.dimension === '2D' ? 'btn-primary' : 'btn-outline-primary'}`}
+                        onClick={() => handleConfigChange('dimension', '2D')}
+                        style={{
+                          fontSize: '0.8rem',
+                          backgroundColor: chartConfig.dimension === '2D' ? '#1a237e' : 'transparent',
+                          borderColor: '#1a237e'
+                        }}
+                      >
+                        2D
+                      </button>
+                      <button
+                        type="button"
+                        className={`btn btn-sm ${chartConfig.dimension === '3D' ? 'btn-primary' : 'btn-outline-primary'}`}
+                        onClick={() => handleConfigChange('dimension', '3D')}
+                        style={{
+                          fontSize: '0.8rem',
+                          backgroundColor: chartConfig.dimension === '3D' ? '#1a237e' : 'transparent',
+                          borderColor: '#1a237e'
+                        }}
+                      >
+                        3D
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold" style={{ fontSize: '0.9rem' }}>Paleta de colores</label>
                     <select 
-                      className="form-select"
+                      className="form-select form-select-sm"
                       style={{
                         backgroundColor: '#f8f9fa',
-                        border: '1px solid rgb(255, 255, 255)',
-                        borderRadius: '8px',
-                        padding: '0.75rem',
-                        fontSize: '1rem'
+                        border: '1px solid #ced4da',
+                        borderRadius: '6px',
+                        fontSize: '0.85rem'
                       }}
                       value={chartConfig.paletaColores}
                       onChange={(e) => handleConfigChange('paletaColores', e.target.value)}
@@ -220,20 +242,36 @@ Título: ${chartConfig.titulo}`;
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label fw-semibold">Título</label>
+                    <label className="form-label fw-semibold" style={{ fontSize: '0.9rem' }}>Título</label>
                     <input 
                       type="text"
-                      className="form-control"
+                      className="form-control form-control-sm"
                       style={{
                         backgroundColor: '#f8f9fa',
-                        border: '1px solid rgb(255, 255, 255)',
-                        borderRadius: '8px',
-                        padding: '0.75rem',
-                        fontSize: '1rem'
+                        border: '1px solid #ced4da',
+                        borderRadius: '6px',
+                        fontSize: '0.85rem'
                       }}
                       value={chartConfig.titulo}
                       onChange={(e) => handleConfigChange('titulo', e.target.value)}
                       placeholder="Ingrese el título del gráfico"
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold" style={{ fontSize: '0.9rem' }}>Subtítulo</label>
+                    <input 
+                      type="text"
+                      className="form-control form-control-sm"
+                      style={{
+                        backgroundColor: '#f8f9fa',
+                        border: '1px solid #ced4da',
+                        borderRadius: '6px',
+                        fontSize: '0.85rem'
+                      }}
+                      value={chartConfig.subtitulo}
+                      onChange={(e) => handleConfigChange('subtitulo', e.target.value)}
+                      placeholder="Ingrese el subtítulo del gráfico"
                     />
                   </div>
                 </div>
@@ -241,52 +279,102 @@ Título: ${chartConfig.titulo}`;
             </div>
           )}
 
-          {/* Panel derecho - Visualización del gráfico */}
-          <div className="col-md-6">
-            <div className="bg-white p-5 rounded-lg shadow-sm h-100 d-flex flex-column" style={{
+          {/* Panel derecho - Visualización del gráfico - Expandido */}
+          <div className={hasPermission('modify') ? "col-md-8 col-lg-9" : "col-12"}>
+            <div className="bg-white p-4 rounded-lg shadow-sm h-100 d-flex flex-column" style={{
               borderRadius: '15px',
-              border: '1px solid #e0e0e0'
+              border: '1px solid #e0e0e0',
+              minHeight: '80vh'
             }}>
-              <div className="flex-grow-1 d-flex align-items-center justify-content-center">
-      <img 
-        src={graphImage}
-        alt="Gráfico de ejemplo"
-        className="img-fluid"
-        style={{ minHeight: '300px', minWidth: '100%', maxWidth: '120%', maxHeight: '120%' }}
-      />
-    </div>
+              {/* Títulos del gráfico */}
+              <div className="text-center mb-3">
+                <h3 className="fw-bold mb-2" style={{ 
+                  color: '#1a237e',
+                  fontSize: '1.8rem'
+                }}>
+                  {chartConfig.titulo}
+                </h3>
+                {chartConfig.subtitulo && (
+                  <h5 className="text-muted mb-3" style={{ 
+                    fontSize: '1.2rem',
+                    fontWeight: '400'
+                  }}>
+                    {chartConfig.subtitulo}
+                  </h5>
+                )}
+                {/* Indicador de dimensión */}
+                <div className="mb-3">
+                  <span className={`badge ${chartConfig.dimension === '3D' ? 'bg-success' : 'bg-primary'}`} 
+                        style={{ fontSize: '0.9rem' }}>
+                    Modo {chartConfig.dimension}
+                  </span>
+                </div>
+              </div>
 
-    {/* Botones de exportación - Solo mostrar si tiene permiso */}
-    {hasPermission('export') && (
-      <div className="d-flex gap-3 justify-content-center mt-4">
-        <button 
-          className="btn btn-primary px-4 py-2"
-          onClick={copyToClipboard}
-          style={{
-            borderRadius: '8px',
-            backgroundColor: '#1a237e',
-            border: 'none',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}
-        >
-          <i className="bi bi-clipboard me-2"></i>
-          Copiar
-        </button>
-        <button 
-          className="btn btn-primary px-4 py-2"
-          onClick={downloadAsPNG}
-          style={{
-            borderRadius: '8px',
-            backgroundColor: '#1a237e',
-            border: 'none',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}
-        >
-          <i className="bi bi-download me-2"></i>
-          Descargar PNG
-        </button>
-      </div>
-    )}
+              {/* Área del gráfico expandida */}
+              <div className="flex-grow-1 d-flex align-items-center justify-content-center" 
+                   style={{ minHeight: '500px' }}>
+                <div className="position-relative w-100 h-100 d-flex align-items-center justify-content-center">
+                  <img 
+                    src={graphImage}
+                    alt="Gráfico de ejemplo"
+                    className="img-fluid"
+                    style={{ 
+                      maxWidth: '95%', 
+                      maxHeight: '95%',
+                      minHeight: '400px',
+                      objectFit: 'contain',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                  
+                  {/* Etiqueta del Eje X */}
+                  <div className="position-absolute bottom-0 start-50 translate-middle-x mb-2">
+                    <div className="bg-dark text-white px-3 py-2 rounded" 
+                         style={{ 
+                           fontSize: '0.9rem',
+                           opacity: '0.8',
+                           maxWidth: '400px',
+                           textAlign: 'center'
+                         }}>
+                      <strong>Eje X:</strong> {chartConfig.ejeX || 'No seleccionado'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botones de exportación - Solo mostrar si tiene permiso */}
+              {hasPermission('export') && (
+                <div className="d-flex gap-3 justify-content-center mt-4">
+                  <button 
+                    className="btn btn-primary px-4 py-2"
+                    onClick={copyToClipboard}
+                    style={{
+                      borderRadius: '8px',
+                      backgroundColor: '#1a237e',
+                      border: 'none',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <i className="bi bi-clipboard me-2"></i>
+                    Copiar
+                  </button>
+                  <button 
+                    className="btn btn-primary px-4 py-2"
+                    onClick={downloadAsPNG}
+                    style={{
+                      borderRadius: '8px',
+                      backgroundColor: '#1a237e',
+                      border: 'none',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <i className="bi bi-download me-2"></i>
+                    Descargar PNG
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

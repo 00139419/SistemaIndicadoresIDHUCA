@@ -15,7 +15,6 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
       descripcion: "",
     },
     securityAnswer: "",
-    debloquearUsuario: false,
   });
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -41,7 +40,6 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
           descripcion: "¿Cuál es el nombre de tu primera mascota?",
         },
         securityAnswer: "",
-        debloquearUsuario: !user.activo,
       });
     }
   }, [user]);
@@ -60,7 +58,6 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
             },
             body: JSON.stringify({
               securityQuestions: true,
-            
             }),
           }
         );
@@ -83,24 +80,7 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
 
     try {
       const token = localStorage.getItem("authToken");
-      if (formData.debloquearUsuario) {
-        const unlockResponse = await fetch(
-          "http://localhost:8080/idhuca-indicadores/api/srv/users/unlock",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ id: formData.id }),
-          }
-        );
 
-        if (!unlockResponse.ok) {
-          throw new Error("Error al desbloquear el usuario");
-        }
-      }
-       
       const updateResponse = await fetch(
         "http://localhost:8080/idhuca-indicadores/api/srv/users/update",
         {
@@ -109,10 +89,7 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            ...formData,
-            debloquearUsuario: undefined,
-          }),
+          body: JSON.stringify(formData),
         }
       );
 
@@ -198,28 +175,7 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
                     ))}
                   </select>
                 </div>
-                <div className="mb-3">
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      checked={formData.debloquearUsuario}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          debloquearUsuario: e.target.checked,
-                        })
-                      }
-                      id="debloquearUsuario"
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="debloquearUsuario"
-                    >
-                      Desbloquear Usuario
-                    </label>
-                  </div>
-                </div>
+                {/* Aquí se eliminó la opción de desbloquear usuario */}
               </div>
               <div className="modal-footer">
                 <button
