@@ -8,6 +8,8 @@ import "primereact/resources/primereact.min.css";
 import { useLocation } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
 import { InputSwitch } from "primereact/inputswitch";
+import { getCatalogo } from "./../../services/RegstrosService";
+import { useEffect } from "react";
 
 export default function FiltradoRegistros() {
   const [mostrar, setMostrar] = useState({});
@@ -18,6 +20,33 @@ export default function FiltradoRegistros() {
   const toggleMostrar = (clave) => {
     setMostrar((prev) => ({ ...prev, [clave]: !prev[clave] }));
   };
+
+  // Catalogos
+  const [departamentos, setDepartamentos] = useState([]);
+  const [municipios, setMunicipios] = useState([]);
+  const [departamentosResidencia, setDepartamentosResidencia] = useState([]);
+  const [municipiosResidencia, setMunicipiosResidencia] = useState([]);
+  const [fuentes, setFuentes] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [estadosSaludPersonaAfectada, setEstadosSaludPersonaAfectada] =
+    useState([]);
+  const [lugaresExactos, setLugaresExactos] = useState([]);
+  const [generos, setGeneros] = useState([]);
+  const [derechos, setDerechos] = useState([]);
+  const [paises, setPaises] = useState([]);
+  const [tiposPersona, setTiposPersona] = useState([]);
+  const [tiposViolencia, setTiposViolencia] = useState([]);
+  const [artefactos, setArtefactos] = useState([]);
+  const [contextosViolencia, setContextosViolencia] = useState([]);
+  const [actorResponsable, setActorResponsable] = useState([]);
+  const [tiposDetencion, setTiposDetencion] = useState([]);
+  const [motivosDetencion, setMotivosDetencion] = useState([]);
+  const [mediosExpresion, setMediosExpresion] = useState([]);
+  const [tiposRepresion, setTiposRepresion] = useState([]);
+  const [tiposProcesoJudicial, setTiposProcesoJudicial] = useState([]);
+  const [duracionesProceso, setDuracionesProceso] = useState([]);
+
+  const [loadingCatalogos, setLoadingCatalogos] = useState(true);
 
   const [eventoFiltro, setEventoFiltro] = useState({
     fechaHechoRango: { fechaInicio: null, fechaFin: null },
@@ -89,6 +118,125 @@ export default function FiltradoRegistros() {
     instancias: [],
   });
 
+  useEffect(() => {
+    cargarCatalogos();
+  }, []);
+
+  const cargarCatalogos = async () => {
+    try {
+      const [
+        d,
+        f,
+        e,
+        l,
+        g,
+        sd,
+        p,
+        ss,
+        tp,
+        tv,
+        ar,
+        cv,
+        td,
+        md,
+        me,
+        tr,
+        tpJud,
+        dp,
+        dr,
+      ] = await Promise.all([
+        getCatalogo({ departamentos: true }),
+        getCatalogo({ fuentes: true }),
+        getCatalogo({ estadoRegistro: true }),
+        getCatalogo({ lugarExacto: true }),
+        getCatalogo({ genero: true }),
+        getCatalogo({ subDerechos: true, parentId: "DER_1" }),
+        getCatalogo({ paises: true }),
+        getCatalogo({ estadoSalud: true }),
+        getCatalogo({ tipoPersona: true }),
+        getCatalogo({ tipoViolencia: true }),
+        getCatalogo({ tipoArma: true }),
+        getCatalogo({ tipoPersona: true }),
+        getCatalogo({ tipoDetencion: true }),
+        getCatalogo({ motivoDetencion: true }),
+        getCatalogo({ medioExpresion: true }),
+        getCatalogo({ tipoRepresion: true }),
+        getCatalogo({ tipoProcesoJudicial: true }),
+        getCatalogo({ duracionProceso: true }),
+        getCatalogo({ departamentos: true }),
+      ]);
+
+      setDepartamentosResidencia(dr);
+      setTiposPersona(tp);
+      setEstadosSaludPersonaAfectada(ss);
+      setDepartamentos(d);
+      setFuentes(f);
+      setEstados(e);
+      setLugaresExactos(l);
+      setGeneros(g);
+      setDerechos(sd);
+      setPaises(p);
+      setTiposViolencia(tv);
+      setArtefactos(ar);
+      setContextosViolencia(cv);
+      setTiposDetencion(td);
+      setMotivosDetencion(md);
+      setMediosExpresion(me);
+      setTiposRepresion(tr);
+
+      setTiposProcesoJudicial(tpJud);
+      setDuracionesProceso(dp);
+      setActorResponsable(tp);
+    } catch (error) {
+      console.error("Error al cargar catálogos", error);
+    } finally {
+      setLoadingCatalogos(false);
+    }
+  };
+
+  useEffect(() => {
+    const cargarMunicipiosEvento = async () => {
+      if (eventoFiltro.departamentos.length === 1) {
+        const [depto] = eventoFiltro.departamentos;
+        const municipios = await obtenerMunicipiosPorDepartamento(depto.codigo);
+        setMunicipios(municipios);
+      } else {
+        setMunicipios([]);
+      }
+    };
+
+    cargarMunicipiosEvento();
+  }, [eventoFiltro.departamentos]);
+
+  useEffect(() => {
+    const cargarMunicipiosResidencia = async () => {
+      if (afectadaFiltro.departamentosResidencia.length === 1) {
+        const [depto] = afectadaFiltro.departamentosResidencia;
+        const municipios = await obtenerMunicipiosPorDepartamento(depto.codigo);
+        setMunicipiosResidencia(municipios);
+      } else {
+        setMunicipiosResidencia([]);
+      }
+    };
+
+    cargarMunicipiosResidencia();
+  }, [afectadaFiltro.departamentosResidencia]);
+
+  const obtenerMunicipiosPorDepartamento = async (codigoDepto) => {
+    if (!codigoDepto) return [];
+
+    try {
+      const res = await getCatalogo({
+        municipios: true,
+        parentId: codigoDepto,
+      });
+      return res;
+    } catch (err) {
+      console.error("Error obteniendo municipios", err);
+      return [];
+    }
+  };
+
   const catalogoMock = [
     { codigo: "COD1", descripcion: "Opción 1" },
     { codigo: "COD2", descripcion: "Opción 2" },
@@ -118,16 +266,59 @@ export default function FiltradoRegistros() {
     </div>
   );
 
+  const isEmptyValue = (value) => {
+    if (value === null || value === undefined) return true;
+
+    if (Array.isArray(value)) return value.length === 0;
+
+    if (typeof value === "object") {
+      // Manejo especial para rangos de fecha o edad
+      const allNull = Object.values(value).every(
+        (v) => v === null || v === undefined || v === ""
+      );
+      return allNull;
+    }
+
+    return false;
+  };
+
+  const cleanFiltro = (filtro) => {
+    const limpio = {};
+    for (const [key, val] of Object.entries(filtro)) {
+      if (!isEmptyValue(val)) {
+        limpio[key] = val;
+      }
+    }
+    return Object.keys(limpio).length > 0 ? limpio : null;
+  };
+
+  const shouldInclude = (obj) => {
+    return Object.values(obj).some((value) => !isEmptyValue(value));
+  };
+
   const aplicarFiltros = () => {
-    const filtrosFinales = {
-      eventoFiltro,
-      afectadaFiltro,
-      derechosVulneradosFiltro,
-      violenciaFiltro,
-      detencionFiltro,
-      censuraFiltro,
-      accesoJusticiaFiltro
-    };
+    const filtrosFinales = {};
+
+    const evento = cleanFiltro(eventoFiltro);
+    if (evento) filtrosFinales.eventoFiltro = evento;
+
+    const afectada = cleanFiltro(afectadaFiltro);
+    if (afectada) filtrosFinales.afectadaFiltro = afectada;
+
+    const derechos = cleanFiltro(derechosVulneradosFiltro);
+    if (derechos) filtrosFinales.derechosVulneradosFiltro = derechos;
+
+    const violencia = cleanFiltro(violenciaFiltro);
+    if (violencia) filtrosFinales.violenciaFiltro = violencia;
+
+    const detencion = cleanFiltro(detencionFiltro);
+    if (detencion) filtrosFinales.detencionFiltro = detencion;
+
+    const censura = cleanFiltro(censuraFiltro);
+    if (censura) filtrosFinales.censuraFiltro = censura;
+
+    const justicia = cleanFiltro(accesoJusticiaFiltro);
+    if (justicia) filtrosFinales.accesoJusticiaFiltro = justicia;
 
     console.log(filtrosFinales);
 
@@ -135,6 +326,15 @@ export default function FiltradoRegistros() {
       state: { filtros: filtrosFinales, derechoId },
     });
   };
+
+  if (loadingCatalogos) {
+    return (
+      <div className="flex justify-content-center align-items-center min-h-screen">
+        <i className="pi pi-spin pi-spinner" style={{ fontSize: "2rem" }} />
+        <span className="ml-3 text-xl">Cargando catálogos...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-4">
@@ -192,7 +392,7 @@ export default function FiltradoRegistros() {
                   <label>Fuentes</label>
                   <MultiSelect
                     value={eventoFiltro.fuentes.map((c) => c.codigo)}
-                    options={catalogoMock}
+                    options={fuentes}
                     optionLabel="descripcion"
                     optionValue="codigo"
                     onChange={(e) =>
@@ -211,7 +411,7 @@ export default function FiltradoRegistros() {
                   <label>Estados actuales</label>
                   <MultiSelect
                     value={eventoFiltro.estadosActuales.map((c) => c.codigo)}
-                    options={catalogoMock}
+                    options={estados}
                     optionLabel="descripcion"
                     optionValue="codigo"
                     onChange={(e) =>
@@ -244,13 +444,14 @@ export default function FiltradoRegistros() {
                   <label>Departamentos</label>
                   <MultiSelect
                     value={eventoFiltro.departamentos.map((c) => c.codigo)}
-                    options={catalogoMock}
+                    options={departamentos}
                     optionLabel="descripcion"
                     optionValue="codigo"
                     onChange={(e) =>
                       setEventoFiltro((prev) => ({
                         ...prev,
                         departamentos: e.value.map((codigo) => ({ codigo })),
+                        municipios: [],
                       }))
                     }
                     placeholder="Seleccionar departamentos"
@@ -263,7 +464,7 @@ export default function FiltradoRegistros() {
                   <label>Municipios</label>
                   <MultiSelect
                     value={eventoFiltro.municipios.map((c) => c.codigo)}
-                    options={catalogoMock}
+                    options={municipios}
                     optionLabel="descripcion"
                     optionValue="codigo"
                     onChange={(e) =>
@@ -282,7 +483,7 @@ export default function FiltradoRegistros() {
                   <label>Lugares exactos</label>
                   <MultiSelect
                     value={eventoFiltro.lugaresExactos.map((c) => c.codigo)}
-                    options={catalogoMock}
+                    options={lugaresExactos}
                     optionLabel="descripcion"
                     optionValue="codigo"
                     onChange={(e) =>
@@ -329,7 +530,7 @@ export default function FiltradoRegistros() {
             <label>Géneros</label>
             <MultiSelect
               value={afectadaFiltro.generos.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={generos}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -348,7 +549,7 @@ export default function FiltradoRegistros() {
             <label>Nacionalidades</label>
             <MultiSelect
               value={afectadaFiltro.nacionalidades.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={paises}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -359,6 +560,9 @@ export default function FiltradoRegistros() {
               }
               placeholder="Seleccionar nacionalidades"
               className="w-100"
+              filter
+              filterPlaceholder="Buscar nacionalidad"
+              filterBy="descripcion"
             />
           </div>
 
@@ -369,7 +573,7 @@ export default function FiltradoRegistros() {
               value={afectadaFiltro.departamentosResidencia.map(
                 (c) => c.codigo
               )}
-              options={catalogoMock}
+              options={departamentosResidencia}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -377,6 +581,7 @@ export default function FiltradoRegistros() {
                   ...prev,
                   departamentosResidencia: e.value.map((codigo) => ({
                     codigo,
+                    municipiosResidencia: [],
                   })),
                 }))
               }
@@ -390,7 +595,7 @@ export default function FiltradoRegistros() {
             <label>Municipios de residencia</label>
             <MultiSelect
               value={afectadaFiltro.municipiosResidencia.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={municipiosResidencia}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -409,7 +614,7 @@ export default function FiltradoRegistros() {
             <label>Tipos de persona</label>
             <MultiSelect
               value={afectadaFiltro.tiposPersona.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -428,7 +633,7 @@ export default function FiltradoRegistros() {
             <label>Estados de salud</label>
             <MultiSelect
               value={afectadaFiltro.estadosSalud.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={estadosSaludPersonaAfectada}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -490,7 +695,7 @@ export default function FiltradoRegistros() {
               value={derechosVulneradosFiltro.derechosVulnerados.map(
                 (c) => c.codigo
               )}
-              options={catalogoMock}
+              options={derechos}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -529,7 +734,7 @@ export default function FiltradoRegistros() {
             <label>Tipos de violencia</label>
             <MultiSelect
               value={violenciaFiltro.tiposViolencia.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={tiposViolencia}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -548,7 +753,7 @@ export default function FiltradoRegistros() {
             <label>Artefactos utilizados</label>
             <MultiSelect
               value={violenciaFiltro.artefactosUtilizados.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={artefactos}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -567,7 +772,7 @@ export default function FiltradoRegistros() {
             <label>Contextos</label>
             <MultiSelect
               value={violenciaFiltro.contextos.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={contextosViolencia}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -586,7 +791,7 @@ export default function FiltradoRegistros() {
             <label>Actores responsables</label>
             <MultiSelect
               value={violenciaFiltro.actoresResponsables.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={actorResponsable}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -607,7 +812,7 @@ export default function FiltradoRegistros() {
               value={violenciaFiltro.estadosSaludActorResponsable.map(
                 (c) => c.codigo
               )}
-              options={catalogoMock}
+              options={estadosSaludPersonaAfectada}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -662,7 +867,7 @@ export default function FiltradoRegistros() {
             <label>Tipos de detención</label>
             <MultiSelect
               value={detencionFiltro.tiposDetencion.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={tiposDetencion}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -697,7 +902,7 @@ export default function FiltradoRegistros() {
               value={detencionFiltro.autoridadesInvolucradas.map(
                 (c) => c.codigo
               )}
-              options={catalogoMock}
+              options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -732,7 +937,7 @@ export default function FiltradoRegistros() {
             <label>Motivos de detención</label>
             <MultiSelect
               value={detencionFiltro.motivosDetencion.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={motivosDetencion}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -809,7 +1014,7 @@ export default function FiltradoRegistros() {
             <label>Medios de expresión</label>
             <MultiSelect
               value={censuraFiltro.mediosExpresion.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={mediosExpresion}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -828,7 +1033,7 @@ export default function FiltradoRegistros() {
             <label>Tipos de represión</label>
             <MultiSelect
               value={censuraFiltro.tiposRepresion.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={tiposRepresion}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -875,7 +1080,7 @@ export default function FiltradoRegistros() {
             <label>Actores censores</label>
             <MultiSelect
               value={censuraFiltro.actoresCensores.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -919,7 +1124,7 @@ export default function FiltradoRegistros() {
             <label>Tipos de proceso</label>
             <MultiSelect
               value={accesoJusticiaFiltro.tiposProceso.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={tiposProcesoJudicial}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -978,7 +1183,7 @@ export default function FiltradoRegistros() {
             <label>Tipos de denunciante</label>
             <MultiSelect
               value={accesoJusticiaFiltro.tiposDenunciante.map((c) => c.codigo)}
-              options={catalogoMock}
+              options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
@@ -999,7 +1204,7 @@ export default function FiltradoRegistros() {
               value={accesoJusticiaFiltro.duracionesProceso.map(
                 (c) => c.codigo
               )}
-              options={catalogoMock}
+              options={duracionesProceso}
               optionLabel="descripcion"
               optionValue="codigo"
               onChange={(e) =>
