@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import logoUCA from "../assets/idhuca-logo-blue.png";
+import logoUCA from "../../assets/idhuca-logo-blue.png";
 
 function PasswordResetSuccess() {
   const [loading, setLoading] = useState(false);

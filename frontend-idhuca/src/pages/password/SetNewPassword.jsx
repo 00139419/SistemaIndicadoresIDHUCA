@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import logoUCA from "../assets/idhuca-logo-blue.png";
+import logoUCA from "../../assets/idhuca-logo-blue.png";
 import axios from "axios";
 
 const SetNewPassword = () => {
