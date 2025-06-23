@@ -22,8 +22,6 @@ const Registros = () => {
     derechoId = "DER_" + derechoId;
   }
 
-  console.log("derechoId start: " + derechoId);
-
   const [registroSeleccionado, setRegistroSeleccionado] = useState(null);
   const { userRole } = useAuth();
   const navigate = useNavigate();
@@ -83,7 +81,6 @@ const Registros = () => {
   }, [derechoCodigo, derechos]);
 
   const fetchRegistros = async (pagina = 0) => {
-    console.log("fetch registros");
     try {
       setIsLoading(true);
       setError(null);
@@ -94,12 +91,6 @@ const Registros = () => {
         throw new Error("Código de derecho no válido");
       }
 
-      console.log("Iniciando fetchRegistros con:", {
-        derecho: derechoSeleccionado,
-        pagina,
-        registrosPorPagina: 10,
-      });
-
       const response = await getRegistrosByDerecho(
         {
           codigo: derechoSeleccionado.codigo,
@@ -108,8 +99,6 @@ const Registros = () => {
         pagina,
         10
       );
-
-      console.log("Respuesta de getRegistrosByDerecho:", response);
 
       if (response.registros && Array.isArray(response.registros)) {
         const formattedData = response.registros.map((registro) => ({
@@ -226,6 +215,7 @@ const Registros = () => {
         />
       ) : (
         <VistaRegistrosDinamica
+          filtros={filtros}
           derechoId={derechoId}
           title="Registros"
           columns={columns}

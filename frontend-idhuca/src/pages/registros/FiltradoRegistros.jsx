@@ -15,7 +15,7 @@ export default function FiltradoRegistros() {
   const [mostrar, setMostrar] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
-  let { derechoId, derechoTitle } = location.state || {};
+  let { derechoId, filtros } = location.state || {};
 
   const toggleMostrar = (clave) => {
     setMostrar((prev) => ({ ...prev, [clave]: !prev[clave] }));
@@ -117,6 +117,113 @@ export default function FiltradoRegistros() {
     resultadosProceso: [],
     instancias: [],
   });
+
+  const filtroBaseEvento = {
+    fechaHechoRango: { fechaInicio: null, fechaFin: null },
+    fuentes: [],
+    estadosActuales: [],
+    flagRegimenExcepcion: null,
+    departamentos: [],
+    municipios: [],
+    lugaresExactos: [],
+  };
+
+  const filtroBaseAfectada = {
+    nombres: [],
+    generos: [],
+    nacionalidades: [],
+    departamentosResidencia: [],
+    municipiosResidencia: [],
+    tiposPersona: [],
+    estadosSalud: [],
+    rangoEdad: { edadInicio: null, edadFin: null },
+  };
+
+  const filtroBaseDerechos = {
+    derechosVulnerados: [],
+  };
+
+  const filtroBaseViolencia = {
+    esAsesinato: null,
+    tiposViolencia: [],
+    artefactosUtilizados: [],
+    contextos: [],
+    actoresResponsables: [],
+    estadosSaludActorResponsable: [],
+    huboProteccion: null,
+    investigacionAbierta: null,
+  };
+
+  const filtroBaseDetencion = {
+    tiposDetencion: [],
+    ordenJudicial: null,
+    autoridadesInvolucradas: [],
+    huboTortura: null,
+    motivosDetencion: [],
+    duracionDiasExactos: [],
+    accesoAbogado: null,
+    resultados: [],
+  };
+
+  const filtroBaseCensura = {
+    mediosExpresion: [],
+    tiposRepresion: [],
+    represaliasLegales: null,
+    represaliasFisicas: null,
+    actoresCensores: [],
+    consecuencias: [],
+  };
+
+  const filtroBaseAccesoJusticia = {
+    tiposProceso: [],
+    fechaDenunciaRango: {
+      fechaInicio: null,
+      fechaFin: null,
+    },
+    tiposDenunciante: [],
+    duracionesProceso: [],
+    accesoAbogado: null,
+    huboParcialidad: null,
+    resultadosProceso: [],
+    instancias: [],
+  };
+
+  useEffect(() => {
+    if (filtros) {
+      if (filtros.eventoFiltro)
+        setEventoFiltro({ ...filtroBaseEvento, ...filtros.eventoFiltro });
+
+      if (filtros.afectadaFiltro)
+        setAfectadaFiltro({ ...filtroBaseAfectada, ...filtros.afectadaFiltro });
+
+      if (filtros.derechosVulneradosFiltro)
+        setDerechosVulneradosFiltro({
+          ...filtroBaseDerechos,
+          ...filtros.derechosVulneradosFiltro,
+        });
+
+      if (filtros.violenciaFiltro)
+        setViolenciaFiltro({
+          ...filtroBaseViolencia,
+          ...filtros.violenciaFiltro,
+        });
+
+      if (filtros.detencionFiltro)
+        setDetencionFiltro({
+          ...filtroBaseDetencion,
+          ...filtros.detencionFiltro,
+        });
+
+      if (filtros.censuraFiltro)
+        setCensuraFiltro({ ...filtroBaseCensura, ...filtros.censuraFiltro });
+
+      if (filtros.accesoJusticiaFiltro)
+        setAccesoJusticiaFiltro({
+          ...filtroBaseAccesoJusticia,
+          ...filtros.accesoJusticiaFiltro,
+        });
+    }
+  }, [filtros]);
 
   useEffect(() => {
     cargarCatalogos();
@@ -327,6 +434,73 @@ export default function FiltradoRegistros() {
     });
   };
 
+  const limpiarFiltros = () => {
+    setEventoFiltro({
+      fechaHechoRango: { fechaInicio: null, fechaFin: null },
+      fuentes: [],
+      estadosActuales: [],
+      flagRegimenExcepcion: null,
+      departamentos: [],
+      municipios: [],
+      lugaresExactos: [],
+    });
+
+    setAfectadaFiltro({
+      nombres: [],
+      generos: [],
+      nacionalidades: [],
+      departamentosResidencia: [],
+      municipiosResidencia: [],
+      tiposPersona: [],
+      estadosSalud: [],
+      rangoEdad: { edadInicio: null, edadFin: null },
+    });
+
+    setDerechosVulneradosFiltro({ derechosVulnerados: [] });
+
+    setViolenciaFiltro({
+      esAsesinato: null,
+      tiposViolencia: [],
+      artefactosUtilizados: [],
+      contextos: [],
+      actoresResponsables: [],
+      estadosSaludActorResponsable: [],
+      huboProteccion: null,
+      investigacionAbierta: null,
+    });
+
+    setDetencionFiltro({
+      tiposDetencion: [],
+      ordenJudicial: null,
+      autoridadesInvolucradas: [],
+      huboTortura: null,
+      motivosDetencion: [],
+      duracionDiasExactos: [],
+      accesoAbogado: null,
+      resultados: [],
+    });
+
+    setCensuraFiltro({
+      mediosExpresion: [],
+      tiposRepresion: [],
+      represaliasLegales: null,
+      represaliasFisicas: null,
+      actoresCensores: [],
+      consecuencias: [],
+    });
+
+    setAccesoJusticiaFiltro({
+      tiposProceso: [],
+      fechaDenunciaRango: { fechaInicio: null, fechaFin: null },
+      tiposDenunciante: [],
+      duracionesProceso: [],
+      accesoAbogado: null,
+      huboParcialidad: null,
+      resultadosProceso: [],
+      instancias: [],
+    });
+  };
+
   if (loadingCatalogos) {
     return (
       <div className="flex justify-content-center align-items-center min-h-screen">
@@ -337,15 +511,14 @@ export default function FiltradoRegistros() {
   }
 
   return (
-    <div className="container py-4">
+    <div className="border rounded p-3 mb-4">
       <h3 className="mb-4">Filtros del Registro</h3>
 
       {/* Evento */}
       <div className="border rounded p-3 mb-4">
-        <h5>Filtros de Evento</h5>
         <div className="row">
           <div className="container py-4">
-            <h3 className="mb-4">Filtros de Evento</h3>
+            <h5 className="mb-4">Filtros de Evento</h5>
 
             <div className="border rounded p-3 mb-4">
               <div className="row">
@@ -1286,8 +1459,14 @@ export default function FiltradoRegistros() {
         </div>
       </div>
 
-      {/* Botón aplicar */}
-      <div className="text-end">
+      {/* Botones Borrar Filtros y Aplicar Filtros */}
+      <div className="d-flex justify-content-end gap-2 mt-4">
+        <Button
+          label="Borrar todos los filtros"
+          icon="pi pi-times"
+          className="p-button-secondary"
+          onClick={limpiarFiltros}
+        />
         <Button
           label="Aplicar filtros"
           icon="pi pi-check"
