@@ -25,7 +25,40 @@ export default function FiltradoRegistros() {
   const [mostrar, setMostrar] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
-  let { derechoId, filtros } = location.state || {};
+  let { derechoId, filtros, categoriaEjeX } = location.state || {};
+
+  useEffect(() => {
+    if (categoriaEjeX) {
+      const campo = detectarCampoSeleccionado(categoriaEjeX);
+      setCampoSeleccionado(campo);
+    }
+  }, [categoriaEjeX]);
+
+  function detectarCampoSeleccionado(obj) {
+    if (!obj || typeof obj !== "object") return null;
+
+    for (const padre in obj) {
+      if (typeof obj[padre] === "object" && obj[padre] !== null) {
+        for (const hijo in obj[padre]) {
+          const valor = obj[padre][hijo];
+          const esValido =
+            (Array.isArray(valor) && valor.length > 0) ||
+            (typeof valor === "object" &&
+              valor !== null &&
+              Object.keys(valor).length > 0) ||
+            typeof valor === "boolean" ||
+            typeof valor === "number" ||
+            (typeof valor === "string" && valor.trim() !== "");
+
+          if (esValido) {
+            return `${padre}.${hijo}`;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
 
   const toggleMostrar = (clave) => {
     setMostrar((prev) => ({ ...prev, [clave]: !prev[clave] }));
@@ -199,41 +232,47 @@ export default function FiltradoRegistros() {
   };
 
   useEffect(() => {
-    if (filtros) {
-      if (filtros.eventoFiltro)
-        setEventoFiltro({ ...filtroBaseEvento, ...filtros.eventoFiltro });
+    if (categoriaEjeX) {
+      if (categoriaEjeX.eventoFiltro)
+        setEventoFiltro({ ...filtroBaseEvento, ...categoriaEjeX.eventoFiltro });
 
-      if (filtros.afectadaFiltro)
-        setAfectadaFiltro({ ...filtroBaseAfectada, ...filtros.afectadaFiltro });
+      if (categoriaEjeX.afectadaFiltro)
+        setAfectadaFiltro({
+          ...filtroBaseAfectada,
+          ...categoriaEjeX.afectadaFiltro,
+        });
 
-      if (filtros.derechosVulneradosFiltro)
+      if (categoriaEjeX.derechosVulneradosFiltro)
         setDerechosVulneradosFiltro({
           ...filtroBaseDerechos,
-          ...filtros.derechosVulneradosFiltro,
+          ...categoriaEjeX.derechosVulneradosFiltro,
         });
 
-      if (filtros.violenciaFiltro)
+      if (categoriaEjeX.violenciaFiltro)
         setViolenciaFiltro({
           ...filtroBaseViolencia,
-          ...filtros.violenciaFiltro,
+          ...categoriaEjeX.violenciaFiltro,
         });
 
-      if (filtros.detencionFiltro)
+      if (categoriaEjeX.detencionFiltro)
         setDetencionFiltro({
           ...filtroBaseDetencion,
-          ...filtros.detencionFiltro,
+          ...categoriaEjeX.detencionFiltro,
         });
 
-      if (filtros.censuraFiltro)
-        setCensuraFiltro({ ...filtroBaseCensura, ...filtros.censuraFiltro });
+      if (categoriaEjeX.censuraFiltro)
+        setCensuraFiltro({
+          ...filtroBaseCensura,
+          ...categoriaEjeX.censuraFiltro,
+        });
 
-      if (filtros.accesoJusticiaFiltro)
+      if (categoriaEjeX.accesoJusticiaFiltro)
         setAccesoJusticiaFiltro({
           ...filtroBaseAccesoJusticia,
-          ...filtros.accesoJusticiaFiltro,
+          ...categoriaEjeX.accesoJusticiaFiltro,
         });
     }
-  }, [filtros]);
+  }, [categoriaEjeX]);
 
   useEffect(() => {
     cargarCatalogos();
@@ -386,6 +425,8 @@ export default function FiltradoRegistros() {
   const isEmptyValue = (value) => {
     if (value === null || value === undefined) return true;
 
+    if(value === false) return true;
+
     if (Array.isArray(value)) return value.length === 0;
 
     if (typeof value === "object") {
@@ -445,33 +486,33 @@ export default function FiltradoRegistros() {
   ]);
 
   const aplicarFiltros = () => {
-    const filtrosFinales = {};
+    categoriaEjeX = {};
 
     const evento = cleanFiltro(eventoFiltro);
-    if (evento) filtrosFinales.eventoFiltro = evento;
+    if (evento) categoriaEjeX.eventoFiltro = evento;
 
     const afectada = cleanFiltro(afectadaFiltro);
-    if (afectada) filtrosFinales.afectadaFiltro = afectada;
+    if (afectada) categoriaEjeX.afectadaFiltro = afectada;
 
     const derechos = cleanFiltro(derechosVulneradosFiltro);
-    if (derechos) filtrosFinales.derechosVulneradosFiltro = derechos;
+    if (derechos) categoriaEjeX.derechosVulneradosFiltro = derechos;
 
     const violencia = cleanFiltro(violenciaFiltro);
-    if (violencia) filtrosFinales.violenciaFiltro = violencia;
+    if (violencia) categoriaEjeX.violenciaFiltro = violencia;
 
     const detencion = cleanFiltro(detencionFiltro);
-    if (detencion) filtrosFinales.detencionFiltro = detencion;
+    if (detencion) categoriaEjeX.detencionFiltro = detencion;
 
     const censura = cleanFiltro(censuraFiltro);
-    if (censura) filtrosFinales.censuraFiltro = censura;
+    if (censura) categoriaEjeX.censuraFiltro = censura;
 
     const justicia = cleanFiltro(accesoJusticiaFiltro);
-    if (justicia) filtrosFinales.accesoJusticiaFiltro = justicia;
+    if (justicia) categoriaEjeX.accesoJusticiaFiltro = justicia;
 
-    console.log(filtrosFinales);
+    console.log("categoriaEjeX " + JSON.stringify(categoriaEjeX)) 
 
     navigate("/graphs", {
-      state: {derechoId,  categoriaEjeX: filtrosFinales},
+      state: { derechoId, filtros, categoriaEjeX },
     });
   };
 
@@ -603,9 +644,78 @@ export default function FiltradoRegistros() {
     return !campoSeleccionado || campoSeleccionado === id;
   };
 
+  const nombresCamposEjeX = {
+    "eventoFiltro.fechaHechoRango": "Fecha del hecho",
+    "eventoFiltro.fuentes": "Fuente",
+    "eventoFiltro.estadosActuales": "Estado actual del caso",
+    "eventoFiltro.flagRegimenExcepcion": "Regimen de excepción",
+    "eventoFiltro.departamentos": "Departamento del hecho",
+    "eventoFiltro.municipios": "Municipio del hecho",
+    "eventoFiltro.lugaresExactos": "Lugar exacto del hecho",
+
+    "afectadaFiltro.nombres": "Nombres afectados/as",
+    "afectadaFiltro.generos": "Género",
+    "afectadaFiltro.nacionalidades": "Nacionalidad",
+    "afectadaFiltro.departamentosResidencia": "Departamento de residencia",
+    "afectadaFiltro.municipiosResidencia": "Municipio de residencia",
+    "afectadaFiltro.tiposPersona": "Tipo de persona",
+    "afectadaFiltro.estadosSalud": "Estado de salud",
+    "afectadaFiltro.rangoEdad": "Rango de edad",
+
+    "derechosVulneradosFiltro.derechosVulnerados": "Derecho vulnerado",
+
+    "violenciaFiltro.esAsesinato": "¿Hubo asesinato?",
+    "violenciaFiltro.tiposViolencia": "Tipo de violencia",
+    "violenciaFiltro.artefactosUtilizados": "Artefacto utilizado",
+    "violenciaFiltro.contextos": "Contexto del hecho",
+    "violenciaFiltro.actoresResponsables": "Actor responsable",
+    "violenciaFiltro.estadosSaludActorResponsable": "Estado de salud del actor",
+    "violenciaFiltro.huboProteccion": "¿Hubo protección?",
+    "violenciaFiltro.investigacionAbierta": "¿Investigación abierta?",
+
+    "detencionFiltro.tiposDetencion": "Tipo de detención",
+    "detencionFiltro.ordenJudicial": "¿Orden judicial?",
+    "detencionFiltro.autoridadesInvolucradas": "Autoridad involucrada",
+    "detencionFiltro.huboTortura": "¿Hubo tortura?",
+    "detencionFiltro.motivosDetencion": "Motivo de la detención",
+    "detencionFiltro.duracionDiasExactos": "Días de detención",
+    "detencionFiltro.accesoAbogado": "¿Acceso a abogado?",
+    "detencionFiltro.resultados": "Resultado de la detención",
+
+    "censuraFiltro.mediosExpresion": "Medio de expresión",
+    "censuraFiltro.tiposRepresion": "Tipo de represión",
+    "censuraFiltro.represaliasLegales": "¿Represalia legal?",
+    "censuraFiltro.represaliasFisicas": "¿Represalia física?",
+    "censuraFiltro.actoresCensores": "Actor censor",
+    "censuraFiltro.consecuencias": "Consecuencia de la censura",
+
+    "accesoJusticiaFiltro.tiposProceso": "Tipo de proceso judicial",
+    "accesoJusticiaFiltro.fechaDenunciaRango": "Fecha de denuncia",
+    "accesoJusticiaFiltro.tiposDenunciante": "Tipo de denunciante",
+    "accesoJusticiaFiltro.duracionesProceso": "Duración del proceso",
+    "accesoJusticiaFiltro.accesoAbogado": "¿Acceso a abogado?",
+    "accesoJusticiaFiltro.huboParcialidad": "¿Hubo parcialidad?",
+    "accesoJusticiaFiltro.resultadosProceso": "Resultado del proceso",
+    "accesoJusticiaFiltro.instancias": "Instancia del proceso",
+  };
+
   return (
     <div className="border rounded p-3 mb-4">
       <h3 className="mb-4">Filtros del Registro</h3>
+
+      {/* Leyenda de campo seleeccionado */}
+      {campoSeleccionado && (
+        <div
+          className="alert alert-danger text-center fw-semibold"
+          role="alert"
+          style={{ fontSize: "0.9rem" }}
+        >
+          El campo seleccionado para el eje X es:{" "}
+          <span className="fw-bold">
+            {nombresCamposEjeX[campoSeleccionado] || campoSeleccionado}
+          </span>
+        </div>
+      )}
 
       {/* Botones */}
       <div className="border rounded p-3 mb-4">
