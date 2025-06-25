@@ -14,7 +14,7 @@ import { useLocation } from "react-router-dom";
 
 const Registros = () => {
   const location = useLocation();
-  let { filtros, derechoId } = location.state || {};
+  let { filtros, derechoId, categoriaEjeX} = location.state || {};
 
   derechoId = String(derechoId || "");
 
@@ -215,6 +215,7 @@ const Registros = () => {
         />
       ) : (
         <VistaRegistrosDinamica
+          categoriaEjeX={categoriaEjeX}
           filtros={filtros}
           derechoId={derechoId}
           title="Registros"

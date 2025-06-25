@@ -12,6 +12,14 @@ import { getCatalogo } from "./../../services/RegstrosService";
 import { useEffect } from "react";
 
 export default function FiltradoRegistros() {
+  const [municipiosEnabled, setMunicipiosEnabled] = useState(false);
+  const [departamentosDisabled, setDepartamentosDisabled] = useState(false);
+
+  const [municipiosResidenciaEnabled, setMunicipiosResidenciaEnabled] =
+    useState(false);
+  const [departamentosResidenciaDisabled, setDepartamentosResidenciaDisabled] =
+    useState(false);
+
   const [filtroActivo, setFiltroActivo] = useState(false);
   const [campoSeleccionado, setCampoSeleccionado] = useState(null);
   const [mostrar, setMostrar] = useState({});
@@ -405,6 +413,37 @@ export default function FiltradoRegistros() {
     return Object.values(obj).some((value) => !isEmptyValue(value));
   };
 
+  useEffect(() => {
+    if (eventoFiltro.municipios.length > 0) {
+      setDepartamentosDisabled(true);
+    } else {
+      setDepartamentosDisabled(false);
+    }
+
+    if (eventoFiltro.departamentos.length === 1) {
+      setMunicipiosEnabled(true);
+    } else {
+      setMunicipiosEnabled(false);
+    }
+  }, [eventoFiltro.departamentos, eventoFiltro.municipios]);
+
+  useEffect(() => {
+    if (afectadaFiltro.municipiosResidencia.length > 0) {
+      setDepartamentosResidenciaDisabled(true);
+    } else {
+      setDepartamentosResidenciaDisabled(false);
+    }
+
+    if (afectadaFiltro.departamentosResidencia.length === 1) {
+      setMunicipiosResidenciaEnabled(true);
+    } else {
+      setMunicipiosResidenciaEnabled(false);
+    }
+  }, [
+    afectadaFiltro.departamentosResidencia,
+    afectadaFiltro.municipiosResidencia,
+  ]);
+
   const aplicarFiltros = () => {
     const filtrosFinales = {};
 
@@ -431,8 +470,8 @@ export default function FiltradoRegistros() {
 
     console.log(filtrosFinales);
 
-    navigate("/select-register", {
-      state: { filtros: filtrosFinales, derechoId },
+    navigate("/graphs", {
+      state: {derechoId,  categoriaEjeX: filtrosFinales},
     });
   };
 
@@ -720,7 +759,7 @@ export default function FiltradoRegistros() {
                   />
                 </div>
 
-                {/*Departamentos */}
+                {/* Departamentos */}
                 <div className="col-md-4 mb-3">
                   <label>Departamentos</label>
                   <MultiSelect
@@ -743,11 +782,14 @@ export default function FiltradoRegistros() {
                     }}
                     placeholder="Seleccionar departamentos"
                     className="w-100"
-                    disabled={!esCampoActivo("eventoFiltro.departamentos")}
+                    disabled={
+                      !esCampoActivo("eventoFiltro.departamentos") ||
+                      departamentosDisabled
+                    }
                   />
                 </div>
 
-                {/*Municipios */}
+                {/* Municipios */}
                 <div className="col-md-4 mb-3">
                   <label>Municipios</label>
                   <MultiSelect
@@ -763,13 +805,18 @@ export default function FiltradoRegistros() {
                       }));
                       setCampoSeleccionado(
                         seleccion.length === 0
-                          ? null
+                          ? "eventoFiltro.departamentos"
                           : "eventoFiltro.municipios"
                       );
                     }}
                     placeholder="Seleccionar municipios"
                     className="w-100"
-                    disabled={!esCampoActivo("eventoFiltro.municipios")}
+                    disabled={
+                      !(
+                        esCampoActivo("eventoFiltro.municipios") ||
+                        campoSeleccionado === "eventoFiltro.departamentos"
+                      ) || !municipiosEnabled
+                    }
                   />
                 </div>
 
@@ -905,7 +952,8 @@ export default function FiltradoRegistros() {
               placeholder="Seleccionar departamentos"
               className="w-100"
               disabled={
-                !esCampoActivo("afectadaFiltro.departamentosResidencia")
+                !esCampoActivo("afectadaFiltro.departamentosResidencia") ||
+                departamentosResidenciaDisabled
               }
             />
           </div>
@@ -932,7 +980,12 @@ export default function FiltradoRegistros() {
               }}
               placeholder="Seleccionar municipios"
               className="w-100"
-              disabled={!esCampoActivo("afectadaFiltro.municipiosResidencia")}
+              disabled={
+                !(
+                  esCampoActivo("afectadaFiltro.municipiosResidencia") ||
+                  campoSeleccionado === "afectadaFiltro.departamentosResidencia"
+                ) || !municipiosResidenciaEnabled
+              }
             />
           </div>
 
