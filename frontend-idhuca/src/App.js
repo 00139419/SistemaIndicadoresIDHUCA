@@ -20,6 +20,7 @@ import FichaPage from './pages/FichaPage';
 import Registros from './pages/registros/Registros';
 import Graficos from './pages/registros/Graficos';
 import Filtros from './pages/registros/FiltradoRegistros';
+import RegistrosUpdate from './pages/registros/EditarRegistro.jsx';
 import { UserProvider } from './Contexts/UserContext';
 
 // Estilos de PrimeReact
@@ -101,6 +102,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AgregarRegistro />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/registros/update/:id"
+              element={
+                <ProtectedRoute>
+                  <RegistrosUpdate />
                 </ProtectedRoute>
               }
             />
