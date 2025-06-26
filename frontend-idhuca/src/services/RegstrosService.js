@@ -9,8 +9,6 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
       throw new Error('No hay token de autenticación');
     }
 
-    console.log('Token:', token); // Debug token
-
     const requestPayload = {
       derecho: {
         codigo: derecho.codigo,
@@ -24,8 +22,6 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
       }
     };
 
-    console.log('Request URL:', `${API_URL}/registros/evento/getAllByDerecho`);
-    console.log('Request payload:', JSON.stringify(requestPayload, null, 2));
 
     const response = await fetch(`${API_URL}/registros/evento/getAllByDerecho`, {
       method: 'POST',
@@ -36,10 +32,8 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
       body: JSON.stringify(requestPayload)
     });
 
-    console.log('Response status:', response.status);
     const responseData = await response.json();
-    console.log('Response data:', responseData);
-
+    
     if (!response.ok) {
       throw new Error(responseData.mensaje || `Error ${response.status}`);
     }
@@ -160,7 +154,6 @@ export const detailEvent = async (eventId) => {
     const data = await response.json();
 
     if (data.codigo === 0) {
-      console.log("data " + JSON.stringify(data))
       return data;
     } else {
       throw new Error(data.mensaje || 'Error al eliminar registros del evento');

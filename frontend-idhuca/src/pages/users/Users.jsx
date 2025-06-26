@@ -85,6 +85,15 @@ const GestionUsuarios = () => {
     });
   };
 
+  const isUserActive = (usuario) => {
+    // Considera booleanos, strings y números
+    const val = usuario.activo ?? usuario.active;
+    if (typeof val === "boolean") return val;
+    if (typeof val === "number") return val === 1;
+    if (typeof val === "string") return val === "1" || val.toLowerCase() === "true";
+    return false;
+  };
+
   return (
     <div className="d-flex flex-column" style={{ height: 'calc(100vh - 160px)' }}>
       {/* Header fijo */}
@@ -212,18 +221,10 @@ const GestionUsuarios = () => {
                         </td>
                         <td>
                           <span
-                            className={`badge ${usuario.activo || usuario.active
-                                ? "bg-success"
-                                : "bg-danger"
-                              }`}
+                            className={`badge ${isUserActive(usuario) ? "bg-success" : "bg-danger"}`}
                           >
-                            <i className={`bi ${usuario.activo || usuario.active
-                                ? "bi-check-circle"
-                                : "bi-x-circle"
-                              } me-1`}></i>
-                            {usuario.activo || usuario.active
-                              ? "Activo"
-                              : "Inactivo"}
+                            <i className={`bi ${isUserActive(usuario) ? "bi-check-circle" : "bi-x-circle"} me-1`}></i>
+                            {isUserActive(usuario) ? "Activo" : "Inactivo"}
                           </span>
                         </td>
                         <td className="small">
@@ -249,8 +250,8 @@ const GestionUsuarios = () => {
                               className="btn btn-sm btn-outline-warning"
                               title="Cambiar contraseña"
                               onClick={() => {
-                                setUserToChangePassword(usuario);
-                                setShowPasswordModal(true);
+                                 setUserToChangePassword(usuario);
+                                 setShowPasswordModal(true);
                               }}
                             >
                               <i className="bi bi-key"></i>
