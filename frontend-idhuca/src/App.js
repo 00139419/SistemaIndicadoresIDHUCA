@@ -21,6 +21,7 @@ import Registros from './pages/registros/Registros';
 import Graficos from './pages/registros/Graficos';
 import Filtros from './pages/registros/FiltradoRegistros';
 import RegistrosUpdate from './pages/registros/EditarRegistro.jsx';
+import EliminarRegistro from './pages/registros/EliminarRegistro.jsx';
 import { UserProvider } from './Contexts/UserContext';
 
 // Estilos de PrimeReact
@@ -113,6 +114,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/registros/delete/:id"
+              element={
+                <ProtectedRoute>
+                  <EliminarRegistro />
+                </ProtectedRoute>
+              }
+            />
+            
             <Route path="/graphs" element={
               <ProtectedRoute>
                 <Graficos />

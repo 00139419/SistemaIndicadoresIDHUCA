@@ -58,7 +58,7 @@ const VistaRegistrosDinamica = ({
         navigate(`/registros/update/${item.id}`);
         break;
       case "delete":
-        onDelete && onDelete(item, index);
+        navigate(`/registros/delete/${item.id}`);
         break;
       default:
         break;

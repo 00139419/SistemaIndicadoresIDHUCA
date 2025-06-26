@@ -14,6 +14,7 @@ import {
   updateEvento,
   detailEvent,
   updatePersonaAfectada,
+  deletePersonaAfectada
 } from "../../services/RegstrosService";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -262,6 +263,20 @@ const EditarRegistro = () => {
     }
   };
 
+  const handleEliminarPersona = async (personaId) => {
+    if (!window.confirm("¿Seguro que deseas eliminar esta persona afectada?")) return;
+    try {
+      await deletePersonaAfectada(evento.id, personaId);
+      setEvento((prev) => ({
+        ...prev,
+        personasAfectadas: prev.personasAfectadas.filter((p) => p.id !== personaId),
+      }));
+      alert("Persona afectada eliminada correctamente");
+    } catch (error) {
+      alert("Error al eliminar persona: " + error.message);
+    }
+  };
+
   if (loading || !evento) {
     return (
       <div className="flex justify-content-center align-items-center min-h-screen">
@@ -383,13 +398,22 @@ const EditarRegistro = () => {
         <Card key={persona.id || index} className="mt-6 mb-4 border-round shadow-2">
           <div className="flex justify-content-between align-items-center mb-3">
             <h5 className="m-0">👤 Persona #{index + 1}</h5>
-            <Button
-              icon="pi pi-save"
-              className="p-button-success p-button-text"
-              label="Actualizar persona"
-              onClick={() => handleActualizarPersona(persona)}
-              tooltip="Actualizar persona"
-            />
+            <div>
+              <Button
+                icon="pi pi-save"
+                className="p-button-success p-button-text"
+                label="Actualizar persona"
+                onClick={() => handleActualizarPersona(persona)}
+                tooltip="Actualizar persona"
+              />
+              <Button
+                icon="pi pi-trash"
+                className="p-button-danger p-button-text ml-2"
+                label="Eliminar persona"
+                onClick={() => handleEliminarPersona(persona.id)}
+                tooltip="Eliminar persona"
+              />
+            </div>
           </div>
           <TabView>
             {/* Tab: Datos Generales */}
@@ -1174,6 +1198,24 @@ const EditarRegistro = () => {
           </TabView>
         </Card>
       ))}
+
+      <div className="flex justify-content-end mb-3 gap-2">
+        <Button
+          label="Actualizar todas las personas"
+          icon="pi pi-save"
+          className="p-button-success"
+          onClick={async () => {
+            try {
+              for (const persona of evento.personasAfectadas) {
+                await handleActualizarPersona(persona);
+              }
+              alert("Todas las personas actualizadas correctamente");
+            } catch (error) {
+              alert("Error al actualizar personas: " + error.message);
+            }
+          }}
+        />
+      </div>
     </div>
   );
 };
