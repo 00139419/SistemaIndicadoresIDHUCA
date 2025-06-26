@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -9,7 +10,6 @@ import { InputNumber } from "primereact/inputnumber";
 import { MultiSelect } from "primereact/multiselect";
 import { TabView, TabPanel } from "primereact/tabview";
 import { getCatalogo } from "./../../services/RegstrosService";
-import { useEffect } from "react";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -49,10 +49,27 @@ const AgregarRegistro = () => {
   const [duracionesProceso, setDuracionesProceso] = useState([]);
 
   const [loadingCatalogos, setLoadingCatalogos] = useState(true);
+  const [derechosPrincipales, setDerechosPrincipales] = useState([]);
+  const [subDerechos, setSubDerechos] = useState([]);
+  const location = useLocation();
+console.log("location.state:", location.state);
+let derechoIdFromState = location.state?.derechoId;
+
+if (!derechoIdFromState) {
+  derechoIdFromState = localStorage.getItem("selectedDerechoId");
+}
+
+  const DERECHO_ID_TO_CODIGO = {
+    1: "DER_1", // Derecho a la Libertad Personal e Integridad personal
+    2: "DER_2", // Derecho a la Libertad de Expresión
+    3: "DER_3", // Derecho de Acceso a la Justicia
+    4: "DER_4", // Derecho a la Vida
+  };
 
   useEffect(() => {
     cargarCatalogos();
   }, []);
+
 
   const cargarCatalogos = async () => {
     try {
@@ -62,7 +79,8 @@ const AgregarRegistro = () => {
         e,
         l,
         g,
-        sd,
+        dr, // derechos principales
+        sd, // subderechos
         p,
         ss,
         tp,
@@ -81,7 +99,8 @@ const AgregarRegistro = () => {
         getCatalogo({ estadoRegistro: true }),
         getCatalogo({ lugarExacto: true }),
         getCatalogo({ genero: true }),
-        getCatalogo({ subDerechos: true, parentId: "DER_1" }),
+        getCatalogo({ derechos: true }), // <-- derechos principales
+        getCatalogo({ subDerechos: true, parentId: "DER_1" }), // <-- subderechos
         getCatalogo({ paises: true }),
         getCatalogo({ estadoSalud: true }),
         getCatalogo({ tipoPersona: true }),
@@ -103,7 +122,9 @@ const AgregarRegistro = () => {
       setEstados(e);
       setLugaresExactos(l);
       setGeneros(g);
-      setDerechos(sd);
+      setDerechosPrincipales(dr); // <-- derechos principales
+      console.log("derechosPrincipales:", dr);
+      setSubDerechos(sd); // <-- subderechos
       setPaises(p);
       setTiposViolencia(tv);
       setArtefactos(ar);
@@ -145,21 +166,339 @@ const AgregarRegistro = () => {
     }
   };
 
-  const handleGuardar = () => {
-    const json = {
-      fechaHecho: fechaHecho?.toISOString().split("T")[0],
-      fuente: { codigo: fuente?.codigo },
-      estadoActual: { codigo: estadoActual?.codigo },
-      derechoAsociado: { codigo: derechoAsociado?.codigo },
-      observaciones,
-      ubicacion: {
-        departamento: { codigo: departamento?.codigo },
-        municipio: { codigo: municipio?.codigo },
-        lugarExacto: { codigo: lugarExacto?.codigo },
+  useEffect(() => {
+    if (derechoIdFromState && derechosPrincipales.length > 0) {
+      const derechoCodigo = DERECHO_ID_TO_CODIGO[Number(derechoIdFromState)];
+      const derecho = derechosPrincipales.find(
+        (d) => d.codigo === derechoCodigo
+      );
+      if (derecho) {
+        setDerechoAsociado(derecho);
+      }
+    }
+  }, [derechoIdFromState, derechosPrincipales]);
+
+  const handleGuardar = async () => {
+    // Primero validar campos obligatorios
+    if (!fechaHecho) {
+      alert("La fecha del hecho es obligatoria");
+      return;
+    }
+
+    if (!fuente) {
+      alert("La fuente es obligatoria");
+      return;
+    }
+
+    if (!estadoActual) {
+      alert("El estado actual es obligatorio");
+      return;
+    }
+
+    if (!derechoAsociado) {
+      console.error("derechoAsociado es null");
+      console.log("derechoIdFromState:", derechoIdFromState);
+      console.log("derechos disponibles:", derechos);
+      alert("El derecho asociado es obligatorio");
+      return;
+    }
+
+    console.log("derechoAsociado a enviar:", derechoAsociado);
+
+    // Calcular flags dinámicamente basado en los datos de las personas
+    const hayViolencia = personas.some(
+      (p) => p.violencia && Object.keys(p.violencia).length > 0
+    );
+    const hayDetencion = personas.some(
+      (p) =>
+        p.detencionIntegridad && Object.keys(p.detencionIntegridad).length > 0
+    );
+    const hayExpresion = personas.some(
+      (p) => p.expresionCensura && Object.keys(p.expresionCensura).length > 0
+    );
+    const hayJusticia = personas.some(
+      (p) => p.accesoJusticia && Object.keys(p.accesoJusticia).length > 0
+    );
+    const hayCensura = personas.some(
+      (p) => p.expresionCensura && p.expresionCensura.tipoRepresion
+    );
+
+    // Construir el objeto principal
+    const registro = {
+      fechaHecho: fechaHecho.toISOString().split("T")[0],
+      fuente: {
+        codigo: fuente.codigo,
+        descripcion: fuente.descripcion,
       },
+      estadoActual: {
+        codigo: estadoActual.codigo,
+        descripcion: estadoActual.descripcion,
+      },
+      derechoAsociado: {
+        codigo: derechoAsociado.codigo,
+        descripcion: derechoAsociado.descripcion,
+      },
+      flagViolencia: hayViolencia,
+      flagDetencion: hayDetencion,
+      flagExpresion: hayExpresion,
+      flagJusticia: hayJusticia,
+      flagCensura: hayCensura,
+      flagRegimenExcepcion: false, // Ajustar según tu lógica
+      observaciones: observaciones || "",
+      ubicacion: {
+        departamento: departamento
+          ? {
+              codigo: departamento.codigo,
+              descripcion: departamento.descripcion,
+            }
+          : null,
+        municipio: municipio
+          ? {
+              codigo: municipio.codigo,
+              descripcion: municipio.descripcion,
+            }
+          : null,
+        lugarExacto: lugarExacto
+          ? {
+              codigo: lugarExacto.codigo,
+              descripcion: lugarExacto.descripcion,
+            }
+          : null,
+      },
+      personasAfectadas: personas.map((p) => {
+        const persona = {
+          nombre: p.nombre || "",
+          edad: p.edad || 0,
+          genero: p.genero
+            ? {
+                codigo: p.genero.codigo,
+                descripcion: p.genero.descripcion,
+              }
+            : null,
+          nacionalidad: p.nacionalidad
+            ? {
+                codigo: p.nacionalidad.codigo,
+                descripcion: p.nacionalidad.descripcion,
+              }
+            : null,
+          departamentoResidencia: p.departamentoResidencia
+            ? {
+                codigo: p.departamentoResidencia.codigo,
+                descripcion: p.departamentoResidencia.descripcion,
+              }
+            : null,
+          municipioResidencia: p.municipioResidencia
+            ? {
+                codigo: p.municipioResidencia.codigo,
+                descripcion: p.municipioResidencia.descripcion,
+              }
+            : null,
+          tipoPersona: p.tipoPersona
+            ? {
+                codigo: p.tipoPersona.codigo,
+                descripcion: p.tipoPersona.descripcion,
+              }
+            : null,
+          estadoSalud: p.estadoSalud
+            ? {
+                codigo: p.estadoSalud.codigo,
+                descripcion: p.estadoSalud.descripcion,
+              }
+            : null,
+          derechosVulnerados:
+            Array.isArray(p.derechosVulnerados) &&
+            p.derechosVulnerados.length > 0
+              ? p.derechosVulnerados.map((d) => ({
+                  derecho: {
+                    codigo: d.codigo,
+                    descripcion: d.descripcion,
+                  },
+                }))
+              : [],
+        };
+
+        // Solo agregar secciones si tienen datos válidos
+        if (p.violencia && Object.keys(p.violencia).length > 0) {
+          persona.violencia = {
+            esAsesinato: p.violencia.esAsesinato || false,
+            tipoViolencia: p.violencia.tipoViolencia
+              ? {
+                  codigo: p.violencia.tipoViolencia.codigo,
+                  descripcion: p.violencia.tipoViolencia.descripcion,
+                }
+              : null,
+            artefactoUtilizado: p.violencia.artefactoUtilizado
+              ? {
+                  codigo: p.violencia.artefactoUtilizado.codigo,
+                  descripcion: p.violencia.artefactoUtilizado.descripcion,
+                }
+              : null,
+            contexto: p.violencia.contexto
+              ? {
+                  codigo: p.violencia.contexto.codigo,
+                  descripcion: p.violencia.contexto.descripcion,
+                }
+              : null,
+            actorResponsable: p.violencia.actorResponsable
+              ? {
+                  codigo: p.violencia.actorResponsable.codigo,
+                  descripcion: p.violencia.actorResponsable.descripcion,
+                }
+              : null,
+            estadoSaludActorResponsable: p.violencia.estadoSaludActorResponsable
+              ? {
+                  codigo: p.violencia.estadoSaludActorResponsable.codigo,
+                  descripcion:
+                    p.violencia.estadoSaludActorResponsable.descripcion,
+                }
+              : null,
+            huboProteccion: p.violencia.huboProteccion || false,
+            investigacionAbierta: p.violencia.investigacionAbierta || false,
+            respuestaEstado: p.violencia.respuestaEstado || "",
+          };
+        }
+
+        if (
+          p.detencionIntegridad &&
+          Object.keys(p.detencionIntegridad).length > 0
+        ) {
+          persona.detencion = {
+            tipoDetencion: p.detencionIntegridad.tipoDetencion
+              ? {
+                  codigo: p.detencionIntegridad.tipoDetencion.codigo,
+                  descripcion: p.detencionIntegridad.tipoDetencion.descripcion,
+                }
+              : null,
+            ordenJudicial: p.detencionIntegridad.ordenJudicial || false,
+            autoridadInvolucrada: p.detencionIntegridad.autoridadInvolucrada
+              ? {
+                  codigo: p.detencionIntegridad.autoridadInvolucrada.codigo,
+                  descripcion:
+                    p.detencionIntegridad.autoridadInvolucrada.descripcion,
+                }
+              : null,
+            huboTortura: p.detencionIntegridad.huboTortura || false,
+            duracionDias: p.detencionIntegridad.duracionDias || 0,
+            accesoAbogado: p.detencionIntegridad.accesoAbogado || false,
+            resultado: p.detencionIntegridad.resultado || "",
+            motivoDetencion: p.detencionIntegridad.motivoDetencion
+              ? {
+                  codigo: p.detencionIntegridad.motivoDetencion.codigo,
+                  descripcion:
+                    p.detencionIntegridad.motivoDetencion.descripcion,
+                }
+              : null,
+          };
+        }
+
+        if (p.expresionCensura && Object.keys(p.expresionCensura).length > 0) {
+          persona.expresion = {
+            medioExpresion: p.expresionCensura.medioExpresion
+              ? {
+                  codigo: p.expresionCensura.medioExpresion.codigo,
+                  descripcion: p.expresionCensura.medioExpresion.descripcion,
+                }
+              : null,
+            tipoRepresion: p.expresionCensura.tipoRepresion
+              ? {
+                  codigo: p.expresionCensura.tipoRepresion.codigo,
+                  descripcion: p.expresionCensura.tipoRepresion.descripcion,
+                }
+              : null,
+            represaliasLegales: p.expresionCensura.represaliasLegales || false,
+            represaliasFisicas: p.expresionCensura.represaliasFisicas || false,
+            actorCensor: p.expresionCensura.actorCensor
+              ? {
+                  codigo: p.expresionCensura.actorCensor.codigo,
+                  descripcion: p.expresionCensura.actorCensor.descripcion,
+                }
+              : null,
+            consecuencia: p.expresionCensura.consecuencia || "",
+          };
+        }
+
+        if (p.accesoJusticia && Object.keys(p.accesoJusticia).length > 0) {
+          persona.justicia = {
+            tipoProceso: p.accesoJusticia.tipoProceso
+              ? {
+                  codigo: p.accesoJusticia.tipoProceso.codigo,
+                  descripcion: p.accesoJusticia.tipoProceso.descripcion,
+                }
+              : null,
+            fechaDenuncia: p.accesoJusticia.fechaDenuncia
+              ? new Date(p.accesoJusticia.fechaDenuncia).toISOString()
+              : null,
+            tipoDenunciante: p.accesoJusticia.tipoDenunciante
+              ? {
+                  codigo: p.accesoJusticia.tipoDenunciante.codigo,
+                  descripcion: p.accesoJusticia.tipoDenunciante.descripcion,
+                }
+              : null,
+            duracionProceso: p.accesoJusticia.duracionProceso
+              ? {
+                  codigo: p.accesoJusticia.duracionProceso.codigo,
+                  descripcion: p.accesoJusticia.duracionProceso.descripcion,
+                }
+              : null,
+            accesoAbogado: p.accesoJusticia.accesoAbogado || false,
+            huboParcialidad: p.accesoJusticia.huboParcialidad || false,
+            resultadoProceso: p.accesoJusticia.resultadoProceso || "",
+            instancia: p.accesoJusticia.instancia || "",
+          };
+        }
+
+        return persona;
+      }),
     };
 
-    console.log("JSON final (sin personas aún):", json);
+    // Validar que hay al menos una persona
+    if (registro.personasAfectadas.length === 0) {
+      alert("Debe agregar al menos una persona afectada");
+      return;
+    }
+
+    // Enviar el registro al backend
+    try {
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        alert("No se encontró token de autenticación");
+        return;
+      }
+
+      console.log("Registro a enviar:", JSON.stringify(registro, null, 2));
+
+      const response = await fetch(
+        "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(registro),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error del servidor:", errorText);
+        alert(`Error del servidor (${response.status}): ${errorText}`);
+        return;
+      }
+
+      const data = await response.json();
+      if (data.codigo === 0) {
+        alert("Registro guardado correctamente");
+        // Limpiar formulario si es necesario
+      } else {
+        alert(data.mensaje || "Error al guardar el registro");
+      }
+    } catch (error) {
+      alert("Error de red o del servidor");
+      console.error("Error completo:", error);
+    }
+    console.log("Registro enviado:", registro);
   };
 
   const handleDepartamentoResidenciaChange = async (index, departamento) => {
@@ -503,7 +842,7 @@ const AgregarRegistro = () => {
                   onChange={(e) =>
                     actualizarPersona(index, "derechosVulnerados", e.value)
                   }
-                  options={derechos}
+                  options={subDerechos}
                   optionLabel="descripcion"
                   placeholder="Seleccione derechos"
                   className="w-full"

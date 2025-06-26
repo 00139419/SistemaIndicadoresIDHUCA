@@ -23,9 +23,7 @@ const VistaRegistrosDinamica = ({
   onPageChange,
   itemsPerPage = 10
 }) => {
-  const { userRole } = useAuth(); // Obtener el rol del usuario
- // const [currentPage, setCurrentPage] = useState(1);
-  //const [totalPages, setTotalPages] = useState(1);
+  const { userRole } = useAuth(); // Obtener el rol del usuarios
   const navigate = useNavigate(); 
   
 
@@ -49,7 +47,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handleFilter = () => {
-  navigate('/filter', { state: { derechoId, filtros } });  // Pasamos derechoId en el state
+  navigate('/filter', { state: { derechoId, filtros } });  // Pasamos derechoId y filtros en el state
   };
 
   const handleAction = (action, item, index) => {
@@ -58,10 +56,11 @@ const VistaRegistrosDinamica = ({
         onView && onView(item, index);
         break;
       case "edit":
-        onEdit && onEdit(item, index);
+        // Redirigir a la página de edición con el id del registro
+        navigate(`/registros/update/${item.id}`);
         break;
       case "delete":
-        onDelete && onDelete(item, index);
+        navigate(`/registros/delete/${item.id}`);
         break;
       default:
         break;

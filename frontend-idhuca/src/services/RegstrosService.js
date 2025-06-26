@@ -97,6 +97,77 @@ export const fetchCatalog = async (params) => {
   }
 };
 
+export const updateEvento = async (evento) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (!token) throw new Error('No hay token de autenticación');
+
+    const response = await fetch(
+      'http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/update',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(evento),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok || data.codigo !== 0) {
+      throw new Error(data.mensaje || 'Error al actualizar el evento');
+    }
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePersonaAfectada = async (persona) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) throw new Error('No hay token de autenticación');
+  const response = await fetch(
+    'http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/update',
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(persona),
+    }
+  );
+  const data = await response.json();
+  if (!response.ok || data.codigo !== 0) {
+    throw new Error(data.mensaje || 'Error al actualizar persona afectada');
+  }
+  return data;
+};
+
+export const deletePersonaAfectada = async (eventoId, personaId) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) throw new Error('No hay token de autenticación');
+  const response = await fetch(
+    'http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/delete',
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: eventoId,
+        personasAfectadas: [{ id: personaId }]
+      }),
+    }
+  );
+  const data = await response.json();
+  if (!response.ok || data.codigo !== 0) {
+    throw new Error(data.mensaje || 'Error al eliminar persona afectada');
+  }
+  return data;
+};
 
 export const deleteEvent = async (eventId) => {
   try {

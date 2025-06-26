@@ -51,16 +51,18 @@ export default function SelectDerechosPage() {
   const handleSelect = (derecho) => {
     // Pasar solo valores primitivos para evitar errores de clonación
     const derechoId = derecho.id;
-    const derechoTitle = derecho.title;
-    
-    // Determinar la ruta basada en el 'from' recibido
-    const path = from === 'ficha' ? '/ficha-de-derechos' : '/select-register';
-    
-    navigate(path, { 
-      state: { 
-        derechoId: derechoId,
-        derechoTitle: derechoTitle
-      } 
+  const derechoTitle = derecho.title;
+  localStorage.setItem("selectedDerechoId", derechoId); // <-- guarda aquí
+  localStorage.setItem("selectedDerechoTitle", derechoTitle); // <-- guarda aquí
+
+  // Determinar la ruta basada en el 'from' recibido
+  const path = from === 'ficha' ? '/ficha-de-derechos' : '/select-register';
+
+  navigate(path, {
+    state: {
+      derechoId: derechoId,
+      derechoTitle: derechoTitle
+    } 
     });
   };
 

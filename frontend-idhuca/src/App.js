@@ -5,9 +5,9 @@ import Index from './pages/index/Index';
 import MaintenancePage from './pages/MaintenancePage';
 import RightSelection from './pages/RightSelection';
 import VerifyIdentity from './pages/VerifyIdentity';
-import ResetPassword from './pages/ResetPassword';
-import SetNewPassword from './pages/SetNewPassword';
-import ResetPasswordSuccess from './pages/ResetPasswordSuccess';
+import ResetPassword from './pages/password/ResetPassword';
+import SetNewPassword from './pages/password/SetNewPassword';
+import ResetPasswordSuccess from './pages/password/ResetPasswordSuccess.jsx';
 import AgregarRegistro from './pages/registros/AgregarRegistro.jsx';
 import DetalleRegistro from './pages/registros/DetalleRegistro';
 import Form from './pages/Form';
@@ -20,8 +20,9 @@ import FichaPage from './pages/FichaPage';
 import Registros from './pages/registros/Registros';
 import Graficos from './pages/registros/Graficos';
 import Filtros from './pages/registros/FiltradoRegistros';
+import RegistrosUpdate from './pages/registros/EditarRegistro.jsx';
+import EliminarRegistro from './pages/registros/EliminarRegistro.jsx';
 import SelectEjeX from './pages/registros/SelectEjeX.jsx';
-
 import { UserProvider } from './Contexts/UserContext';
 
 // Estilos de PrimeReact
@@ -106,6 +107,23 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/registros/update/:id"
+              element={
+                <ProtectedRoute>
+                  <RegistrosUpdate />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/registros/delete/:id"
+              element={
+                <ProtectedRoute>
+                  <EliminarRegistro />
+                </ProtectedRoute>
+              }
+            />
+            
             <Route path="/graphs" element={
               <ProtectedRoute>
                 <Graficos />

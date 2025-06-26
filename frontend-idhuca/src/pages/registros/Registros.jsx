@@ -156,13 +156,16 @@ const Registros = () => {
     if (!confirmDelete) return;
 
     try {
-      console.log("Eliminando:", item.id);
+      // Elimina el registro del estado local antes de hacer fetch
+      setData((prevData) => prevData.filter((reg) => reg.id !== item.id));
+
       await deleteEvent(item.id);
 
       setMessageSuccess("Registro eliminado con éxito.");
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
 
+      // Vuelve a cargar los registros para mantener la paginación y datos correctos
       fetchRegistros();
     } catch (error) {
       console.error(error);
