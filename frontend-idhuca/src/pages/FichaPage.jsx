@@ -1,14 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Edit3, FileText, Calendar, User, ChevronLeft, ChevronRight, Loader2, AlertCircle, Trash2, Upload, X } from 'lucide-react';
-import { fetchFichasByDerecho, createFicha, deleteFicha, formatDate, generateDerechoCodigo, getDerechoDescripcion } from '../services/FichaDerechoService';
+import { fetchFichasByDerecho, createFicha, deleteFicha, formatDate, generateDerechoCodigo, getDerechoDescripcion,updateFicha } from '../services/FichaDerechoService';
 import ExpresionIcon from '../assets/icons/expresion.png';
 import LibertadIcon from '../assets/icons/libertad.png';
 import JusticiaIcon from '../assets/icons/justicia.png';
 import VidaIcon from '../assets/icons/vida.png';
+import { downloadFile } from '../services/FichaDerechoService';
 
 const FichaDerechoView = () => {
   const [showResultModal, setShowResultModal] = useState(false);
+  const [expandedFiles, setExpandedFiles] = useState({});
+  const [downloading, setDownloading] = useState({});
   const [createResult, setCreateResult] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterDate, setFilterDate] = useState('');
@@ -32,10 +35,43 @@ const FichaDerechoView = () => {
     registrosPorPagina: 10
   });
   const fileInputRef = useRef(null);
-
+  const [editingEntry, setEditingEntry] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [updating, setUpdating] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [updateResult, setUpdateResult] = useState(null);
   const location = useLocation();
   const derechoId = location.state?.derechoId;
   const derechoTitle = location.state?.derechoTitle;
+
+  const toggleExpandFiles = (entryId) => {
+    setExpandedFiles(prev => ({
+      ...prev,
+      [entryId]: !prev[entryId]
+    }));
+  };
+
+  const handleDownloadFile = async (archivo) => {
+    const downloadKey = `${archivo.archivoUrl}_${Date.now()}`;
+
+    try {
+      setDownloading(prev => ({ ...prev, [downloadKey]: true }));
+
+      await downloadFile(archivo.archivoUrl, archivo.nombreOriginal);
+
+    } catch (error) {
+      console.error('Error al descargar archivo:', error);
+      // Opcional: mostrar un mensaje de error al usuario
+      alert(error.message || 'Error al descargar el archivo');
+    } finally {
+      setDownloading(prev => {
+        const newState = { ...prev };
+        delete newState[downloadKey];
+        return newState;
+      });
+    }
+  };
 
   const getDerechoIcon = (derechoId) => {
     const icons = {
@@ -83,8 +119,9 @@ const FichaDerechoView = () => {
 
       const response = await fetchFichasByDerecho(derechoCodigo, options);
 
+      // Siempre procesar la respuesta exitosa, incluso si no hay datos
       if (response.success) {
-        const transformedEntries = response.data.map(ficha => ({
+        const transformedEntries = (response.data || []).map(ficha => ({
           id: ficha.id,
           title: ficha.titulo,
           creator: ficha.creadoPor?.nombre || 'Usuario desconocido',
@@ -100,13 +137,43 @@ const FichaDerechoView = () => {
         }));
 
         setEntries(transformedEntries);
-        setPaginacionInfo(response.paginacionInfo);
+        setPaginacionInfo(response.paginacionInfo || {
+          paginaActual: 0,
+          totalPaginas: 0,
+          totalRegistros: 0,
+          registrosPorPagina: showCount
+        });
       } else {
-        setError(response.message || 'Error al cargar las fichas');
+        // Solo establecer error si realmente hay un error del servidor, no por falta de datos
+        if (!response.message?.toLowerCase().includes('registros') &&
+          !response.message?.toLowerCase().includes('encontrar')) {
+          setError(response.message || 'Error al cargar las fichas');
+        } else {
+          // Si es un mensaje de "no hay registros", tratar como éxito con datos vacíos
+          setEntries([]);
+          setPaginacionInfo({
+            paginaActual: 0,
+            totalPaginas: 0,
+            totalRegistros: 0,
+            registrosPorPagina: showCount
+          });
+        }
       }
     } catch (error) {
       console.error('Error al cargar fichas:', error);
-      setError(error.message || 'Error al cargar las fichas del derecho');
+      // Solo mostrar error si no es un mensaje de "sin registros"
+      if (!error.message?.toLowerCase().includes('registros') &&
+        !error.message?.toLowerCase().includes('encontrar')) {
+        setError(error.message || 'Error al cargar las fichas del derecho');
+      } else {
+        setEntries([]);
+        setPaginacionInfo({
+          paginaActual: 0,
+          totalPaginas: 0,
+          totalRegistros: 0,
+          registrosPorPagina: showCount
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -195,6 +262,64 @@ const FichaDerechoView = () => {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const handleEditClick = (entry) => {
+    setEditingEntry(entry);
+    setEditTitle(entry.title);
+    setEditContent(entry.content);
+    setShowEditModal(true);
+    setUpdateResult(null);
+  };
+
+  const handleCancelEdit = () => {
+    setShowEditModal(false);
+    setEditingEntry(null);
+    setEditTitle('');
+    setEditContent('');
+    setUpdateResult(null);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editTitle.trim() || !editContent.trim()) {
+      setUpdateResult({
+        success: false,
+        message: 'Por favor ingresa tanto el título como el contenido'
+      });
+      return;
+    }
+
+    try {
+      setUpdating(true);
+      setUpdateResult(null);
+
+      const fichaData = {
+        titulo: editTitle.trim(),
+        descripcion: editContent.trim()
+      };
+
+      const response = await updateFicha(editingEntry.id, fichaData);
+
+      setUpdateResult(response);
+
+      if (response.success) {
+        setTimeout(async () => {
+          setShowEditModal(false);
+          setEditingEntry(null);
+          setEditTitle('');
+          setEditContent('');
+          await loadFichas(); // Recargar datos
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Error al actualizar ficha:', error);
+      setUpdateResult({
+        success: false,
+        message: error.message || 'Error al actualizar la ficha'
+      });
+    } finally {
+      setUpdating(false);
+    }
   };
 
   const handleSaveNewPost = async () => {
@@ -297,8 +422,6 @@ const FichaDerechoView = () => {
 
   return (
     <>
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
-
       {/* Contenedor principal con altura fija considerando navbar y footer */}
       <div className="container-fluid" style={{ height: 'calc(100vh - 200px)', overflow: 'hidden' }}>
         {/* Header compacto */}
@@ -423,7 +546,11 @@ const FichaDerechoView = () => {
                               {entry.title}
                             </h6>
                             <div className="d-flex align-items-center gap-1">
-                              <button className="btn p-0 border-0 bg-transparent" title="Editar">
+                              <button
+                                className="btn p-0 border-0 bg-transparent"
+                                title="Editar"
+                                onClick={() => handleEditClick(entry)}
+                              >
                                 <Edit3 size={14} className="text-muted" />
                               </button>
                               <button
@@ -450,14 +577,56 @@ const FichaDerechoView = () => {
                               <div className="d-flex align-items-center gap-1 flex-wrap">
                                 <FileText size={12} className="text-muted" />
                                 <span className="small text-muted">Archivos:</span>
-                                {entry.attachments.slice(0, 2).map((attachment, index) => (
-                                  <a key={index} href="#" className="small text-primary">
-                                    {attachment.length > 15 ? attachment.substring(0, 15) + '...' : attachment}
-                                  </a>
-                                ))}
-                                {entry.attachments.length > 2 && (
-                                  <span className="small text-muted">+{entry.attachments.length - 2}</span>
+                                {entry.archivos?.slice(0, 2).map((archivo, index) => {
+                                  const downloadKey = `${archivo.archivoUrl}_${Date.now()}`;
+                                  const isDownloading = downloading[downloadKey];
+
+                                  return (
+                                    <button
+                                      key={index}
+                                      onClick={() => handleDownloadFile(archivo)}
+                                      disabled={isDownloading}
+                                      className="btn btn-link p-0 small text-primary"
+                                      style={{ textDecoration: 'none' }}
+                                      title={`Descargar ${archivo.nombreOriginal}`}
+                                    >
+                                      {isDownloading ? (
+                                        <span className="d-flex align-items-center gap-1">
+                                          <Loader2 size={10} style={{ animation: 'spin 1s linear infinite' }} />
+                                          {archivo.nombreOriginal.length > 15 ?
+                                            archivo.nombreOriginal.substring(0, 15) + '...' :
+                                            archivo.nombreOriginal}
+                                        </span>
+                                      ) : (
+                                        archivo.nombreOriginal.length > 15 ?
+                                          archivo.nombreOriginal.substring(0, 15) + '...' :
+                                          archivo.nombreOriginal
+                                      )}
+                                    </button>
+                                  );
+                                })}
+                                {entry.archivos && entry.archivos.length > 2 && (
+                                  <button
+                                    className="btn btn-link p-0 small text-muted"
+                                    onClick={() => toggleExpandFiles(entry.id)}
+                                  >
+                                    {expandedFiles[entry.id] ? 'Ver menos' : `+${entry.archivos.length - 2} más`}
+                                  </button>
                                 )}
+                                {expandedFiles[entry.id] && entry.archivos?.slice(2).map((archivo, index) => (
+                                  <button
+                                    key={index + 2}
+                                    onClick={() => handleDownloadFile(archivo)}
+                                    disabled={downloading[`${archivo.archivoUrl}_${Date.now()}`]}
+                                    className="btn btn-link p-0 small text-primary ms-2"
+                                    style={{ textDecoration: 'none' }}
+                                    title={`Descargar ${archivo.nombreOriginal}`}
+                                  >
+                                    {archivo.nombreOriginal.length > 15 ?
+                                      archivo.nombreOriginal.substring(0, 15) + '...' :
+                                      archivo.nombreOriginal}
+                                  </button>
+                                ))}
                               </div>
                             </div>
                           )}
@@ -728,6 +897,90 @@ const FichaDerechoView = () => {
                   disabled={saving}
                 >
                   Aceptar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showEditModal && (
+        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header py-2">
+                <h6 className="modal-title">Editar Ficha</h6>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCancelEdit}
+                  disabled={updating}
+                ></button>
+              </div>
+              <div className="modal-body py-2">
+                {updateResult && (
+                  <div className={`alert alert-sm ${updateResult.success ? 'alert-success' : 'alert-danger'} py-1 mb-2`}>
+                    {updateResult.message}
+                  </div>
+                )}
+
+                <div className="mb-2">
+                  <label className="form-label small">Título:</label>
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="form-control form-control-sm"
+                    disabled={updating}
+                    placeholder="Título de la ficha"
+                  />
+                </div>
+
+                <div className="mb-2">
+                  <label className="form-label small">Contenido:</label>
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    className="form-control form-control-sm"
+                    rows="5"
+                    disabled={updating}
+                    placeholder="Contenido de la ficha"
+                  />
+                </div>
+
+                {editingEntry && (
+                  <div className="card bg-light">
+                    <div className="card-body p-2">
+                      <div className="small text-muted">
+                        <strong>Creado por:</strong> {editingEntry.creator}<br />
+                        <strong>Fecha:</strong> {editingEntry.creationDate}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer py-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-secondary"
+                  onClick={handleCancelEdit}
+                  disabled={updating}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary"
+                  onClick={handleSaveEdit}
+                  disabled={updating || !editTitle.trim() || !editContent.trim()}
+                >
+                  {updating ? (
+                    <>
+                      <Loader2 size={12} className="me-1" style={{ animation: 'spin 1s linear infinite' }} />
+                      Guardando...
+                    </>
+                  ) : (
+                    'Guardar Cambios'
+                  )}
                 </button>
               </div>
             </div>
