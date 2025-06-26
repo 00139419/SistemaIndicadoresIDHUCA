@@ -1198,7 +1198,7 @@ const EditarRegistro = () => {
           </TabView>
         </Card>
       ))}
-
+{/*
       <div className="flex justify-content-end mb-3 gap-2">
         <Button
           label="Actualizar todas las personas"
@@ -1216,6 +1216,7 @@ const EditarRegistro = () => {
           }}
         />
       </div>
+      */}
     </div>
   );
 };
