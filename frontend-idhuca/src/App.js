@@ -22,6 +22,7 @@ import Graficos from './pages/registros/Graficos';
 import Filtros from './pages/registros/FiltradoRegistros';
 import RegistrosUpdate from './pages/registros/EditarRegistro.jsx';
 import EliminarRegistro from './pages/registros/EliminarRegistro.jsx';
+import SelectEjeX from './pages/registros/SelectEjeX.jsx';
 import { UserProvider } from './Contexts/UserContext';
 
 // Estilos de PrimeReact
@@ -126,6 +127,11 @@ function App() {
             <Route path="/graphs" element={
               <ProtectedRoute>
                 <Graficos />
+              </ProtectedRoute>
+            } />
+            <Route path="/selectEjeX" element={
+              <ProtectedRoute>
+                <SelectEjeX />
               </ProtectedRoute>
             } />
             <Route path="/filter" element={

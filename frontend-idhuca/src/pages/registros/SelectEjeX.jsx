@@ -12,10 +12,53 @@ import { getCatalogo } from "./../../services/RegstrosService";
 import { useEffect } from "react";
 
 export default function FiltradoRegistros() {
+  const [municipiosEnabled, setMunicipiosEnabled] = useState(false);
+  const [departamentosDisabled, setDepartamentosDisabled] = useState(false);
+
+  const [municipiosResidenciaEnabled, setMunicipiosResidenciaEnabled] =
+    useState(false);
+  const [departamentosResidenciaDisabled, setDepartamentosResidenciaDisabled] =
+    useState(false);
+
+  const [filtroActivo, setFiltroActivo] = useState(false);
+  const [campoSeleccionado, setCampoSeleccionado] = useState(null);
   const [mostrar, setMostrar] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
-  let { derechoId, filtros } = location.state || {};
+  let { derechoId, filtros, categoriaEjeX } = location.state || {};
+
+  useEffect(() => {
+    if (categoriaEjeX) {
+      const campo = detectarCampoSeleccionado(categoriaEjeX);
+      setCampoSeleccionado(campo);
+    }
+  }, [categoriaEjeX]);
+
+  function detectarCampoSeleccionado(obj) {
+    if (!obj || typeof obj !== "object") return null;
+
+    for (const padre in obj) {
+      if (typeof obj[padre] === "object" && obj[padre] !== null) {
+        for (const hijo in obj[padre]) {
+          const valor = obj[padre][hijo];
+          const esValido =
+            (Array.isArray(valor) && valor.length > 0) ||
+            (typeof valor === "object" &&
+              valor !== null &&
+              Object.keys(valor).length > 0) ||
+            typeof valor === "boolean" ||
+            typeof valor === "number" ||
+            (typeof valor === "string" && valor.trim() !== "");
+
+          if (esValido) {
+            return `${padre}.${hijo}`;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
 
   const toggleMostrar = (clave) => {
     setMostrar((prev) => ({ ...prev, [clave]: !prev[clave] }));
@@ -189,41 +232,47 @@ export default function FiltradoRegistros() {
   };
 
   useEffect(() => {
-    if (filtros) {
-      if (filtros.eventoFiltro)
-        setEventoFiltro({ ...filtroBaseEvento, ...filtros.eventoFiltro });
+    if (categoriaEjeX) {
+      if (categoriaEjeX.eventoFiltro)
+        setEventoFiltro({ ...filtroBaseEvento, ...categoriaEjeX.eventoFiltro });
 
-      if (filtros.afectadaFiltro)
-        setAfectadaFiltro({ ...filtroBaseAfectada, ...filtros.afectadaFiltro });
+      if (categoriaEjeX.afectadaFiltro)
+        setAfectadaFiltro({
+          ...filtroBaseAfectada,
+          ...categoriaEjeX.afectadaFiltro,
+        });
 
-      if (filtros.derechosVulneradosFiltro)
+      if (categoriaEjeX.derechosVulneradosFiltro)
         setDerechosVulneradosFiltro({
           ...filtroBaseDerechos,
-          ...filtros.derechosVulneradosFiltro,
+          ...categoriaEjeX.derechosVulneradosFiltro,
         });
 
-      if (filtros.violenciaFiltro)
+      if (categoriaEjeX.violenciaFiltro)
         setViolenciaFiltro({
           ...filtroBaseViolencia,
-          ...filtros.violenciaFiltro,
+          ...categoriaEjeX.violenciaFiltro,
         });
 
-      if (filtros.detencionFiltro)
+      if (categoriaEjeX.detencionFiltro)
         setDetencionFiltro({
           ...filtroBaseDetencion,
-          ...filtros.detencionFiltro,
+          ...categoriaEjeX.detencionFiltro,
         });
 
-      if (filtros.censuraFiltro)
-        setCensuraFiltro({ ...filtroBaseCensura, ...filtros.censuraFiltro });
+      if (categoriaEjeX.censuraFiltro)
+        setCensuraFiltro({
+          ...filtroBaseCensura,
+          ...categoriaEjeX.censuraFiltro,
+        });
 
-      if (filtros.accesoJusticiaFiltro)
+      if (categoriaEjeX.accesoJusticiaFiltro)
         setAccesoJusticiaFiltro({
           ...filtroBaseAccesoJusticia,
-          ...filtros.accesoJusticiaFiltro,
+          ...categoriaEjeX.accesoJusticiaFiltro,
         });
     }
-  }, [filtros]);
+  }, [categoriaEjeX]);
 
   useEffect(() => {
     cargarCatalogos();
@@ -376,6 +425,8 @@ export default function FiltradoRegistros() {
   const isEmptyValue = (value) => {
     if (value === null || value === undefined) return true;
 
+    if(value === false) return true;
+
     if (Array.isArray(value)) return value.length === 0;
 
     if (typeof value === "object") {
@@ -403,38 +454,70 @@ export default function FiltradoRegistros() {
     return Object.values(obj).some((value) => !isEmptyValue(value));
   };
 
+  useEffect(() => {
+    if (eventoFiltro.municipios.length > 0) {
+      setDepartamentosDisabled(true);
+    } else {
+      setDepartamentosDisabled(false);
+    }
+
+    if (eventoFiltro.departamentos.length === 1) {
+      setMunicipiosEnabled(true);
+    } else {
+      setMunicipiosEnabled(false);
+    }
+  }, [eventoFiltro.departamentos, eventoFiltro.municipios]);
+
+  useEffect(() => {
+    if (afectadaFiltro.municipiosResidencia.length > 0) {
+      setDepartamentosResidenciaDisabled(true);
+    } else {
+      setDepartamentosResidenciaDisabled(false);
+    }
+
+    if (afectadaFiltro.departamentosResidencia.length === 1) {
+      setMunicipiosResidenciaEnabled(true);
+    } else {
+      setMunicipiosResidenciaEnabled(false);
+    }
+  }, [
+    afectadaFiltro.departamentosResidencia,
+    afectadaFiltro.municipiosResidencia,
+  ]);
+
   const aplicarFiltros = () => {
-    const filtrosFinales = {};
+    categoriaEjeX = {};
 
     const evento = cleanFiltro(eventoFiltro);
-    if (evento) filtrosFinales.eventoFiltro = evento;
+    if (evento) categoriaEjeX.eventoFiltro = evento;
 
     const afectada = cleanFiltro(afectadaFiltro);
-    if (afectada) filtrosFinales.afectadaFiltro = afectada;
+    if (afectada) categoriaEjeX.afectadaFiltro = afectada;
 
     const derechos = cleanFiltro(derechosVulneradosFiltro);
-    if (derechos) filtrosFinales.derechosVulneradosFiltro = derechos;
+    if (derechos) categoriaEjeX.derechosVulneradosFiltro = derechos;
 
     const violencia = cleanFiltro(violenciaFiltro);
-    if (violencia) filtrosFinales.violenciaFiltro = violencia;
+    if (violencia) categoriaEjeX.violenciaFiltro = violencia;
 
     const detencion = cleanFiltro(detencionFiltro);
-    if (detencion) filtrosFinales.detencionFiltro = detencion;
+    if (detencion) categoriaEjeX.detencionFiltro = detencion;
 
     const censura = cleanFiltro(censuraFiltro);
-    if (censura) filtrosFinales.censuraFiltro = censura;
+    if (censura) categoriaEjeX.censuraFiltro = censura;
 
     const justicia = cleanFiltro(accesoJusticiaFiltro);
-    if (justicia) filtrosFinales.accesoJusticiaFiltro = justicia;
+    if (justicia) categoriaEjeX.accesoJusticiaFiltro = justicia;
 
-    console.log(filtrosFinales);
+    console.log("categoriaEjeX " + JSON.stringify(categoriaEjeX)) 
 
-    navigate("/select-register", {
-      state: { filtros: filtrosFinales, derechoId },
+    navigate("/graphs", {
+      state: { derechoId, filtros, categoriaEjeX },
     });
   };
 
   const limpiarFiltros = () => {
+    setCampoSeleccionado(null);
     setEventoFiltro({
       fechaHechoRango: { fechaInicio: null, fechaFin: null },
       fuentes: [],
@@ -501,6 +584,53 @@ export default function FiltradoRegistros() {
     });
   };
 
+  const handleFiltroChange = (grupo, clave, valor) => {
+    // Actualiza el grupo correspondiente
+    switch (grupo) {
+      case "eventoFiltro":
+        setEventoFiltro((prev) => ({ ...prev, [clave]: valor }));
+        break;
+      case "afectadaFiltro":
+        setAfectadaFiltro((prev) => ({ ...prev, [clave]: valor }));
+        break;
+      case "derechosVulneradosFiltro":
+        setDerechosVulneradosFiltro((prev) => ({ ...prev, [clave]: valor }));
+        break;
+      case "violenciaFiltro":
+        setViolenciaFiltro((prev) => ({ ...prev, [clave]: valor }));
+        break;
+      case "detencionFiltro":
+        setDetencionFiltro((prev) => ({ ...prev, [clave]: valor }));
+        break;
+      case "censuraFiltro":
+        setCensuraFiltro((prev) => ({ ...prev, [clave]: valor }));
+        break;
+      case "accesoJusticiaFiltro":
+        setAccesoJusticiaFiltro((prev) => ({ ...prev, [clave]: valor }));
+        break;
+      default:
+        break;
+    }
+
+    // Activa el estado de filtro si aún no estaba activado
+    if (!filtroActivo && !isEmptyValue(valor)) {
+      setFiltroActivo(true);
+    }
+
+    // Si el valor se vacía, verificar si aún queda alguno activo
+    if (filtroActivo && isEmptyValue(valor)) {
+      const hayActivo =
+        !isEmptyValue(eventoFiltro) ||
+        !isEmptyValue(afectadaFiltro) ||
+        !isEmptyValue(derechosVulneradosFiltro) ||
+        !isEmptyValue(violenciaFiltro) ||
+        !isEmptyValue(detencionFiltro) ||
+        !isEmptyValue(censuraFiltro) ||
+        !isEmptyValue(accesoJusticiaFiltro);
+      setFiltroActivo(hayActivo);
+    }
+  };
+
   if (loadingCatalogos) {
     return (
       <div className="flex justify-content-center align-items-center min-h-screen">
@@ -510,12 +640,101 @@ export default function FiltradoRegistros() {
     );
   }
 
+  const esCampoActivo = (id) => {
+    return !campoSeleccionado || campoSeleccionado === id;
+  };
+
+  const nombresCamposEjeX = {
+    "eventoFiltro.fechaHechoRango": "Fecha del hecho",
+    "eventoFiltro.fuentes": "Fuente",
+    "eventoFiltro.estadosActuales": "Estado actual del caso",
+    "eventoFiltro.flagRegimenExcepcion": "Regimen de excepción",
+    "eventoFiltro.departamentos": "Departamento del hecho",
+    "eventoFiltro.municipios": "Municipio del hecho",
+    "eventoFiltro.lugaresExactos": "Lugar exacto del hecho",
+
+    "afectadaFiltro.nombres": "Nombres afectados/as",
+    "afectadaFiltro.generos": "Género",
+    "afectadaFiltro.nacionalidades": "Nacionalidad",
+    "afectadaFiltro.departamentosResidencia": "Departamento de residencia",
+    "afectadaFiltro.municipiosResidencia": "Municipio de residencia",
+    "afectadaFiltro.tiposPersona": "Tipo de persona",
+    "afectadaFiltro.estadosSalud": "Estado de salud",
+    "afectadaFiltro.rangoEdad": "Rango de edad",
+
+    "derechosVulneradosFiltro.derechosVulnerados": "Derecho vulnerado",
+
+    "violenciaFiltro.esAsesinato": "¿Hubo asesinato?",
+    "violenciaFiltro.tiposViolencia": "Tipo de violencia",
+    "violenciaFiltro.artefactosUtilizados": "Artefacto utilizado",
+    "violenciaFiltro.contextos": "Contexto del hecho",
+    "violenciaFiltro.actoresResponsables": "Actor responsable",
+    "violenciaFiltro.estadosSaludActorResponsable": "Estado de salud del actor",
+    "violenciaFiltro.huboProteccion": "¿Hubo protección?",
+    "violenciaFiltro.investigacionAbierta": "¿Investigación abierta?",
+
+    "detencionFiltro.tiposDetencion": "Tipo de detención",
+    "detencionFiltro.ordenJudicial": "¿Orden judicial?",
+    "detencionFiltro.autoridadesInvolucradas": "Autoridad involucrada",
+    "detencionFiltro.huboTortura": "¿Hubo tortura?",
+    "detencionFiltro.motivosDetencion": "Motivo de la detención",
+    "detencionFiltro.duracionDiasExactos": "Días de detención",
+    "detencionFiltro.accesoAbogado": "¿Acceso a abogado?",
+    "detencionFiltro.resultados": "Resultado de la detención",
+
+    "censuraFiltro.mediosExpresion": "Medio de expresión",
+    "censuraFiltro.tiposRepresion": "Tipo de represión",
+    "censuraFiltro.represaliasLegales": "¿Represalia legal?",
+    "censuraFiltro.represaliasFisicas": "¿Represalia física?",
+    "censuraFiltro.actoresCensores": "Actor censor",
+    "censuraFiltro.consecuencias": "Consecuencia de la censura",
+
+    "accesoJusticiaFiltro.tiposProceso": "Tipo de proceso judicial",
+    "accesoJusticiaFiltro.fechaDenunciaRango": "Fecha de denuncia",
+    "accesoJusticiaFiltro.tiposDenunciante": "Tipo de denunciante",
+    "accesoJusticiaFiltro.duracionesProceso": "Duración del proceso",
+    "accesoJusticiaFiltro.accesoAbogado": "¿Acceso a abogado?",
+    "accesoJusticiaFiltro.huboParcialidad": "¿Hubo parcialidad?",
+    "accesoJusticiaFiltro.resultadosProceso": "Resultado del proceso",
+    "accesoJusticiaFiltro.instancias": "Instancia del proceso",
+  };
+
   return (
     <div className="border rounded p-3 mb-4">
       <h3 className="mb-4">Filtros del Registro</h3>
- 
-      {/* Evento */}
+
+      {/* Leyenda de campo seleeccionado */}
+      {campoSeleccionado && (
+        <div
+          className="alert alert-danger text-center fw-semibold"
+          role="alert"
+          style={{ fontSize: "0.9rem" }}
+        >
+          El campo seleccionado para el eje X es:{" "}
+          <span className="fw-bold">
+            {nombresCamposEjeX[campoSeleccionado] || campoSeleccionado}
+          </span>
+        </div>
+      )}
+
+      {/* Botones */}
       <div className="border rounded p-3 mb-4">
+        {/* Botones Borrar Filtros y Aplicar Filtros */}
+        <div className="d-flex justify-content-end gap-2 mt-4">
+          <Button
+            label="Borrar todos los filtros"
+            icon="pi pi-times"
+            className="p-button-secondary"
+            onClick={limpiarFiltros}
+          />
+          <Button
+            label="Aplicar filtros"
+            icon="pi pi-check"
+            className="p-button-primary"
+            onClick={aplicarFiltros}
+          />
+        </div>
+
         <div className="row">
           <div className="container py-4">
             <h5 className="mb-4">Filtros de Evento</h5>
@@ -527,40 +746,57 @@ export default function FiltradoRegistros() {
                   <label>Fecha de inicio</label>
                   <Calendar
                     value={eventoFiltro.fechaHechoRango.fechaInicio}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const nuevoValor = e.value;
                       setEventoFiltro((prev) => ({
                         ...prev,
                         fechaHechoRango: {
                           ...prev.fechaHechoRango,
-                          fechaInicio: e.value,
+                          fechaInicio: nuevoValor,
                         },
-                      }))
-                    }
+                      }));
+
+                      const esVacio =
+                        !nuevoValor && !eventoFiltro.fechaHechoRango.fechaFin;
+                      setCampoSeleccionado(
+                        esVacio ? null : "eventoFiltro.fechaHechoRango"
+                      );
+                    }}
                     showIcon
                     dateFormat="yy-mm-dd"
                     className="w-100"
+                    disabled={!esCampoActivo("eventoFiltro.fechaHechoRango")}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>Fecha de fin</label>
                   <Calendar
                     value={eventoFiltro.fechaHechoRango.fechaFin}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const nuevoValor = e.value;
                       setEventoFiltro((prev) => ({
                         ...prev,
                         fechaHechoRango: {
                           ...prev.fechaHechoRango,
-                          fechaFin: e.value,
+                          fechaFin: nuevoValor,
                         },
-                      }))
-                    }
+                      }));
+
+                      const esVacio =
+                        !eventoFiltro.fechaHechoRango.fechaInicio &&
+                        !nuevoValor;
+                      setCampoSeleccionado(
+                        esVacio ? null : "eventoFiltro.fechaHechoRango"
+                      );
+                    }}
                     showIcon
                     dateFormat="yy-mm-dd"
                     className="w-100"
+                    disabled={!esCampoActivo("eventoFiltro.fechaHechoRango")}
                   />
                 </div>
 
-                {/* Fuentes */}
+                {/*Fuentes*/}
                 <div className="col-md-4 mb-3">
                   <label>Fuentes</label>
                   <MultiSelect
@@ -568,18 +804,23 @@ export default function FiltradoRegistros() {
                     options={fuentes}
                     optionLabel="descripcion"
                     optionValue="codigo"
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const seleccion = e.value.map((codigo) => ({ codigo }));
                       setEventoFiltro((prev) => ({
                         ...prev,
-                        fuentes: e.value.map((codigo) => ({ codigo })),
-                      }))
-                    }
+                        fuentes: seleccion,
+                      }));
+                      setCampoSeleccionado(
+                        seleccion.length === 0 ? null : "eventoFiltro.fuentes"
+                      );
+                    }}
                     placeholder="Seleccionar fuentes"
                     className="w-100"
+                    disabled={!esCampoActivo("eventoFiltro.fuentes")}
                   />
                 </div>
 
-                {/* Estados actuales */}
+                {/*Estados actuales */}
                 <div className="col-md-4 mb-3">
                   <label>Estados actuales</label>
                   <MultiSelect
@@ -587,27 +828,43 @@ export default function FiltradoRegistros() {
                     options={estados}
                     optionLabel="descripcion"
                     optionValue="codigo"
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const seleccion = e.value.map((codigo) => ({ codigo }));
                       setEventoFiltro((prev) => ({
                         ...prev,
-                        estadosActuales: e.value.map((codigo) => ({ codigo })),
-                      }))
-                    }
+                        estadosActuales: seleccion,
+                      }));
+                      setCampoSeleccionado(
+                        seleccion.length === 0
+                          ? null
+                          : "eventoFiltro.estadosActuales"
+                      );
+                    }}
                     placeholder="Seleccionar estados"
                     className="w-100"
+                    disabled={!esCampoActivo("eventoFiltro.estadosActuales")}
                   />
                 </div>
 
-                {/* Régimen de excepción */}
+                {/*Régimen de excepción */}
                 <div className="col-md-4 mb-3 d-flex align-items-center">
                   <label className="me-3">Régimen de excepción</label>
                   <InputSwitch
                     checked={eventoFiltro.flagRegimenExcepcion || false}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const valor = e.value;
                       setEventoFiltro((prev) => ({
                         ...prev,
-                        flagRegimenExcepcion: e.value,
-                      }))
+                        flagRegimenExcepcion: valor,
+                      }));
+                      setCampoSeleccionado(
+                        valor === null || valor === false
+                          ? null
+                          : "eventoFiltro.flagRegimenExcepcion"
+                      );
+                    }}
+                    disabled={
+                      !esCampoActivo("eventoFiltro.flagRegimenExcepcion")
                     }
                   />
                 </div>
@@ -620,15 +877,25 @@ export default function FiltradoRegistros() {
                     options={departamentos}
                     optionLabel="descripcion"
                     optionValue="codigo"
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const seleccion = e.value.map((codigo) => ({ codigo }));
                       setEventoFiltro((prev) => ({
                         ...prev,
-                        departamentos: e.value.map((codigo) => ({ codigo })),
+                        departamentos: seleccion,
                         municipios: [],
-                      }))
-                    }
+                      }));
+                      setCampoSeleccionado(
+                        seleccion.length === 0
+                          ? null
+                          : "eventoFiltro.departamentos"
+                      );
+                    }}
                     placeholder="Seleccionar departamentos"
                     className="w-100"
+                    disabled={
+                      !esCampoActivo("eventoFiltro.departamentos") ||
+                      departamentosDisabled
+                    }
                   />
                 </div>
 
@@ -640,18 +907,30 @@ export default function FiltradoRegistros() {
                     options={municipios}
                     optionLabel="descripcion"
                     optionValue="codigo"
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const seleccion = e.value.map((codigo) => ({ codigo }));
                       setEventoFiltro((prev) => ({
                         ...prev,
-                        municipios: e.value.map((codigo) => ({ codigo })),
-                      }))
-                    }
+                        municipios: seleccion,
+                      }));
+                      setCampoSeleccionado(
+                        seleccion.length === 0
+                          ? "eventoFiltro.departamentos"
+                          : "eventoFiltro.municipios"
+                      );
+                    }}
                     placeholder="Seleccionar municipios"
                     className="w-100"
+                    disabled={
+                      !(
+                        esCampoActivo("eventoFiltro.municipios") ||
+                        campoSeleccionado === "eventoFiltro.departamentos"
+                      ) || !municipiosEnabled
+                    }
                   />
                 </div>
 
-                {/* Lugares exactos */}
+                {/*Lugares exactos */}
                 <div className="col-md-4 mb-3">
                   <label>Lugares exactos</label>
                   <MultiSelect
@@ -659,14 +938,21 @@ export default function FiltradoRegistros() {
                     options={lugaresExactos}
                     optionLabel="descripcion"
                     optionValue="codigo"
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const seleccion = e.value.map((codigo) => ({ codigo }));
                       setEventoFiltro((prev) => ({
                         ...prev,
-                        lugaresExactos: e.value.map((codigo) => ({ codigo })),
-                      }))
-                    }
+                        lugaresExactos: seleccion,
+                      }));
+                      setCampoSeleccionado(
+                        seleccion.length === 0
+                          ? null
+                          : "eventoFiltro.lugaresExactos"
+                      );
+                    }}
                     placeholder="Seleccionar lugares"
                     className="w-100"
+                    disabled={!esCampoActivo("eventoFiltro.lugaresExactos")}
                   />
                 </div>
               </div>
@@ -686,19 +972,21 @@ export default function FiltradoRegistros() {
               type="text"
               className="form-control"
               placeholder="Escriba nombres separados por coma"
-              onChange={(e) =>
-                setAfectadaFiltro((prev) => ({
-                  ...prev,
-                  nombres: e.target.value
-                    .split(",")
-                    .map((n) => n.trim())
-                    .filter((n) => n),
-                }))
-              }
+              onChange={(e) => {
+                const nombres = e.target.value
+                  .split(",")
+                  .map((n) => n.trim())
+                  .filter((n) => n);
+                setAfectadaFiltro((prev) => ({ ...prev, nombres }));
+                setCampoSeleccionado(
+                  nombres.length === 0 ? null : "afectadaFiltro.nombres"
+                );
+              }}
+              disabled={!esCampoActivo("afectadaFiltro.nombres")}
             />
           </div>
 
-          {/* Géneros */}
+          {/*Generos*/}
           <div className="col-md-6 mb-3">
             <label>Géneros</label>
             <MultiSelect
@@ -706,18 +994,20 @@ export default function FiltradoRegistros() {
               options={generos}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
-                setAfectadaFiltro((prev) => ({
-                  ...prev,
-                  generos: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
+                setAfectadaFiltro((prev) => ({ ...prev, generos: seleccion }));
+                setCampoSeleccionado(
+                  seleccion.length === 0 ? null : "afectadaFiltro.generos"
+                );
+              }}
               placeholder="Seleccionar géneros"
               className="w-100"
+              disabled={!esCampoActivo("afectadaFiltro.generos")}
             />
           </div>
 
-          {/* Nacionalidades */}
+          {/*Nacionalidades*/}
           <div className="col-md-6 mb-3">
             <label>Nacionalidades</label>
             <MultiSelect
@@ -725,21 +1015,28 @@ export default function FiltradoRegistros() {
               options={paises}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  nacionalidades: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  nacionalidades: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "afectadaFiltro.nacionalidades"
+                );
+              }}
               placeholder="Seleccionar nacionalidades"
               className="w-100"
               filter
               filterPlaceholder="Buscar nacionalidad"
               filterBy="descripcion"
+              disabled={!esCampoActivo("afectadaFiltro.nacionalidades")}
             />
           </div>
 
-          {/* Departamentos de residencia */}
+          {/*Departamentos de residencia*/}
           <div className="col-md-6 mb-3">
             <label>Departamentos de residencia</label>
             <MultiSelect
@@ -749,21 +1046,29 @@ export default function FiltradoRegistros() {
               options={departamentosResidencia}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  departamentosResidencia: e.value.map((codigo) => ({
-                    codigo,
-                    municipiosResidencia: [],
-                  })),
-                }))
-              }
+                  departamentosResidencia: seleccion,
+                  municipiosResidencia: [],
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "afectadaFiltro.departamentosResidencia"
+                );
+              }}
               placeholder="Seleccionar departamentos"
               className="w-100"
+              disabled={
+                !esCampoActivo("afectadaFiltro.departamentosResidencia") ||
+                departamentosResidenciaDisabled
+              }
             />
           </div>
 
-          {/* Municipios de residencia */}
+          {/*Municipios de residencia*/}
           <div className="col-md-6 mb-3">
             <label>Municipios de residencia</label>
             <MultiSelect
@@ -771,18 +1076,30 @@ export default function FiltradoRegistros() {
               options={municipiosResidencia}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  municipiosResidencia: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  municipiosResidencia: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "afectadaFiltro.municipiosResidencia"
+                );
+              }}
               placeholder="Seleccionar municipios"
               className="w-100"
+              disabled={
+                !(
+                  esCampoActivo("afectadaFiltro.municipiosResidencia") ||
+                  campoSeleccionado === "afectadaFiltro.departamentosResidencia"
+                ) || !municipiosResidenciaEnabled
+              }
             />
           </div>
 
-          {/* Tipos de persona */}
+          {/*Tipos de persona*/}
           <div className="col-md-6 mb-3">
             <label>Tipos de persona</label>
             <MultiSelect
@@ -790,18 +1107,23 @@ export default function FiltradoRegistros() {
               options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  tiposPersona: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  tiposPersona: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0 ? null : "afectadaFiltro.tiposPersona"
+                );
+              }}
               placeholder="Seleccionar tipos"
               className="w-100"
+              disabled={!esCampoActivo("afectadaFiltro.tiposPersona")}
             />
           </div>
 
-          {/* Estados de salud */}
+          {/*Estados de salud*/}
           <div className="col-md-6 mb-3">
             <label>Estados de salud</label>
             <MultiSelect
@@ -809,34 +1131,42 @@ export default function FiltradoRegistros() {
               options={estadosSaludPersonaAfectada}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  estadosSalud: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  estadosSalud: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0 ? null : "afectadaFiltro.estadosSalud"
+                );
+              }}
               placeholder="Seleccionar estados de salud"
               className="w-100"
+              disabled={!esCampoActivo("afectadaFiltro.estadosSalud")}
             />
           </div>
 
-          {/* Rango de edad */}
+          {/*Edad mínima y máxima*/}
           <div className="col-md-3 mb-3">
             <label>Edad mínima</label>
             <input
               type="number"
               className="form-control"
-              onChange={(e) =>
+              value={afectadaFiltro.rangoEdad.edadInicio ?? ""}
+              onChange={(e) => {
+                const valor = e.target.value ? parseInt(e.target.value) : null;
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  rangoEdad: {
-                    ...prev.rangoEdad,
-                    edadInicio: e.target.value
-                      ? parseInt(e.target.value)
-                      : null,
-                  },
-                }))
-              }
+                  rangoEdad: { ...prev.rangoEdad, edadInicio: valor },
+                }));
+                setCampoSeleccionado(
+                  valor === null && !afectadaFiltro.rangoEdad.edadFin
+                    ? null
+                    : "afectadaFiltro.rangoEdad"
+                );
+              }}
+              disabled={!esCampoActivo("afectadaFiltro.rangoEdad")}
             />
           </div>
           <div className="col-md-3 mb-3">
@@ -844,15 +1174,20 @@ export default function FiltradoRegistros() {
             <input
               type="number"
               className="form-control"
-              onChange={(e) =>
+              value={afectadaFiltro.rangoEdad.edadFin ?? ""}
+              onChange={(e) => {
+                const valor = e.target.value ? parseInt(e.target.value) : null;
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  rangoEdad: {
-                    ...prev.rangoEdad,
-                    edadFin: e.target.value ? parseInt(e.target.value) : null,
-                  },
-                }))
-              }
+                  rangoEdad: { ...prev.rangoEdad, edadFin: valor },
+                }));
+                setCampoSeleccionado(
+                  !afectadaFiltro.rangoEdad.edadInicio && valor === null
+                    ? null
+                    : "afectadaFiltro.rangoEdad"
+                );
+              }}
+              disabled={!esCampoActivo("afectadaFiltro.rangoEdad")}
             />
           </div>
         </div>
@@ -871,14 +1206,23 @@ export default function FiltradoRegistros() {
               options={derechos}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setDerechosVulneradosFiltro((prev) => ({
                   ...prev,
-                  derechosVulnerados: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  derechosVulnerados: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "derechosVulneradosFiltro.derechosVulnerados"
+                );
+              }}
               placeholder="Seleccionar derechos"
               className="w-100"
+              disabled={
+                !esCampoActivo("derechosVulneradosFiltro.derechosVulnerados")
+              }
             />
           </div>
         </div>
@@ -893,12 +1237,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Es asesinato?</label>
             <InputSwitch
               checked={violenciaFiltro.esAsesinato || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setViolenciaFiltro((prev) => ({
                   ...prev,
                   esAsesinato: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "violenciaFiltro.esAsesinato" : null
+                );
+              }}
+              disabled={!esCampoActivo("violenciaFiltro.esAsesinato")}
             />
           </div>
 
@@ -910,14 +1258,21 @@ export default function FiltradoRegistros() {
               options={tiposViolencia}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setViolenciaFiltro((prev) => ({
                   ...prev,
-                  tiposViolencia: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  tiposViolencia: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "violenciaFiltro.tiposViolencia"
+                );
+              }}
               placeholder="Seleccionar tipos"
               className="w-100"
+              disabled={!esCampoActivo("violenciaFiltro.tiposViolencia")}
             />
           </div>
 
@@ -929,14 +1284,21 @@ export default function FiltradoRegistros() {
               options={artefactos}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setViolenciaFiltro((prev) => ({
                   ...prev,
-                  artefactosUtilizados: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  artefactosUtilizados: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "violenciaFiltro.artefactosUtilizados"
+                );
+              }}
               placeholder="Seleccionar artefactos"
               className="w-100"
+              disabled={!esCampoActivo("violenciaFiltro.artefactosUtilizados")}
             />
           </div>
 
@@ -948,14 +1310,19 @@ export default function FiltradoRegistros() {
               options={contextosViolencia}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setViolenciaFiltro((prev) => ({
                   ...prev,
-                  contextos: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  contextos: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0 ? null : "violenciaFiltro.contextos"
+                );
+              }}
               placeholder="Seleccionar contextos"
               className="w-100"
+              disabled={!esCampoActivo("violenciaFiltro.contextos")}
             />
           </div>
 
@@ -967,14 +1334,21 @@ export default function FiltradoRegistros() {
               options={actorResponsable}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setViolenciaFiltro((prev) => ({
                   ...prev,
-                  actoresResponsables: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                  actoresResponsables: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "violenciaFiltro.actoresResponsables"
+                );
+              }}
               placeholder="Seleccionar actores"
               className="w-100"
+              disabled={!esCampoActivo("violenciaFiltro.actoresResponsables")}
             />
           </div>
 
@@ -988,16 +1362,23 @@ export default function FiltradoRegistros() {
               options={estadosSaludPersonaAfectada}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
+                const seleccion = e.value.map((codigo) => ({ codigo }));
                 setViolenciaFiltro((prev) => ({
                   ...prev,
-                  estadosSaludActorResponsable: e.value.map((codigo) => ({
-                    codigo,
-                  })),
-                }))
-              }
+                  estadosSaludActorResponsable: seleccion,
+                }));
+                setCampoSeleccionado(
+                  seleccion.length === 0
+                    ? null
+                    : "violenciaFiltro.estadosSaludActorResponsable"
+                );
+              }}
               placeholder="Seleccionar estados"
               className="w-100"
+              disabled={
+                !esCampoActivo("violenciaFiltro.estadosSaludActorResponsable")
+              }
             />
           </div>
 
@@ -1006,12 +1387,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Hubo protección?</label>
             <InputSwitch
               checked={violenciaFiltro.huboProteccion || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setViolenciaFiltro((prev) => ({
                   ...prev,
                   huboProteccion: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "violenciaFiltro.huboProteccion" : null
+                );
+              }}
+              disabled={!esCampoActivo("violenciaFiltro.huboProteccion")}
             />
           </div>
 
@@ -1020,12 +1405,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Investigación abierta?</label>
             <InputSwitch
               checked={violenciaFiltro.investigacionAbierta || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setViolenciaFiltro((prev) => ({
                   ...prev,
                   investigacionAbierta: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "violenciaFiltro.investigacionAbierta" : null
+                );
+              }}
+              disabled={!esCampoActivo("violenciaFiltro.investigacionAbierta")}
             />
           </div>
         </div>
@@ -1043,14 +1432,18 @@ export default function FiltradoRegistros() {
               options={tiposDetencion}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setDetencionFiltro((prev) => ({
                   ...prev,
                   tiposDetencion: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0 ? "detencionFiltro.tiposDetencion" : null
+                );
+              }}
               placeholder="Seleccionar tipos"
               className="w-100"
+              disabled={!esCampoActivo("detencionFiltro.tiposDetencion")}
             />
           </div>
 
@@ -1059,12 +1452,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Orden judicial?</label>
             <InputSwitch
               checked={detencionFiltro.ordenJudicial || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setDetencionFiltro((prev) => ({
                   ...prev,
                   ordenJudicial: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "detencionFiltro.ordenJudicial" : null
+                );
+              }}
+              disabled={!esCampoActivo("detencionFiltro.ordenJudicial")}
             />
           </div>
 
@@ -1078,16 +1475,24 @@ export default function FiltradoRegistros() {
               options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setDetencionFiltro((prev) => ({
                   ...prev,
                   autoridadesInvolucradas: e.value.map((codigo) => ({
                     codigo,
                   })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0
+                    ? "detencionFiltro.autoridadesInvolucradas"
+                    : null
+                );
+              }}
               placeholder="Seleccionar autoridades"
               className="w-100"
+              disabled={
+                !esCampoActivo("detencionFiltro.autoridadesInvolucradas")
+              }
             />
           </div>
 
@@ -1096,12 +1501,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Hubo tortura?</label>
             <InputSwitch
               checked={detencionFiltro.huboTortura || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setDetencionFiltro((prev) => ({
                   ...prev,
                   huboTortura: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "detencionFiltro.huboTortura" : null
+                );
+              }}
+              disabled={!esCampoActivo("detencionFiltro.huboTortura")}
             />
           </div>
 
@@ -1113,14 +1522,18 @@ export default function FiltradoRegistros() {
               options={motivosDetencion}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setDetencionFiltro((prev) => ({
                   ...prev,
                   motivosDetencion: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0 ? "detencionFiltro.motivosDetencion" : null
+                );
+              }}
               placeholder="Seleccionar motivos"
               className="w-100"
+              disabled={!esCampoActivo("detencionFiltro.motivosDetencion")}
             />
           </div>
 
@@ -1131,15 +1544,22 @@ export default function FiltradoRegistros() {
               type="text"
               className="form-control"
               placeholder="Ej: 1, 2, 5, 10"
-              onChange={(e) =>
+              onChange={(e) => {
+                const valores = e.target.value
+                  .split(",")
+                  .map((v) => parseInt(v.trim()))
+                  .filter((v) => !isNaN(v));
                 setDetencionFiltro((prev) => ({
                   ...prev,
-                  duracionDiasExactos: e.target.value
-                    .split(",")
-                    .map((v) => parseInt(v.trim()))
-                    .filter((v) => !isNaN(v)),
-                }))
-              }
+                  duracionDiasExactos: valores,
+                }));
+                setCampoSeleccionado(
+                  valores.length > 0
+                    ? "detencionFiltro.duracionDiasExactos"
+                    : null
+                );
+              }}
+              disabled={!esCampoActivo("detencionFiltro.duracionDiasExactos")}
             />
           </div>
 
@@ -1148,12 +1568,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Acceso a abogado?</label>
             <InputSwitch
               checked={detencionFiltro.accesoAbogado || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setDetencionFiltro((prev) => ({
                   ...prev,
                   accesoAbogado: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "detencionFiltro.accesoAbogado" : null
+                );
+              }}
+              disabled={!esCampoActivo("detencionFiltro.accesoAbogado")}
             />
           </div>
 
@@ -1164,15 +1588,20 @@ export default function FiltradoRegistros() {
               type="text"
               className="form-control"
               placeholder="Ej: liberado, procesado..."
-              onChange={(e) =>
+              onChange={(e) => {
+                const valores = e.target.value
+                  .split(",")
+                  .map((v) => v.trim())
+                  .filter((v) => v);
                 setDetencionFiltro((prev) => ({
                   ...prev,
-                  resultados: e.target.value
-                    .split(",")
-                    .map((v) => v.trim())
-                    .filter((v) => v),
-                }))
-              }
+                  resultados: valores,
+                }));
+                setCampoSeleccionado(
+                  valores.length > 0 ? "detencionFiltro.resultados" : null
+                );
+              }}
+              disabled={!esCampoActivo("detencionFiltro.resultados")}
             />
           </div>
         </div>
@@ -1190,14 +1619,18 @@ export default function FiltradoRegistros() {
               options={mediosExpresion}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setCensuraFiltro((prev) => ({
                   ...prev,
                   mediosExpresion: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0 ? "censuraFiltro.mediosExpresion" : null
+                );
+              }}
               placeholder="Seleccionar medios"
               className="w-100"
+              disabled={!esCampoActivo("censuraFiltro.mediosExpresion")}
             />
           </div>
 
@@ -1209,14 +1642,18 @@ export default function FiltradoRegistros() {
               options={tiposRepresion}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setCensuraFiltro((prev) => ({
                   ...prev,
                   tiposRepresion: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0 ? "censuraFiltro.tiposRepresion" : null
+                );
+              }}
               placeholder="Seleccionar tipos"
               className="w-100"
+              disabled={!esCampoActivo("censuraFiltro.tiposRepresion")}
             />
           </div>
 
@@ -1225,12 +1662,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Represalias legales?</label>
             <InputSwitch
               checked={censuraFiltro.represaliasLegales || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setCensuraFiltro((prev) => ({
                   ...prev,
                   represaliasLegales: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "censuraFiltro.represaliasLegales" : null
+                );
+              }}
+              disabled={!esCampoActivo("censuraFiltro.represaliasLegales")}
             />
           </div>
 
@@ -1239,12 +1680,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Represalias físicas?</label>
             <InputSwitch
               checked={censuraFiltro.represaliasFisicas || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setCensuraFiltro((prev) => ({
                   ...prev,
                   represaliasFisicas: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "censuraFiltro.represaliasFisicas" : null
+                );
+              }}
+              disabled={!esCampoActivo("censuraFiltro.represaliasFisicas")}
             />
           </div>
 
@@ -1256,14 +1701,18 @@ export default function FiltradoRegistros() {
               options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setCensuraFiltro((prev) => ({
                   ...prev,
                   actoresCensores: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0 ? "censuraFiltro.actoresCensores" : null
+                );
+              }}
               placeholder="Seleccionar actores"
               className="w-100"
+              disabled={!esCampoActivo("censuraFiltro.actoresCensores")}
             />
           </div>
 
@@ -1274,15 +1723,22 @@ export default function FiltradoRegistros() {
               type="text"
               className="form-control"
               placeholder="Ej: despido, amenazas, etc."
-              onChange={(e) =>
+              onChange={(e) => {
+                const consecuencias = e.target.value
+                  .split(",")
+                  .map((v) => v.trim())
+                  .filter((v) => v);
                 setCensuraFiltro((prev) => ({
                   ...prev,
-                  consecuencias: e.target.value
-                    .split(",")
-                    .map((v) => v.trim())
-                    .filter((v) => v),
-                }))
-              }
+                  consecuencias,
+                }));
+                setCampoSeleccionado(
+                  consecuencias.length > 0
+                    ? "censuraFiltro.consecuencias"
+                    : null
+                );
+              }}
+              disabled={!esCampoActivo("censuraFiltro.consecuencias")}
             />
           </div>
         </div>
@@ -1300,54 +1756,72 @@ export default function FiltradoRegistros() {
               options={tiposProcesoJudicial}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
                   tiposProceso: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0
+                    ? "accesoJusticiaFiltro.tiposProceso"
+                    : null
+                );
+              }}
               placeholder="Seleccionar tipos"
               className="w-100"
+              disabled={!esCampoActivo("accesoJusticiaFiltro.tiposProceso")}
             />
           </div>
 
-          {/* Fecha de denuncia - inicio */}
+          {/* Fecha de inicio de denuncia */}
           <div className="col-md-4 mb-3">
             <label>Fecha de inicio de denuncia</label>
             <Calendar
               value={accesoJusticiaFiltro.fechaDenunciaRango.fechaInicio}
-              onChange={(e) =>
+              onChange={(e) => {
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
                   fechaDenunciaRango: {
                     ...prev.fechaDenunciaRango,
                     fechaInicio: e.value,
                   },
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "accesoJusticiaFiltro.fechaDenunciaRango" : null
+                );
+              }}
               showIcon
               dateFormat="yy-mm-dd"
               className="w-100"
+              disabled={
+                !esCampoActivo("accesoJusticiaFiltro.fechaDenunciaRango")
+              }
             />
           </div>
 
-          {/* Fecha de denuncia - fin */}
+          {/* Fecha de fin de denuncia */}
           <div className="col-md-4 mb-3">
             <label>Fecha de fin de denuncia</label>
             <Calendar
               value={accesoJusticiaFiltro.fechaDenunciaRango.fechaFin}
-              onChange={(e) =>
+              onChange={(e) => {
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
                   fechaDenunciaRango: {
                     ...prev.fechaDenunciaRango,
                     fechaFin: e.value,
                   },
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "accesoJusticiaFiltro.fechaDenunciaRango" : null
+                );
+              }}
               showIcon
               dateFormat="yy-mm-dd"
               className="w-100"
+              disabled={
+                !esCampoActivo("accesoJusticiaFiltro.fechaDenunciaRango")
+              }
             />
           </div>
 
@@ -1359,14 +1833,20 @@ export default function FiltradoRegistros() {
               options={tiposPersona}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
                   tiposDenunciante: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0
+                    ? "accesoJusticiaFiltro.tiposDenunciante"
+                    : null
+                );
+              }}
               placeholder="Seleccionar tipos"
               className="w-100"
+              disabled={!esCampoActivo("accesoJusticiaFiltro.tiposDenunciante")}
             />
           </div>
 
@@ -1380,14 +1860,22 @@ export default function FiltradoRegistros() {
               options={duracionesProceso}
               optionLabel="descripcion"
               optionValue="codigo"
-              onChange={(e) =>
+              onChange={(e) => {
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
                   duracionesProceso: e.value.map((codigo) => ({ codigo })),
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value.length > 0
+                    ? "accesoJusticiaFiltro.duracionesProceso"
+                    : null
+                );
+              }}
               placeholder="Seleccionar duraciones"
               className="w-100"
+              disabled={
+                !esCampoActivo("accesoJusticiaFiltro.duracionesProceso")
+              }
             />
           </div>
 
@@ -1396,12 +1884,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Acceso a abogado?</label>
             <InputSwitch
               checked={accesoJusticiaFiltro.accesoAbogado || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
                   accesoAbogado: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "accesoJusticiaFiltro.accesoAbogado" : null
+                );
+              }}
+              disabled={!esCampoActivo("accesoJusticiaFiltro.accesoAbogado")}
             />
           </div>
 
@@ -1410,12 +1902,16 @@ export default function FiltradoRegistros() {
             <label className="me-3">¿Hubo parcialidad?</label>
             <InputSwitch
               checked={accesoJusticiaFiltro.huboParcialidad || false}
-              onChange={(e) =>
+              onChange={(e) => {
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
                   huboParcialidad: e.value,
-                }))
-              }
+                }));
+                setCampoSeleccionado(
+                  e.value ? "accesoJusticiaFiltro.huboParcialidad" : null
+                );
+              }}
+              disabled={!esCampoActivo("accesoJusticiaFiltro.huboParcialidad")}
             />
           </div>
 
@@ -1426,14 +1922,23 @@ export default function FiltradoRegistros() {
               type="text"
               className="form-control"
               placeholder="Ej: sobreseído, absuelto..."
-              onChange={(e) =>
+              onChange={(e) => {
+                const resultados = e.target.value
+                  .split(",")
+                  .map((v) => v.trim())
+                  .filter((v) => v);
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
-                  resultadosProceso: e.target.value
-                    .split(",")
-                    .map((v) => v.trim())
-                    .filter((v) => v),
-                }))
+                  resultadosProceso: resultados,
+                }));
+                setCampoSeleccionado(
+                  resultados.length > 0
+                    ? "accesoJusticiaFiltro.resultadosProceso"
+                    : null
+                );
+              }}
+              disabled={
+                !esCampoActivo("accesoJusticiaFiltro.resultadosProceso")
               }
             />
           </div>
@@ -1445,34 +1950,25 @@ export default function FiltradoRegistros() {
               type="text"
               className="form-control"
               placeholder="Ej: primera instancia, apelación..."
-              onChange={(e) =>
+              onChange={(e) => {
+                const instancias = e.target.value
+                  .split(",")
+                  .map((v) => v.trim())
+                  .filter((v) => v);
                 setAccesoJusticiaFiltro((prev) => ({
                   ...prev,
-                  instancias: e.target.value
-                    .split(",")
-                    .map((v) => v.trim())
-                    .filter((v) => v),
-                }))
-              }
+                  instancias,
+                }));
+                setCampoSeleccionado(
+                  instancias.length > 0
+                    ? "accesoJusticiaFiltro.instancias"
+                    : null
+                );
+              }}
+              disabled={!esCampoActivo("accesoJusticiaFiltro.instancias")}
             />
           </div>
         </div>
-      </div>
-
-      {/* Botones Borrar Filtros y Aplicar Filtros */}
-      <div className="d-flex justify-content-end gap-2 mt-4">
-        <Button
-          label="Borrar todos los filtros"
-          icon="pi pi-times"
-          className="p-button-secondary"
-          onClick={limpiarFiltros}
-        />
-        <Button
-          label="Aplicar filtros"
-          icon="pi pi-check"
-          className="p-button-primary"
-          onClick={aplicarFiltros}
-        />
       </div>
     </div>
   );
