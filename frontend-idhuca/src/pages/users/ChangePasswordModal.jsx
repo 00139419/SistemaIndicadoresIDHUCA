@@ -1,20 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const ChangePasswordModal = ({ show, onClose, onSuccess, user }) => {
-  const [password, setPassword] = useState("");
+  const [provisionalPassword, setProvisionalPassword] = useState("");
   const [isChanging, setIsChanging] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
+  // Limpia el estado cada vez que se abre la modal o cambia el usuario
+  useEffect(() => {
+    if (show) {
+      setProvisionalPassword("");
+      setError(null);
+      setIsChanging(false);
+    }
+  }, [show, user]);
+
+  const handleUnlock = async (e) => {
     e.preventDefault();
     setIsChanging(true);
     setError(null);
+    setProvisionalPassword("");
 
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        // Change to the correct endpoint for password updates
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/update",
+        "http://localhost:8080/idhuca-indicadores/api/srv/users/unlock",
         {
           method: "POST",
           headers: {
@@ -23,19 +32,26 @@ const ChangePasswordModal = ({ show, onClose, onSuccess, user }) => {
           },
           body: JSON.stringify({
             id: user.id,
-            nuevaContrasena: password, // Change field name to match API expectation
           }),
         }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.mensaje || "Error al cambiar la contraseña");
+      const data = await response.json();
+      console.log("Respuesta de unlock:", data);
+
+      if (!response.ok || data.codigo !== 0) {
+        throw new Error(data.mensaje || "Error al generar la contraseña provisional");
       }
 
-      onSuccess();
-      setPassword("");
-      onClose(); // Add this to close modal on success
+      // Extraer la contraseña provisional del mensaje
+      let provisional = "Contraseña generada no disponible";
+      const match = data.mensaje.match(/Contraseña provisional:\s*([^\s]+)/i);
+      if (match) {
+        provisional = match[1];
+      }
+
+      setProvisionalPassword(provisional);
+      //onSuccess && onSuccess();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -51,7 +67,7 @@ const ChangePasswordModal = ({ show, onClose, onSuccess, user }) => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Cambiar Contraseña</h5>
+              <h5 className="modal-title">Generar Contraseña Provisional</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -59,43 +75,52 @@ const ChangePasswordModal = ({ show, onClose, onSuccess, user }) => {
                 disabled={isChanging}
               ></button>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleUnlock}>
               <div className="modal-body">
                 {error && <div className="alert alert-danger">{error}</div>}
-                <div className="mb-3">
-                  <label className="form-label">Nueva Contraseña</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
+                {provisionalPassword ? (
+                  <div className="alert alert-success">
+                    <strong>¡Contraseña provisional generada!</strong>
+                    <br />
+                    La nueva contraseña provisional es: <br />
+                    <span style={{ fontWeight: "bold", fontSize: "1.2em" }}>{provisionalPassword}</span>
+                  </div>
+                ) : (
+                  <div className="mb-3">
+                    <p>
+                      Al continuar, se generará una nueva contraseña provisional para el usuario seleccionado.
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="modal-footer">
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={onClose}
+                  onClick={() => {
+                    onClose();
+                    onSuccess && onSuccess();
+                  }}
                   disabled={isChanging}
                 >
-                  Cancelar
+                  Cerrar
                 </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isChanging}
-                >
-                  {isChanging ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2"></span>
-                      Cambiando...
-                    </>
-                  ) : (
-                    "Cambiar Contraseña"
-                  )}
-                </button>
+                {!provisionalPassword && (
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isChanging}
+                  >
+                    {isChanging ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2"></span>
+                        Generando...
+                      </>
+                    ) : (
+                      "Generar Contraseña"
+                    )}
+                  </button>
+                )}
               </div>
             </form>
           </div>

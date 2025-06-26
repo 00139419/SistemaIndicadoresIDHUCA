@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from './AuthContext'; // Asegúrate de importar useAuth
 
 const VistaRegistrosDinamica = ({
+  categoriaEjeX,
+  filtros,
+  derechoId,
   title = "Registros",
   columns = [],
   data = [],
@@ -20,9 +23,7 @@ const VistaRegistrosDinamica = ({
   onPageChange,
   itemsPerPage = 10
 }) => {
-  const { userRole } = useAuth(); // Obtener el rol del usuario
- // const [currentPage, setCurrentPage] = useState(1);
-  //const [totalPages, setTotalPages] = useState(1);
+  const { userRole } = useAuth(); // Obtener el rol del usuarios
   const navigate = useNavigate(); 
   
 
@@ -38,7 +39,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handleGenerateChart = () => {
-    navigate('/graphs'); 
+    navigate('/graphs',  { state: { derechoId, filtros, categoriaEjeX} }); 
   };
 
   const handleCreateRegister = () => {
@@ -46,7 +47,7 @@ const VistaRegistrosDinamica = ({
   };
 
   const handleFilter = () => {
-    navigate('/filter'); 
+  navigate('/filter', { state: { derechoId, filtros } });  // Pasamos derechoId y filtros en el state
   };
 
   const handleAction = (action, item, index) => {
@@ -55,10 +56,11 @@ const VistaRegistrosDinamica = ({
         onView && onView(item, index);
         break;
       case "edit":
-        onEdit && onEdit(item, index);
+        // Redirigir a la página de edición con el id del registro
+        navigate(`/registros/update/${item.id}`);
         break;
       case "delete":
-        onDelete && onDelete(item, index);
+        navigate(`/registros/delete/${item.id}`);
         break;
       default:
         break;
