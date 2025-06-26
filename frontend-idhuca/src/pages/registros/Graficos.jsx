@@ -274,7 +274,7 @@ const Graficos = () => {
                       onClick={handleClick}
                     >
                       {nombreCampo
-                        ? `Eje X seleccionado: ${nombreCampo}`
+                        ? `Eje X: ${nombreCampo}`
                         : "Seleccionar eje X..."}
                     </button>
                   </div>
