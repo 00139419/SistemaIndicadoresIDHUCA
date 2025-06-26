@@ -49,7 +49,9 @@ export const fetchFichasByDerecho = async (derechoCodigo, options = {}) => {
         'Content-Type': 'application/json'
       }
     });
+
     console.log('JSON response:', response.data);
+
     if (response.data && response.data.codigo === 0) {
       return {
         success: true,
@@ -57,12 +59,11 @@ export const fetchFichasByDerecho = async (derechoCodigo, options = {}) => {
         data: response.data.entity || [],
         paginacionInfo: response.data.paginacionInfo || {
           paginaActual: 0,
-          totalPaginas: 1,
+          totalPaginas: response.data.entity?.length > 0 ? 1 : 0,
           totalRegistros: response.data.entity?.length || 0,
           registrosPorPagina: 10
         }
       };
-
     } else {
       return {
         success: false,
@@ -76,7 +77,6 @@ export const fetchFichasByDerecho = async (derechoCodigo, options = {}) => {
     console.error(`Error al obtener fichas del derecho "${derechoCodigo}":`, error);
     throw new Error(error.response?.data?.mensaje || 'Error al obtener las fichas del derecho');
   }
-
 };
 
 // Función para crear una nueva ficha con archivos (multipart)
@@ -149,7 +149,15 @@ export const updateFicha = async (fichaId, fichaData) => {
   }
 
   try {
-    const response = await axios.put(`${API_BASE_URL}/update/${fichaId}`, fichaData, {
+    // Estructura del JSON - NECESITO QUE ME PROPORCIONES EL FORMATO EXACTO
+    const requestBody = {
+      id: fichaId,
+      titulo: fichaData.titulo,
+      descripcion: fichaData.descripcion,
+      // Agregar otros campos según el formato que me proporciones
+    };
+
+    const response = await axios.post(`${API_BASE_URL}/update/post/note`, requestBody, {
       headers: {
         Authorization: `Bearer ${TOKEN}`,
         'Content-Type': 'application/json'
@@ -262,4 +270,42 @@ export const getDerechoDescripcion = (derechoId) => {
     4: "Derecho a la Vida"
   };
   return descripciones[derechoId] || "Descripción del derecho";
+};
+
+// Función para descargar archivo
+export const downloadFile = async (archivoUrl, nombreOriginal) => {
+  const TOKEN = localStorage.getItem('authToken');
+
+  if (!TOKEN) {
+    throw new Error('No se encontró token de autenticación');
+  }
+
+  try {
+    const response = await axios.post(`${API_BASE_URL}/get/file/${archivoUrl}`, null, {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`
+      },
+      responseType: 'blob' // Importante para manejar archivos binarios
+    });
+
+    // Crear un blob URL y descargar el archivo
+    const blob = new Blob([response.data]);
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = nombreOriginal || archivoUrl; // Usar el nombre original o el URL como fallback
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    return {
+      success: true,
+      message: 'Archivo descargado correctamente'
+    };
+
+  } catch (error) {
+    console.error('Error al descargar archivo:', error);
+    throw new Error(error.response?.data?.mensaje || 'Error al descargar el archivo');
+  }
 };
