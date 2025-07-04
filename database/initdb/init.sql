@@ -956,13 +956,14 @@ INSERT INTO parametro_sistema(clave, valor, descripcion)
 VALUES('max_intentos_pregunta_seguridad', '3', 'Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña');
  
 -- Insertar Adminitrador
-INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo)
+INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo, es_provisional)
 VALUES 
-('Daniel Morales', '00139419@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_1', CURRENT_TIMESTAMP, TRUE);
+('Admin Admin', 'admin@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_1', CURRENT_TIMESTAMP, TRUE, FALSE);
 
 INSERT INTO recovery_password(usuario_id, pregunta_codigo, respuesta_hash, intentos_fallidos) 
 VALUES
 (1, 'SQ_1', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 0);
+
 
 
 
