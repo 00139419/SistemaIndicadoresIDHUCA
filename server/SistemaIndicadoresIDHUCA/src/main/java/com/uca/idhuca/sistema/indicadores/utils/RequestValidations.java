@@ -127,6 +127,27 @@ public class RequestValidations {
 		return list;
 	}
 	
+	public static List<String> validarUpdateNameUser(UserDto request) {
+		List<String> list = new ArrayList<>();
+
+		String error = "";
+		String key = "SYSTEM";
+
+		if (request == null) {
+			error = "El servicio necesita un json de request.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+
+		if (request.getNombre() == null || request.getNombre().isEmpty()) {
+			error = "La propiedad 'nombre' es obligatoria y no ser vacia.";
+			list.add(error);
+			log.info("[" + key + "]" + " " + error);
+		}
+		
+		return list;
+	}
+	
 	public static List<String> validarGetAllRegistroPorDerecho(CatalogoDto request) {
 		List<String> list = new ArrayList<>();
 

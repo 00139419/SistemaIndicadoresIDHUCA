@@ -161,6 +161,39 @@ public class UserImpl implements IUser {
 
 		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
 	}
+	
+	@Override
+	public SuperGenericResponse updateNameCurrent(UserDto request) throws ValidationException, NotFoundException {
+		List<String> errorsList = validarUpdateUser(request);
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
+
+		String key = utils.obtenerUsuarioAutenticado().getEmail();
+		log.info("[{}] Request válido", key);
+
+		Usuario usuario = userRepository.findById(request.getId())
+				.orElseThrow(() -> new NotFoundException(ERROR, "Usuario no existe."));
+
+		RecoveryPassword recovery = recoveryPasswordRepository.findByUsuario(usuario)
+				.orElseThrow(() -> new NotFoundException(ERROR, "Recovery no existe."));
+
+		useCase.darFormatoUpdate(request, usuario);
+		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
+
+		useCase.darFormatoUpdateRecovery(request, recovery);
+		log.info("[{}] Actualizando recovery... [{}]", key, recovery);
+
+		userRepository.save(usuario);
+		recoveryPasswordRepository.save(recovery);
+		log.info("[{}] Usuario actualizado correctamente.", key);
+
+		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
+		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));
+		log.info("[{}] Auditoria creada correctamente.", key);
+
+		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
+	}
 
 	@Override
 	public GenericEntityResponse<Usuario> getOne(Integer id) throws ValidationException, NotFoundException {

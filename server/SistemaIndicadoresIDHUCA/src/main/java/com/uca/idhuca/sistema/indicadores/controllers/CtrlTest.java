@@ -35,6 +35,21 @@ public class CtrlTest {
 	@Autowired
     private JwtUtils jwtUtils;
 	
+	
+	@PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> testConnection2() {
+		SuperGenericResponse response = null;
+		String key = "SYSTEM";
+		log.info("[" + key + "] ------ Inicio de servicio 'test/testConnection2'");
+		
+		response = new SuperGenericResponse();
+		response.setCodigo(OK);
+		response.setMensaje("Success!");
+		
+		log.info("[" + key + "] ------ Fin de servicio 'test/testConnection2'");
+		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/testConnection", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> testConnection() {
 		SuperGenericResponse response = null;

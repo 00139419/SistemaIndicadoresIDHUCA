@@ -110,5 +110,7 @@ public interface IUser {
 	 */
 	SuperGenericResponse unlockUser(UserDto request) throws ValidationException, NotFoundException;
 
+	SuperGenericResponse updateNameCurrent(UserDto request) throws ValidationException, NotFoundException;
+
 
 }

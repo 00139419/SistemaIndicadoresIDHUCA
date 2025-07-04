@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.uca.idhuca.sistema.indicadores</groupId>
-	<artifactId>SistemaIndicadoresIDHUCA</artifactId>
+	<artifactId>SistemaRegistrosIDHUCA</artifactId>
 	<version>1</version>
 	<packaging>war</packaging>
-	<name>SistemaIndicadoresIDHUCA</name>
+	<name>SistemaRegistrosIDHUCA</name>
 	<description>API para el proyecto de sistema de indicadores del IDHUCA</description>
 	<url />
 	<licenses>
@@ -35,6 +35,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -83,19 +94,19 @@
 
 
 		<!-- JFreeChart 1.5.6  (publicado 21 may 2025) -->
-			<dependency>
-    <groupId>org.jfree</groupId>
-    <artifactId>jfreechart</artifactId>
-    <version>1.0.19</version>
-</dependency>
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.19</version>
+		</dependency>
 
-			<!-- (Transitiva) JCommon; la incluyo explícitamente por claridad,
+		<!-- (Transitiva) JCommon; la incluyo explícitamente por claridad,
          pero jfreechart ya la declara como dependencia -->
-			<dependency>
-				<groupId>org.jfree</groupId>
-				<artifactId>jcommon</artifactId>
-				<version>1.0.24</version>
-			</dependency>
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jcommon</artifactId>
+			<version>1.0.24</version>
+		</dependency>
 
 	</dependencies>
 	<build>

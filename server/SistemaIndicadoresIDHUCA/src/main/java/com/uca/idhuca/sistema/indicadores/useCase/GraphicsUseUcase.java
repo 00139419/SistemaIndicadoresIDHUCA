@@ -91,7 +91,7 @@ public class GraphicsUseUcase {
 
 		SeriesDTO serie = new SeriesDTO();
 		serie.setName("Total");
-		serie.setData(new LinkedHashMap<>(data)); // mantener orden natural
+		serie.setData(new LinkedHashMap<>(data));
 
 		StyleDTO style = new StyleDTO();
 		style.setBackgroundColor("#ffffff");
@@ -102,14 +102,20 @@ public class GraphicsUseUcase {
 
 		GraphicsRequest gr = new GraphicsRequest();
 		gr.setChartType(request.getGraphicsSettings().getChartType()); // por defecto
-		gr.setTitle("Grafico de personas vulnerabas por " + axisLabel);
-		gr.setSubtitle("Subtitutlo de ejempo modificable");
+		
+		
+		String title = request.getGraphicsSettings().getTitle();
+		String subTitle = request.getGraphicsSettings().getSubtitle();
+		
+		gr.setTitle(title != null && !title.isEmpty() ? title : "Ingresa aquí el título que deseas utilizar.");
+		gr.setSubtitle(subTitle == null || subTitle.isEmpty() ? "" : subTitle);
+
 		gr.setCategoryAxisLabel(axisLabel);
-		gr.setValueAxisLabel("Cantidad");
+		gr.setValueAxisLabel("Numero de personas");
 		gr.setWidth(900);
 		gr.setHeight(550);
 		gr.setStyle(style);
-		gr.setThreeD(true);
+		gr.setThreeD(request.getGraphicsSettings().isThreeD());
 		gr.setSeries(List.of(serie));
 		return gr;
 	}

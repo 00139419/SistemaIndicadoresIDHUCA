@@ -181,10 +181,10 @@ public class GraphicsGeneratorService {
         plot.setRangeGridlinePaint(new Color(220, 220, 220));
         plot.setOutlineVisible(true);
 
-        // paleta por serie
-        for (int i = 0; i < s.getPalette().length && i < ds.getRowCount(); i++) {
-            renderer.setSeriesPaint(i, Color.decode(s.getPalette()[i]));
-        }
+//        // paleta por serie
+//        for (int i = 0; i < s.getPalette().length && i < ds.getRowCount(); i++) {
+//            renderer.setSeriesPaint(i, Color.decode(s.getPalette()[i]));
+//        }
 
         /* ---------- Creación final ---------- */
         Font titleFont    = new Font("SansSerif", Font.BOLD,   s.getTitleFontSize());
