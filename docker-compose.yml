@@ -29,6 +29,14 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
 
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    networks:
+      - red_app
+
 networks:
   red_app:
     driver: bridge
