@@ -110,48 +110,66 @@ const Graficos = () => {
     }));
   };
 
-  const generarGrafico = async () => {
-    try {
-
-    if(!filtros){
+const generarGrafico = async () => {
+  try {
+    if (!filtros) {
       filtros = {};
     }
 
-      const request = {
-        derecho: { codigo: derechoId },
-        filtros,
-        categoriaEjeX,
-        graphicsSettings: {
-          chartType: "PIE",
-        },
-      };
+    // Mapeo de tipo de gráfico
+    const tipoGraficoEnum = {
+      Pastel: "PIE",
+      Barras: "BAR",
+      Líneas: "LINE",
+      Área: "AREA",
+      // Agrega más si en el futuro usas "STACKED_BAR" o "STACKED_AREA"
+    };
 
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        throw new Error("No hay token de autenticación");
-      }
-
-      console.log("request " + JSON.stringify(request))
-
-      const response = await axios.post(
-        `${API_URL}/graphics/generate`,
-        request,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const base64 = response.data.entity.base64;
-      console.log(response.data);
-      const imagenConPrefijo = `data:image/png;base64,${base64}`;
-      setImagenRenderizada(imagenConPrefijo);
-    } catch (error) {
-      console.error("Error al generar el gráfico:", error);
+    const tipoEnum = tipoGraficoEnum[chartConfig.tipoGrafico];
+    if (!tipoEnum) {
+      throw new Error(`Tipo de gráfico no soportado: ${chartConfig.tipoGrafico}`);
     }
-  };
+
+    const dimension3D = (chartConfig.dimension === '3D' ? true : false);
+
+    const request = {
+      derecho: { codigo: derechoId },
+      filtros,
+      categoriaEjeX,
+      graphicsSettings: {
+        chartType: tipoEnum,
+        threeD: dimension3D,
+        title: chartConfig.titulo,
+        subtitle: chartConfig.subtitulo
+      },
+    };
+
+    console.log(request);
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No hay token de autenticación");
+    }
+
+    const response = await axios.post(
+      `${API_URL}/graphics/generate`,
+      request,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const base64 = response.data.entity.base64;
+    const imagenConPrefijo = `data:image/png;base64,${base64}`;
+    setImagenRenderizada(imagenConPrefijo);
+  } catch (error) {
+    console.error("Error al generar el gráfico:", error);
+  }
+};
+
 
   useEffect(() => {
     if (nombreCampo && chartConfig.tipoGrafico) {
@@ -211,14 +229,14 @@ const Graficos = () => {
     <div
       className="container-fluid px-0"
       style={{
-        minHeight: "100vh",
+        maxHeight: "100vh",
         width: "100%",
         maxWidth: "100%",
       }}
     >
-      <div className="container-fluid px-4 py-5" style={{ minHeight: "100%" }}>
+      <div className="container-fluid px-4 py-0">
         {/* Título mejorado */}
-        <div className="text-center mb-5">
+        <div className="text-center mb-1">
           <h1
             className="display-4 fw-bold"
             style={{
@@ -387,7 +405,7 @@ const Graficos = () => {
                       onChange={(e) =>
                         handleConfigChange("titulo", e.target.value)
                       }
-                      placeholder="Ingrese el título del gráfico"
+                      placeholder="Ingresa aquí el título que deseas utilizar."
                     />
                   </div>
 
@@ -411,7 +429,7 @@ const Graficos = () => {
                       onChange={(e) =>
                         handleConfigChange("subtitulo", e.target.value)
                       }
-                      placeholder="Ingrese el subtítulo del gráfico"
+                      placeholder="Subtítulo de ejemplo."
                     />
                   </div>
                 </div>
@@ -424,11 +442,11 @@ const Graficos = () => {
             className={hasPermission("modify") ? "col-md-8 col-lg-9" : "col-12"}
           >
             <div
-              className="bg-white p-4 rounded-lg shadow-sm h-100 d-flex flex-column"
+              className="bg-white p-1 rounded-lg shadow-sm h-100 d-flex flex-column"
               style={{
                 borderRadius: "15px",
                 border: "1px solid #e0e0e0",
-                minHeight: "80vh",
+                maxHeight: "100vh",
               }}
             >
               <div
@@ -444,12 +462,10 @@ const Graficos = () => {
                         alt="Gráfico de ejemplo"
                         className="img-fluid"
                         style={{
-                          maxWidth: "95%",
-                          maxHeight: "95%",
+                          maxWidth: "100%",
+                          maxHeight: "100%",
                           minHeight: "400px",
                           objectFit: "contain",
-                          borderRadius: "8px",
-                          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                         }}
                       />
                       <div className="mt-3 d-flex gap-2">
