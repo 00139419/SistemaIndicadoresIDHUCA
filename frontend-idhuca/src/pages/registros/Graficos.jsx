@@ -146,7 +146,7 @@ const Graficos = () => {
           title: chartConfig.titulo,
           subtitle: chartConfig.subtitulo,
           titleFont: chartConfig.titleFont,
-          subTitleFont: chartConfig.subTitleFont
+          subTitleFont: chartConfig.subTitleFont,
         },
       };
 
@@ -187,7 +187,7 @@ const Graficos = () => {
     chartConfig.titulo,
     chartConfig.subtitulo,
     chartConfig.titleFont,
-    chartConfig.subTitleFont
+    chartConfig.subTitleFont,
   ]);
 
   const copyToClipboard = async () => {};
@@ -203,14 +203,46 @@ const Graficos = () => {
     });
   };
 
-  // Función para descargar la imagen base64 como archivo gitPNG
   const descargarImagen = () => {
-    const link = document.createElement("a");
-    link.href = graphImage;
-    link.download = "grafico.png";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (!imagenRenderizada) return;
+
+    try {
+      // Obtener fecha y hora actual
+      const now = new Date();
+      const pad = (n) => n.toString().padStart(2, "0");
+      const timestamp = `${pad(now.getDate())}${pad(
+        now.getMonth() + 1
+      )}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(
+        now.getSeconds()
+      )}`;
+      const filename = `grafico_${timestamp}.png`;
+
+      // Obtener base64 limpio
+      const base64Data = imagenRenderizada.startsWith("data:image")
+        ? imagenRenderizada.split(",")[1]
+        : imagenRenderizada;
+
+      // Convertir base64 a blob
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = Array.from(byteCharacters, (char) =>
+        char.charCodeAt(0)
+      );
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "image/png" });
+
+      // Crear y usar el enlace temporal
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      alert("Error al descargar la imagen: " + error.message);
+      console.error(error);
+    }
   };
 
   // Función para copiar la imagen al portapapeles como blob
@@ -486,8 +518,6 @@ const Graficos = () => {
                         title="Tamaño de fuente"
                       />
                     </div>
-
-
                   </div>
                 </div>
               </div>
