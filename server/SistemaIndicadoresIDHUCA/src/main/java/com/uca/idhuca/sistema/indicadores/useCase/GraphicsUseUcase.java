@@ -90,18 +90,18 @@ public class GraphicsUseUcase {
 	public GraphicsRequest buildGraphicsRequest(Map<String, Long> data, String axisLabel, CreateGraphicsDto request) {
 
 		SeriesDTO serie = new SeriesDTO();
-		serie.setName("Total");
+		serie.setName("");
 		serie.setData(new LinkedHashMap<>(data));
 
 		StyleDTO style = new StyleDTO();
 		style.setBackgroundColor("#ffffff");
 		String[] paleta = { "#3366cc", "#dc3912", "#ff9900" };
 		style.setPalette(paleta);
-		style.setTitleFontSize(20);
-		style.setSubtitleFontSize(13);
+		style.setTitleFontSize(request.getGraphicsSettings().getTitleFont());
+		style.setSubtitleFontSize(request.getGraphicsSettings().getSubTitleFont());
 
 		GraphicsRequest gr = new GraphicsRequest();
-		gr.setChartType(request.getGraphicsSettings().getChartType()); // por defecto
+		gr.setChartType(request.getGraphicsSettings().getChartType());
 		
 		
 		String title = request.getGraphicsSettings().getTitle();

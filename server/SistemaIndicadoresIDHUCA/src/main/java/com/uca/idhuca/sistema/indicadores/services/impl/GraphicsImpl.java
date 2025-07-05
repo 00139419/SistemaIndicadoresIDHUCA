@@ -107,7 +107,7 @@ public class GraphicsImpl implements IGraphics {
 		}
 
 		/* ---------- 3. Construir respuesta gráfica -------------- */
-		GraphicsRequest gr = graphicsUseUcase.buildGraphicsRequest(conteo, ejeX.getEtiquetaVisible(), request);
+		GraphicsRequest gr = graphicsUseUcase.buildGraphicsRequest(conteo, "", request);
 		log.info("[{}] GraphicsRequest armado correctamente", key);
 
 		GraphicsResponseDTO response = generatorService.generate(gr);

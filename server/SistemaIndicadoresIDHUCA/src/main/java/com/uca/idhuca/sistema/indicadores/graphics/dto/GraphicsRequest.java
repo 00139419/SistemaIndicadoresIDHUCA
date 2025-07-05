@@ -11,6 +11,8 @@ public class GraphicsRequest {
 	private ChartType chartType;
 	private String title; // Título principal
 	private String subtitle; // Descripción (opcional)
+	private int titleFont;
+	private int subTitleFont;
 	private String categoryAxisLabel;
 	private String valueAxisLabel;
 	private boolean threeD = false; // true = 3D (solo BAR / STACKED_BAR)
