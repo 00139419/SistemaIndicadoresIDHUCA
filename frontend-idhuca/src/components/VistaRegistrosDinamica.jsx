@@ -243,65 +243,35 @@ const VistaRegistrosDinamica = ({
                               <div className="d-flex justify-content-end gap-1">
                                 {onView && hasPermission('view') && (
                                   <button
-                                    className="btn btn-sm"
+                                    className="btn btn-sm btn-outline-info"
                                     onClick={() =>
                                       handleAction("view", item, rowIndex)
                                     }
                                     title="Ver"
-                                    style={{
-                                      backgroundColor: "#3498db",
-                                      color: "white",
-                                      width: "28px",
-                                      height: "28px",
-                                      fontSize: "12px",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                    }}
                                   >
-                                    👁️
+                                    <i className="bi bi-eye"></i>
                                   </button>
                                 )}
                                 {onEdit && hasPermission('edit') && (
                                   <button
-                                    className="btn btn-sm"
+                                    className="btn btn-sm btn-outline-primary"
                                     onClick={() =>
                                       handleAction("edit", item, rowIndex)
                                     }
                                     title="Editar"
-                                    style={{
-                                      backgroundColor: "#27ae60",
-                                      color: "white",
-                                      width: "28px",
-                                      height: "28px",
-                                      fontSize: "12px",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                    }}
                                   >
-                                    ✏️
+                                    <i className="bi bi-pencil-square"></i>
                                   </button>
                                 )}
                                 {onDelete && hasPermission('delete') && (
                                   <button
-                                    className="btn btn-sm"
+                                    className="btn btn-sm btn-outline-danger"
                                     onClick={() =>
                                       handleAction("delete", item, rowIndex)
                                     }
                                     title="Eliminar"
-                                    style={{
-                                      backgroundColor: "#e74c3c",
-                                      color: "white",
-                                      width: "28px",
-                                      height: "28px",
-                                      fontSize: "12px",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                    }}
                                   >
-                                    🗑️
+                                    <i className="bi bi-trash"></i>
                                   </button>
                                 )}
                               </div>
