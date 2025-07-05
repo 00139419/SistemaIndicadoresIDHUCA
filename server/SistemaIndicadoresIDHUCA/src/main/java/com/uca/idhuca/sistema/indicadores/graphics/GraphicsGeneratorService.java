@@ -273,30 +273,10 @@ public class GraphicsGeneratorService {
     }
 
     private JFreeChart buildAreaChart(GraphicsRequest req, DefaultCategoryDataset dsOriginal) {
-        // Transformar dataset: categorías originales -> series, categoría fija "Total"
-        DefaultCategoryDataset ds = new DefaultCategoryDataset();
-
-        List<?> originalRowKeys = dsOriginal.getRowKeys();
-        List<?> originalColumnKeys = dsOriginal.getColumnKeys();
-
-        // Validar que hay exactamente una serie original
-        if (originalRowKeys.size() != 1) {
-            throw new IllegalArgumentException("Para buildAreaChart debe haber exactamente una serie");
-        }
-
-        Comparable<?> originalRow = (Comparable<?>) originalRowKeys.get(0);
-
-        // Por cada categoría original, agregamos un valor en la nueva serie que es esa categoría
-        for (Object category : originalColumnKeys) {
-            Number value = dsOriginal.getValue(originalRow, (Comparable<?>) category);
-            ds.addValue(value != null ? value.doubleValue() : 0.0, (Comparable<?>) category, "Total");
-        }
-
         CategoryAxis domain = new CategoryAxis(req.getCategoryAxisLabel());
 
-        // Rotar etiquetas si son largas
         @SuppressWarnings("unchecked")
-        boolean shouldRotate = ds.getColumnKeys().stream()
+        boolean shouldRotate = dsOriginal.getColumnKeys().stream()
             .anyMatch(key -> key != null && key.toString().length() > 10);
         if (shouldRotate) {
             domain.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 4));
@@ -304,11 +284,34 @@ public class GraphicsGeneratorService {
 
         NumberAxis range = new NumberAxis(req.getValueAxisLabel());
 
+        // Usar el dataset original, NO modificar la estructura
+        DefaultCategoryDataset ds = dsOriginal;
+
+        // Paleta de colores
+        String[] palette = {
+            "#4e79a7", "#f28e2b", "#e15759", "#76b7b2",
+            "#59a14f", "#edc948", "#b07aa1", "#ff9da7",
+            "#9c755f", "#bab0ab"
+        };
+
         CategoryItemRenderer renderer;
+
         if (req.getChartType() == ChartType.AREA) {
-            renderer = new AreaRenderer();
+            renderer = new AreaRenderer() {
+                @Override
+                public Paint getItemPaint(int row, int column) {
+                    int index = column % palette.length;
+                    return Color.decode(palette[index]);
+                }
+            };
         } else if (req.getChartType() == ChartType.STACKED_AREA) {
-            renderer = new StackedAreaRenderer();
+            renderer = new StackedAreaRenderer() {
+                @Override
+                public Paint getItemPaint(int row, int column) {
+                    int index = column % palette.length;
+                    return Color.decode(palette[index]);
+                }
+            };
         } else {
             throw new IllegalArgumentException("Tipo de gráfico no soportado en buildAreaChart: " + req.getChartType());
         }
@@ -336,6 +339,7 @@ public class GraphicsGeneratorService {
 
         return chart;
     }
+
 
 
 
