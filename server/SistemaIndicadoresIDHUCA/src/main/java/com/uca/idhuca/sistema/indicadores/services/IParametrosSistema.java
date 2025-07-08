@@ -18,6 +18,8 @@ public interface IParametrosSistema {
 	 * @throws ValidationException si ocurre un error de validación durante la obtención de los datos.
 	 */
 	GenericEntityResponse<List<ParametroSistema>> getAll() throws ValidationException;
+	
+	GenericEntityResponse<ParametroSistema> getOne(String codigo) throws ValidationException;
 
 	/**
 	 * Actualiza un parámetro del sistema con los datos proporcionados en el DTO.

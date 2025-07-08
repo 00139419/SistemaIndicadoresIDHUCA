@@ -80,6 +80,15 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 		log.info("[{}] Parametro actualizado correctamente.", key);
 		return new SuperGenericResponse(OK, "Parametro actualizado correctamente.");
 	}
+
+	@Override
+	public GenericEntityResponse<ParametroSistema> getOne(String codigo) throws ValidationException {
+		log.info("[{}] Request válido", "SYSTEM");
+		ParametroSistema p = parametrosSistemaRepository.findByClave(codigo);
+		log.info("[{}] parametos del sistema obtenidos correctamente.", "SYSTEM");
+		
+		return new GenericEntityResponse<>(OK, "parameto del sistema obtenidos correctamente.", p);
+	}
 	
 	
 

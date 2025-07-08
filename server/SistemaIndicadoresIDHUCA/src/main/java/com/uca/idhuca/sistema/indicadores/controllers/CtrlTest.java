@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
+import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
 import com.uca.idhuca.sistema.indicadores.graphics.GraphicsGeneratorService;
 import com.uca.idhuca.sistema.indicadores.graphics.dto.GraphicsRequest;
 import com.uca.idhuca.sistema.indicadores.jdbc.ConexionJDBC;
@@ -77,7 +78,7 @@ public class CtrlTest {
 	}
 	
 	@PostMapping(value = "/testJwtGenerate", produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<SuperGenericResponse> testJwtGenerate() {
+	ResponseEntity<SuperGenericResponse> testJwtGenerate() throws ValidationException {
 		SuperGenericResponse response = null;
 		String key = "SYSTEM";
 		log.info("[" + key + "] ------ Inicio de servicio 'test/testJwtGenerate'");
@@ -85,7 +86,7 @@ public class CtrlTest {
 		response = new SuperGenericResponse();
 		
 		response.setCodigo(OK);
-		response.setMensaje(jwtUtils.generateJwtToken("00139419@uca.edu.sv"));
+		response.setMensaje(jwtUtils.generateJwtToken("admin@uca.edu.sv"));
 		
 		log.info("[" + key + "] ------ Fin de servicio 'test/testJwtGenerate'");
 		return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
