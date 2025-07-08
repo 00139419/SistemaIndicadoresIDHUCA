@@ -99,6 +99,8 @@ const Graficos = () => {
     dimension: "2D",
     titulo: "",
     subtitulo: "",
+    titleFont: "20",
+    subTitleFont: "13",
   });
 
   const tiposGrafico = ["Pastel", "Barras", "Líneas", "Área"];
@@ -112,26 +114,48 @@ const Graficos = () => {
 
   const generarGrafico = async () => {
     try {
+      if (!filtros) {
+        filtros = {};
+      }
 
-    if(!filtros){
-      filtros = {};
-    }
+      // Mapeo de tipo de gráfico
+      const tipoGraficoEnum = {
+        Pastel: "PIE",
+        Barras: "BAR",
+        Líneas: "LINE",
+        Área: "AREA",
+        // Agrega más si en el futuro usas "STACKED_BAR" o "STACKED_AREA"
+      };
+
+      const tipoEnum = tipoGraficoEnum[chartConfig.tipoGrafico];
+      if (!tipoEnum) {
+        throw new Error(
+          `Tipo de gráfico no soportado: ${chartConfig.tipoGrafico}`
+        );
+      }
+
+      const dimension3D = chartConfig.dimension === "3D" ? true : false;
 
       const request = {
         derecho: { codigo: derechoId },
         filtros,
         categoriaEjeX,
         graphicsSettings: {
-          chartType: "PIE",
+          chartType: tipoEnum,
+          threeD: dimension3D,
+          title: chartConfig.titulo,
+          subtitle: chartConfig.subtitulo,
+          titleFont: chartConfig.titleFont,
+          subTitleFont: chartConfig.subTitleFont,
         },
       };
+
+      console.log(request);
 
       const token = localStorage.getItem("authToken");
       if (!token) {
         throw new Error("No hay token de autenticación");
       }
-
-      console.log("request " + JSON.stringify(request))
 
       const response = await axios.post(
         `${API_URL}/graphics/generate`,
@@ -145,7 +169,6 @@ const Graficos = () => {
       );
 
       const base64 = response.data.entity.base64;
-      console.log(response.data);
       const imagenConPrefijo = `data:image/png;base64,${base64}`;
       setImagenRenderizada(imagenConPrefijo);
     } catch (error) {
@@ -163,6 +186,8 @@ const Graficos = () => {
     chartConfig.dimension,
     chartConfig.titulo,
     chartConfig.subtitulo,
+    chartConfig.titleFont,
+    chartConfig.subTitleFont,
   ]);
 
   const copyToClipboard = async () => {};
@@ -178,14 +203,46 @@ const Graficos = () => {
     });
   };
 
-  // Función para descargar la imagen base64 como archivo PNG
   const descargarImagen = () => {
-    const link = document.createElement("a");
-    link.href = graphImage;
-    link.download = "grafico.png";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (!imagenRenderizada) return;
+
+    try {
+      // Obtener fecha y hora actual
+      const now = new Date();
+      const pad = (n) => n.toString().padStart(2, "0");
+      const timestamp = `${pad(now.getDate())}${pad(
+        now.getMonth() + 1
+      )}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(
+        now.getSeconds()
+      )}`;
+      const filename = `grafico_${timestamp}.png`;
+
+      // Obtener base64 limpio
+      const base64Data = imagenRenderizada.startsWith("data:image")
+        ? imagenRenderizada.split(",")[1]
+        : imagenRenderizada;
+
+      // Convertir base64 a blob
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = Array.from(byteCharacters, (char) =>
+        char.charCodeAt(0)
+      );
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "image/png" });
+
+      // Crear y usar el enlace temporal
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      alert("Error al descargar la imagen: " + error.message);
+      console.error(error);
+    }
   };
 
   // Función para copiar la imagen al portapapeles como blob
@@ -211,14 +268,14 @@ const Graficos = () => {
     <div
       className="container-fluid px-0"
       style={{
-        minHeight: "100vh",
+        maxHeight: "100vh",
         width: "100%",
         maxWidth: "100%",
       }}
     >
-      <div className="container-fluid px-4 py-5" style={{ minHeight: "100%" }}>
+      <div className="container-fluid px-4 py-0">
         {/* Título mejorado */}
-        <div className="text-center mb-5">
+        <div className="text-center mb-1">
           <h1
             className="display-4 fw-bold"
             style={{
@@ -367,6 +424,7 @@ const Graficos = () => {
                     </div>
                   </div>
 
+                  {/* TÍTULO */}
                   <div className="mb-3">
                     <label
                       className="form-label fw-semibold"
@@ -374,23 +432,47 @@ const Graficos = () => {
                     >
                       Título
                     </label>
-                    <input
-                      type="text"
-                      className="form-control form-control-sm"
-                      style={{
-                        backgroundColor: "#f8f9fa",
-                        border: "1px solid #ced4da",
-                        borderRadius: "6px",
-                        fontSize: "0.85rem",
-                      }}
-                      value={chartConfig.titulo}
-                      onChange={(e) =>
-                        handleConfigChange("titulo", e.target.value)
-                      }
-                      placeholder="Ingrese el título del gráfico"
-                    />
+                    <div className="d-flex gap-2">
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        style={{
+                          backgroundColor: "#f8f9fa",
+                          border: "1px solid #ced4da",
+                          borderRadius: "6px",
+                          fontSize: "0.85rem",
+                        }}
+                        value={chartConfig.titulo}
+                        onChange={(e) =>
+                          handleConfigChange("titulo", e.target.value)
+                        }
+                        placeholder="Ingresa aquí el título que deseas utilizar."
+                      />
+                      <input
+                        type="number"
+                        min="10"
+                        max="100"
+                        className="form-control form-control-sm"
+                        style={{
+                          width: "80px",
+                          backgroundColor: "#f8f9fa",
+                          border: "1px solid #ced4da",
+                          borderRadius: "6px",
+                          fontSize: "0.85rem",
+                        }}
+                        value={chartConfig.titleFont ?? 20}
+                        onChange={(e) =>
+                          handleConfigChange(
+                            "titleFont",
+                            parseInt(e.target.value)
+                          )
+                        }
+                        title="Tamaño de fuente"
+                      />
+                    </div>
                   </div>
 
+                  {/* SUBTÍTULO */}
                   <div className="mb-3">
                     <label
                       className="form-label fw-semibold"
@@ -398,21 +480,44 @@ const Graficos = () => {
                     >
                       Subtítulo
                     </label>
-                    <input
-                      type="text"
-                      className="form-control form-control-sm"
-                      style={{
-                        backgroundColor: "#f8f9fa",
-                        border: "1px solid #ced4da",
-                        borderRadius: "6px",
-                        fontSize: "0.85rem",
-                      }}
-                      value={chartConfig.subtitulo}
-                      onChange={(e) =>
-                        handleConfigChange("subtitulo", e.target.value)
-                      }
-                      placeholder="Ingrese el subtítulo del gráfico"
-                    />
+                    <div className="d-flex gap-2">
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        style={{
+                          backgroundColor: "#f8f9fa",
+                          border: "1px solid #ced4da",
+                          borderRadius: "6px",
+                          fontSize: "0.85rem",
+                        }}
+                        value={chartConfig.subtitulo}
+                        onChange={(e) =>
+                          handleConfigChange("subtitulo", e.target.value)
+                        }
+                        placeholder="Subtítulo de ejemplo."
+                      />
+                      <input
+                        type="number"
+                        min="8"
+                        max="100"
+                        className="form-control form-control-sm"
+                        style={{
+                          width: "80px",
+                          backgroundColor: "#f8f9fa",
+                          border: "1px solid #ced4da",
+                          borderRadius: "6px",
+                          fontSize: "0.85rem",
+                        }}
+                        value={chartConfig.subTitleFont ?? 13}
+                        onChange={(e) =>
+                          handleConfigChange(
+                            "subTitleFont",
+                            parseInt(e.target.value)
+                          )
+                        }
+                        title="Tamaño de fuente"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -424,11 +529,11 @@ const Graficos = () => {
             className={hasPermission("modify") ? "col-md-8 col-lg-9" : "col-12"}
           >
             <div
-              className="bg-white p-4 rounded-lg shadow-sm h-100 d-flex flex-column"
+              className="bg-white p-1 rounded-lg shadow-sm h-100 d-flex flex-column"
               style={{
                 borderRadius: "15px",
                 border: "1px solid #e0e0e0",
-                minHeight: "80vh",
+                maxHeight: "100vh",
               }}
             >
               <div
@@ -444,12 +549,10 @@ const Graficos = () => {
                         alt="Gráfico de ejemplo"
                         className="img-fluid"
                         style={{
-                          maxWidth: "95%",
-                          maxHeight: "95%",
+                          maxWidth: "100%",
+                          maxHeight: "100%",
                           minHeight: "400px",
                           objectFit: "contain",
-                          borderRadius: "8px",
-                          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                         }}
                       />
                       <div className="mt-3 d-flex gap-2">
