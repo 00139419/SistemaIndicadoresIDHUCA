@@ -59,6 +59,33 @@ public class CtrlParametrosSistema {
 			log.info("[" + key + "] ------ Fin de servicio '/get'");
 		}
 	}
+
+	@PostMapping(value = "/getOne", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<GenericEntityResponse<ParametroSistema>> getOne(@RequestBody ParametrosSistemaDto request) {
+		GenericEntityResponse<ParametroSistema> response = null;
+		String key = "ADMIN";
+
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[{}] ------ Inicio de servicio '/getOne' con clave: {}", key, request.getClave());
+
+			if (request.getClave() == null || request.getClave().trim().isEmpty()) {
+				return new ResponseEntity<>(new GenericEntityResponse<>(ERROR, "La clave no puede estar vacía"),
+						HttpStatus.BAD_REQUEST);
+			}
+
+			response = sistemaService.getOne(request.getClave());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<>(new GenericEntityResponse<>(ERROR, e.getMensaje()),
+					HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new GenericEntityResponse<>(ERROR, e.getMessage()),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[{}] ------ Fin de servicio '/getOne'", key);
+		}
+	}
 	
 	@PostMapping(value = "/update",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> update(@RequestBody ParametrosSistemaDto request) throws ValidationException {

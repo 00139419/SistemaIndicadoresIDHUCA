@@ -82,12 +82,16 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 	}
 
 	@Override
-	public GenericEntityResponse<ParametroSistema> getOne(String codigo) throws ValidationException {
+	public GenericEntityResponse<ParametroSistema> getOne(String clave) throws ValidationException {
 		log.info("[{}] Request válido", "SYSTEM");
-		ParametroSistema p = parametrosSistemaRepository.findByClave(codigo);
-		log.info("[{}] parametos del sistema obtenidos correctamente.", "SYSTEM");
-		
-		return new GenericEntityResponse<>(OK, "parameto del sistema obtenidos correctamente.", p);
+		ParametroSistema p = parametrosSistemaRepository.findByClave(clave);
+
+		if (p == null) {
+			throw new ValidationException(ERROR, "Parámetro con clave " + clave + " no encontrado");
+		}
+
+		log.info("[{}] Parámetro del sistema obtenido correctamente.", "SYSTEM");
+		return new GenericEntityResponse<>(OK, "Parámetro del sistema obtenido correctamente.", p);
 	}
 	
 	
