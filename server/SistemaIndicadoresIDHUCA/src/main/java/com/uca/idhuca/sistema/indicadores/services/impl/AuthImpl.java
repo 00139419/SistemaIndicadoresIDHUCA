@@ -4,7 +4,10 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarLogin;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,10 +58,20 @@ public class AuthImpl implements IAuth{
 	    matchPasswords(request.getPassword(), usuario.getContrasenaHash(), key);
 	    log.info("[{}] Autenticación correcta.", key);
 
-	    String jwt = jwtUtils.generateJwtToken(key);
-	    log.info("[{}] JWT generado: {}", key, jwt);
+	    // Generar tokens
+	    String accessToken = jwtUtils.generateJwtToken(key); 
+	    String refreshToken = UUID.randomUUID().toString();
+	    Instant refreshTokenExpiry = Instant.now().plus(7, ChronoUnit.DAYS);
 
-	    return new GenericEntityResponse<Jwt>(OK, "¡Éxito!", new Jwt(jwt));
+	    // Guardar refresh token en BD
+	    usuario.setRefreshToken(refreshToken);
+	    usuario.setRefreshTokenExpiry(refreshTokenExpiry);
+	    usuarioRepository.save(usuario);
+
+	    log.info("[{}] Tokens generados correctamente", key);
+
+	    Jwt jwtResponse = new Jwt(accessToken, refreshToken);
+	    return new GenericEntityResponse<>(OK, "¡Éxito!", jwtResponse);
 	}
 
 	private void matchPasswords(String password, String hash, String key) throws ValidationException {

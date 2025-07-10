@@ -1,5 +1,6 @@
 package com.uca.idhuca.sistema.indicadores.models;
 
+import java.time.Instant;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -46,4 +47,11 @@ public class Usuario {
 
 	@Column(name = "es_provisional")
 	private Boolean esPasswordProvisional;
+	
+	@Column(name = "refresh_token")
+	private String refreshToken;
+
+	@Column(name = "refresh_token_expiry")
+	private Instant refreshTokenExpiry;
+
 }

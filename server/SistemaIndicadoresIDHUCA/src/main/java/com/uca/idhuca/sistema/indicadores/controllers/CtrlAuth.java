@@ -1,7 +1,11 @@
 package com.uca.idhuca.sistema.indicadores.controllers;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
+
+import java.time.Instant;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +22,12 @@ import com.uca.idhuca.sistema.indicadores.dto.GenericEntityResponse;
 import com.uca.idhuca.sistema.indicadores.dto.Jwt;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
 import com.uca.idhuca.sistema.indicadores.dto.SuperGenericResponse;
+import com.uca.idhuca.sistema.indicadores.dto.TokenRefreshRequest;
 import com.uca.idhuca.sistema.indicadores.exceptions.NotFoundException;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
+import com.uca.idhuca.sistema.indicadores.models.Usuario;
+import com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository;
+import com.uca.idhuca.sistema.indicadores.security.JwtUtils;
 import com.uca.idhuca.sistema.indicadores.services.IAuth;
 import com.uca.idhuca.sistema.indicadores.services.IUser;
 
@@ -38,6 +46,12 @@ public class CtrlAuth {
 	
 	@Autowired
 	IAuth authService;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private JwtUtils jwtUtils;
 	
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<Jwt>> login(@RequestBody LoginDto request) {
@@ -98,4 +112,48 @@ public class CtrlAuth {
 		}
 	}
 	
+
+
+	@PostMapping(value = "/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericEntityResponse<Jwt>> refreshToken(@RequestBody TokenRefreshRequest request) {
+	    String key = "SYSTEM";
+	    try {
+	        key = request.getRefreshToken() != null ? request.getRefreshToken() : "SYSTEM";
+	        log.info("[" + key + "] ------ Inicio de servicio '/auth/refresh' " + mapper.writeValueAsString(request));
+
+	        Optional<Usuario> userOpt = usuarioRepository.findByRefreshToken(request.getRefreshToken());
+	        if (userOpt.isEmpty()) {
+	            return new ResponseEntity<>(
+	                new GenericEntityResponse<Jwt>(ERROR, "Refresh token inválido", null),
+	                HttpStatus.UNAUTHORIZED
+	            );
+	        }
+
+	        Usuario user = userOpt.get();
+
+	        if (user.getRefreshTokenExpiry().isBefore(Instant.now())) {
+	            return new ResponseEntity<>(
+	                new GenericEntityResponse<Jwt>(ERROR, "Refresh token expirado", null),
+	                HttpStatus.UNAUTHORIZED
+	            );
+	        }
+
+	        String newAccessToken = jwtUtils.generateJwtToken(user.getEmail());
+
+	        Jwt jwt = new Jwt(newAccessToken, user.getRefreshToken());
+	        return new ResponseEntity<>(
+	            new GenericEntityResponse<Jwt>(OK, "Token renovado correctamente", jwt),
+	            HttpStatus.OK
+	        );
+	    } catch (Exception e) {
+	        log.error("[" + key + "] Error en /auth/refresh", e);
+	        return new ResponseEntity<>(
+	            new GenericEntityResponse<Jwt>(ERROR, e.getMessage(), null),
+	            HttpStatus.INTERNAL_SERVER_ERROR
+	        );
+	    } finally {
+	        log.info("[" + key + "] ------ Fin de servicio '/auth/refresh'");
+	    }
+	}
+
 }
