@@ -155,5 +155,41 @@ public class CtrlAuth {
 	        log.info("[" + key + "] ------ Fin de servicio '/auth/refresh'");
 	    }
 	}
+	
+	@PostMapping(value = "/logout", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SuperGenericResponse> logout(@RequestBody TokenRefreshRequest request) {
+	    String key = "SYSTEM";
+	    try {
+	        key = request.getRefreshToken() != null ? request.getRefreshToken() : "SYSTEM";
+	        log.info("[" + key + "] ------ Inicio de servicio '/auth/logout' " + mapper.writeValueAsString(request));
+
+	        Optional<Usuario> userOpt = usuarioRepository.findByRefreshToken(request.getRefreshToken());
+	        if (userOpt.isEmpty()) {
+	            return new ResponseEntity<>(
+	                new SuperGenericResponse(ERROR, "Refresh token no válido"),
+	                HttpStatus.BAD_REQUEST
+	            );
+	        }
+
+	        Usuario user = userOpt.get();
+	        user.setRefreshToken(null);
+	        user.setRefreshTokenExpiry(null);
+	        usuarioRepository.save(user);
+
+	        return new ResponseEntity<>(
+	            new SuperGenericResponse(OK, "Sesión cerrada correctamente"),
+	            HttpStatus.OK
+	        );
+	    } catch (Exception e) {
+	        log.error("[" + key + "] Error en /auth/logout", e);
+	        return new ResponseEntity<>(
+	            new SuperGenericResponse(ERROR, e.getMessage()),
+	            HttpStatus.INTERNAL_SERVER_ERROR
+	        );
+	    } finally {
+	        log.info("[" + key + "] ------ Fin de servicio '/auth/logout'");
+	    }
+	}
+
 
 }
