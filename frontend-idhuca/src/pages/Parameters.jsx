@@ -74,7 +74,7 @@ const SistemaParametros = () => {
           "Content-Type": "application/json",
         },
         data: {
-          clave: editingParam.clave, 
+          clave: editingParam.clave,
           valor: updatedValues.valor,
         },
       };
@@ -96,7 +96,10 @@ const SistemaParametros = () => {
   };
 
   return (
-    <div className="d-flex flex-column" style={{ height: 'calc(100vh - 160px)' }}>
+    <div
+      className="d-flex flex-column"
+      style={{ height: "calc(100vh - 160px)" }}
+    >
       {/* Header fijo */}
       <div className="px-4 py-3 border-bottom bg-white">
         <h1 className="mb-0">
@@ -106,8 +109,10 @@ const SistemaParametros = () => {
       </div>
 
       {/* Contenido con scroll */}
-      <div className="flex-grow-1 px-4 py-3" style={{ overflowY: 'auto', height: '100%' }}>
-
+      <div
+        className="flex-grow-1 px-4 py-3"
+        style={{ overflowY: "auto", height: "100%" }}
+      >
         {/* Botones de acción */}
         <div className="mb-3">
           <div className="d-flex justify-content-end align-items-center mb-3">
@@ -124,9 +129,9 @@ const SistemaParametros = () => {
           {/* Información de registros */}
           <div className="mb-3 small text-muted">
             <i className="bi bi-info-circle me-1"></i>
-            {parametros.length > 0 ?
-              `Total de parámetros: ${parametros.length}` :
-              'No hay parámetros para mostrar'}
+            {parametros.length > 0
+              ? `Total de parámetros: ${parametros.length}`
+              : "No hay parámetros para mostrar"}
           </div>
         </div>
 
@@ -151,26 +156,28 @@ const SistemaParametros = () => {
         ) : (
           <>
             {/* Tabla de parámetros */}
+
             <div className="table-responsive">
               <table className="table table-bordered table-hover mb-0">
                 <thead className="table-dark">
                   <tr>
-                    <th style={{ width: '60px', minWidth: '60px' }}>
+                    <th style={{ width: "60px", minWidth: "60px" }}>
                       <i className="bi bi-hash me-1"></i>#
                     </th>
-                    <th style={{ minWidth: '200px' }}>
+                    <th style={{ minWidth: "200px" }}>
                       <i className="bi bi-key me-1"></i>Clave
                     </th>
-                    <th style={{ minWidth: '150px' }}>
+                    <th style={{ minWidth: "150px" }}>
                       <i className="bi bi-tag me-1"></i>Valor
                     </th>
-                    <th style={{ minWidth: '300px' }}>
+                    <th style={{ minWidth: "300px" }}>
                       <i className="bi bi-info-circle me-1"></i>Descripción
                     </th>
-                    <th style={{ width: '140px', minWidth: '140px' }}>
-                      <i className="bi bi-calendar-plus me-1"></i>Última Actualización
+                    <th style={{ width: "140px", minWidth: "140px" }}>
+                      <i className="bi bi-calendar-plus me-1"></i>Última
+                      Actualización
                     </th>
-                    <th style={{ width: '120px', minWidth: '120px' }}>
+                    <th style={{ width: "120px", minWidth: "120px" }}>
                       <i className="bi bi-gear me-1"></i>Acciones
                     </th>
                   </tr>
@@ -190,26 +197,41 @@ const SistemaParametros = () => {
                             <strong className="small">{param.clave}</strong>
                           </div>
                         </td>
-                        <td>
-                          <span className="badge bg-secondary">
+                        <td style={{ maxWidth: "300px" }}>
+                          <span
+                            className="badge bg-secondary d-inline-block text-truncate w-100"
+                            style={{ maxWidth: "100%" }} // o un valor fijo si prefieres
+                            title={param.valor} // muestra el valor completo al hover
+                          >
                             <i className="bi bi-tag me-1"></i>
                             {param.valor}
                           </span>
                         </td>
-                        <td>
+
+                        <td
+                          style={{
+                            maxWidth: "300px",
+                            wordWrap: "break-word",
+                            whiteSpace: "normal",
+                          }}
+                        >
                           <div className="small text-muted">
                             {param.descripcion}
                           </div>
                         </td>
+
                         <td className="small">
                           <i className="bi bi-calendar me-1 text-muted"></i>
-                          {new Date(param.actualizadoEn).toLocaleDateString("es-ES", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
+                          {new Date(param.actualizadoEn).toLocaleDateString(
+                            "es-ES",
+                            {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
                         </td>
                         <td>
                           <button
@@ -280,8 +302,7 @@ const SistemaParametros = () => {
                 <label className="form-label">
                   <i className="bi bi-tag me-1"></i>Valor
                 </label>
-                <input
-                  type="text"
+                <textarea
                   className="form-control"
                   value={updatedValues.valor}
                   onChange={(e) =>
@@ -290,6 +311,9 @@ const SistemaParametros = () => {
                       valor: e.target.value,
                     })
                   }
+                  rows={6} // define el alto (6 líneas por ejemplo)
+                  style={{ resize: "vertical" }} // permite que el usuario cambie el alto si quiere
+                  required // evita que quede vacío
                 />
               </div>
             </div>

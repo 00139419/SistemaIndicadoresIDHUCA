@@ -1,12 +1,33 @@
-import { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Edit3, FileText, Calendar, User, ChevronLeft, ChevronRight, Loader2, AlertCircle, Trash2, Upload, X } from 'lucide-react';
-import { fetchFichasByDerecho, createFicha, deleteFicha, formatDate, generateDerechoCodigo, getDerechoDescripcion,updateFicha } from '../services/FichaDerechoService';
-import ExpresionIcon from '../assets/icons/expresion.png';
-import LibertadIcon from '../assets/icons/libertad.png';
-import JusticiaIcon from '../assets/icons/justicia.png';
-import VidaIcon from '../assets/icons/vida.png';
-import { downloadFile } from '../services/FichaDerechoService';
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { authFetch } from "./../authFetch";
+import {
+  Edit3,
+  FileText,
+  Calendar,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  AlertCircle,
+  Trash2,
+  Upload,
+  X,
+} from "lucide-react";
+import {
+  fetchFichasByDerecho,
+  createFicha,
+  deleteFicha,
+  formatDate,
+  generateDerechoCodigo,
+  getDerechoDescripcion,
+  updateFicha,
+} from "../services/FichaDerechoService";
+import ExpresionIcon from "../assets/icons/expresion.png";
+import LibertadIcon from "../assets/icons/libertad.png";
+import JusticiaIcon from "../assets/icons/justicia.png";
+import VidaIcon from "../assets/icons/vida.png";
+import { downloadFile } from "../services/FichaDerechoService";
 
 const FichaDerechoView = () => {
   const [showResultModal, setShowResultModal] = useState(false);
@@ -14,11 +35,11 @@ const FichaDerechoView = () => {
   const [downloading, setDownloading] = useState({});
   const [createResult, setCreateResult] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterDate, setFilterDate] = useState('');
-  const [filterDateEnd, setFilterDateEnd] = useState('');
+  const [filterDate, setFilterDate] = useState("");
+  const [filterDateEnd, setFilterDateEnd] = useState("");
   const [showCount, setShowCount] = useState(10);
-  const [newPost, setNewPost] = useState('');
-  const [newTitle, setNewTitle] = useState('');
+  const [newPost, setNewPost] = useState("");
+  const [newTitle, setNewTitle] = useState("");
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,23 +53,24 @@ const FichaDerechoView = () => {
     paginaActual: 0,
     totalPaginas: 1,
     totalRegistros: 0,
-    registrosPorPagina: 10
+    registrosPorPagina: 10,
   });
   const fileInputRef = useRef(null);
   const [editingEntry, setEditingEntry] = useState(null);
-  const [editTitle, setEditTitle] = useState('');
-  const [editContent, setEditContent] = useState('');
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
   const [updating, setUpdating] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [updateResult, setUpdateResult] = useState(null);
   const location = useLocation();
   const derechoId = location.state?.derechoId;
   const derechoTitle = location.state?.derechoTitle;
+  const [fichaDerecho, setFichaDerecho] = useState(null);
 
   const toggleExpandFiles = (entryId) => {
-    setExpandedFiles(prev => ({
+    setExpandedFiles((prev) => ({
       ...prev,
-      [entryId]: !prev[entryId]
+      [entryId]: !prev[entryId],
     }));
   };
 
@@ -56,16 +78,15 @@ const FichaDerechoView = () => {
     const downloadKey = `${archivo.archivoUrl}_${Date.now()}`;
 
     try {
-      setDownloading(prev => ({ ...prev, [downloadKey]: true }));
+      setDownloading((prev) => ({ ...prev, [downloadKey]: true }));
 
       await downloadFile(archivo.archivoUrl, archivo.nombreOriginal);
-
     } catch (error) {
-      console.error('Error al descargar archivo:', error);
+      console.error("Error al descargar archivo:", error);
       // Opcional: mostrar un mensaje de error al usuario
-      alert(error.message || 'Error al descargar el archivo');
+      alert(error.message || "Error al descargar el archivo");
     } finally {
-      setDownloading(prev => {
+      setDownloading((prev) => {
         const newState = { ...prev };
         delete newState[downloadKey];
         return newState;
@@ -75,10 +96,31 @@ const FichaDerechoView = () => {
 
   const getDerechoIcon = (derechoId) => {
     const icons = {
-      1: <img src={LibertadIcon} alt="Libertad Personal e Integridad" width="48" height="48" />,
-      2: <img src={ExpresionIcon} alt="Libertad de Expresión" width="48" height="48" />,
-      3: <img src={JusticiaIcon} alt="Acceso a la Justicia" width="48" height="48" />,
-      4: <img src={VidaIcon} alt="Derecho a la Vida" width="48" height="48" />
+      1: (
+        <img
+          src={LibertadIcon}
+          alt="Libertad Personal e Integridad"
+          width="48"
+          height="48"
+        />
+      ),
+      2: (
+        <img
+          src={ExpresionIcon}
+          alt="Libertad de Expresión"
+          width="48"
+          height="48"
+        />
+      ),
+      3: (
+        <img
+          src={JusticiaIcon}
+          alt="Acceso a la Justicia"
+          width="48"
+          height="48"
+        />
+      ),
+      4: <img src={VidaIcon} alt="Derecho a la Vida" width="48" height="48" />,
     };
     return icons[derechoId] || icons[1];
   };
@@ -96,14 +138,22 @@ const FichaDerechoView = () => {
 
       const derechoCodigo = generateDerechoCodigo(derechoId);
 
+      try {
+
+        const data = await obtenerParametro(derechoCodigo);
+        setFichaDerecho(data);
+      } catch (err) {
+        setError("No se pudieron cargar las fichas");
+      }
+
       // Preparar opciones con filtros para el servidor
       const options = {
         filtros: {
           paginacion: {
             registrosPorPagina: showCount,
-            paginaActual: currentPage - 1 // El servidor usa base 0
-          }
-        }
+            paginaActual: currentPage - 1, // El servidor usa base 0
+          },
+        },
       };
 
       // Agregar filtros de fecha si están presentes
@@ -121,33 +171,38 @@ const FichaDerechoView = () => {
 
       // Siempre procesar la respuesta exitosa, incluso si no hay datos
       if (response.success) {
-        const transformedEntries = (response.data || []).map(ficha => ({
+        const transformedEntries = (response.data || []).map((ficha) => ({
           id: ficha.id,
           title: ficha.titulo,
-          creator: ficha.creadoPor?.nombre || 'Usuario desconocido',
+          creator: ficha.creadoPor?.nombre || "Usuario desconocido",
           content: ficha.descripcion,
-          attachments: ficha.archivos?.map(archivo => archivo.nombreOriginal) || [],
+          attachments:
+            ficha.archivos?.map((archivo) => archivo.nombreOriginal) || [],
           creationDate: formatDate(ficha.creadoEn),
           lastModified: formatDate(ficha.modificadoEn),
           fecha: ficha.fecha,
           derechoCodigo: ficha.derechoCodigo,
           creadoPor: ficha.creadoPor,
           modificadoPor: ficha.modificadoPor,
-          archivos: ficha.archivos
+          archivos: ficha.archivos,
         }));
 
         setEntries(transformedEntries);
-        setPaginacionInfo(response.paginacionInfo || {
-          paginaActual: 0,
-          totalPaginas: 0,
-          totalRegistros: 0,
-          registrosPorPagina: showCount
-        });
+        setPaginacionInfo(
+          response.paginacionInfo || {
+            paginaActual: 0,
+            totalPaginas: 0,
+            totalRegistros: 0,
+            registrosPorPagina: showCount,
+          }
+        );
       } else {
         // Solo establecer error si realmente hay un error del servidor, no por falta de datos
-        if (!response.message?.toLowerCase().includes('registros') &&
-          !response.message?.toLowerCase().includes('encontrar')) {
-          setError(response.message || 'Error al cargar las fichas');
+        if (
+          !response.message?.toLowerCase().includes("registros") &&
+          !response.message?.toLowerCase().includes("encontrar")
+        ) {
+          setError(response.message || "Error al cargar las fichas");
         } else {
           // Si es un mensaje de "no hay registros", tratar como éxito con datos vacíos
           setEntries([]);
@@ -155,29 +210,61 @@ const FichaDerechoView = () => {
             paginaActual: 0,
             totalPaginas: 0,
             totalRegistros: 0,
-            registrosPorPagina: showCount
+            registrosPorPagina: showCount,
           });
         }
       }
     } catch (error) {
-      console.error('Error al cargar fichas:', error);
+      console.error("Error al cargar fichas:", error);
       // Solo mostrar error si no es un mensaje de "sin registros"
-      if (!error.message?.toLowerCase().includes('registros') &&
-        !error.message?.toLowerCase().includes('encontrar')) {
-        setError(error.message || 'Error al cargar las fichas del derecho');
+      if (
+        !error.message?.toLowerCase().includes("registros") &&
+        !error.message?.toLowerCase().includes("encontrar")
+      ) {
+        setError(error.message || "Error al cargar las fichas del derecho");
       } else {
         setEntries([]);
         setPaginacionInfo({
           paginaActual: 0,
           totalPaginas: 0,
           totalRegistros: 0,
-          registrosPorPagina: showCount
+          registrosPorPagina: showCount,
         });
       }
     } finally {
       setLoading(false);
     }
   };
+
+  async function obtenerParametro(derechoId) {
+    const info = {};
+
+    try {
+      const data = await authFetch("parametros/sistema/getOne", {
+        method: "POST",
+        body: JSON.stringify({ clave: "investigador_" + derechoId }),
+      });
+
+      info.investigador = data.entity.valor;
+      // aquí puedes seguir usando "data" (es tu JSON ya parseado)
+    } catch (err) {
+      console.error("Error al consultar parámetro:", err);
+    }
+
+    try {
+      const data = await authFetch("parametros/sistema/getOne", {
+        method: "POST",
+        body: JSON.stringify({ clave: "descripcion_" + derechoId }),
+      });
+
+      info.descripcion = data.entity.valor;
+      // aquí puedes seguir usando "data" (es tu JSON ya parseado)
+    } catch (err) {
+      console.error("Error al consultar parámetro:", err);
+    }
+
+    return info;
+  }
 
   const handleDeleteClick = (ficha) => {
     setItemToDelete(ficha);
@@ -195,7 +282,7 @@ const FichaDerechoView = () => {
       if (response.success) {
         setDeleteResult({
           success: true,
-          message: 'Ficha eliminada exitosamente'
+          message: "Ficha eliminada exitosamente",
         });
 
         setTimeout(async () => {
@@ -206,7 +293,9 @@ const FichaDerechoView = () => {
           await loadFichas();
 
           // Ajustar página actual si es necesario
-          const newTotalPages = Math.ceil((paginacionInfo.totalRegistros - 1) / showCount);
+          const newTotalPages = Math.ceil(
+            (paginacionInfo.totalRegistros - 1) / showCount
+          );
           if (currentPage > newTotalPages && newTotalPages > 0) {
             setCurrentPage(newTotalPages);
           }
@@ -214,14 +303,14 @@ const FichaDerechoView = () => {
       } else {
         setDeleteResult({
           success: false,
-          message: response.message || 'Error al eliminar la ficha'
+          message: response.message || "Error al eliminar la ficha",
         });
       }
     } catch (error) {
-      console.error('Error al eliminar ficha:', error);
+      console.error("Error al eliminar ficha:", error);
       setDeleteResult({
         success: false,
-        message: error.message || 'Error al eliminar la ficha'
+        message: error.message || "Error al eliminar la ficha",
       });
     } finally {
       setDeleting(null);
@@ -230,38 +319,38 @@ const FichaDerechoView = () => {
 
   const handleFileSelect = (event) => {
     const files = Array.from(event.target.files);
-    const newFiles = files.map(file => ({
+    const newFiles = files.map((file) => ({
       id: Date.now() + Math.random(),
       file: file,
       name: file.name,
       size: file.size,
-      tipo: 'documento'
+      tipo: "documento",
     }));
 
-    setSelectedFiles(prev => [...prev, ...newFiles]);
+    setSelectedFiles((prev) => [...prev, ...newFiles]);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
   const removeFile = (fileId) => {
-    setSelectedFiles(prev => prev.filter(file => file.id !== fileId));
+    setSelectedFiles((prev) => prev.filter((file) => file.id !== fileId));
   };
 
   const changeFileType = (fileId, newType) => {
-    setSelectedFiles(prev =>
-      prev.map(file =>
+    setSelectedFiles((prev) =>
+      prev.map((file) =>
         file.id === fileId ? { ...file, tipo: newType } : file
       )
     );
   };
 
   const formatFileSize = (bytes) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const handleEditClick = (entry) => {
@@ -275,8 +364,8 @@ const FichaDerechoView = () => {
   const handleCancelEdit = () => {
     setShowEditModal(false);
     setEditingEntry(null);
-    setEditTitle('');
-    setEditContent('');
+    setEditTitle("");
+    setEditContent("");
     setUpdateResult(null);
   };
 
@@ -284,7 +373,7 @@ const FichaDerechoView = () => {
     if (!editTitle.trim() || !editContent.trim()) {
       setUpdateResult({
         success: false,
-        message: 'Por favor ingresa tanto el título como el contenido'
+        message: "Por favor ingresa tanto el título como el contenido",
       });
       return;
     }
@@ -295,7 +384,7 @@ const FichaDerechoView = () => {
 
       const fichaData = {
         titulo: editTitle.trim(),
-        descripcion: editContent.trim()
+        descripcion: editContent.trim(),
       };
 
       const response = await updateFicha(editingEntry.id, fichaData);
@@ -306,16 +395,16 @@ const FichaDerechoView = () => {
         setTimeout(async () => {
           setShowEditModal(false);
           setEditingEntry(null);
-          setEditTitle('');
-          setEditContent('');
+          setEditTitle("");
+          setEditContent("");
           await loadFichas(); // Recargar datos
         }, 1500);
       }
     } catch (error) {
-      console.error('Error al actualizar ficha:', error);
+      console.error("Error al actualizar ficha:", error);
       setUpdateResult({
         success: false,
-        message: error.message || 'Error al actualizar la ficha'
+        message: error.message || "Error al actualizar la ficha",
       });
     } finally {
       setUpdating(false);
@@ -326,7 +415,8 @@ const FichaDerechoView = () => {
     if (!newTitle.trim() || !newPost.trim()) {
       setCreateResult({
         success: false,
-        message: 'Por favor ingresa tanto el título como el contenido para la nueva ficha'
+        message:
+          "Por favor ingresa tanto el título como el contenido para la nueva ficha",
       });
       setShowResultModal(true);
       return;
@@ -341,7 +431,7 @@ const FichaDerechoView = () => {
         derechoDescripcion: getDerechoDescripcion(derechoId),
         titulo: newTitle.trim(),
         descripcion: newPost.trim(),
-        fecha: new Date().toISOString()
+        fecha: new Date().toISOString(),
       };
 
       const response = await createFicha(fichaData, selectedFiles);
@@ -350,8 +440,8 @@ const FichaDerechoView = () => {
       setShowResultModal(true);
 
       if (response.success) {
-        setNewTitle('');
-        setNewPost('');
+        setNewTitle("");
+        setNewPost("");
         setSelectedFiles([]);
 
         // Recargar desde el servidor después de crear
@@ -361,10 +451,10 @@ const FichaDerechoView = () => {
         }, 1500);
       }
     } catch (error) {
-      console.error('Error al crear ficha:', error);
+      console.error("Error al crear ficha:", error);
       setCreateResult({
         success: false,
-        message: error.message || 'Error al crear la ficha'
+        message: error.message || "Error al crear la ficha",
       });
       setShowResultModal(true);
     } finally {
@@ -394,9 +484,16 @@ const FichaDerechoView = () => {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: 'calc(100vh - 200px)' }}>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "calc(100vh - 200px)" }}
+      >
         <div className="text-center">
-          <Loader2 size={48} className="text-primary mb-3" style={{ animation: 'spin 1s linear infinite' }} />
+          <Loader2
+            size={48}
+            className="text-primary mb-3"
+            style={{ animation: "spin 1s linear infinite" }}
+          />
           <p className="text-muted">Cargando fichas del derecho...</p>
         </div>
       </div>
@@ -405,13 +502,22 @@ const FichaDerechoView = () => {
 
   if (error) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: 'calc(100vh - 200px)' }}>
-        <div className="alert alert-danger d-flex align-items-center" role="alert">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "calc(100vh - 200px)" }}
+      >
+        <div
+          className="alert alert-danger d-flex align-items-center"
+          role="alert"
+        >
           <AlertCircle size={24} className="me-2" />
           <div>
             <strong>Error:</strong> {error}
             <br />
-            <button className="btn btn-sm btn-outline-danger mt-2" onClick={loadFichas}>
+            <button
+              className="btn btn-sm btn-outline-danger mt-2"
+              onClick={loadFichas}
+            >
               Intentar nuevamente
             </button>
           </div>
@@ -423,7 +529,10 @@ const FichaDerechoView = () => {
   return (
     <>
       {/* Contenedor principal con altura fija considerando navbar y footer */}
-      <div className="container-fluid" style={{ height: 'calc(100vh - 200px)', overflow: 'hidden' }}>
+      <div
+        className="container-fluid"
+        style={{ height: "calc(100vh - 200px)", overflow: "hidden" }}
+      >
         {/* Header compacto */}
         <div className="row py-2">
           <div className="col-12 text-center">
@@ -432,10 +541,13 @@ const FichaDerechoView = () => {
         </div>
 
         {/* Contenido principal con scroll */}
-        <div className="row" style={{ height: 'calc(100% - 60px)' }}>
+        <div className="row" style={{ height: "calc(100% - 60px)" }}>
+         
+         
+         
           {/* Columna izquierda - Información del derecho */}
-          <div className="col-md-3" style={{ height: '100%' }}>
-            <div className="card h-100">
+          <div className="col-md-3" style={{ height: "100%" }}>
+            <div className="card h-100 pt-3">
               <div className="card-body d-flex flex-column p-3">
                 {/* Icono más pequeño */}
                 <div className="text-center mb-2">
@@ -445,38 +557,39 @@ const FichaDerechoView = () => {
                 {/* Título compacto */}
                 <div className="text-center mb-2">
                   <h4 className="h6 text-primary fw-semibold mb-2">
-                    {derechoTitle || 'Derecho a la Libertad Personal e Integridad personal'}
+                    {derechoTitle ||
+                      "Derecho a la Libertad Personal e Integridad personal"}
                   </h4>
                 </div>
 
                 {/* Descripción más compacta */}
                 <div className="mb-2 flex-grow-1">
                   <p className="text-muted small lh-sm">
-                    Protege contra detenciones arbitrarias y garantiza el debido proceso...
-                    Protege contra detenciones arbitrarias y garantiza el debido proceso...
-                    Protege contra detenciones arbitrarias y garantiza el debido proceso...
-                    Protege contra detenciones arbitrarias y garantiza el debido proceso...
-                    Protege contra detenciones arbitrarias y garantiza el debido proceso...
+                    {fichaDerecho.descripcion}
                   </p>
                 </div>
 
                 {/* Investigador */}
                 <div className="text-center border-top pt-2">
-                  <h6 className="small fw-semibold text-dark mb-1">Investigador:</h6>
-                  <p className="text-primary small mb-0">Mauricio Erazo</p>
+                  <h6 className="small fw-semibold text-dark mb-1">
+                    Investigador:
+                  </h6>
+                  <p className="text-primary small mb-0">{fichaDerecho.investigador}</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Columna derecha - Lista de fichas */}
-          <div className="col-md-9" style={{ height: '100%' }}>
+          <div className="col-md-9" style={{ height: "100%" }}>
             <div className="card h-100 d-flex flex-column">
               {/* Filtros compactos */}
               <div className="card-header bg-white border-bottom py-2">
                 <div className="row g-2 align-items-center">
                   <div className="col-auto">
-                    <label className="form-label small mb-0 text-muted">Filtrar:</label>
+                    <label className="form-label small mb-0 text-muted">
+                      Filtrar:
+                    </label>
                   </div>
                   <div className="col-auto">
                     <input
@@ -484,7 +597,7 @@ const FichaDerechoView = () => {
                       value={filterDate}
                       onChange={(e) => handleFilterDateChange(e.target.value)}
                       className="form-control form-control-sm"
-                      style={{ fontSize: '10px', width: '130px' }}
+                      style={{ fontSize: "10px", width: "130px" }}
                     />
                   </div>
                   <div className="col-auto">
@@ -494,9 +607,11 @@ const FichaDerechoView = () => {
                     <input
                       type="date"
                       value={filterDateEnd}
-                      onChange={(e) => handleFilterDateEndChange(e.target.value)}
+                      onChange={(e) =>
+                        handleFilterDateEndChange(e.target.value)
+                      }
                       className="form-control form-control-sm"
-                      style={{ fontSize: '10px', width: '130px' }}
+                      style={{ fontSize: "10px", width: "130px" }}
                     />
                   </div>
                   <div className="col-auto">
@@ -504,7 +619,7 @@ const FichaDerechoView = () => {
                       className="form-select form-select-sm"
                       value={showCount}
                       onChange={(e) => handleShowCountChange(e.target.value)}
-                      style={{ width: '90px' }}
+                      style={{ width: "90px" }}
                     >
                       <option value={5}>5</option>
                       <option value={10}>10</option>
@@ -513,34 +628,45 @@ const FichaDerechoView = () => {
                   </div>
                   <div className="col-auto">
                     <div className="d-flex align-items-center bg-light px-2 py-1 rounded">
-                      <span className="fw-semibold text-primary me-1 small">{paginacionInfo.totalRegistros}</span>
+                      <span className="fw-semibold text-primary me-1 small">
+                        {paginacionInfo.totalRegistros}
+                      </span>
                       <span className="small text-dark">entradas</span>
                     </div>
                   </div>
                   <div className="col-auto ms-auto">
                     <span className="small text-muted">
-                      Pág {paginacionInfo.paginaActual + 1}/{paginacionInfo.totalPaginas || 1}
+                      Pág {paginacionInfo.paginaActual + 1}/
+                      {paginacionInfo.totalPaginas || 1}
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Lista de entradas - área scrolleable principal */}
-              <div className="card-body p-2" style={{
-                flex: '1 1 auto',
-                overflow: 'auto',
-                minHeight: '0'
-              }}>
+              <div
+                className="card-body p-2"
+                style={{
+                  flex: "1 1 auto",
+                  overflow: "auto",
+                  minHeight: "0",
+                }}
+              >
                 {entries.length === 0 ? (
                   <div className="text-center py-4">
                     <FileText size={32} className="text-muted mb-2" />
-                    <p className="text-muted small">No se encontraron entradas</p>
+                    <p className="text-muted small">
+                      No se encontraron entradas
+                    </p>
                   </div>
                 ) : (
                   <div className="d-flex flex-column gap-2">
                     {entries.map((entry) => (
                       <div key={entry.id} className="card border-0 shadow-sm">
-                        <div className="card-body p-2" style={{ backgroundColor: '#f8f9fa' }}>
+                        <div
+                          className="card-body p-2"
+                          style={{ backgroundColor: "#f8f9fa" }}
+                        >
                           <div className="d-flex justify-content-between align-items-start mb-1">
                             <h6 className="card-title mb-0 fw-semibold text-dark small">
                               {entry.title}
@@ -560,7 +686,13 @@ const FichaDerechoView = () => {
                                 title="Eliminar"
                               >
                                 {deleting === entry.id ? (
-                                  <Loader2 size={14} className="text-danger" style={{ animation: 'spin 1s linear infinite' }} />
+                                  <Loader2
+                                    size={14}
+                                    className="text-danger"
+                                    style={{
+                                      animation: "spin 1s linear infinite",
+                                    }}
+                                  />
                                 ) : (
                                   <Trash2 size={14} className="text-danger" />
                                 )}
@@ -569,76 +701,125 @@ const FichaDerechoView = () => {
                           </div>
 
                           <p className="small text-dark mb-2 lh-sm">
-                            {entry.content.length > 150 ? entry.content.substring(0, 150) + '...' : entry.content}
+                            {entry.content.length > 150
+                              ? entry.content.substring(0, 150) + "..."
+                              : entry.content}
                           </p>
 
-                          {entry.attachments && entry.attachments.length > 0 && (
-                            <div className="mb-2">
-                              <div className="d-flex align-items-center gap-1 flex-wrap">
-                                <FileText size={12} className="text-muted" />
-                                <span className="small text-muted">Archivos:</span>
-                                {entry.archivos?.slice(0, 2).map((archivo, index) => {
-                                  const downloadKey = `${archivo.archivoUrl}_${Date.now()}`;
-                                  const isDownloading = downloading[downloadKey];
+                          {entry.attachments &&
+                            entry.attachments.length > 0 && (
+                              <div className="mb-2">
+                                <div className="d-flex align-items-center gap-1 flex-wrap">
+                                  <FileText size={12} className="text-muted" />
+                                  <span className="small text-muted">
+                                    Archivos:
+                                  </span>
+                                  {entry.archivos
+                                    ?.slice(0, 2)
+                                    .map((archivo, index) => {
+                                      const downloadKey = `${
+                                        archivo.archivoUrl
+                                      }_${Date.now()}`;
+                                      const isDownloading =
+                                        downloading[downloadKey];
 
-                                  return (
-                                    <button
-                                      key={index}
-                                      onClick={() => handleDownloadFile(archivo)}
-                                      disabled={isDownloading}
-                                      className="btn btn-link p-0 small text-primary"
-                                      style={{ textDecoration: 'none' }}
-                                      title={`Descargar ${archivo.nombreOriginal}`}
-                                    >
-                                      {isDownloading ? (
-                                        <span className="d-flex align-items-center gap-1">
-                                          <Loader2 size={10} style={{ animation: 'spin 1s linear infinite' }} />
-                                          {archivo.nombreOriginal.length > 15 ?
-                                            archivo.nombreOriginal.substring(0, 15) + '...' :
-                                            archivo.nombreOriginal}
-                                        </span>
-                                      ) : (
-                                        archivo.nombreOriginal.length > 15 ?
-                                          archivo.nombreOriginal.substring(0, 15) + '...' :
-                                          archivo.nombreOriginal
-                                      )}
-                                    </button>
-                                  );
-                                })}
-                                {entry.archivos && entry.archivos.length > 2 && (
-                                  <button
-                                    className="btn btn-link p-0 small text-muted"
-                                    onClick={() => toggleExpandFiles(entry.id)}
-                                  >
-                                    {expandedFiles[entry.id] ? 'Ver menos' : `+${entry.archivos.length - 2} más`}
-                                  </button>
-                                )}
-                                {expandedFiles[entry.id] && entry.archivos?.slice(2).map((archivo, index) => (
-                                  <button
-                                    key={index + 2}
-                                    onClick={() => handleDownloadFile(archivo)}
-                                    disabled={downloading[`${archivo.archivoUrl}_${Date.now()}`]}
-                                    className="btn btn-link p-0 small text-primary ms-2"
-                                    style={{ textDecoration: 'none' }}
-                                    title={`Descargar ${archivo.nombreOriginal}`}
-                                  >
-                                    {archivo.nombreOriginal.length > 15 ?
-                                      archivo.nombreOriginal.substring(0, 15) + '...' :
-                                      archivo.nombreOriginal}
-                                  </button>
-                                ))}
+                                      return (
+                                        <button
+                                          key={index}
+                                          onClick={() =>
+                                            handleDownloadFile(archivo)
+                                          }
+                                          disabled={isDownloading}
+                                          className="btn btn-link p-0 small text-primary"
+                                          style={{ textDecoration: "none" }}
+                                          title={`Descargar ${archivo.nombreOriginal}`}
+                                        >
+                                          {isDownloading ? (
+                                            <span className="d-flex align-items-center gap-1">
+                                              <Loader2
+                                                size={10}
+                                                style={{
+                                                  animation:
+                                                    "spin 1s linear infinite",
+                                                }}
+                                              />
+                                              {archivo.nombreOriginal.length >
+                                              15
+                                                ? archivo.nombreOriginal.substring(
+                                                    0,
+                                                    15
+                                                  ) + "..."
+                                                : archivo.nombreOriginal}
+                                            </span>
+                                          ) : archivo.nombreOriginal.length >
+                                            15 ? (
+                                            archivo.nombreOriginal.substring(
+                                              0,
+                                              15
+                                            ) + "..."
+                                          ) : (
+                                            archivo.nombreOriginal
+                                          )}
+                                        </button>
+                                      );
+                                    })}
+                                  {entry.archivos &&
+                                    entry.archivos.length > 2 && (
+                                      <button
+                                        className="btn btn-link p-0 small text-muted"
+                                        onClick={() =>
+                                          toggleExpandFiles(entry.id)
+                                        }
+                                      >
+                                        {expandedFiles[entry.id]
+                                          ? "Ver menos"
+                                          : `+${entry.archivos.length - 2} más`}
+                                      </button>
+                                    )}
+                                  {expandedFiles[entry.id] &&
+                                    entry.archivos
+                                      ?.slice(2)
+                                      .map((archivo, index) => (
+                                        <button
+                                          key={index + 2}
+                                          onClick={() =>
+                                            handleDownloadFile(archivo)
+                                          }
+                                          disabled={
+                                            downloading[
+                                              `${
+                                                archivo.archivoUrl
+                                              }_${Date.now()}`
+                                            ]
+                                          }
+                                          className="btn btn-link p-0 small text-primary ms-2"
+                                          style={{ textDecoration: "none" }}
+                                          title={`Descargar ${archivo.nombreOriginal}`}
+                                        >
+                                          {archivo.nombreOriginal.length > 15
+                                            ? archivo.nombreOriginal.substring(
+                                                0,
+                                                15
+                                              ) + "..."
+                                            : archivo.nombreOriginal}
+                                        </button>
+                                      ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
 
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center gap-1">
                               <Calendar size={10} className="text-muted" />
-                              <span className="small text-muted">{entry.creationDate}</span>
+                              <span className="small text-muted">
+                                {entry.creationDate}
+                              </span>
                             </div>
                             <div className="d-flex align-items-center gap-1">
                               <User size={10} className="text-muted" />
-                              <span className="small text-muted">{entry.creator}</span>
+                              <span className="small text-muted">
+                                {entry.creator}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -649,7 +830,10 @@ const FichaDerechoView = () => {
               </div>
 
               {/* Área de nueva entrada - fija al final */}
-              <div className="card-footer bg-white border-top p-2" style={{ flexShrink: 0 }}>
+              <div
+                className="card-footer bg-white border-top p-2"
+                style={{ flexShrink: 0 }}
+              >
                 <div className="mb-2">
                   <input
                     type="text"
@@ -671,19 +855,32 @@ const FichaDerechoView = () => {
                   {/* Archivos seleccionados - compacto */}
                   {selectedFiles.length > 0 && (
                     <div className="mb-2">
-                      <div className="border rounded p-1" style={{ maxHeight: '80px', overflow: 'auto' }}>
+                      <div
+                        className="border rounded p-1"
+                        style={{ maxHeight: "80px", overflow: "auto" }}
+                      >
                         {selectedFiles.map((file) => (
-                          <div key={file.id} className="d-flex align-items-center justify-content-between mb-1 p-1 bg-light rounded">
+                          <div
+                            key={file.id}
+                            className="d-flex align-items-center justify-content-between mb-1 p-1 bg-light rounded"
+                          >
                             <div className="d-flex align-items-center gap-1 flex-grow-1">
                               <FileText size={12} className="text-primary" />
                               <div className="flex-grow-1">
-                                <div className="small text-truncate" style={{ maxWidth: '100px' }}>{file.name}</div>
+                                <div
+                                  className="small text-truncate"
+                                  style={{ maxWidth: "100px" }}
+                                >
+                                  {file.name}
+                                </div>
                               </div>
                               <select
                                 className="form-select form-select-sm"
-                                style={{ width: '80px', fontSize: '9px' }}
+                                style={{ width: "80px", fontSize: "9px" }}
                                 value={file.tipo}
-                                onChange={(e) => changeFileType(file.id, e.target.value)}
+                                onChange={(e) =>
+                                  changeFileType(file.id, e.target.value)
+                                }
                                 disabled={saving}
                               >
                                 <option value="documento">Doc</option>
@@ -730,11 +927,15 @@ const FichaDerechoView = () => {
                     >
                       {saving ? (
                         <>
-                          <Loader2 size={12} className="me-1" style={{ animation: 'spin 1s linear infinite' }} />
+                          <Loader2
+                            size={12}
+                            className="me-1"
+                            style={{ animation: "spin 1s linear infinite" }}
+                          />
                           Guardando...
                         </>
                       ) : (
-                        'Guardar'
+                        "Guardar"
                       )}
                     </button>
                   </div>
@@ -743,9 +944,14 @@ const FichaDerechoView = () => {
 
               {/* Paginación fija al final */}
               {paginacionInfo.totalPaginas > 1 && (
-                <div className="card-footer bg-white border-top p-2 d-flex justify-content-between align-items-center" style={{ flexShrink: 0 }}>
+                <div
+                  className="card-footer bg-white border-top p-2 d-flex justify-content-between align-items-center"
+                  style={{ flexShrink: 0 }}
+                >
                   <button
-                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                    onClick={() =>
+                      handlePageChange(Math.max(1, currentPage - 1))
+                    }
                     disabled={currentPage === 1}
                     className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                   >
@@ -754,33 +960,50 @@ const FichaDerechoView = () => {
                   </button>
 
                   <div className="d-flex align-items-center gap-1">
-                    {[...Array(Math.min(3, paginacionInfo.totalPaginas))].map((_, i) => {
-                      let pageNum;
-                      if (paginacionInfo.totalPaginas <= 3) {
-                        pageNum = i + 1;
-                      } else if (currentPage <= 2) {
-                        pageNum = i + 1;
-                      } else if (currentPage >= paginacionInfo.totalPaginas - 1) {
-                        pageNum = paginacionInfo.totalPaginas - 2 + i;
-                      } else {
-                        pageNum = currentPage - 1 + i;
-                      }
+                    {[...Array(Math.min(3, paginacionInfo.totalPaginas))].map(
+                      (_, i) => {
+                        let pageNum;
+                        if (paginacionInfo.totalPaginas <= 3) {
+                          pageNum = i + 1;
+                        } else if (currentPage <= 2) {
+                          pageNum = i + 1;
+                        } else if (
+                          currentPage >=
+                          paginacionInfo.totalPaginas - 1
+                        ) {
+                          pageNum = paginacionInfo.totalPaginas - 2 + i;
+                        } else {
+                          pageNum = currentPage - 1 + i;
+                        }
 
-                      return (
-                        <button
-                          key={pageNum}
-                          onClick={() => handlePageChange(pageNum)}
-                          className={`btn btn-sm ${currentPage === pageNum ? 'btn-primary' : 'btn-outline-secondary'}`}
-                          style={{ width: '28px', height: '28px', fontSize: '11px' }}
-                        >
-                          {pageNum}
-                        </button>
-                      );
-                    })}
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => handlePageChange(pageNum)}
+                            className={`btn btn-sm ${
+                              currentPage === pageNum
+                                ? "btn-primary"
+                                : "btn-outline-secondary"
+                            }`}
+                            style={{
+                              width: "28px",
+                              height: "28px",
+                              fontSize: "11px",
+                            }}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      }
+                    )}
                   </div>
 
                   <button
-                    onClick={() => handlePageChange(Math.min(paginacionInfo.totalPaginas, currentPage + 1))}
+                    onClick={() =>
+                      handlePageChange(
+                        Math.min(paginacionInfo.totalPaginas, currentPage + 1)
+                      )
+                    }
                     disabled={currentPage === paginacionInfo.totalPaginas}
                     className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                   >
@@ -796,7 +1019,11 @@ const FichaDerechoView = () => {
 
       {/* Modal para confirmación de eliminación */}
       {showDeleteModal && (
-        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog modal-sm">
             <div className="modal-content">
               <div className="modal-header py-2">
@@ -814,7 +1041,11 @@ const FichaDerechoView = () => {
               </div>
               <div className="modal-body py-2">
                 {deleteResult && (
-                  <div className={`alert alert-sm ${deleteResult.success ? 'alert-success' : 'alert-danger'} py-1`}>
+                  <div
+                    className={`alert alert-sm ${
+                      deleteResult.success ? "alert-success" : "alert-danger"
+                    } py-1`}
+                  >
                     {deleteResult.message}
                   </div>
                 )}
@@ -823,7 +1054,8 @@ const FichaDerechoView = () => {
                 <div className="card">
                   <div className="card-body p-2">
                     <div className="small">
-                      <strong>Título:</strong> {itemToDelete?.title}<br />
+                      <strong>Título:</strong> {itemToDelete?.title}
+                      <br />
                       <strong>Creador:</strong> {itemToDelete?.creator}
                     </div>
                   </div>
@@ -848,7 +1080,7 @@ const FichaDerechoView = () => {
                   onClick={handleDeleteFicha}
                   disabled={deleting}
                 >
-                  {deleting ? 'Eliminando...' : 'Eliminar'}
+                  {deleting ? "Eliminando..." : "Eliminar"}
                 </button>
               </div>
             </div>
@@ -857,12 +1089,16 @@ const FichaDerechoView = () => {
       )}
       {/* Modal para resultado de creación */}
       {showResultModal && (
-        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog modal-sm">
             <div className="modal-content">
               <div className="modal-header py-2">
                 <h6 className="modal-title">
-                  {createResult?.success ? 'Éxito' : 'Error'}
+                  {createResult?.success ? "Éxito" : "Error"}
                 </h6>
                 <button
                   type="button"
@@ -875,7 +1111,11 @@ const FichaDerechoView = () => {
                 ></button>
               </div>
               <div className="modal-body py-2">
-                <div className={`alert alert-sm ${createResult?.success ? 'alert-success' : 'alert-danger'} py-2 mb-0`}>
+                <div
+                  className={`alert alert-sm ${
+                    createResult?.success ? "alert-success" : "alert-danger"
+                  } py-2 mb-0`}
+                >
                   <div className="d-flex align-items-center">
                     {createResult?.success ? (
                       <i className="bi bi-check-circle-fill me-2"></i>
@@ -904,7 +1144,11 @@ const FichaDerechoView = () => {
         </div>
       )}
       {showEditModal && (
-        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header py-2">
@@ -918,7 +1162,11 @@ const FichaDerechoView = () => {
               </div>
               <div className="modal-body py-2">
                 {updateResult && (
-                  <div className={`alert alert-sm ${updateResult.success ? 'alert-success' : 'alert-danger'} py-1 mb-2`}>
+                  <div
+                    className={`alert alert-sm ${
+                      updateResult.success ? "alert-success" : "alert-danger"
+                    } py-1 mb-2`}
+                  >
                     {updateResult.message}
                   </div>
                 )}
@@ -951,7 +1199,8 @@ const FichaDerechoView = () => {
                   <div className="card bg-light">
                     <div className="card-body p-2">
                       <div className="small text-muted">
-                        <strong>Creado por:</strong> {editingEntry.creator}<br />
+                        <strong>Creado por:</strong> {editingEntry.creator}
+                        <br />
                         <strong>Fecha:</strong> {editingEntry.creationDate}
                       </div>
                     </div>
@@ -971,15 +1220,21 @@ const FichaDerechoView = () => {
                   type="button"
                   className="btn btn-sm btn-primary"
                   onClick={handleSaveEdit}
-                  disabled={updating || !editTitle.trim() || !editContent.trim()}
+                  disabled={
+                    updating || !editTitle.trim() || !editContent.trim()
+                  }
                 >
                   {updating ? (
                     <>
-                      <Loader2 size={12} className="me-1" style={{ animation: 'spin 1s linear infinite' }} />
+                      <Loader2
+                        size={12}
+                        className="me-1"
+                        style={{ animation: "spin 1s linear infinite" }}
+                      />
                       Guardando...
                     </>
                   ) : (
-                    'Guardar Cambios'
+                    "Guardar Cambios"
                   )}
                 </button>
               </div>
