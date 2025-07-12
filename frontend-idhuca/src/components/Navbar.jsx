@@ -43,7 +43,7 @@ const Navbar = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav m-auto">
             {visibleLinks.map(({ to, label }) => {
               const isFichaOrRegistros = to === '/ficha-de-derechos' || to === '/registros';
               const target = isFichaOrRegistros ? '/seleccion-derecho' : to;

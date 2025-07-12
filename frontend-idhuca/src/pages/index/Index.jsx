@@ -80,7 +80,7 @@ const Index = () => {
           ) : error ? (
             <p className="text-danger">{error}</p>
           ) : (
-            <p>{info.descripcion}</p>
+            <p style={{ textAlign: "justify" }}>{info.descripcion}</p>
           )}
           <p className="mb-3"></p>
         </div>

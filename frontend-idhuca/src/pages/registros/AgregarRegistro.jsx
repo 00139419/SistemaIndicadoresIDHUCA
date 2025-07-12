@@ -52,12 +52,12 @@ const AgregarRegistro = () => {
   const [derechosPrincipales, setDerechosPrincipales] = useState([]);
   const [subDerechos, setSubDerechos] = useState([]);
   const location = useLocation();
-console.log("location.state:", location.state);
-let derechoIdFromState = location.state?.derechoId;
+  console.log("location.state:", location.state);
+  let derechoIdFromState = location.state?.derechoId;
 
-if (!derechoIdFromState) {
-  derechoIdFromState = localStorage.getItem("selectedDerechoId");
-}
+  if (!derechoIdFromState) {
+    derechoIdFromState = localStorage.getItem("selectedDerechoId");
+  }
 
   const DERECHO_ID_TO_CODIGO = {
     1: "DER_1", // Derecho a la Libertad Personal e Integridad personal
@@ -69,7 +69,6 @@ if (!derechoIdFromState) {
   useEffect(() => {
     cargarCatalogos();
   }, []);
-
 
   const cargarCatalogos = async () => {
     try {
@@ -717,17 +716,18 @@ if (!derechoIdFromState) {
               <TabPanel header="Datos Generales">
                 <div className="formgrid grid">
                   <div className="field col-12 md:col-4">
-                    <label>Nombre</label>
+                    <label className="mb-2 d-block">Nombre</label>
                     <InputText
                       value={persona.nombre}
                       onChange={(e) =>
                         actualizarPersona(index, "nombre", e.target.value)
                       }
+                      className="w-full"
                     />
                   </div>
 
                   <div className="field col-12 md:col-4">
-                    <label>Edad</label>
+                    <label className="mb-2 d-block">Edad</label>
                     <InputNumber
                       value={persona.edad}
                       onValueChange={(e) =>
@@ -735,11 +735,12 @@ if (!derechoIdFromState) {
                       }
                       showButtons
                       min={0}
+                      className="w-full"
                     />
                   </div>
 
                   <div className="field col-12 md:col-4">
-                    <label>Género</label>
+                    <label className="mb-2 d-block">Género</label>
                     <Dropdown
                       value={persona.genero}
                       onChange={(e) =>
@@ -748,11 +749,12 @@ if (!derechoIdFromState) {
                       options={generos}
                       optionLabel="descripcion"
                       placeholder="Seleccione género"
+                      className="w-full"
                     />
                   </div>
 
                   <div className="field col-12 md:col-4">
-                    <label>Tipo de persona</label>
+                    <label className="mb-2 d-block">Tipo de persona</label>
                     <Dropdown
                       value={persona.tipoPersona}
                       onChange={(e) =>
@@ -761,12 +763,13 @@ if (!derechoIdFromState) {
                       options={tiposPersona}
                       optionLabel="descripcion"
                       placeholder="Seleccione género"
+                      className="w-full"
                     />
                   </div>
 
                   {/* Departamento de residencia */}
-                  <div className="col-12 md:col-5">
-                    <label className="font-semibold mb-2 block">
+                  <div className="field col-12 md:col-5">
+                    <label className="mb-2 d-block font-semibold">
                       Departamento de residencia
                     </label>
                     <Dropdown
@@ -782,8 +785,8 @@ if (!derechoIdFromState) {
                   </div>
 
                   {/* Municipio de residencia */}
-                  <div className="col-12 md:col-5">
-                    <label className="font-semibold mb-2 block">
+                  <div className="field col-12 md:col-5">
+                    <label className="mb-2 d-block font-semibold">
                       Municipio de residencia
                     </label>
                     <Dropdown
@@ -803,7 +806,7 @@ if (!derechoIdFromState) {
                   </div>
 
                   <div className="field col-12 md:col-4">
-                    <label>Nacionalidad</label>
+                    <label className="mb-2 d-block">Nacionalidad</label>
                     <Dropdown
                       value={persona.nacionalidad}
                       onChange={(e) =>
@@ -819,7 +822,7 @@ if (!derechoIdFromState) {
                   </div>
 
                   <div className="field col-12 md:col-4">
-                    <label>Estado de salud</label>
+                    <label className="mb-2 d-block">Estado de salud</label>
                     <Dropdown
                       value={persona.estadoSalud}
                       onChange={(e) =>
@@ -828,10 +831,9 @@ if (!derechoIdFromState) {
                       options={estadosSalud}
                       optionLabel="descripcion"
                       placeholder="Seleccione el estado de la victima"
+                      className="w-full"
                     />
                   </div>
-
-                  {/* Otros campos como nacionalidad, residencia, tipoPersona, etc */}
                 </div>
               </TabPanel>
 
@@ -854,7 +856,9 @@ if (!derechoIdFromState) {
 
               <TabPanel header="Violencia">
                 <div className="mb-3">
-                  <label className="mr-2">¿Desea registrar violencia?</label>
+                  <label className="mb-2 d-block">
+                    ¿Desea registrar violencia?
+                  </label>
                   <Button
                     label={
                       persona.violencia
@@ -890,7 +894,7 @@ if (!derechoIdFromState) {
                 {persona.violencia && (
                   <div className="formgrid grid">
                     <div className="field col-12 md:col-4">
-                      <label>¿Hubo asesinato?</label>
+                      <label className="mb-2 d-block">¿Hubo asesinato?</label>
                       <Dropdown
                         value={persona.violencia.esAsesinato}
                         options={[
@@ -904,11 +908,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione una opción"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Tipo de violencia</label>
+                      <label className="mb-2 d-block">Tipo de violencia</label>
                       <Dropdown
                         value={persona.violencia.tipoViolencia}
                         options={tiposViolencia}
@@ -920,11 +925,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione tipo"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Artefacto utilizado</label>
+                      <label className="mb-2 d-block">
+                        Artefacto utilizado
+                      </label>
                       <Dropdown
                         value={persona.violencia.artefactoUtilizado}
                         options={artefactos}
@@ -936,11 +944,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione artefacto"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Contexto</label>
+                      <label className="mb-2 d-block">Contexto</label>
                       <Dropdown
                         value={persona.violencia.contexto}
                         options={contextosViolencia}
@@ -952,11 +961,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione contexto"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Actor responsable</label>
+                      <label className="mb-2 d-block">Actor responsable</label>
                       <Dropdown
                         value={persona.violencia.actorResponsable}
                         options={tiposPersona}
@@ -968,11 +978,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione actor"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Estado salud actor</label>
+                      <label className="mb-2 d-block">Estado salud actor</label>
                       <Dropdown
                         value={persona.violencia.estadoSaludActorResponsable}
                         options={estadosSalud}
@@ -984,11 +995,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione estado"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Hubo protección?</label>
+                      <label className="mb-2 d-block">¿Hubo protección?</label>
                       <Dropdown
                         value={persona.violencia.huboProteccion}
                         options={[
@@ -1002,11 +1014,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione una opción"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Investigación abierta?</label>
+                      <label className="mb-2 d-block">
+                        ¿Investigación abierta?
+                      </label>
                       <Dropdown
                         value={persona.violencia.investigacionAbierta}
                         options={[
@@ -1020,11 +1035,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione una opción"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12">
-                      <label>Respuesta del Estado</label>
+                      <label className="mb-2 d-block">
+                        Respuesta del Estado
+                      </label>
                       <InputTextarea
                         value={persona.violencia.respuestaEstado}
                         onChange={(e) =>
@@ -1044,7 +1062,7 @@ if (!derechoIdFromState) {
 
               <TabPanel header="Acceso a Justicia">
                 <div className="mb-3">
-                  <label className="mr-2">
+                  <label className="mb-2 d-block">
                     ¿Desea registrar acceso a justicia?
                   </label>
                   <Button
@@ -1081,7 +1099,9 @@ if (!derechoIdFromState) {
                 {persona.accesoJusticia && (
                   <div className="formgrid grid">
                     <div className="field col-12 md:col-4">
-                      <label>Tipo de proceso judicial</label>
+                      <label className="mb-2 d-block">
+                        Tipo de proceso judicial
+                      </label>
                       <Dropdown
                         value={persona.accesoJusticia.tipoProceso}
                         options={tiposProcesoJudicial}
@@ -1093,11 +1113,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione tipo"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Fecha de denuncia</label>
+                      <label className="mb-2 d-block">Fecha de denuncia</label>
                       <Calendar
                         value={
                           persona.accesoJusticia.fechaDenuncia
@@ -1117,7 +1138,9 @@ if (!derechoIdFromState) {
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Tipo de denunciante</label>
+                      <label className="mb-2 d-block">
+                        Tipo de denunciante
+                      </label>
                       <Dropdown
                         value={persona.accesoJusticia.tipoDenunciante}
                         options={tiposPersona}
@@ -1129,11 +1152,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Duración del proceso</label>
+                      <label className="mb-2 d-block">
+                        Duración del proceso
+                      </label>
                       <Dropdown
                         value={persona.accesoJusticia.duracionProceso}
                         options={duracionesProceso}
@@ -1145,11 +1171,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione duración"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Tuvo acceso a abogado?</label>
+                      <label className="mb-2 d-block">
+                        ¿Tuvo acceso a abogado?
+                      </label>
                       <Dropdown
                         value={persona.accesoJusticia.accesoAbogado}
                         options={[
@@ -1163,11 +1192,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Hubo parcialidad?</label>
+                      <label className="mb-2 d-block">¿Hubo parcialidad?</label>
                       <Dropdown
                         value={persona.accesoJusticia.huboParcialidad}
                         options={[
@@ -1181,11 +1211,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-6">
-                      <label>Resultado del proceso</label>
+                      <label className="mb-2 d-block">
+                        Resultado del proceso
+                      </label>
                       <InputTextarea
                         value={persona.accesoJusticia.resultadoProceso}
                         onChange={(e) =>
@@ -1200,7 +1233,7 @@ if (!derechoIdFromState) {
                     </div>
 
                     <div className="field col-12 md:col-6">
-                      <label>Instancia</label>
+                      <label className="mb-2 d-block">Instancia</label>
                       <InputText
                         value={persona.accesoJusticia.instancia}
                         onChange={(e) =>
@@ -1218,7 +1251,7 @@ if (!derechoIdFromState) {
 
               <TabPanel header="Detención / Integridad">
                 <div className="mb-3">
-                  <label className="mr-2">
+                  <label className="mb-2 d-block">
                     ¿Desea registrar información de detención?
                   </label>
                   <Button
@@ -1257,7 +1290,7 @@ if (!derechoIdFromState) {
                 {persona.detencionIntegridad && (
                   <div className="formgrid grid">
                     <div className="field col-12 md:col-4">
-                      <label>Tipo de detención</label>
+                      <label className="mb-2 d-block">Tipo de detención</label>
                       <Dropdown
                         value={persona.detencionIntegridad.tipoDetencion}
                         options={tiposDetencion}
@@ -1269,11 +1302,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione tipo"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Existió orden judicial?</label>
+                      <label className="mb-2 d-block">
+                        ¿Existió orden judicial?
+                      </label>
                       <Dropdown
                         value={persona.detencionIntegridad.ordenJudicial}
                         options={[
@@ -1287,11 +1323,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione una opción"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Autoridad involucrada</label>
+                      <label className="mb-2 d-block">
+                        Autoridad involucrada
+                      </label>
                       <Dropdown
                         value={persona.detencionIntegridad.autoridadInvolucrada}
                         options={tiposPersona}
@@ -1303,11 +1342,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione autoridad"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Hubo tortura?</label>
+                      <label className="mb-2 d-block">¿Hubo tortura?</label>
                       <Dropdown
                         value={persona.detencionIntegridad.huboTortura}
                         options={[
@@ -1321,11 +1361,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione una opción"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Días de duración</label>
+                      <label className="mb-2 d-block">Días de duración</label>
                       <InputNumber
                         value={persona.detencionIntegridad.duracionDias}
                         onValueChange={(e) =>
@@ -1336,11 +1377,14 @@ if (!derechoIdFromState) {
                         }
                         showButtons
                         min={0}
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Tuvo acceso a abogado?</label>
+                      <label className="mb-2 d-block">
+                        ¿Tuvo acceso a abogado?
+                      </label>
                       <Dropdown
                         value={persona.detencionIntegridad.accesoAbogado}
                         options={[
@@ -1354,11 +1398,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione una opción"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12">
-                      <label>Resultado</label>
+                      <label className="mb-2 d-block">Resultado</label>
                       <InputTextarea
                         value={persona.detencionIntegridad.resultado}
                         onChange={(e) =>
@@ -1373,7 +1418,9 @@ if (!derechoIdFromState) {
                     </div>
 
                     <div className="field col-12 md:col-6">
-                      <label>Motivo de detención</label>
+                      <label className="mb-2 d-block">
+                        Motivo de detención
+                      </label>
                       <Dropdown
                         value={persona.detencionIntegridad.motivoDetencion}
                         options={motivosDetencion}
@@ -1385,6 +1432,7 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione motivo"
+                        className="w-full"
                       />
                     </div>
                   </div>
@@ -1393,7 +1441,7 @@ if (!derechoIdFromState) {
 
               <TabPanel header="Expresión / Censura">
                 <div className="mb-3">
-                  <label className="mr-2">
+                  <label className="mb-2 d-block">
                     ¿Desea registrar censura/represión?
                   </label>
                   <Button
@@ -1430,7 +1478,7 @@ if (!derechoIdFromState) {
                 {persona.expresionCensura && (
                   <div className="formgrid grid">
                     <div className="field col-12 md:col-4">
-                      <label>Medio de expresión</label>
+                      <label className="mb-2 d-block">Medio de expresión</label>
                       <Dropdown
                         value={persona.expresionCensura.medioExpresion}
                         options={mediosExpresion}
@@ -1442,11 +1490,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione medio"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Tipo de represión</label>
+                      <label className="mb-2 d-block">Tipo de represión</label>
                       <Dropdown
                         value={persona.expresionCensura.tipoRepresion}
                         options={tiposRepresion}
@@ -1458,11 +1507,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione tipo"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>Actor censor</label>
+                      <label className="mb-2 d-block">Actor censor</label>
                       <Dropdown
                         value={persona.expresionCensura.actorCensor}
                         options={tiposPersona}
@@ -1474,11 +1524,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione actor"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Represalias legales?</label>
+                      <label className="mb-2 d-block">
+                        ¿Represalias legales?
+                      </label>
                       <Dropdown
                         value={persona.expresionCensura.represaliasLegales}
                         options={[
@@ -1492,11 +1545,14 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12 md:col-4">
-                      <label>¿Represalias físicas?</label>
+                      <label className="mb-2 d-block">
+                        ¿Represalias físicas?
+                      </label>
                       <Dropdown
                         value={persona.expresionCensura.represaliasFisicas}
                         options={[
@@ -1510,11 +1566,12 @@ if (!derechoIdFromState) {
                           })
                         }
                         placeholder="Seleccione"
+                        className="w-full"
                       />
                     </div>
 
                     <div className="field col-12">
-                      <label>Consecuencia</label>
+                      <label className="mb-2 d-block">Consecuencia</label>
                       <InputTextarea
                         value={persona.expresionCensura.consecuencia}
                         onChange={(e) =>

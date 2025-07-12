@@ -161,6 +161,7 @@ const MaintenancePage = () => {
 
   // Función para agregar un nuevo elemento al catálogo
   const handleAddItem = async (e) => {
+    console.log("selectedCatalog " + selectedCatalog);
     e.preventDefault();
 
     if (!newItemDescription.trim()) {
@@ -180,6 +181,8 @@ const MaintenancePage = () => {
         parentId = selectedDepartamento || "DEP_1";
       }
 
+      console.log("selectedCatalog " + selectedCatalog);
+
       const result = await addCatalogItem(selectedCatalog, newItemDescription, parentId);
 
       setAddResult(result);
@@ -187,9 +190,10 @@ const MaintenancePage = () => {
       if (result.success) {
         setNewItemDescription('');
         setTimeout(() => {
-          setShowModal(false);
-          loadCatalog();
-        }, 1500);
+        setShowModal(false);
+        loadCatalog();
+        setAddResult(null);
+        }, 1000);
       }
 
     } catch (err) {

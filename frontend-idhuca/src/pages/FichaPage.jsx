@@ -139,7 +139,6 @@ const FichaDerechoView = () => {
       const derechoCodigo = generateDerechoCodigo(derechoId);
 
       try {
-
         const data = await obtenerParametro(derechoCodigo);
         setFichaDerecho(data);
       } catch (err) {
@@ -542,29 +541,28 @@ const FichaDerechoView = () => {
 
         {/* Contenido principal con scroll */}
         <div className="row" style={{ height: "calc(100% - 60px)" }}>
-         
-         
-         
           {/* Columna izquierda - Información del derecho */}
-          <div className="col-md-3" style={{ height: "100%" }}>
+          <div className="col-md-3" style={{ height: "99%" }}>
             <div className="card h-100 pt-3">
               <div className="card-body d-flex flex-column p-3">
                 {/* Icono más pequeño */}
-                <div className="text-center mb-2">
+                <div className="text-center mb-4">
                   {derechoId ? getDerechoIcon(derechoId) : getDerechoIcon(1)}
                 </div>
 
                 {/* Título compacto */}
-                <div className="text-center mb-2">
-                  <h4 className="h6 text-primary fw-semibold mb-2">
+                <div className="text-center mb-3">
+                  <h4 className="h6 text-primary fw-semibold mb-3">
                     {derechoTitle ||
                       "Derecho a la Libertad Personal e Integridad personal"}
                   </h4>
                 </div>
 
-                {/* Descripción más compacta */}
                 <div className="mb-2 flex-grow-1">
-                  <p className="text-muted small lh-sm">
+                  <p
+                    className="text-muted small lh-sm"
+                    style={{ textAlign: "justify" }}
+                  >
                     {fichaDerecho.descripcion}
                   </p>
                 </div>
@@ -574,14 +572,16 @@ const FichaDerechoView = () => {
                   <h6 className="small fw-semibold text-dark mb-1">
                     Investigador:
                   </h6>
-                  <p className="text-primary small mb-0">{fichaDerecho.investigador}</p>
+                  <p className="text-primary small mb-0">
+                    {fichaDerecho.investigador}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Columna derecha - Lista de fichas */}
-          <div className="col-md-9" style={{ height: "100%" }}>
+          <div className="col-md-9" style={{ height: "99%" }}>
             <div className="card h-100 d-flex flex-column">
               {/* Filtros compactos */}
               <div className="card-header bg-white border-bottom py-2">
