@@ -161,8 +161,8 @@ const AuditoriaPage = () => {
   return (
     <div className="d-flex flex-column" style={{ height: 'calc(100vh - 160px)' }}>
       {/* Header fijo */}
-      <div className="px-4 py-3 border-bottom bg-white" style={{ flexShrink: 0 }}>
-        <h1 className="mb-0">
+      <div className="px-4 pb-3 border-bottom bg-white" style={{ flexShrink: 0 }}>
+        <h1 className="mb-0 fs-2 text-center fw-bold">
           <i className="bi bi-shield-check me-2 text-primary"></i>
           Auditoría del Sistema
         </h1>
@@ -273,30 +273,30 @@ const AuditoriaPage = () => {
               }}
             >
               <table className="table table-hover mb-0" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
-                <thead className="table-dark sticky-top">
+                <thead className="table-dark">
                   <tr>
-                    <th style={{ width: '60px', minWidth: '60px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ width: '60px', minWidth: '60px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-hash me-1"></i>ID
                     </th>
-                    <th style={{ minWidth: '150px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ minWidth: '150px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-person me-1"></i>Usuario
                     </th>
-                    <th style={{ width: '120px', minWidth: '120px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ width: '120px', minWidth: '120px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-table me-1"></i>Tabla
                     </th>
-                    <th style={{ width: '100px', minWidth: '100px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ width: '100px', minWidth: '100px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-gear me-1"></i>Operación
                     </th>
-                    <th style={{ width: '80px', minWidth: '80px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ width: '80px', minWidth: '80px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-record-circle me-1"></i>Registro ID
                     </th>
-                    <th style={{ minWidth: '200px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ minWidth: '200px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-file-text me-1"></i>Descripción
                     </th>
-                    <th style={{ width: '140px', minWidth: '140px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ width: '140px', minWidth: '140px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-calendar-plus me-1"></i>Fecha
                     </th>
-                    <th style={{ width: '100px', minWidth: '100px', position: 'sticky', top: 0, zIndex: 100 }}>
+                    <th style={{ width: '100px', minWidth: '100px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-eye me-1"></i>Acciones
                     </th>
                   </tr>

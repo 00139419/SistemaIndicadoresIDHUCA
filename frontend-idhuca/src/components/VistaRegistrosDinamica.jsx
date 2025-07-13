@@ -129,10 +129,10 @@ const VistaRegistrosDinamica = ({
 
   return (
     <div className="container-fluid px-0" style={{ minHeight: "100%", width: "100vw", maxWidth: "100%"}}>
-      <div className="container-fluid px-4 py-4 mt-3" style={{ width: "100%", maxWidth: "100%"}}>
-        <div className="text-center mb-4">
+      <div className="container-fluid px-4 py-1 " style={{ width: "100%", maxWidth: "100%"}}>
+        <div className="text-center mb-1">
           <h1
-            className="display-4 fw-bold"
+            className="display-4 fw-bold fs-2"
             style={{ fontSize: "3rem", color: "#0f0f0f" }}
           >
             {title}

@@ -102,7 +102,7 @@ const SistemaParametros = () => {
     >
       {/* Header fijo */}
       <div className="px-4 py-3 border-bottom bg-white">
-        <h1 className="mb-0">
+        <h1 className="mb-0 fs-2 fw-bold text-center">
           <i className="bi bi-gear-fill me-2 text-primary"></i>
           Parámetros del Sistema
         </h1>

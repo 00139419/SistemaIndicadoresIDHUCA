@@ -98,7 +98,7 @@ const GestionUsuarios = () => {
     <div className="d-flex flex-column" style={{ height: 'calc(100vh - 160px)' }}>
       {/* Header fijo */}
       <div className="px-4 py-3 border-bottom bg-white">
-        <h1 className="mb-0">
+        <h1 className="mb-0 fs-2 fw-bold text-center">
           <i className="bi bi-people-fill me-2 text-primary"></i>
           Gestión de Usuarios
         </h1>

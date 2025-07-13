@@ -533,9 +533,9 @@ const FichaDerechoView = () => {
         style={{ height: "calc(100vh - 200px)", overflow: "hidden" }}
       >
         {/* Header compacto */}
-        <div className="row py-2">
+        <div className="row">
           <div className="col-12 text-center">
-            <h2 className="h4 text-dark mb-0">Ficha del derecho</h2>
+            <h2 className="h2 text-dark fs-2 fw-bold">Ficha del derecho</h2>
           </div>
         </div>
 
