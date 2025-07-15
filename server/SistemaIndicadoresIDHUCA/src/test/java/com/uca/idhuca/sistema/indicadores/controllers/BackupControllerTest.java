@@ -1,7 +1,7 @@
 package com.uca.idhuca.sistema.indicadores.controllers;
 
 import com.uca.idhuca.sistema.indicadores.backup.config.ScheduleConfig;
-import com.uca.idhuca.sistema.indicadores.services.IConfigurableBackupService;
+import com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

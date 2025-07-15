@@ -1,7 +1,7 @@
 package com.uca.idhuca.sistema.indicadores.controllers;
 
 import com.uca.idhuca.sistema.indicadores.backup.config.ScheduleConfig;
-import com.uca.idhuca.sistema.indicadores.services.IConfigurableBackupService;
+import com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
