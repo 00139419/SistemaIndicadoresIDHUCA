@@ -54,6 +54,7 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DEPAR
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_MUNICIPIO;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_SUB_DERECHO;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_DERECHO;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CATALOGO_CONTEXTO;
 
 
 
@@ -76,6 +77,7 @@ public class CatologoImpl implements ICatalogo {
 	
 	@Autowired
 	IAuditoria auditoriaService;
+
 
 	@Override
 	public GenericEntityResponse<List<Catalogo>> get(CatalogoDto request)
@@ -111,6 +113,9 @@ public class CatologoImpl implements ICatalogo {
 		ResultadoCatalogo rc = null;
 		
 		switch (nombreCampoActivo) {
+			case "contexto":
+				rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_CONTEXTO, request.getFiltros());
+			break;
 	    case "tipoProcesoJudicial":
 	    	rc = catalogoRepositoryCustom.obtenerCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL, request.getFiltros());
 	        break;
@@ -250,6 +255,10 @@ public class CatologoImpl implements ICatalogo {
 		int indice = 0;
 		
 		switch (nombreCampoActivo) {
+			case "contexto":
+				indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_CONTEXTO, null) + 1;
+				nuevoCatalogo.setCodigo(CATALOGO_CONTEXTO + indice);
+				break;
 		case "tipoProcesoJudicial":
 			indice = utils.obtenerUltimoIndiceCatalogo(CATALOGO_TIPO_PROCESO_JUDICIAL, null) + 1;
 			nuevoCatalogo.setCodigo(CATALOGO_TIPO_PROCESO_JUDICIAL + indice);
