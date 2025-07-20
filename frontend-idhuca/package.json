@@ -13,6 +13,7 @@
     "bootstrap": "^5.3.6",
     "bootstrap-icons": "^1.13.1",
     "frontend-idhuca": "file:",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.503.0",
     "postcss": "^8.5.3",
     "primeflex": "^4.0.0",
