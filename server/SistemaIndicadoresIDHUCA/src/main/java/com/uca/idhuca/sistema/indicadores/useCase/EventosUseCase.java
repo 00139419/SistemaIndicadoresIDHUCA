@@ -162,24 +162,24 @@ public class EventosUseCase {
 	}
 	
 	public void actualizarViolenciaDesdeDTO(Violencia entidad, ViolenciaDTO dto) throws ValidationException {
-		entidad.setEsAsesinato(dto.isEsAsesinato());
+		entidad.setEsAsesinato(dto.getEsAsesinato());
 		entidad.setTipoViolencia(getCatalogoOrThrow(dto.getTipoViolencia().getCodigo(), "tipo de violencia"));
 		entidad.setArtefactoUtilizado(getCatalogoOrThrow(dto.getArtefactoUtilizado().getCodigo(), "Artefacto utilizado"));
 		entidad.setContexto(getCatalogoOrThrow(dto.getContexto().getCodigo(), "Contexto"));
 		entidad.setActorResponsable(getCatalogoOrThrow(dto.getActorResponsable().getCodigo(), "Actor responsable"));
 		entidad.setEstadoSaludActorResponsable(getCatalogoOrThrow(dto.getEstadoSaludActorResponsable().getCodigo(), "Actor responsable"));
-		entidad.setHuboProteccion(dto.isHuboProteccion());
-		entidad.setInvestigacionAbierta(dto.isInvestigacionAbierta());
+		entidad.setHuboProteccion(dto.getHuboProteccion());
+		entidad.setInvestigacionAbierta(dto.getInvestigacionAbierta());
 		entidad.setRespuestaEstado(dto.getRespuestaEstado());
 	}
 	
 	public void actualizarIntegridadDesdeDTO(DetencionIntegridad entidad, DetencionIntegridadDTO dto) throws ValidationException {
 		entidad.setTipoDetencion(getCatalogoOrThrow(dto.getTipoDetencion().getCodigo(), "Contexto"));	 
-		entidad.setOrdenJudicial(dto.isOrdenJudicial());
+		entidad.setOrdenJudicial(dto.getOrdenJudicial());
 		entidad.setAutoridadInvolucrada(getCatalogoOrThrow(dto.getAutoridadInvolucrada().getCodigo(), "Autoridad involucrada"));
-		entidad.setHuboTortura(dto.isHuboTortura());
+		entidad.setHuboTortura(dto.getHuboTortura());
 		entidad.setDuracionDias(dto.getDuracionDias());
-		entidad.setAccesoAbogado(dto.isAccesoAbogado());
+		entidad.setAccesoAbogado(dto.getAccesoAbogado());
 		entidad.setResultado(dto.getResultado());
 		entidad.setMotivoDetencion(getCatalogoOrThrow(dto.getMotivoDetencion().getCodigo(), "Motivo detencion"));
 	}
@@ -187,8 +187,8 @@ public class EventosUseCase {
 	public void actualizarExpresionDesdeDTO(ExpresionCensura entidad, ExpresionCensuraDTO dto) throws ValidationException {
 		entidad.setMedioExpresion(getCatalogoOrThrow(dto.getMedioExpresion().getCodigo(), "Medio de expresion"));
 		entidad.setTipoRepresion(getCatalogoOrThrow(dto.getMedioExpresion().getCodigo(), "Tipo de represion"));
-		entidad.setRepresaliasLegales(dto.isRepresaliasLegales());
-		entidad.setRepresaliasFisicas(dto.isRepresaliasFisicas());
+		entidad.setRepresaliasLegales(dto.getRepresaliasLegales());
+		entidad.setRepresaliasFisicas(dto.getRepresaliasFisicas());
 		entidad.setActorCensor(getCatalogoOrThrow(dto.getActorCensor().getCodigo(), "Actor censor: Tipo de persona"));
 		entidad.setConsecuencia(dto.getConsecuencia());
 	}
@@ -198,8 +198,8 @@ public class EventosUseCase {
 		entidad.setFechaDenuncia(dto.getFechaDenuncia());
 		entidad.setTipoDenunciante(getCatalogoOrThrow(dto.getTipoDenunciante().getCodigo(), "Tipo de denunciante: tipo de persona"));	
 		entidad.setDuracionProceso(getCatalogoOrThrow(dto.getDuracionProceso().getCodigo(), "Duracion de proceso"));	                        
-		entidad.setAccesoAbogado(dto.isAccesoAbogado());
-		entidad.setHuboParcialidad(dto.isHuboParcialidad());
+		entidad.setAccesoAbogado(dto.getAccesoAbogado());
+		entidad.setHuboParcialidad(dto.getHuboParcialidad());
 		entidad.setResultadoProceso(dto.getResultadoProceso());
 		entidad.setInstancia(dto.getInstancia());
 	}

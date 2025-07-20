@@ -44,7 +44,7 @@ public class RegistroEventoRepositoryImpl implements RegistroEventoRepositoryCus
         Long total = countQuery.getSingleResult();
 
         // Query paginada
-        TypedQuery<RegistroEvento> query = em.createQuery("SELECT re " + baseJpql, RegistroEvento.class);
+        TypedQuery<RegistroEvento> query = em.createQuery("SELECT re " + baseJpql + " ORDER BY re.id DESC", RegistroEvento.class);
         params.forEach(query::setParameter);
         aplicarPaginacion(query, request);
 

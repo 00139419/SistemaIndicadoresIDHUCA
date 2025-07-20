@@ -7,13 +7,13 @@ import lombok.Data;
 @Data
 public class ViolenciaDTO {
 
-	private boolean esAsesinato;
+	private Boolean esAsesinato;
     private Catalogo tipoViolencia;
     private Catalogo artefactoUtilizado;
     private Catalogo contexto;
     private Catalogo actorResponsable;
     private Catalogo estadoSaludActorResponsable;
-    private boolean huboProteccion;
-    private boolean investigacionAbierta;
+    private Boolean huboProteccion;
+    private Boolean investigacionAbierta;
     private String respuestaEstado;
 }

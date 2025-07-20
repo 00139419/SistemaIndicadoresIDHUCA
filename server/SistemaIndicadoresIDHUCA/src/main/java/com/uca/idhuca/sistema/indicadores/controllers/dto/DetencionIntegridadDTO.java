@@ -7,11 +7,11 @@ import lombok.Data;
 @Data
 public class DetencionIntegridadDTO {
 	private Catalogo tipoDetencion;
-	private boolean ordenJudicial;
+	private Boolean ordenJudicial;
 	private Catalogo autoridadInvolucrada;
-	private boolean huboTortura;
+	private Boolean huboTortura;
 	private int duracionDias;
-	private boolean accesoAbogado;
+	private Boolean accesoAbogado;
 	private String resultado;
 	private Catalogo motivoDetencion;
 }

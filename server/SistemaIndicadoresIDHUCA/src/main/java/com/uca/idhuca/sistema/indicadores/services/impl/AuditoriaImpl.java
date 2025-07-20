@@ -102,6 +102,26 @@ public class AuditoriaImpl implements IAuditoria {
 				tablaAfectada = "Persona afectada";
 			}
 			
+			if(tablaAfectada.equalsIgnoreCase("parametrosistemas")) {
+				tablaAfectada = "Parámetros del sistema";
+			}
+			
+			if(tablaAfectada.equalsIgnoreCase("notaderechos")) {
+				tablaAfectada = "Ficha del derecho";
+			}
+			
+			if(tablaAfectada.equalsIgnoreCase("catalogos")) {
+				tablaAfectada = "Catálogos";
+			}
+			
+			if(tablaAfectada.equalsIgnoreCase("usuarios")) {
+				tablaAfectada = "Usuarios";
+			}
+			
+			if(tablaAfectada.equalsIgnoreCase("notaderechoarchivos")) {
+				tablaAfectada = "Archivo de una ficha del derecho";
+			}
+			
 			auditoria.setTablaAfectada(tablaAfectada);
 			auditoria.setRegistroId(dto.getRegistroModificado());
 			auditoria.setUsuario(dto.getUsuario());

@@ -1142,10 +1142,6 @@ public class RequestValidations {
 	    
 		for(PersonaAfectadaDTO persona: personasAfectadas) {
 			
-			if(persona.getNombre() == null) {
-				persona.setNombre("");
-			}
-			
 			List<DerechoVulnerado> derechosVulnerados = persona.getDerechosVulnerados();
 			
 			if(derechosVulnerados == null || derechosVulnerados.size() < 0) {
@@ -1165,76 +1161,8 @@ public class RequestValidations {
 					return list;
 				}
 			}
-			
-			if(persona.getEdad() == null) {
-				persona.setEdad(-1);
-			}
-			
-			Catalogo genero = persona.getGenero();
-			
-			if(genero == null || genero.getCodigo() == null || genero.getCodigo().isEmpty()) {
-				Catalogo generoDesconocido = new Catalogo();
-				
-				generoDesconocido.setCodigo("GEN_0");
-				generoDesconocido.setDescripcion("Desconocido");
-				
-				persona.setGenero(generoDesconocido);
-			}
-			
-			Catalogo pais = persona.getNacionalidad();
-			
-			if(pais == null || pais.getCodigo() == null || pais.getCodigo().isEmpty()) {
-				Catalogo paisDesconocido = new Catalogo();
-				
-				paisDesconocido.setCodigo("PAIS_0");
-				paisDesconocido.setDescripcion("Otros paises");
-				
-				persona.setNacionalidad(paisDesconocido);
-			}
-			
-			Catalogo departamentoResidencia = persona.getDepartamentoResidencia();
-			
-			if(departamentoResidencia == null || departamentoResidencia.getCodigo() == null || departamentoResidencia.getCodigo().isEmpty()) {
-				Catalogo departamentoDesconocido = new Catalogo();
-				
-				departamentoDesconocido.setCodigo("DEP_0");
-				departamentoDesconocido.setDescripcion("OTROS PAISES");
-				
-				persona.setDepartamentoResidencia(departamentoDesconocido);
-			}
-			
-			Catalogo municipioResidencia = persona.getDepartamentoResidencia();
-			
-			if(municipioResidencia == null || municipioResidencia.getCodigo() == null || municipioResidencia.getCodigo().isEmpty()) {
-				Catalogo municipioDesconocido = new Catalogo();
-				
-				municipioDesconocido.setCodigo("MUN_0_0");
-				municipioDesconocido.setDescripcion("OTROS PAISES");
-				
-				persona.setMunicipioResidencia(municipioDesconocido);
-			}
-			
-			Catalogo tipoPersona = persona.getTipoPersona();
-			
-			if(tipoPersona == null || tipoPersona.getCodigo() == null || tipoPersona.getCodigo().isEmpty()) {
-				Catalogo tipoPersonaParticular = new Catalogo();
-				
-				tipoPersonaParticular.setCodigo("TIPOPER_1");
-				tipoPersonaParticular.setDescripcion("Persona particular");
-				
-				persona.setTipoPersona(tipoPersonaParticular);
-			}
-			
-			Catalogo estadoSalud = persona.getEstadoSalud();
-			
-			if(estadoSalud == null || estadoSalud.getCodigo() == null || estadoSalud.getCodigo().isEmpty()) {
-				Catalogo estadoSaludDesconocido = new Catalogo();
-				
-				estadoSaludDesconocido.setCodigo("ESTSALUD_7");
-				estadoSaludDesconocido.setDescripcion("Desconocido");
-				
-				persona.setEstadoSalud(estadoSaludDesconocido);
-			}
+
+			Utilidades.formatDto(persona);
 			
 			if(!flagViolencia) {
 				persona.setViolencia(null);
@@ -1256,147 +1184,10 @@ public class RequestValidations {
 				persona.setExpresionCensura(null);
 			}
 			
-			ViolenciaDTO violencia = persona.getViolencia();
-
-			if (violencia != null) {
-			    if (violencia.getActorResponsable() == null || violencia.getActorResponsable().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'actorResponsable' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (violencia.getArtefactoUtilizado() == null || violencia.getArtefactoUtilizado().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'artefactoUtilizado' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (violencia.getContexto() == null || violencia.getContexto().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'contexto' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (violencia.getEstadoSaludActorResponsable() == null || violencia.getEstadoSaludActorResponsable().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'estadoSaludActorResponsable' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (violencia.getRespuestaEstado() == null || violencia.getRespuestaEstado().isEmpty()) {
-			        error = "La propiedad 'respuestaEstado' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (violencia.getTipoViolencia() == null || violencia.getTipoViolencia().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'tipoViolencia' dentro del objeto 'violencia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-			}
-
-			AccesoJusticiaDTO justicia = persona.getAccesoJusticia();
-
-			if (justicia != null) {
-			    if (justicia.getTipoDenunciante() == null || justicia.getTipoDenunciante().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'tipoDenunciante' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (justicia.getDuracionProceso() == null || justicia.getDuracionProceso().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'duracionProceso' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (justicia.getResultadoProceso() == null || justicia.getResultadoProceso().isEmpty()) {
-			        error = "La propiedad 'resultadoProceso' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (justicia.getInstancia() == null || justicia.getInstancia().isEmpty()) {
-			        error = "La propiedad 'instancia' dentro del objeto 'accesoJusticia' en la lista de personas afectadas es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-			}
-			
-			DetencionIntegridadDTO integridad = persona.getDetencionIntegridad();
-			
-			if(integridad != null) {
-				if (integridad.getTipoDetencion() == null || integridad.getTipoDetencion().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'tipoDetencion' dentro del objeto 'detencionIntegridad' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (integridad.getAutoridadInvolucrada() == null || integridad.getAutoridadInvolucrada().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'autoridadInvolucrada' dentro del objeto 'detencionIntegridad' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (integridad.getMotivoDetencion() == null || integridad.getMotivoDetencion().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'motivoDetencion' dentro del objeto 'detencionIntegridad' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (integridad.getResultado() == null) {
-			        error = "La propiedad 'resultado' dentro del objeto 'detencionIntegridad' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-			}
-			
-			ExpresionCensuraDTO expresion = persona.getExpresionCensura();
-			
-			if(expresion != null) {
-				if (expresion.getMedioExpresion() == null || expresion.getMedioExpresion().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'medioExpresion' dentro del objeto 'expresionCensura' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (expresion.getTipoRepresion() == null || expresion.getTipoRepresion().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'tipoRepresion' dentro del objeto 'expresionCensura' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (expresion.getActorCensor() == null || expresion.getActorCensor().getCodigo() == null) {
-			        error = "La propiedad 'codigo' dentro del objeto 'actorCensor' dentro del objeto 'expresionCensura' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-
-			    if (expresion.getConsecuencia() == null) {
-			        error = "La propiedad 'consecuencia' dentro del objeto 'expresionCensura' es obligatoria.";
-			        list.add(error);
-			        log.info("[" + key + "] " + error);
-			        return list;
-			    }
-			}
+			Utilidades.formatDto(persona.getViolencia());
+			Utilidades.formatDto(persona.getAccesoJusticia());
+			Utilidades.formatDto(persona.getDetencionIntegridad());
+			Utilidades.formatDto(persona.getExpresionCensura());
 			
 			listaFormateada.add(persona);
 		}

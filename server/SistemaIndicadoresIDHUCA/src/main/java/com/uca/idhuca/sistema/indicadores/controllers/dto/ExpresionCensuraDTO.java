@@ -9,8 +9,8 @@ public class ExpresionCensuraDTO {
 
 	private Catalogo medioExpresion;
     private Catalogo tipoRepresion;
-    private boolean represaliasLegales;
-    private boolean represaliasFisicas;
+    private Boolean represaliasLegales;
+    private Boolean represaliasFisicas;
     private Catalogo actorCensor;
     private String consecuencia;
 }

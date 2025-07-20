@@ -41,7 +41,9 @@ public class AuditoriaRepositoryImpl implements AuditoriaRepositoryCustom {
 	    // Consulta paginada
 	    CriteriaQuery<Auditoria> cq = cb.createQuery(Auditoria.class);
 	    Root<Auditoria> root = cq.from(Auditoria.class);
-	    cq.select(root).where(construirPredicados(filtros, cb, root).toArray(new Predicate[0]));
+	    cq.select(root)
+	    .where(construirPredicados(filtros, cb, root).toArray(new Predicate[0]))
+	    .orderBy(cb.desc(root.get("id")));
 	    TypedQuery<Auditoria> query = em.createQuery(cq);
 
 	    Paginacion pag = filtros.getPaginacion();

@@ -121,7 +121,7 @@ public class FichaDerechoImpl implements IFichaDerecho{
 	        MultipartFile archivo = archivos[i];
 	        ArchivoAdjuntoRequest archivoReq = request.getArchivos().get(i);
 
-	        String hashNombre = utils.generarHashArchivo(archivo);
+	        String hashNombre = utils.generarHashArchivo();
 	        String extension = utils.getExtension(archivo.getOriginalFilename());
 	        String nombreFisico = hashNombre + extension;
 	        Path destino = Paths.get(projectProperties.getRutaArchivosFisicos(), nombreFisico);

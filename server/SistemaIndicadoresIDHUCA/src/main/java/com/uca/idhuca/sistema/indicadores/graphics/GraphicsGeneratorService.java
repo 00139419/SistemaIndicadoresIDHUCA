@@ -109,15 +109,24 @@ public class GraphicsGeneratorService {
             plot.setBackgroundPaint(Color.decode(req.getStyle().getBackgroundColor()));
         } else {
             chart = ChartFactory.createPieChart(
-                req.getTitle(),
-                ds,
-                req.isShowLegend(),
-                true,
-                false
-            );
-            PiePlot plot = (PiePlot) chart.getPlot();
-            plot.setBackgroundPaint(Color.decode(req.getStyle().getBackgroundColor()));
-        }
+            		req.getTitle(),
+                    ds,
+                    req.isShowLegend(),
+                    true,
+                    false
+                );
+                PiePlot plot = (PiePlot) chart.getPlot();
+                plot.setBackgroundPaint(Color.decode(req.getStyle().getBackgroundColor()));
+
+                // Agregar porcentajes en etiquetas
+                plot.setLabelGenerator(
+                    new StandardPieSectionLabelGenerator(
+                        "{0}: {1} ({2})",
+                        new DecimalFormat("#,##0"),
+                        new DecimalFormat("0.00%")
+                    )
+                );
+            }
 
         // Subtítulo
         if (req.getSubtitle() != null && !req.getSubtitle().isBlank()) {

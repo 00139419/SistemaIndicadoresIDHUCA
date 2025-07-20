@@ -96,6 +96,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/delete'");
@@ -116,6 +117,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/add'");
@@ -136,6 +138,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/update'");

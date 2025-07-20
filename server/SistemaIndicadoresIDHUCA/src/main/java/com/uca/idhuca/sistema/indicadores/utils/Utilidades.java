@@ -6,8 +6,10 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.MAX_INTENTOS_P
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.uca.idhuca.sistema.indicadores.auditoria.dto.AuditoriaRegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.auditoria.dto.PersonaAfectadaAuditoriaDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.AccesoJusticiaDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.DetencionIntegridadDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.ExpresionCensuraDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
+import com.uca.idhuca.sistema.indicadores.controllers.dto.ViolenciaDTO;
 import com.uca.idhuca.sistema.indicadores.dto.AuditoriaDto;
 import com.uca.idhuca.sistema.indicadores.dto.RegistroEventoAuditDto;
 import com.uca.idhuca.sistema.indicadores.exceptions.ValidationException;
@@ -27,6 +34,7 @@ import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.PersonaAfectada;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
+import com.uca.idhuca.sistema.indicadores.models.Violencia;
 import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.ParametrosSistemaRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.RegistroEventoRepository;
@@ -116,15 +124,11 @@ public class Utilidades {
         return Integer.parseInt(codigoMunicipio);
     }
     
-    public String generarHashArchivo(MultipartFile file) throws IOException, NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(file.getBytes());
-
-        StringBuilder sb = new StringBuilder();
-        for (byte b : hashBytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
+    public String generarHashArchivo() throws IOException, NoSuchAlgorithmException {
+    	// Formato con milisegundos para asegurar unicidad
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS");
+        String timestamp = LocalDateTime.now().format(formatter);
+        return "archivo_" + timestamp;
     }
 
     public String getExtension(String filename) {
@@ -243,5 +247,141 @@ public class Utilidades {
             persona.getExpresionCensura() != null,
             persona.getAccesoJusticia() != null
         );
+    }
+    
+    
+    public static void formatDto(ViolenciaDTO violencia) {
+    	if(violencia != null) {
+    		if (violencia.getActorResponsable() == null || violencia.getActorResponsable().getCodigo() == null) {
+    			violencia.setActorResponsable(new Catalogo(Constantes.CATALOGO_TIPO_PERSONA + "0",""));
+    		}
+    	
+	    	if (violencia.getArtefactoUtilizado() == null || violencia.getArtefactoUtilizado().getCodigo() == null) {
+	    		violencia.setArtefactoUtilizado(new Catalogo(Constantes.CATALOGO_TIPO_DE_ARMA + "0",""));
+		    }
+	    	
+	    	if (violencia.getContexto() == null || violencia.getContexto().getCodigo() == null) {
+	    		violencia.setContexto(new Catalogo(Constantes.CATALOGO_CONTEXTO + "0",""));
+		    }
+	    	
+	    	if (violencia.getEstadoSaludActorResponsable() == null || violencia.getEstadoSaludActorResponsable().getCodigo() == null) {
+	    		violencia.setEstadoSaludActorResponsable(new Catalogo(Constantes.CATALOGO_ESTADO_SALUD + "0",""));
+		    }
+	    	
+	    	if (violencia.getRespuestaEstado() == null) {
+	    		violencia.setRespuestaEstado("");
+		    }
+	    	
+	    	if (violencia.getTipoViolencia() == null || violencia.getTipoViolencia().getCodigo() == null) {
+	    		violencia.setTipoViolencia(new Catalogo(Constantes.CATALOGO_TIPO_DE_VIOLENCIA+ "0",""));
+		    }
+    	}
+    }
+    
+    
+    public static void formatDto(AccesoJusticiaDTO justicia) {
+    	if (justicia != null) {
+		    if (justicia.getTipoDenunciante() == null || justicia.getTipoDenunciante().getCodigo() == null) {
+		    	justicia.setTipoDenunciante(new Catalogo(Constantes.CATALOGO_TIPO_DENUNCIANTE + "0",""));
+		    }
+
+		    if (justicia.getDuracionProceso() == null || justicia.getDuracionProceso().getCodigo() == null) {
+		    	justicia.setDuracionProceso(new Catalogo(Constantes.CATALOGO_DURACION_PROCESO + "0",""));
+		    }
+
+		    if (justicia.getResultadoProceso() == null) {
+		    	justicia.setResultadoProceso("");
+		    }
+
+		    if (justicia.getInstancia() == null) {
+		    	justicia.setInstancia("");
+		    }
+		}
+    }
+    
+    public static void formatDto(DetencionIntegridadDTO integridad) {
+    	if(integridad != null) {
+			if (integridad.getTipoDetencion() == null || integridad.getTipoDetencion().getCodigo() == null) {
+				integridad.setTipoDetencion(new Catalogo(Constantes.CATALOGO_TIPO_DE_DETENCION + "0",""));
+		    }
+
+		    if (integridad.getAutoridadInvolucrada() == null || integridad.getAutoridadInvolucrada().getCodigo() == null) {
+		    	integridad.setAutoridadInvolucrada(new Catalogo(Constantes.CATALOGO_TIPO_PERSONA+ "0",""));
+		    }
+
+		    if (integridad.getMotivoDetencion() == null || integridad.getMotivoDetencion().getCodigo() == null) {
+		    	integridad.setMotivoDetencion(new Catalogo(Constantes.CATALOGO_MOTIVO_DETENCION + "0",""));
+		    }
+
+		    if (integridad.getResultado() == null) {
+		    	integridad.setResultado("");
+		    }
+		}
+    }
+    
+    
+    public static void formatDto(ExpresionCensuraDTO expresion) {
+    	if(expresion != null) {
+			if (expresion.getMedioExpresion() == null || expresion.getMedioExpresion().getCodigo() == null) {
+				expresion.setMedioExpresion(new Catalogo(Constantes.CATALOGO_MEDIO_DE_EXPRESION+ "0",""));
+		    }
+
+		    if (expresion.getTipoRepresion() == null || expresion.getTipoRepresion().getCodigo() == null) {
+		    	expresion.setTipoRepresion(new Catalogo(Constantes.CATALOGO_TIPO_DE_REPRESION+ "0",""));
+		    }
+
+		    if (expresion.getActorCensor() == null || expresion.getActorCensor().getCodigo() == null) {
+		    	expresion.setActorCensor(new Catalogo(Constantes.CATALOGO_TIPO_PERSONA + "0",""));
+		    }
+
+		    if (expresion.getConsecuencia() == null) {
+		    	expresion.setConsecuencia("");
+		    }
+		}
+    }
+    
+    public static void formatDto(PersonaAfectadaDTO persona) {
+    	if(persona != null) {
+    		if(persona.getNombre() == null) {
+				persona.setNombre("");
+			}
+    		
+    		if(persona.getGenero() == null || persona.getGenero().getCodigo() == null) {
+    			persona.setGenero(new Catalogo(Constantes.CATALOGO_GENERO + "0",""));
+    		}
+    		
+    		if(persona.getNacionalidad() == null || persona.getNacionalidad().getCodigo() == null) {
+    			persona.setNacionalidad(new Catalogo(Constantes.CATALOGO_PAISES + "0",""));
+    			persona.setDepartamentoResidencia(new Catalogo(Constantes.CATALOGO_DEPARTAMENTO + "0",""));
+    			persona.setMunicipioResidencia(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
+    		}
+    		
+    		if(persona.getNacionalidad() != null && persona.getNacionalidad().getCodigo() != null && persona.getNacionalidad().getCodigo() != "9300") {
+    			persona.setDepartamentoResidencia(new Catalogo(Constantes.CATALOGO_DEPARTAMENTO + "0",""));
+    			persona.setMunicipioResidencia(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
+    		}
+    		
+    		if(persona.getNacionalidad() != null && persona.getNacionalidad().getCodigo() != null && persona.getNacionalidad().getCodigo() == "9300") {
+    			
+    			if(persona.getDepartamentoResidencia() == null || persona.getDepartamentoResidencia().getCodigo() == null) {
+    				persona.setDepartamentoResidencia(new Catalogo(Constantes.CATALOGO_DEPARTAMENTO + "0",""));
+        			persona.setMunicipioResidencia(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
+    			}
+    			
+    			if(persona.getMunicipioResidencia() == null || persona.getMunicipioResidencia().getCodigo() == null) {
+    				persona.setMunicipioResidencia(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
+    			}
+    		}
+    		
+    		if(persona.getTipoPersona() == null || persona.getTipoPersona().getCodigo() == null) {
+    			persona.setTipoPersona(new Catalogo(Constantes.CATALOGO_TIPO_PERSONA + "0",""));
+    		}
+    		
+    		if(persona.getEstadoSalud() == null || persona.getEstadoSalud().getCodigo() == null) {
+    			persona.setEstadoSalud(new Catalogo(Constantes.CATALOGO_ESTADO_SALUD + "0",""));
+    		}
+    		
+    		
+    	}
     }
 }

@@ -13,8 +13,8 @@ public class AccesoJusticiaDTO {
     private Date fechaDenuncia;
     private Catalogo tipoDenunciante;
     private Catalogo duracionProceso;
-    private boolean accesoAbogado;
-    private boolean huboParcialidad;
+    private Boolean accesoAbogado;
+    private Boolean huboParcialidad;
     private String resultadoProceso;
     private String instancia;
 }
