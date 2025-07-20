@@ -92,6 +92,7 @@ const AgregarRegistro = () => {
         tr,
         tpJud,
         dp,
+        ctx,
       ] = await Promise.all([
         getCatalogo({ departamentos: true }),
         getCatalogo({ fuentes: true }),
@@ -112,6 +113,7 @@ const AgregarRegistro = () => {
         getCatalogo({ tipoRepresion: true }),
         getCatalogo({ tipoProcesoJudicial: true }),
         getCatalogo({ duracionProceso: true }),
+        getCatalogo({ contexto: true }),
       ]);
 
       setTiposPersona(tp);
@@ -127,7 +129,7 @@ const AgregarRegistro = () => {
       setPaises(p);
       setTiposViolencia(tv);
       setArtefactos(ar);
-      setContextosViolencia(cv);
+      setContextosViolencia(ctx);
       setTiposDetencion(td);
       setMotivosDetencion(md);
       setMediosExpresion(me);
@@ -712,6 +714,9 @@ const AgregarRegistro = () => {
             </div>
 
             <TabView>
+
+
+              
               {/* Tab: Datos Generales */}
               <TabPanel header="Datos Generales">
                 <div className="formgrid grid">

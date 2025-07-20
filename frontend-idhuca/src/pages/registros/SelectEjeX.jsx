@@ -736,66 +736,12 @@ export default function FiltradoRegistros() {
         </div>
 
         <div className="row">
-          <div className="container py-4">
+          <div className="container">
             <h5 className="mb-4">Filtros de Evento</h5>
 
             <div className="border rounded p-3 mb-4">
               <div className="row">
-                {/* Fecha del hecho */}
-                <div className="col-md-6 mb-3">
-                  <label>Fecha de inicio</label>
-                  <Calendar
-                    value={eventoFiltro.fechaHechoRango.fechaInicio}
-                    onChange={(e) => {
-                      const nuevoValor = e.value;
-                      setEventoFiltro((prev) => ({
-                        ...prev,
-                        fechaHechoRango: {
-                          ...prev.fechaHechoRango,
-                          fechaInicio: nuevoValor,
-                        },
-                      }));
-
-                      const esVacio =
-                        !nuevoValor && !eventoFiltro.fechaHechoRango.fechaFin;
-                      setCampoSeleccionado(
-                        esVacio ? null : "eventoFiltro.fechaHechoRango"
-                      );
-                    }}
-                    showIcon
-                    dateFormat="yy-mm-dd"
-                    className="w-100"
-                    disabled={!esCampoActivo("eventoFiltro.fechaHechoRango")}
-                  />
-                </div>
-                <div className="col-md-6 mb-3">
-                  <label>Fecha de fin</label>
-                  <Calendar
-                    value={eventoFiltro.fechaHechoRango.fechaFin}
-                    onChange={(e) => {
-                      const nuevoValor = e.value;
-                      setEventoFiltro((prev) => ({
-                        ...prev,
-                        fechaHechoRango: {
-                          ...prev.fechaHechoRango,
-                          fechaFin: nuevoValor,
-                        },
-                      }));
-
-                      const esVacio =
-                        !eventoFiltro.fechaHechoRango.fechaInicio &&
-                        !nuevoValor;
-                      setCampoSeleccionado(
-                        esVacio ? null : "eventoFiltro.fechaHechoRango"
-                      );
-                    }}
-                    showIcon
-                    dateFormat="yy-mm-dd"
-                    className="w-100"
-                    disabled={!esCampoActivo("eventoFiltro.fechaHechoRango")}
-                  />
-                </div>
-
+              
                 {/*Fuentes*/}
                 <div className="col-md-4 mb-3">
                   <label>Fuentes</label>

@@ -21,17 +21,13 @@ const VistaRegistrosDinamica = ({
   currentPage,
   totalPages,
   onPageChange,
-  itemsPerPage = 10
+  itemsPerPage,
 }) => {
   const { userRole } = useAuth(); // Obtener el rol del usuarios
   const navigate = useNavigate(); 
-  
-
 
   const getCurrentPageData = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex);
+    return data;
   };
 
   const handlePageChange = (pageNumber) => {
@@ -72,43 +68,6 @@ const VistaRegistrosDinamica = ({
       return column.render(item[column.key], item);
     }
     return item[column.key] || "";
-  };
-
-  const renderPagination = () => {
-    if (totalPages <= 1) return null;
-
-    return (
-      <div className="d-flex justify-content-between align-items-center mt-3 px-3">
-        <div className="text-muted small">
-          Mostrar{" "}
-          <span className="fw-bold">{Math.min(itemsPerPage, data.length)}</span>{" "}
-          de <span className="fw-bold">{data.length}</span>
-        </div>
-        <div className="d-flex align-items-center gap-2">
-          <span className="text-muted small">
-            Página {currentPage} de {totalPages}
-          </span>
-          <div className="btn-group">
-            <button
-              className="btn btn-outline-secondary btn-sm px-2"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              style={{ fontSize: "12px", lineHeight: "1" }}
-            >
-              ‹
-            </button>
-            <button
-              className="btn btn-outline-secondary btn-sm px-2"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              style={{ fontSize: "12px", lineHeight: "1" }}
-            >
-              ›
-            </button>
-          </div>
-        </div>
-      </div>
-    );
   };
 
   // Función para verificar permisos
@@ -292,7 +251,6 @@ const VistaRegistrosDinamica = ({
                   </tbody>
                 </table>
               </div>
-              {renderPagination()}
             </>
           )}
         </div>

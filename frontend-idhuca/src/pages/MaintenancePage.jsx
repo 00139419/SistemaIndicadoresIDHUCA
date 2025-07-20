@@ -318,7 +318,7 @@ const MaintenancePage = () => {
         }}
       >
         {/* Header fijo */}
-        <div className="px-4 py-3 border-bottom bg-white">
+        <div className="px-4 pt-1 pb-3 border-bottom bg-white">
           <h1 className="mb-0 text-capitalize fs-2 text-center fw-bold">{selectedCatalog === 'catalogos' ? 'Catálogos' : selectedCatalog}</h1>
         </div>
 

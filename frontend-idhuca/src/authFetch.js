@@ -2,8 +2,6 @@
 export async function authFetch(path, { headers = {}, ...options } = {}) {
   const token = localStorage.getItem('authToken');
 
-  console.log("Entra al nuevo modulo");
-
   const response = await fetch(
     `${'http://localhost:8080/idhuca-indicadores/api/srv/'}${path}`,
     {
@@ -26,8 +24,6 @@ export async function authFetch(path, { headers = {}, ...options } = {}) {
     const text = await response.text();
     throw new Error(`${response.status} – ${text}`);
   }
-
-  console.log(response);
 
   return response.json();
 }

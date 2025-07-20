@@ -60,145 +60,138 @@ const DetalleRegistro = () => {
         </ul>
       </div>
 
-      
+      {registro.personasAfectadas.map((p, idx) => (
+        <div className="card mb-4 shadow-sm" key={p.id}>
+          <div className="card-header bg-info text-white">
+            Persona #{idx + 1}: {p.nombre ? p.nombre || p.length == 0 : 'Persona no identificada'}
+          </div>
+          <div className="card-body">
+            <div className="row">
+              <div className="col-md-6">
+                <ul className="list-group mb-3">
+                  <li className="list-group-item"><strong>Edad:</strong> {p.edad}</li>
+                  <li className="list-group-item"><strong>Género:</strong> {p.genero.descripcion}</li>
+                  <li className="list-group-item"><strong>Nacionalidad:</strong> {p.nacionalidad.descripcion}</li>
+                  <li className="list-group-item"><strong>Residencia:</strong> {p.municipioResidencia.descripcion}, {p.departamentoResidencia.descripcion}</li>
+                  <li className="list-group-item"><strong>Tipo de persona:</strong> {p.tipoPersona.descripcion}</li>
+                  <li className="list-group-item"><strong>Estado de salud:</strong> {p.estadoSalud.descripcion}</li>
+                </ul>
+              </div>
 
-{registro.personasAfectadas.map((p, idx) => (
-  <div className="card mb-4 shadow-sm" key={p.id}>
-    <div className="card-header bg-info text-white">
-      Persona #{idx + 1}: {p.nombre}
-    </div>
-    <div className="card-body">
-      <div className="row">
-        <div className="col-md-6">
-          <ul className="list-group mb-3">
-            <li className="list-group-item"><strong>Edad:</strong> {p.edad}</li>
-            <li className="list-group-item"><strong>Género:</strong> {p.genero.descripcion}</li>
-            <li className="list-group-item"><strong>Nacionalidad:</strong> {p.nacionalidad.descripcion}</li>
-            <li className="list-group-item"><strong>Residencia:</strong> {p.municipioResidencia.descripcion}, {p.departamentoResidencia.descripcion}</li>
-            <li className="list-group-item"><strong>Tipo de persona:</strong> {p.tipoPersona.descripcion}</li>
-            <li className="list-group-item"><strong>Estado de salud:</strong> {p.estadoSalud.descripcion}</li>
-          </ul>
+              <div className="col-md-6">
+                {/* Derechos vulnerados */}
+                {p.derechosVulnerados.length > 0 && (
+                  <div className="card mb-3">
+                    <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#dv-${idx}`} style={{ cursor: 'pointer' }}>
+                      Derechos vulnerados específicamente
+                    </div>
+                    <div className="collapse show" id={`dv-${idx}`}>
+                      <div className="card-body">
+                        <ul>
+                          {p.derechosVulnerados.map(dv => (
+                            <li key={dv.id}>{dv.derecho.descripcion}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Violencia */}
+                {p.violencia && (
+                  <div className="card mb-3">
+                    <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#violencia-${idx}`} style={{ cursor: 'pointer' }}>
+                      Violencia
+                    </div>
+                    <div className="collapse show" id={`violencia-${idx}`}>
+                      <div className="card-body">
+                        <ul>
+                          <li><strong>¿Fue un asesinato?:</strong> {p.violencia.esAsesinato ? 'Sí' : 'No'}</li>
+                          <li><strong>Tipo de violencia:</strong> {p.violencia.tipoViolencia.descripcion}</li>
+                          <li><strong>Artefacto utilizado:</strong> {p.violencia.artefactoUtilizado.descripcion}</li>
+                          <li><strong>Contexto de la violencia:</strong> {p.violencia.contexto.descripcion}</li>
+                          <li><strong>Actor responsable:</strong> {p.violencia.actorResponsable.descripcion}</li>
+                          <li><strong>Estado de salud del actor responsable:</strong> {p.violencia.estadoSaludActorResponsable.descripcion}</li>
+                          <li><strong>Hubo protección:</strong> {p.violencia.huboProteccion ? 'Sí' : 'No'}</li>
+                          <li><strong>Investigación abierta:</strong> {p.violencia.investigacionAbierta ? 'Sí' : 'No'}</li>
+                          <li><strong>Respuesta del Estado:</strong> {p.violencia.respuestaEstado}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Detención e Integridad */}
+                {p.detencionIntegridad && (
+                  <div className="card mb-3">
+                    <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#detencion-${idx}`} style={{ cursor: 'pointer' }}>
+                      Detención e Integridad
+                    </div>
+                    <div className="collapse show" id={`detencion-${idx}`}>
+                      <div className="card-body">
+                        <ul>
+                          <li><strong>Tipo de detención:</strong> {p.detencionIntegridad.tipoDetencion.descripcion}</li>
+                          <li><strong>Autoridad involucrada:</strong> {p.detencionIntegridad.autoridadInvolucrada.descripcion}</li>
+                          <li><strong>¿Hubo tortura?:</strong> {p.detencionIntegridad.huboTortura ? 'Sí' : 'No'}</li>
+                          <li><strong>Duración de la detención (días):</strong> {p.detencionIntegridad.duracionDias}</li>
+                          <li><strong>¿Existió acceso a un abogado?:</strong> {p.detencionIntegridad.accesoAbogado ? 'Sí' : 'No'}</li>
+                          <li><strong>Resultado del proceso:</strong> {p.detencionIntegridad.resultado}</li>
+                          <li><strong>Motivo de la detención:</strong> {p.detencionIntegridad.motivoDetencion.descripcion}</li>
+                          <li><strong>¿Existió orden judicial?:</strong> {p.detencionIntegridad.ordenJudicial ? 'Sí' : 'No'}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Expresión y Censura */}
+                {p.expresionCensura && (
+                  <div className="card mb-3">
+                    <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#censura-${idx}`} style={{ cursor: 'pointer' }}>
+                      Expresión y Censura
+                    </div>
+                    <div className="collapse show" id={`censura-${idx}`}>
+                      <div className="card-body">
+                        <ul>
+                          <li><strong>Medio de expresión:</strong> {p.expresionCensura.medioExpresion.descripcion}</li>
+                          <li><strong>Tipo de represión:</strong> {p.expresionCensura.tipoRepresion.descripcion}</li>
+                          <li><strong>¿Hubo represalias legales?:</strong> {p.expresionCensura.represaliasLegales ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Hubo represalias físicas?:</strong> {p.expresionCensura.represaliasFisicas ? 'Sí' : 'No'}</li>
+                          <li><strong>Actor censor:</strong> {p.expresionCensura.actorCensor.descripcion}</li>
+                          <li><strong>Consecuencias:</strong> {p.expresionCensura.consecuencia}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Acceso a Justicia */}
+                {p.accesoJusticia && (
+                  <div className="card mb-3">
+                    <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#justicia-${idx}`} style={{ cursor: 'pointer' }}>
+                      Acceso a la Justicia
+                    </div>
+                    <div className="collapse show" id={`justicia-${idx}`}>
+                      <div className="card-body">
+                        <ul>
+                          <li><strong>Tipo de proceso judicial:</strong> {p.accesoJusticia.tipoProceso.descripcion}</li>
+                          <li><strong>Fecha de presentación de denuncia:</strong> {p.accesoJusticia.fechaDenuncia}</li>
+                          <li><strong>Tipo de denunciante:</strong> {p.accesoJusticia.tipoDenunciante.descripcion}</li>
+                          <li><strong>Duración del proceso:</strong> {p.accesoJusticia.duracionProceso.descripcion}</li>
+                          <li><strong>¿Tuvo acceso a abogado?:</strong> {p.accesoJusticia.accesoAbogado ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Hubo parcialidad en el proceso?:</strong> {p.accesoJusticia.huboParcialidad ? 'Sí' : 'No'}</li>
+                          <li><strong>Resultado del proceso:</strong> {p.accesoJusticia.resultadoProceso}</li>
+                          <li><strong>Instancia judicial:</strong> {p.accesoJusticia.instancia}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="col-md-6">
-          {/* Derechos vulnerados */}
-          {p.derechosVulnerados.length > 0 && (
-            <div className="card mb-3">
-              <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#dv-${idx}`} style={{ cursor: 'pointer' }}>
-                Derechos vulnerados específicamente
-              </div>
-              <div className="collapse show" id={`dv-${idx}`}>
-                <div className="card-body">
-                  <ul>
-                    {p.derechosVulnerados.map(dv => (
-                      <li key={dv.id}>{dv.derecho.descripcion}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Violencia */}
-          {p.violencia && (
-            <div className="card mb-3">
-              <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#violencia-${idx}`} style={{ cursor: 'pointer' }}>
-                Violencia
-              </div>
-              <div className="collapse show" id={`violencia-${idx}`}>
-                <div className="card-body">
-                  <ul>
-                    <li><strong>Tipo:</strong> {p.violencia.tipoViolencia.descripcion}</li>
-                    <li><strong>Artefacto:</strong> {p.violencia.artefactoUtilizado.descripcion}</li>
-                    <li><strong>Contexto:</strong> {p.violencia.contexto.descripcion}</li>
-                    <li><strong>Actor responsable:</strong> {p.violencia.actorResponsable.descripcion}</li>
-                    <li><strong>Salud del actor:</strong> {p.violencia.estadoSaludActorResponsable.descripcion}</li>
-                    <li><strong>Hubo protección:</strong> {p.violencia.huboProteccion ? 'Sí' : 'No'}</li>
-                    <li><strong>Investigación abierta:</strong> {p.violencia.investigacionAbierta ? 'Sí' : 'No'}</li>
-                    <li><strong>Respuesta del Estado:</strong> {p.violencia.respuestaEstado}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Detención e Integridad */}
-          {p.detencionIntegridad && (
-            <div className="card mb-3">
-              <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#detencion-${idx}`} style={{ cursor: 'pointer' }}>
-                Detención e Integridad
-              </div>
-              <div className="collapse show" id={`detencion-${idx}`}>
-                <div className="card-body">
-                  <ul>
-                    <li><strong>Tipo:</strong> {p.detencionIntegridad.tipoDetencion.descripcion}</li>
-                    <li><strong>Autoridad:</strong> {p.detencionIntegridad.autoridadInvolucrada.descripcion}</li>
-                    <li><strong>Tortura:</strong> {p.detencionIntegridad.huboTortura ? 'Sí' : 'No'}</li>
-                    <li><strong>Duración (días):</strong> {p.detencionIntegridad.duracionDias}</li>
-                    <li><strong>Acceso a abogado:</strong> {p.detencionIntegridad.accesoAbogado ? 'Sí' : 'No'}</li>
-                    <li><strong>Resultado:</strong> {p.detencionIntegridad.resultado}</li>
-                    <li><strong>Motivo:</strong> {p.detencionIntegridad.motivoDetencion.descripcion}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Expresión y Censura */}
-          {p.expresionCensura && (
-            <div className="card mb-3">
-              <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#censura-${idx}`} style={{ cursor: 'pointer' }}>
-                Expresión y Censura
-              </div>
-              <div className="collapse show" id={`censura-${idx}`}>
-                <div className="card-body">
-                  <ul>
-                    <li><strong>Medio:</strong> {p.expresionCensura.medioExpresion.descripcion}</li>
-                    <li><strong>Tipo represión:</strong> {p.expresionCensura.tipoRepresion.descripcion}</li>
-                    <li><strong>Represalias legales:</strong> {p.expresionCensura.represaliasLegales ? 'Sí' : 'No'}</li>
-                    <li><strong>Represalias físicas:</strong> {p.expresionCensura.represaliasFisicas ? 'Sí' : 'No'}</li>
-                    <li><strong>Actor censor:</strong> {p.expresionCensura.actorCensor.descripcion}</li>
-                    <li><strong>Consecuencia:</strong> {p.expresionCensura.consecuencia}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Acceso a Justicia */}
-          {p.accesoJusticia && (
-            <div className="card mb-3">
-              <div className="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target={`#justicia-${idx}`} style={{ cursor: 'pointer' }}>
-                Acceso a la Justicia
-              </div>
-              <div className="collapse show" id={`justicia-${idx}`}>
-                <div className="card-body">
-                  <ul>
-                    <li><strong>Tipo de proceso:</strong> {p.accesoJusticia.tipoProceso.descripcion}</li>
-                    <li><strong>Fecha de denuncia:</strong> {p.accesoJusticia.fechaDenuncia}</li>
-                    <li><strong>Tipo de denunciante:</strong> {p.accesoJusticia.tipoDenunciante.descripcion}</li>
-                    <li><strong>Duración:</strong> {p.accesoJusticia.duracionProceso.descripcion}</li>
-                    <li><strong>Acceso a abogado:</strong> {p.accesoJusticia.accesoAbogado ? 'Sí' : 'No'}</li>
-                    <li><strong>Hubo parcialidad:</strong> {p.accesoJusticia.huboParcialidad ? 'Sí' : 'No'}</li>
-                    <li><strong>Resultado:</strong> {p.accesoJusticia.resultadoProceso}</li>
-                    <li><strong>Instancia:</strong> {p.accesoJusticia.instancia}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-))}
-
-
-
-
-
-
-
+      ))}
 
     </div>
   );

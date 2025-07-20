@@ -22,7 +22,6 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
       }
     };
 
-
     const response = await fetch(`${API_URL}/registros/evento/getAllByDerecho`, {
       method: 'POST',
       headers: {
@@ -33,10 +32,6 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
     });
 
     const responseData = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(responseData.mensaje || `Error ${response.status}`);
-    }
 
     return {
       registros: responseData.entity || [],
@@ -65,7 +60,7 @@ export const fetchCatalog = async (params) => {
       ...params
     };
 
-  
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -296,6 +291,7 @@ export const getCatalogo = async (paramsOverrides) => {
     departamentos: false,
     municipios: false,
     securityQuestions: false,
+    contexto: false,
     parentId: "",
     filtros: {
       paginacion: {
@@ -314,6 +310,6 @@ export const getCatalogo = async (paramsOverrides) => {
 export const renderCheck = (value) => (
   value ?
     <span className="d-flex justify-content-center align-items-center" style={{ color: 'green' }}>✔️</span>
-        :
+    :
     <span className="d-flex justify-content-center align-items-center" style={{ color: 'red' }}>❌</span>
 );

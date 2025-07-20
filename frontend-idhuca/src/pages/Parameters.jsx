@@ -101,7 +101,7 @@ const SistemaParametros = () => {
       style={{ height: "calc(100vh - 160px)" }}
     >
       {/* Header fijo */}
-      <div className="px-4 py-3 border-bottom bg-white">
+      <div className="px-4 pt-1 pb-3 border-bottom bg-white">
         <h1 className="mb-0 fs-2 fw-bold text-center">
           <i className="bi bi-gear-fill me-2 text-primary"></i>
           Parámetros del Sistema
@@ -115,7 +115,7 @@ const SistemaParametros = () => {
       >
         {/* Botones de acción */}
         <div className="mb-3">
-          <div className="d-flex justify-content-end align-items-center mb-3">
+          <div className="d-flex justify-content-end align-items-center mb-0">
             <button
               className="btn btn-outline-primary btn-sm"
               onClick={fetchParametros}

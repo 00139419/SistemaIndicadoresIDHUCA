@@ -14,7 +14,7 @@ import { useLocation } from "react-router-dom";
 
 const Registros = () => {
   const location = useLocation();
-  let { filtros, derechoId, categoriaEjeX} = location.state || {};
+  let { filtros, derechoId, categoriaEjeX } = location.state || {};
 
   derechoId = String(derechoId || "");
 
@@ -30,10 +30,12 @@ const Registros = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
+
   const [paginacion, setPaginacion] = useState({
-    paginaActual: 0,
+    paginaActual: 1, // 1‑based para que sea intuitivo en la UI
     totalPaginas: 0,
     totalRegistros: 0,
+    registrosPorPagina: 5,
   });
 
   // Para mini modales
@@ -80,64 +82,52 @@ const Registros = () => {
     }
   }, [derechoCodigo, derechos]);
 
-  const fetchRegistros = async (pagina = 0) => {
+  const fetchRegistros = async (pagina = paginacion.paginaActual) => {
     try {
       setIsLoading(true);
       setError(null);
 
       const derechoSeleccionado = derechos.find((d) => d.codigo === derechoId);
+      if (!derechoSeleccionado) throw new Error("Código de derecho no válido");
 
-      if (!derechoSeleccionado) {
-        throw new Error("Código de derecho no válido");
-      }
-
-      const response = await getRegistrosByDerecho(
+      const resp = await getRegistrosByDerecho(
         {
           codigo: derechoSeleccionado.codigo,
           descripcion: derechoSeleccionado.descripcion,
         },
-        pagina,
-        10
+        pagina - 1, // backend usa 0‑based
+        paginacion.registrosPorPagina
       );
 
-      if (response.registros && Array.isArray(response.registros)) {
-        const formattedData = response.registros.map((registro) => ({
-          id: registro.id,
-          fechaHecho: registro.fechaHecho
-            ? new Date(registro.fechaHecho).toLocaleDateString()
-            : "N/A",
-          fuente: registro.fuente?.descripcion || "N/A",
-          estadoActual: registro.estadoActual?.descripcion || "N/A",
-          flagViolencia: renderCheck(registro.flagViolencia),
-          flagDetencion: renderCheck(registro.flagDetencion),
-          flagExpresion: renderCheck(registro.flagExpresion),
-          flagJusticia: renderCheck(registro.flagJusticia),
-          flagCensura: renderCheck(registro.flagCensura),
-          flagRegimenExcepcion: renderCheck(registro.flagRegimenExcepcion),
-          observaciones: registro.observaciones || "N/A",
-        }));
+      const formatted = (resp.registros ?? []).map((r) => ({
+        id: r.id,
+        fechaHecho: r.fechaHecho
+          ? new Date(r.fechaHecho).toLocaleDateString()
+          : "N/A",
+        fuente: r.fuente?.descripcion || "N/A",
+        estadoActual: r.estadoActual?.descripcion || "N/A",
+        flagViolencia: renderCheck(r.flagViolencia),
+        flagDetencion: renderCheck(r.flagDetencion),
+        flagExpresion: renderCheck(r.flagExpresion),
+        flagJusticia: renderCheck(r.flagJusticia),
+        flagCensura: renderCheck(r.flagCensura),
+        flagRegimenExcepcion: renderCheck(r.flagRegimenExcepcion),
+        observaciones: r.observaciones || "N/A",
+      }));
+      setData(formatted); // ←  esto es lo que alimenta la tabla
 
-        setData(formattedData);
-        setPaginacion(response.paginacion);
-      } else {
-        setData([]);
-        setPaginacion({
-          paginaActual: 0,
-          totalPaginas: 0,
-          totalRegistros: 0,
-        });
-      }
-    } catch (error) {
-      console.error("Error en fetchRegistros:", error);
-      setError(error.message);
-      setData([]);
+      setPaginacion((prev) => ({
+        ...prev,
+        paginaActual: resp.paginacion.paginaActual + 1, // lo volvemos 1‑based
+        totalPaginas: resp.paginacion.totalPaginas,
+        totalRegistros: resp.paginacion.totalRegistros,
+      }));
+    } catch (e) {
+      setError(e.message);
+      setData([]); // para que la UI lo refleje
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handlePageChange = (newPage) => {
-    fetchRegistros(newPage - 1);
   };
 
   const handleView = (item) => {
@@ -194,6 +184,26 @@ const Registros = () => {
   const showFilter = true; // Todos los roles pueden filtrar
   const showGenerateChart = true; // Todos los roles pueden generar gráficos
 
+  const handlePageChange = (nuevaPagina) => {
+    if (nuevaPagina < 1 || nuevaPagina > paginacion.totalPaginas) return;
+    setPaginacion((prev) => ({ ...prev, paginaActual: nuevaPagina }));
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    const perPage = Number(e.target.value);
+    setPaginacion((prev) => ({
+      ...prev,
+      registrosPorPagina: perPage,
+      paginaActual: 1, // volvemos a la primera
+    }));
+  };
+
+  useEffect(() => {
+    if (derechos.length > 0) {
+      fetchRegistros(paginacion.paginaActual);
+    }
+  }, [paginacion.paginaActual, paginacion.registrosPorPagina, derechos]);
+
   return (
     <>
       {showSuccess && (
@@ -232,11 +242,83 @@ const Registros = () => {
           onCreate={handleCreate}
           onGenerateChart={handleGenerateChart}
           onFilter={handleFilter}
-          itemsPerPage={10}
-          currentPage={paginacion.paginaActual + 1}
+          itemsPerPage={paginacion.registrosPorPagina}
+          currentPage={paginacion.paginaActual}
           totalPages={paginacion.totalPaginas}
           onPageChange={handlePageChange}
         />
+      )}
+
+      {!isLoading && !error && (
+        <div className="px-4 py-3 border-top bg-white">
+          <div className="d-flex justify-content-between align-items-center">
+            <div>
+              Mostrar
+              <select
+                className="form-select form-select-sm d-inline-block mx-2"
+                style={{ width: "80px" }}
+                value={paginacion.registrosPorPagina}
+                onChange={handleItemsPerPageChange}
+              >
+                {[5, 10, 15, 20, 25, 50].map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+              registros por página
+            </div>
+
+            {/* 🆕 total de registros */}
+            <span className="ms-3 text-muted" style={{ fontSize: "0.85rem" }}>
+              Registros totales: <strong>{paginacion.totalRegistros}</strong>
+            </span>
+
+            <div>
+              Página {paginacion.paginaActual} de {paginacion.totalPaginas}
+              <div className="btn-group ms-2">
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => handlePageChange(1)}
+                  disabled={paginacion.paginaActual === 1}
+                  title="Primera página"
+                >
+                  &laquo;
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => handlePageChange(paginacion.paginaActual - 1)}
+                  disabled={paginacion.paginaActual === 1}
+                  title="Página anterior"
+                >
+                  &lt;
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => handlePageChange(paginacion.paginaActual + 1)}
+                  disabled={
+                    paginacion.paginaActual === paginacion.totalPaginas ||
+                    paginacion.totalPaginas === 0
+                  }
+                  title="Página siguiente"
+                >
+                  &gt;
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => handlePageChange(paginacion.totalPaginas)}
+                  disabled={
+                    paginacion.paginaActual === paginacion.totalPaginas ||
+                    paginacion.totalPaginas === 0
+                  }
+                  title="Última página"
+                >
+                  &raquo;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
