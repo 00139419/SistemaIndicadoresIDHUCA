@@ -282,22 +282,19 @@ const AuditoriaPage = () => {
                       <i className="bi bi-person me-1"></i>Usuario
                     </th>
                     <th style={{ width: '120px', minWidth: '120px', top: 0, zIndex: 100 }}>
-                      <i className="bi bi-table me-1"></i>Tabla
+                      <i className="bi bi-table me-1"></i>Tabla/Entidad
                     </th>
-                    <th style={{ width: '100px', minWidth: '100px', top: 0, zIndex: 100 }}>
-                      <i className="bi bi-gear me-1"></i>Operación
-                    </th>
-                    <th style={{ width: '80px', minWidth: '80px', top: 0, zIndex: 100 }}>
-                      <i className="bi bi-record-circle me-1"></i>Registro ID
+                    <th style={{ width: '100px', minWidth: '118px', top: 0, zIndex: 100 }}>
+                      <i className="bi bi-gear me-1"></i> Operación
                     </th>
                     <th style={{ minWidth: '200px', top: 0, zIndex: 100 }}>
                       <i className="bi bi-file-text me-1"></i>Descripción
                     </th>
                     <th style={{ width: '140px', minWidth: '140px', top: 0, zIndex: 100 }}>
-                      <i className="bi bi-calendar-plus me-1"></i>Fecha
+                      <i className="bi bi-calendar-plus me-1"></i> Fecha
                     </th>
-                    <th style={{ width: '100px', minWidth: '100px', top: 0, zIndex: 100 }}>
-                      <i className="bi bi-eye me-1"></i>Acciones
+                    <th style={{ width: '100px', minWidth: '107px', top: 0, zIndex: 100 }}>
+                      <i className="bi bi-eye me-1"></i> Acciones
                     </th>
                   </tr>
                 </thead>
@@ -341,11 +338,6 @@ const AuditoriaPage = () => {
                                     'bi-gear'
                               } me-1`}></i>
                             {record.operacion}
-                          </span>
-                        </td>
-                        <td style={{ backgroundColor: 'inherit' }}>
-                          <span className="badge bg-light text-dark">
-                            {record.registroId}
                           </span>
                         </td>
                         <td style={{ backgroundColor: 'inherit' }}>

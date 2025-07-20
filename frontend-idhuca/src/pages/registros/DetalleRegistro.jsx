@@ -69,7 +69,7 @@ const DetalleRegistro = () => {
             <div className="row">
               <div className="col-md-6">
                 <ul className="list-group mb-3">
-                  <li className="list-group-item"><strong>Edad:</strong> {p.edad}</li>
+                  <li className="list-group-item"><strong>Edad:</strong> {p.edad ? p.edad : 'Desconocido'}</li>
                   <li className="list-group-item"><strong>Género:</strong> {p.genero.descripcion}</li>
                   <li className="list-group-item"><strong>Nacionalidad:</strong> {p.nacionalidad.descripcion}</li>
                   <li className="list-group-item"><strong>Residencia:</strong> {p.municipioResidencia.descripcion}, {p.departamentoResidencia.descripcion}</li>

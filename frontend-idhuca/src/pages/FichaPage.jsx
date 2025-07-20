@@ -48,6 +48,7 @@ const FichaDerechoView = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteResult, setDeleteResult] = useState(null);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [paginacionInfo, setPaginacionInfo] = useState({
     paginaActual: 0,
@@ -168,6 +169,8 @@ const FichaDerechoView = () => {
 
       const response = await fetchFichasByDerecho(derechoCodigo, options);
 
+      console.log("Response from fetchFichasByDerecho:", response);
+      
       // Siempre procesar la respuesta exitosa, incluso si no hay datos
       if (response.success) {
         const transformedEntries = (response.data || []).map((ficha) => ({
@@ -278,32 +281,38 @@ const FichaDerechoView = () => {
     try {
       const response = await deleteFicha(itemToDelete.id);
 
+      setShowDeleteModal(false);
+      setItemToDelete(null);
+
       if (response.success) {
         setDeleteResult({
           success: true,
           message: "Ficha eliminada exitosamente",
         });
-
-        setTimeout(async () => {
-          setShowDeleteModal(false);
-          setItemToDelete(null);
-
-          // Recargar datos desde el servidor después de eliminar
-          await loadFichas();
-
-          // Ajustar página actual si es necesario
-          const newTotalPages = Math.ceil(
-            (paginacionInfo.totalRegistros - 1) / showCount
-          );
-          if (currentPage > newTotalPages && newTotalPages > 0) {
-            setCurrentPage(newTotalPages);
-          }
-        }, 1500);
+        setShowDeleteAlert(true);
+        setTimeout(() => {
+          setShowDeleteAlert(false);
+          setDeleteResult(null);
+        }, 2500);
+        // Recargar datos desde el servidor después de eliminar
+        await loadFichas();
+        // Ajustar página actual si es necesario
+        const newTotalPages = Math.ceil(
+          (paginacionInfo.totalRegistros - 1) / showCount
+        );
+        if (currentPage > newTotalPages && newTotalPages > 0) {
+          setCurrentPage(newTotalPages);
+        }
       } else {
         setDeleteResult({
           success: false,
           message: response.message || "Error al eliminar la ficha",
         });
+        setShowDeleteAlert(true);
+        setTimeout(() => {
+          setShowDeleteAlert(false);
+          setDeleteResult(null);
+        }, 2500);
       }
     } catch (error) {
       console.error("Error al eliminar ficha:", error);
@@ -311,6 +320,11 @@ const FichaDerechoView = () => {
         success: false,
         message: error.message || "Error al eliminar la ficha",
       });
+      setShowDeleteAlert(true);
+      setTimeout(() => {
+        setShowDeleteAlert(false);
+        setDeleteResult(null);
+      }, 2500);
     } finally {
       setDeleting(null);
     }
@@ -527,6 +541,29 @@ const FichaDerechoView = () => {
 
   return (
     <>
+      {/* Alerta flotante para resultado de eliminación */}
+      {showDeleteAlert && deleteResult && (
+        <div
+          className={`alert position-fixed top-0 start-50 translate-middle-x mt-3 ${
+            deleteResult.success ? "alert-success" : "alert-danger"
+          } shadow`}
+          style={{ zIndex: 2000, minWidth: 300 }}
+          role="alert"
+        >
+          <div className="d-flex align-items-center justify-content-between">
+            <span>{deleteResult.message}</span>
+            <button
+              type="button"
+              className="btn-close ms-2"
+              aria-label="Cerrar"
+              onClick={() => {
+                setShowDeleteAlert(false);
+                setDeleteResult(null);
+              }}
+            ></button>
+          </div>
+        </div>
+      )}
       {/* Contenedor principal con altura fija considerando navbar y footer */}
       <div
         className="container-fluid"
@@ -706,8 +743,10 @@ const FichaDerechoView = () => {
                               : entry.content}
                           </p>
 
-                          {entry.attachments &&
-                            entry.attachments.length > 0 && (
+                          {console.log("Entry archivos:", entry.archivos)}
+                            
+                          {entry.archivos &&
+                            entry.archivos.length > 0 && (
                               <div className="mb-2">
                                 <div className="d-flex align-items-center gap-1 flex-wrap">
                                   <FileText size={12} className="text-muted" />
@@ -730,8 +769,11 @@ const FichaDerechoView = () => {
                                             handleDownloadFile(archivo)
                                           }
                                           disabled={isDownloading}
-                                          className="btn btn-link p-0 small text-primary"
-                                          style={{ textDecoration: "none" }}
+                                          className="btn btn-link p-0 small"
+                                          style={{
+                                            color: "#0d6efd",
+                                            textDecoration: "underline",
+                                          }}
                                           title={`Descargar ${archivo.nombreOriginal}`}
                                         >
                                           {isDownloading ? (
@@ -792,8 +834,11 @@ const FichaDerechoView = () => {
                                               }_${Date.now()}`
                                             ]
                                           }
-                                          className="btn btn-link p-0 small text-primary ms-2"
-                                          style={{ textDecoration: "none" }}
+                                          className="btn btn-link p-0 small ms-2"
+                                          style={{
+                                            color: "#0d6efd",
+                                            textDecoration: "underline",
+                                          }}
                                           title={`Descargar ${archivo.nombreOriginal}`}
                                         >
                                           {archivo.nombreOriginal.length > 15
@@ -1034,22 +1079,11 @@ const FichaDerechoView = () => {
                   onClick={() => {
                     setShowDeleteModal(false);
                     setItemToDelete(null);
-                    setDeleteResult(null);
                   }}
                   disabled={deleting}
                 ></button>
               </div>
               <div className="modal-body py-2">
-                {deleteResult && (
-                  <div
-                    className={`alert alert-sm ${
-                      deleteResult.success ? "alert-success" : "alert-danger"
-                    } py-1`}
-                  >
-                    {deleteResult.message}
-                  </div>
-                )}
-
                 <p className="small">¿Eliminar esta ficha?</p>
                 <div className="card">
                   <div className="card-body p-2">
@@ -1068,7 +1102,6 @@ const FichaDerechoView = () => {
                   onClick={() => {
                     setShowDeleteModal(false);
                     setItemToDelete(null);
-                    setDeleteResult(null);
                   }}
                   disabled={deleting}
                 >
