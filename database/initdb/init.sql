@@ -971,10 +971,10 @@ INSERT INTO parametro_sistema (clave, valor, descripcion) VALUES
   ('descripcion_DER_2', 'El Derecho a la Libertad de Expresión garantiza a toda persona la facultad de buscar, recibir y difundir informaciones e ideas de toda índole, sin censura previa y por cualquier medio de comunicación.', 'Descripción del Derecho a la Libertad de Expresión'),
   ('descripcion_DER_3', 'El Derecho de Acceso a la Justicia asegura a las personas la posibilidad de acudir a tribunales imparciales, competentes e independientes para hacer valer sus derechos, obtener reparación y garantizar el debido proceso.', 'Descripción del Derecho de Acceso a la Justicia'),
   ('descripcion_DER_4', 'El Derecho a la Vida es el derecho fundamental de toda persona a no ser privada arbitrariamente de la vida, y obliga al Estado a proteger y garantizar este derecho en todo momento.', 'Descripción del Derecho a la Vida'),
-  ('investigador_DER_1', 'Nombre Ejemplo 1', 'Investigador responsable del Derecho a la Libertad Personal e Integridad personal'),
-  ('investigador_DER_2', 'Nombre Ejemplo 2', 'Investigador responsable del Derecho a la Libertad de Expresión'),
-  ('investigador_DER_3', 'Nombre Ejemplo 3', 'Investigador responsable del Derecho de Acceso a la Justicia'),
-  ('investigador_DER_4', 'Nombre Ejemplo 4', 'Investigador responsable del Derecho a la Vida'),
+  ('investigador_DER_1', 'Fátima Enriqueta Rosales Zelaya', 'Investigador responsable del Derecho a la Libertad Personal e Integridad personal'),
+  ('investigador_DER_2', 'Carlos Daniel Fernández Castro', 'Investigador responsable del Derecho a la Libertad de Expresión'),
+  ('investigador_DER_3', 'Álvaro Javier Delgado Portillo', 'Investigador responsable del Derecho de Acceso a la Justicia'),
+  ('investigador_DER_4', 'Mauricio Enrique Erazo Alfaro', 'Investigador responsable del Derecho a la Vida'),
   ('max_tiempo_inactividad','15', 'Tiempo máximo permitido, en minutos, que un usuario puede permanecer inactivo en la aplicación antes de cerrar la sesión automáticamente.'),
   ('acerca_del_proyecto', 'El Sistema de registros del vulneraciones de derechos del IDHUCA es una plataforma diseñada para centralizar y analizar información clave sobre derechos humanos y justicia social. Su propósito es facilitar la recopilación y visualización de datos provenientes de diversas fuentes, permitiendo una interpretación clara y fundamentada. Mediante la centralización de datos y la generación de gráficos dinámicos, el sistema transforma la información en un recurso accesible que apoya la toma de decisiones y la incidencia en políticas públicas. Al unificar los datos en un solo espacio digital, mejora el seguimiento de tendencias y optimiza los procesos de análisis, facilitando el trabajo del IDHUCA en la defensa de los derechos humanos.', 'Descripción del proyecto visible al iniciar sesión');
 
