@@ -2,6 +2,9 @@ package com.uca.idhuca.sistema.indicadores.services.impl;
 
 import com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig;
 import com.uca.idhuca.sistema.indicadores.backup.config.ScheduleConfig;
+import com.uca.idhuca.sistema.indicadores.models.ParametroSistema;
+import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
+import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 import jakarta.annotation.PostConstruct;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -22,6 +25,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
+
 @Service
 public class IConfigurableBackupService {
 
@@ -41,6 +46,13 @@ public class IConfigurableBackupService {
     private String dbBackupSubdir;
 
     private ThreadPoolTaskScheduler taskScheduler;
+
+    @Autowired
+    private IAuditoria auditoriaService;
+
+    @Autowired
+    private Utilidades utils;
+
     private Map<String, ScheduledFuture<?>> scheduledTasks;
 
     @PostConstruct
@@ -260,6 +272,8 @@ public class IConfigurableBackupService {
             return;
         }
 
+        BackupConfig backupConfig = null;
+
         long startTime = System.currentTimeMillis();
         logger.info("Iniciando backup: {}", scheduleName);
 
@@ -324,6 +338,9 @@ public class IConfigurableBackupService {
                         scheduleName, backupFile.getName(), backupFile.length(), duration, backupDirectory.getAbsolutePath());
 
                 updateLastExecution(scheduleName);
+
+
+                auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, backupConfig));
 
                 // Opcional: Limpiar backups antiguos
                 cleanupOldBackups(backupDirectory, scheduleName);
@@ -432,6 +449,7 @@ public class IConfigurableBackupService {
             scheduleBackup(schedule);
         }
 
+
         logger.info("Schedule agregado: {}", schedule.getName());
     }
 
@@ -482,6 +500,7 @@ public class IConfigurableBackupService {
                 cancelScheduledTask(scheduleName);
                 logger.info("Schedule deshabilitado: {}", scheduleName);
             }
+
         } else {
             throw new IllegalArgumentException("Schedule no encontrado: " + scheduleName);
         }

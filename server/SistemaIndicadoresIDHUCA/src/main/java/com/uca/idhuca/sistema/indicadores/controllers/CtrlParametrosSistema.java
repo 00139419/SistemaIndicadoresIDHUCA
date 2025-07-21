@@ -30,25 +30,25 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(ROOT_CONTEXT + "parametros/sistema")
 public class CtrlParametrosSistema {
-	
+
 	@Autowired
 	private Utilidades utils;
 
 	@Autowired
 	ObjectMapper mapper;
-	
+
 	@Autowired
 	IParametrosSistema sistemaService;
-	
+
 	@PostMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<GenericEntityResponse<List<ParametroSistema>>> get() throws ValidationException {
 		GenericEntityResponse<List<ParametroSistema>> response = null;
 		String key = "ADMIN";
-		
+
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/get' ");
-			
+
 			response = sistemaService.getAll();
 			return new ResponseEntity<GenericEntityResponse<List<ParametroSistema>>>(response, HttpStatus.OK);
 		} catch (ValidationException e) {
@@ -90,16 +90,16 @@ public class CtrlParametrosSistema {
 			log.info("[{}] ------ Fin de servicio '/getOne'", key);
 		}
 	}
-	
+
 	@PostMapping(value = "/update",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> update(@RequestBody ParametrosSistemaDto request) throws ValidationException {
 		SuperGenericResponse response = null;
 		String key = "ADMIN";
-		
+
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
 			log.info("[" + key + "] ------ Inicio de servicio '/update' " + mapper.writeValueAsString(request));
-			
+
 			response = sistemaService.update(request);
 			return new ResponseEntity<SuperGenericResponse>(response, HttpStatus.OK);
 		} catch (ValidationException e) {
@@ -114,5 +114,5 @@ public class CtrlParametrosSistema {
 			log.info("[" + key + "] ------ Fin de servicio '/update'");
 		}
 	}
-	
+
 }

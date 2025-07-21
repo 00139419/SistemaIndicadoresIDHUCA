@@ -27,13 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ParametrosSistemaImpl implements IParametrosSistema {
-	
+
 	@Autowired
 	private ParametrosSistemaRepository parametrosSistemaRepository;
-	
+
 	@Autowired
 	private IAuditoria auditoriaService;
-	
+
 	@Autowired
 	private Utilidades utils;
 
@@ -41,13 +41,13 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 	public GenericEntityResponse<List<ParametroSistema>> getAll() throws ValidationException {
 		String key = utils.obtenerUsuarioAutenticado().getEmail();
 		log.info("[{}] Request válido", key);
-		
+
 		List<ParametroSistema> ls = parametrosSistemaRepository.findAll();
 		log.info("[{}] parametos del sistema obtenidos correctamente.", key);
-		
+
 		return new GenericEntityResponse<>(OK, "parametos del sistema obtenidos correctamente.", ls);
 	}
-	
+
 
 	@Override
 	public SuperGenericResponse update(ParametrosSistemaDto request) throws ValidationException, NotFoundException {
@@ -57,24 +57,24 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 		}
 
 		String key = utils.obtenerUsuarioAutenticado().getEmail();
-		
+
 		ParametroSistema parametro = null;
 		try {
 			parametro = parametrosSistemaRepository
-					 .findByClave(request.getClave());
-			
+					.findByClave(request.getClave());
+
 			if(parametro == null) {
 				throw new ValidationException(ERROR, "Parametro con clave " + request.getClave() + " no existe");
 			}
 		} catch (ValidationException e) {
 			throw e;
 		}
-		
+
 		String clave = request.getClave();
-		
+
 		if (clave.equalsIgnoreCase("max_tiempo_inactividad") ||
-				clave.equalsIgnoreCase("max_intentos_pregunta_seguridad") || 
-					clave.equalsIgnoreCase("tiempo_de_vida_de_sesion")) {
+				clave.equalsIgnoreCase("max_intentos_pregunta_seguridad") ||
+				clave.equalsIgnoreCase("tiempo_de_vida_de_sesion")) {
 			try {
 				Double.parseDouble(request.getValor());
 			} catch (NumberFormatException e) {
@@ -84,15 +84,15 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 
 
 		log.info("[{}] Request válido", key);
-		
+
 		parametro.setValor(request.getValor());
 		parametro.actualizarFecha();
-		
+
 		log.info("[{}] Actualizando parametro del sistema...", key);
-		
+
 		parametrosSistemaRepository.save(parametro);
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, parametro));
-		
+
 		log.info("[{}] Parametro actualizado correctamente.", key);
 		return new SuperGenericResponse(OK, "Parametro actualizado correctamente.");
 	}
@@ -109,7 +109,7 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 		log.info("[{}] Parámetro del sistema obtenido correctamente.", "SYSTEM");
 		return new GenericEntityResponse<>(OK, "Parámetro del sistema obtenido correctamente.", p);
 	}
-	
-	
+
+
 
 }
