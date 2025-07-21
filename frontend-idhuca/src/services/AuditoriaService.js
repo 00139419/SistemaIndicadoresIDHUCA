@@ -41,8 +41,7 @@ export const fetchAuditoria = async (params = {}) => {
       }
     });
     
-    console.log('Respuesta del servidor:', response.data);
-    
+
     // Devolver tanto los datos como la información de paginación
     return {
       data: response.data.entity || [],
@@ -56,6 +55,12 @@ export const fetchAuditoria = async (params = {}) => {
     
   } catch (error) {
     console.error('Error al obtener registros de auditoría:', error);
-    throw new Error(error.response?.data?.mensaje || 'Error al obtener los registros de auditoría');
+    return { data: [],
+      paginacionInfo: {
+        paginaActual: 1,
+        totalPaginas: 1,
+        totalRegistros: 0,
+        registrosPorPagina: 10
+      }}
   }
 };

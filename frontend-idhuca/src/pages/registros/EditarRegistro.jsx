@@ -14,7 +14,7 @@ import {
   updateEvento,
   detailEvent,
   updatePersonaAfectada,
-  deletePersonaAfectada
+  deletePersonaAfectada,
 } from "../../services/RegstrosService";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -59,27 +59,45 @@ const EditarRegistro = () => {
       try {
         setLoading(true);
         const [
-          d, f, e, l, g, dr, sd, p, ss, tp, tv, ar, cv, td, md, me, tr, tpJud, dp,
+          d,
+          f,
+          e,
+          l,
+          g,
+          dr,
+          sd,
+          p,
+          ss,
+          tp,
+          tv,
+          ar,
+          cv,
+          td,
+          md,
+          me,
+          tr,
+          tpJud,
+          dp,
         ] = await Promise.all([
-          getCatalogo({ departamentos: true }),
-          getCatalogo({ fuentes: true }),
-          getCatalogo({ estadoRegistro: true }),
-          getCatalogo({ lugarExacto: true }),
-          getCatalogo({ genero: true }),
-          getCatalogo({ derechos: true }),
-          getCatalogo({ subDerechos: true, parentId: "DER_1" }),
-          getCatalogo({ paises: true }),
-          getCatalogo({ estadoSalud: true }),
-          getCatalogo({ tipoPersona: true }),
-          getCatalogo({ tipoViolencia: true }),
-          getCatalogo({ tipoArma: true }),
-          getCatalogo({ tipoPersona: true }),
-          getCatalogo({ tipoDetencion: true }),
-          getCatalogo({ motivoDetencion: true }),
-          getCatalogo({ medioExpresion: true }),
-          getCatalogo({ tipoRepresion: true }),
-          getCatalogo({ tipoProcesoJudicial: true }),
-          getCatalogo({ duracionProceso: true }),
+          getCatalogo({ departamentos: true, cargarDeafult: true }),
+          getCatalogo({ fuentes: true, cargarDeafult: true }),
+          getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
+          getCatalogo({ lugarExacto: true, cargarDeafult: true }),
+          getCatalogo({ genero: true, cargarDeafult: true }),
+          getCatalogo({ derechos: true, cargarDeafult: true }),
+          getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }),
+          getCatalogo({ paises: true, cargarDeafult: true }),
+          getCatalogo({ estadoSalud: true, cargarDeafult: true }),
+          getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+          getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
+          getCatalogo({ tipoArma: true, cargarDeafult: true }),
+          getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+          getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
+          getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
+          getCatalogo({ medioExpresion: true, cargarDeafult: true }),
+          getCatalogo({ tipoRepresion: true, cargarDeafult: true }),
+          getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
+          getCatalogo({ duracionProceso: true, cargarDeafult: true }),
         ]);
         setDepartamentos(d);
         setFuentes(f);
@@ -103,11 +121,31 @@ const EditarRegistro = () => {
 
         // Cargar datos del evento
         const eventoData = await detailEvent(id);
-        const eventoEntity = eventoData.entity; // El evento real está en .entity
-        setEvento(transformarEventoParaEdicion(eventoEntity));
-        setMunicipiosResidenciaList(
-          (eventoEntity.personasAfectadas || []).map(() => [])
+        const eventoEntity = eventoData.entity;
+        const eventoEditado = transformarEventoParaEdicion(eventoEntity);
+
+        // Precargar municipios de residencia para cada persona
+        const municipiosPorPersona = await Promise.all(
+          (eventoEditado.personasAfectadas || []).map(async (p) => {
+            if (p.departamentoResidencia && p.departamentoResidencia.codigo) {
+              try {
+                const municipios = await getCatalogo({
+                  municipios: true,
+                  parentId: p.departamentoResidencia.codigo,
+                });
+                return municipios;
+              } catch {
+                return [];
+              }
+            }
+            return [];
+          })
         );
+
+        setEvento(eventoEditado);
+        setMunicipiosResidenciaList(municipiosPorPersona);
+
+        console.log(evento);
       } catch (err) {
         alert("Error al cargar datos: " + err.message);
       } finally {
@@ -151,11 +189,13 @@ const EditarRegistro = () => {
       flagRegimenExcepcion: data.flagRegimenExcepcion || false,
       personasAfectadas: (data.personasAfectadas || []).map((p) => ({
         ...p,
-        derechosVulnerados: (p.derechosVulnerados || []).map((dv) => dv.derecho),
+        derechosVulnerados: (p.derechosVulnerados || []).map(
+          (dv) => dv.derecho
+        ),
         violencia: p.violencia || {},
-        detencionIntegridad: p.detencion || {},
-        expresionCensura: p.expresion || {},
-        accesoJusticia: p.justicia || {},
+        detencionIntegridad: p.detencionIntegridad || {},
+        expresionCensura: p.expresionCensura || {},
+        accesoJusticia: p.accesoJusticia || {},
       })),
     };
   }
@@ -202,13 +242,20 @@ const EditarRegistro = () => {
 
   // Guardar cambios
   const handleActualizarEvento = async () => {
-    if (!evento.fechaHecho || !evento.fuente || !evento.estadoActual || !evento.derechoAsociado) {
+    if (
+      !evento.fechaHecho ||
+      !evento.fuente ||
+      !evento.estadoActual ||
+      !evento.derechoAsociado
+    ) {
       alert("Todos los campos principales son obligatorios");
       return;
     }
     const payload = {
       id: evento.id,
-      fechaHecho: evento.fechaHecho.toISOString().split("T")[0],
+      fechaHecho: evento.fechaHecho
+        ? new Date(evento.fechaHecho).toISOString().split("T")[0]
+        : null,
       fuente: evento.fuente,
       estadoActual: evento.estadoActual,
       derechoAsociado: evento.derechoAsociado,
@@ -222,6 +269,8 @@ const EditarRegistro = () => {
       },
     };
     try {
+      console.log(payload);
+
       await updateEvento(payload);
       alert("Evento actualizado correctamente");
       navigate("/registros");
@@ -253,9 +302,20 @@ const EditarRegistro = () => {
       violencia: persona.violencia || null,
       detencionIntegridad: persona.detencionIntegridad || null,
       expresionCensura: persona.expresionCensura || null,
-      accesoJusticia: persona.accesoJusticia || null,
+      accesoJusticia: persona.accesoJusticia
+        ? {
+          ...persona.accesoJusticia,
+          fechaDenuncia: persona.accesoJusticia.fechaDenuncia
+            ? new Date(persona.accesoJusticia.fechaDenuncia).toISOString().split("T")[0]
+            : null,
+        }
+        : null,
+      fechaHecho: evento.fechaHecho
+        ? new Date(evento.fechaHecho).toISOString().split("T")[0]
+        : null,
     };
     try {
+      console.log("Actualizando persona: ", JSON.stringify(payload));
       await updatePersonaAfectada(payload);
       alert("Persona actualizada correctamente");
     } catch (error) {
@@ -264,12 +324,15 @@ const EditarRegistro = () => {
   };
 
   const handleEliminarPersona = async (personaId) => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta persona afectada?")) return;
+    if (!window.confirm("¿Seguro que deseas eliminar esta persona afectada?"))
+      return;
     try {
       await deletePersonaAfectada(evento.id, personaId);
       setEvento((prev) => ({
         ...prev,
-        personasAfectadas: prev.personasAfectadas.filter((p) => p.id !== personaId),
+        personasAfectadas: prev.personasAfectadas.filter(
+          (p) => p.id !== personaId
+        ),
       }));
       alert("Persona afectada eliminada correctamente");
     } catch (error) {
@@ -288,7 +351,10 @@ const EditarRegistro = () => {
 
   return (
     <div className="p-4 surface-100 min-h-screen">
-      <Card title="✏️ Editar Registro del Hecho" className="shadow-4 border-round-lg">
+      <Card
+        title="✏️ Editar Registro del Hecho"
+        className="shadow-4 border-round-lg"
+      >
         <div className="formgrid grid p-fluid gap-3">
           <div className="col-12 md:col-5">
             <label className="font-semibold mb-2 block">Fecha del hecho</label>
@@ -319,17 +385,6 @@ const EditarRegistro = () => {
               options={estados}
               optionLabel="descripcion"
               placeholder="Seleccione un estado"
-              className="w-full"
-            />
-          </div>
-          <div className="col-12 md:col-5">
-            <label className="font-semibold mb-2 block">Derecho Asociado</label>
-            <Dropdown
-              value={evento.derechoAsociado}
-              onChange={(e) => handleChange("derechoAsociado", e.value)}
-              options={derechosPrincipales}
-              optionLabel="descripcion"
-              placeholder="Seleccione un derecho"
               className="w-full"
             />
           </div>
@@ -386,16 +441,19 @@ const EditarRegistro = () => {
         </div>
         <div className="flex justify-content-center mt-4">
           <Button
-            label="Actualizar evento"
+            label="Actualizar datos generales del evento"
             icon="pi pi-save"
             className="p-button-primary px-6 py-2 font-bold"
             onClick={handleActualizarEvento}
           />
         </div>
       </Card>
-      
+
       {evento.personasAfectadas.map((persona, index) => (
-        <Card key={persona.id || index} className="mt-6 mb-4 border-round shadow-2">
+        <Card
+          key={persona.id || index}
+          className="mt-6 mb-4 border-round shadow-2"
+        >
           <div className="flex justify-content-between align-items-center mb-3">
             <h5 className="m-0">👤 Persona #{index + 1}</h5>
             <div>
@@ -419,17 +477,21 @@ const EditarRegistro = () => {
             {/* Tab: Datos Generales */}
             <TabPanel header="Datos Generales">
               <div className="formgrid grid">
+                {/* Nombre */}
                 <div className="field col-12 md:col-4">
-                  <label>Nombre</label>
+                  <label className="mb-2 d-block">Nombre</label>
                   <InputText
                     value={persona.nombre}
                     onChange={(e) =>
                       actualizarPersona(index, "nombre", e.target.value)
                     }
+                    className="w-full"
                   />
                 </div>
+
+                {/* Edad */}
                 <div className="field col-12 md:col-4">
-                  <label>Edad</label>
+                  <label className="mb-2 d-block">Edad</label>
                   <InputNumber
                     value={persona.edad}
                     onValueChange={(e) =>
@@ -437,10 +499,13 @@ const EditarRegistro = () => {
                     }
                     showButtons
                     min={0}
+                    className="w-full"
                   />
                 </div>
+
+                {/* Género */}
                 <div className="field col-12 md:col-4">
-                  <label>Género</label>
+                  <label className="mb-2 d-block">Género</label>
                   <Dropdown
                     value={persona.genero}
                     onChange={(e) =>
@@ -449,10 +514,13 @@ const EditarRegistro = () => {
                     options={generos}
                     optionLabel="descripcion"
                     placeholder="Seleccione género"
+                    className="w-full"
                   />
                 </div>
+
+                {/* Tipo de persona */}
                 <div className="field col-12 md:col-4">
-                  <label>Tipo de persona</label>
+                  <label className="mb-2 d-block">Tipo de persona</label>
                   <Dropdown
                     value={persona.tipoPersona}
                     onChange={(e) =>
@@ -461,10 +529,13 @@ const EditarRegistro = () => {
                     options={tiposPersona}
                     optionLabel="descripcion"
                     placeholder="Seleccione tipo"
+                    className="w-full"
                   />
                 </div>
-                <div className="col-12 md:col-5">
-                  <label className="font-semibold mb-2 block">
+
+                {/* Departamento de residencia */}
+                <div className="field col-12 md:col-5">
+                  <label className="mb-2 d-block font-semibold">
                     Departamento de residencia
                   </label>
                   <Dropdown
@@ -478,8 +549,10 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
-                <div className="col-12 md:col-5">
-                  <label className="font-semibold mb-2 block">
+
+                {/* Municipio de residencia */}
+                <div className="field col-12 md:col-5">
+                  <label className="mb-2 d-block font-semibold">
                     Municipio de residencia
                   </label>
                   <Dropdown
@@ -497,8 +570,10 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
+
+                {/* Nacionalidad */}
                 <div className="field col-12 md:col-4">
-                  <label>Nacionalidad</label>
+                  <label className="mb-2 d-block">Nacionalidad</label>
                   <Dropdown
                     value={persona.nacionalidad}
                     onChange={(e) =>
@@ -512,8 +587,10 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
+
+                {/* Estado de salud */}
                 <div className="field col-12 md:col-4">
-                  <label>Estado de salud</label>
+                  <label className="mb-2 d-block">Estado de salud</label>
                   <Dropdown
                     value={persona.estadoSalud}
                     onChange={(e) =>
@@ -522,6 +599,7 @@ const EditarRegistro = () => {
                     options={estadosSalud}
                     optionLabel="descripcion"
                     placeholder="Seleccione el estado de la victima"
+                    className="w-full"
                   />
                 </div>
               </div>
@@ -550,14 +628,11 @@ const EditarRegistro = () => {
                 <label className="mr-2">¿Desea registrar violencia?</label>
                 <Button
                   label={
-                    persona.violencia
-                      ? "Quitar violencia"
-                      : "Agregar violencia"
+                    persona.violencia ? "Quitar violencia" : "Agregar violencia"
                   }
                   icon={persona.violencia ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${
-                    persona.violencia ? "danger" : "success"
-                  }`}
+                  className={`p-button-${persona.violencia ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -565,24 +640,26 @@ const EditarRegistro = () => {
                       persona.violencia
                         ? null
                         : {
-                            esAsesinato: false,
-                            tipoViolencia: null,
-                            artefactoUtilizado: null,
-                            contexto: null,
-                            actorResponsable: null,
-                            estadoSaludActorResponsable: null,
-                            huboProteccion: false,
-                            investigacionAbierta: false,
-                            respuestaEstado: "",
-                          }
+                          esAsesinato: false,
+                          tipoViolencia: null,
+                          artefactoUtilizado: null,
+                          contexto: null,
+                          actorResponsable: null,
+                          estadoSaludActorResponsable: null,
+                          huboProteccion: false,
+                          investigacionAbierta: false,
+                          respuestaEstado: "",
+                        }
                     )
                   }
                 />
               </div>
+
               {persona.violencia && (
                 <div className="formgrid grid">
+                  {/* ¿Hubo asesinato? */}
                   <div className="field col-12 md:col-4">
-                    <label>¿Hubo asesinato?</label>
+                    <label className="mb-2 d-block">¿Hubo asesinato?</label>
                     <Dropdown
                       value={persona.violencia.esAsesinato}
                       options={[
@@ -596,10 +673,13 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione una opción"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Tipo de violencia */}
                   <div className="field col-12 md:col-4">
-                    <label>Tipo de violencia</label>
+                    <label className="mb-2 d-block">Tipo de violencia</label>
                     <Dropdown
                       value={persona.violencia.tipoViolencia}
                       options={tiposViolencia}
@@ -611,10 +691,13 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione tipo"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Artefacto utilizado */}
                   <div className="field col-12 md:col-4">
-                    <label>Artefacto utilizado</label>
+                    <label className="mb-2 d-block">Artefacto utilizado</label>
                     <Dropdown
                       value={persona.violencia.artefactoUtilizado}
                       options={artefactos}
@@ -626,10 +709,13 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione artefacto"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Contexto */}
                   <div className="field col-12 md:col-4">
-                    <label>Contexto</label>
+                    <label className="mb-2 d-block">Contexto</label>
                     <Dropdown
                       value={persona.violencia.contexto}
                       options={contextosViolencia}
@@ -641,10 +727,13 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione contexto"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Actor responsable */}
                   <div className="field col-12 md:col-4">
-                    <label>Actor responsable</label>
+                    <label className="mb-2 d-block">Actor responsable</label>
                     <Dropdown
                       value={persona.violencia.actorResponsable}
                       options={tiposPersona}
@@ -656,10 +745,13 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione actor"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Estado salud actor */}
                   <div className="field col-12 md:col-4">
-                    <label>Estado salud actor</label>
+                    <label className="mb-2 d-block">Estado salud actor</label>
                     <Dropdown
                       value={persona.violencia.estadoSaludActorResponsable}
                       options={estadosSalud}
@@ -671,10 +763,13 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione estado"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* ¿Hubo protección? */}
                   <div className="field col-12 md:col-4">
-                    <label>¿Hubo protección?</label>
+                    <label className="mb-2 d-block">¿Hubo protección?</label>
                     <Dropdown
                       value={persona.violencia.huboProteccion}
                       options={[
@@ -688,10 +783,15 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione una opción"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* ¿Investigación abierta? */}
                   <div className="field col-12 md:col-4">
-                    <label>¿Investigación abierta?</label>
+                    <label className="mb-2 d-block">
+                      ¿Investigación abierta?
+                    </label>
                     <Dropdown
                       value={persona.violencia.investigacionAbierta}
                       options={[
@@ -705,10 +805,13 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione una opción"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Respuesta del Estado */}
                   <div className="field col-12">
-                    <label>Respuesta del Estado</label>
+                    <label className="mb-2 d-block">Respuesta del Estado</label>
                     <InputTextarea
                       value={persona.violencia.respuestaEstado}
                       onChange={(e) =>
@@ -739,9 +842,8 @@ const EditarRegistro = () => {
                       : "Agregar sección"
                   }
                   icon={persona.accesoJusticia ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${
-                    persona.accesoJusticia ? "danger" : "success"
-                  }`}
+                  className={`p-button-${persona.accesoJusticia ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -749,21 +851,23 @@ const EditarRegistro = () => {
                       persona.accesoJusticia
                         ? null
                         : {
-                            tipoProceso: null,
-                            fechaDenuncia: null,
-                            tipoDenunciante: null,
-                            duracionProceso: null,
-                            accesoAbogado: false,
-                            huboParcialidad: false,
-                            resultadoProceso: "",
-                            instancia: "",
-                          }
+                          tipoProceso: null,
+                          fechaDenuncia: null,
+                          tipoDenunciante: null,
+                          duracionProceso: null,
+                          accesoAbogado: false,
+                          huboParcialidad: false,
+                          resultadoProceso: "",
+                          instancia: "",
+                        }
                     )
                   }
                 />
               </div>
+
               {persona.accesoJusticia && (
                 <div className="formgrid grid">
+                  {/* Tipo de proceso judicial */}
                   <div className="field col-12 md:col-4">
                     <label>Tipo de proceso judicial</label>
                     <Dropdown
@@ -777,8 +881,11 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione tipo"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Fecha de denuncia */}
                   <div className="field col-12 md:col-4">
                     <label>Fecha de denuncia</label>
                     <Calendar
@@ -798,6 +905,8 @@ const EditarRegistro = () => {
                       className="w-full"
                     />
                   </div>
+
+                  {/* Tipo de denunciante */}
                   <div className="field col-12 md:col-4">
                     <label>Tipo de denunciante</label>
                     <Dropdown
@@ -811,8 +920,11 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Duración del proceso */}
                   <div className="field col-12 md:col-4">
                     <label>Duración del proceso</label>
                     <Dropdown
@@ -826,8 +938,11 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione duración"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Acceso a abogado */}
                   <div className="field col-12 md:col-4">
                     <label>¿Tuvo acceso a abogado?</label>
                     <Dropdown
@@ -843,8 +958,11 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Hubo parcialidad */}
                   <div className="field col-12 md:col-4">
                     <label>¿Hubo parcialidad?</label>
                     <Dropdown
@@ -860,8 +978,11 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione"
+                      className="w-full"
                     />
                   </div>
+
+                  {/* Resultado del proceso */}
                   <div className="field col-12 md:col-6">
                     <label>Resultado del proceso</label>
                     <InputTextarea
@@ -876,6 +997,8 @@ const EditarRegistro = () => {
                       className="w-full"
                     />
                   </div>
+
+                  {/* Instancia */}
                   <div className="field col-12 md:col-6">
                     <label>Instancia</label>
                     <InputText
@@ -896,7 +1019,7 @@ const EditarRegistro = () => {
             {/* Tab: Detención / Integridad */}
             <TabPanel header="Detención / Integridad">
               <div className="mb-3">
-                <label className="mr-2">
+                <label className="mb-2 d-block">
                   ¿Desea registrar información de detención?
                 </label>
                 <Button
@@ -908,9 +1031,8 @@ const EditarRegistro = () => {
                   icon={
                     persona.detencionIntegridad ? "pi pi-times" : "pi pi-plus"
                   }
-                  className={`p-button-${
-                    persona.detencionIntegridad ? "danger" : "success"
-                  }`}
+                  className={`p-button-${persona.detencionIntegridad ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -918,23 +1040,24 @@ const EditarRegistro = () => {
                       persona.detencionIntegridad
                         ? null
                         : {
-                            tipoDetencion: null,
-                            ordenJudicial: false,
-                            autoridadInvolucrada: null,
-                            huboTortura: false,
-                            duracionDias: null,
-                            accesoAbogado: false,
-                            resultado: "",
-                            motivoDetencion: null,
-                          }
+                          tipoDetencion: null,
+                          ordenJudicial: false,
+                          autoridadInvolucrada: null,
+                          huboTortura: false,
+                          duracionDias: null,
+                          accesoAbogado: false,
+                          resultado: "",
+                          motivoDetencion: null,
+                        }
                     )
                   }
                 />
               </div>
+
               {persona.detencionIntegridad && (
                 <div className="formgrid grid">
                   <div className="field col-12 md:col-4">
-                    <label>Tipo de detención</label>
+                    <label className="mb-2 d-block">Tipo de detención</label>
                     <Dropdown
                       value={persona.detencionIntegridad.tipoDetencion}
                       options={tiposDetencion}
@@ -946,10 +1069,14 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione tipo"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>¿Existió orden judicial?</label>
+                    <label className="mb-2 d-block">
+                      ¿Existió orden judicial?
+                    </label>
                     <Dropdown
                       value={persona.detencionIntegridad.ordenJudicial}
                       options={[
@@ -963,10 +1090,14 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione una opción"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>Autoridad involucrada</label>
+                    <label className="mb-2 d-block">
+                      Autoridad involucrada
+                    </label>
                     <Dropdown
                       value={persona.detencionIntegridad.autoridadInvolucrada}
                       options={tiposPersona}
@@ -978,10 +1109,12 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione autoridad"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>¿Hubo tortura?</label>
+                    <label className="mb-2 d-block">¿Hubo tortura?</label>
                     <Dropdown
                       value={persona.detencionIntegridad.huboTortura}
                       options={[
@@ -995,10 +1128,12 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione una opción"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>Días de duración</label>
+                    <label className="mb-2 d-block">Días de duración</label>
                     <InputNumber
                       value={persona.detencionIntegridad.duracionDias}
                       onValueChange={(e) =>
@@ -1009,10 +1144,14 @@ const EditarRegistro = () => {
                       }
                       showButtons
                       min={0}
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>¿Tuvo acceso a abogado?</label>
+                    <label className="mb-2 d-block">
+                      ¿Tuvo acceso a abogado?
+                    </label>
                     <Dropdown
                       value={persona.detencionIntegridad.accesoAbogado}
                       options={[
@@ -1026,10 +1165,12 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione una opción"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12">
-                    <label>Resultado</label>
+                    <label className="mb-2 d-block">Resultado</label>
                     <InputTextarea
                       value={persona.detencionIntegridad.resultado}
                       onChange={(e) =>
@@ -1042,8 +1183,9 @@ const EditarRegistro = () => {
                       className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-6">
-                    <label>Motivo de detención</label>
+                    <label className="mb-2 d-block">Motivo de detención</label>
                     <Dropdown
                       value={persona.detencionIntegridad.motivoDetencion}
                       options={motivosDetencion}
@@ -1055,6 +1197,7 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione motivo"
+                      className="w-full"
                     />
                   </div>
                 </div>
@@ -1064,7 +1207,7 @@ const EditarRegistro = () => {
             {/* Tab: Expresión / Censura */}
             <TabPanel header="Expresión / Censura">
               <div className="mb-3">
-                <label className="mr-2">
+                <label className="mb-2 d-block">
                   ¿Desea registrar censura/represión?
                 </label>
                 <Button
@@ -1073,12 +1216,9 @@ const EditarRegistro = () => {
                       ? "Quitar sección"
                       : "Agregar sección"
                   }
-                  icon={
-                    persona.expresionCensura ? "pi pi-times" : "pi pi-plus"
-                  }
-                  className={`p-button-${
-                    persona.expresionCensura ? "danger" : "success"
-                  }`}
+                  icon={persona.expresionCensura ? "pi pi-times" : "pi pi-plus"}
+                  className={`p-button-${persona.expresionCensura ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -1086,21 +1226,22 @@ const EditarRegistro = () => {
                       persona.expresionCensura
                         ? null
                         : {
-                            medioExpresion: null,
-                            tipoRepresion: null,
-                            represaliasLegales: false,
-                            represaliasFisicas: false,
-                            actorCensor: null,
-                            consecuencia: "",
-                          }
+                          medioExpresion: null,
+                          tipoRepresion: null,
+                          represaliasLegales: false,
+                          represaliasFisicas: false,
+                          actorCensor: null,
+                          consecuencia: "",
+                        }
                     )
                   }
                 />
               </div>
+
               {persona.expresionCensura && (
                 <div className="formgrid grid">
                   <div className="field col-12 md:col-4">
-                    <label>Medio de expresión</label>
+                    <label className="mb-2 d-block">Medio de expresión</label>
                     <Dropdown
                       value={persona.expresionCensura.medioExpresion}
                       options={mediosExpresion}
@@ -1112,10 +1253,12 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione medio"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>Tipo de represión</label>
+                    <label className="mb-2 d-block">Tipo de represión</label>
                     <Dropdown
                       value={persona.expresionCensura.tipoRepresion}
                       options={tiposRepresion}
@@ -1127,10 +1270,12 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione tipo"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>Actor censor</label>
+                    <label className="mb-2 d-block">Actor censor</label>
                     <Dropdown
                       value={persona.expresionCensura.actorCensor}
                       options={tiposPersona}
@@ -1142,10 +1287,14 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione actor"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>¿Represalias legales?</label>
+                    <label className="mb-2 d-block">
+                      ¿Represalias legales?
+                    </label>
                     <Dropdown
                       value={persona.expresionCensura.represaliasLegales}
                       options={[
@@ -1159,10 +1308,14 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12 md:col-4">
-                    <label>¿Represalias físicas?</label>
+                    <label className="mb-2 d-block">
+                      ¿Represalias físicas?
+                    </label>
                     <Dropdown
                       value={persona.expresionCensura.represaliasFisicas}
                       options={[
@@ -1176,10 +1329,12 @@ const EditarRegistro = () => {
                         })
                       }
                       placeholder="Seleccione"
+                      className="w-full"
                     />
                   </div>
+
                   <div className="field col-12">
-                    <label>Consecuencia</label>
+                    <label className="mb-2 d-block">Consecuencia</label>
                     <InputTextarea
                       value={persona.expresionCensura.consecuencia}
                       onChange={(e) =>
@@ -1198,7 +1353,7 @@ const EditarRegistro = () => {
           </TabView>
         </Card>
       ))}
-{/*
+      {/*
       <div className="flex justify-content-end mb-3 gap-2">
         <Button
           label="Actualizar todas las personas"

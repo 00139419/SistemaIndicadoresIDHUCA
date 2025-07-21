@@ -40,7 +40,7 @@ export const fetchCatalog = async (catalogKey, parentId = "1", paginaActual = 0,
     departamentos: false,
     municipios: false,
     securityQuestions: false,
-    instituciones: false,
+    contexto: false,
     parentId: parentId,
     filtros: {
       paginacion: {
@@ -123,6 +123,7 @@ export const addCatalogItem = async (catalogKey, newItemDescription, parentId = 
     securityQuestions: false,
     instituciones: false,
     parentId: parentId,
+    contexto:false,
     nuevoCatalogo: newItemDescription
   };
   
@@ -132,6 +133,8 @@ export const addCatalogItem = async (catalogKey, newItemDescription, parentId = 
   } else {
     throw new Error(`Catálogo "${catalogKey}" no reconocido`);
   }
+
+  console.log(JSON.stringify(requestData));
   
   try {
     // Realizamos la solicitud POST con axios

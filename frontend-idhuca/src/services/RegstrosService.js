@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/idhuca-indicadores/api/srv';
 
-export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPagina = 10) => {
+export const getRegistrosByDerecho = async (derecho, filtros) => {
   try {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -14,14 +14,8 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
         codigo: derecho.codigo,
         descripcion: derecho.descripcion || ''
       },
-      filtros: {
-        paginacion: {
-          paginaActual: pagina,
-          registrosPorPagina
-        }
-      }
+      filtros
     };
-
 
     const response = await fetch(`${API_URL}/registros/evento/getAllByDerecho`, {
       method: 'POST',
@@ -33,18 +27,14 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
     });
 
     const responseData = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(responseData.mensaje || `Error ${response.status}`);
-    }
 
     return {
       registros: responseData.entity || [],
       paginacion: responseData.paginacionInfo || {
-        paginaActual: pagina,
+        paginaActual: filtros.paginacion?.paginaActual || 0,
         totalPaginas: 0,
         totalRegistros: 0,
-        registrosPorPagina
+        registrosPorPagina: filtros.paginacion?.registrosPorPagina || 10
       }
     };
   } catch (error) {
@@ -65,7 +55,7 @@ export const fetchCatalog = async (params) => {
       ...params
     };
 
-  
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -296,6 +286,8 @@ export const getCatalogo = async (paramsOverrides) => {
     departamentos: false,
     municipios: false,
     securityQuestions: false,
+    contexto: false,
+    cargarDeafult: false,
     parentId: "",
     filtros: {
       paginacion: {
@@ -314,6 +306,6 @@ export const getCatalogo = async (paramsOverrides) => {
 export const renderCheck = (value) => (
   value ?
     <span className="d-flex justify-content-center align-items-center" style={{ color: 'green' }}>✔️</span>
-        :
+    :
     <span className="d-flex justify-content-center align-items-center" style={{ color: 'red' }}>❌</span>
 );

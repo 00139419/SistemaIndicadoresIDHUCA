@@ -1,0 +1,13 @@
+/* src/styles/navbar.css */
+.navbar .nav-link {
+  display: block;        /* El enlace ocupa todo el ancho/alto de su <li> */
+  padding: 0.5rem 0.75rem; /* mismo “grosor” que px-3 de Bootstrap */
+  border-radius: 0.25rem;  /* opcional, esquinas redondeadas */
+  transition: background-color 0.15s ease-in-out;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  background-color: rgb(210, 210, 210); /* cambia todo el rectángulo */
+  color: #000000;            /* y el texto, si lo deseas */
+}

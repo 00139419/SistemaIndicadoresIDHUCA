@@ -3,20 +3,25 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { deleteEvent } from "../../services/RegstrosService";
+import { useLocation } from "react-router-dom";
 
 const EliminarRegistro = () => {
+  const location = useLocation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(true);
 
   const handleEliminar = async () => {
+    let { filtros, derechoId, categoriaEjeX } = location.state || {};
+
     setLoading(true);
     try {
       await deleteEvent(id);
-      alert("Registro eliminado correctamente");
       setVisible(false);
-      navigate("/select-register");
+      navigate("/select-register", {
+        state: { filtros, derechoId, categoriaEjeX },
+      });
     } catch (error) {
       alert("Error al eliminar el registro: " + error.message);
       setLoading(false);
@@ -53,7 +58,10 @@ const EliminarRegistro = () => {
       closable={false}
       footer={footer}
     >
-      <p>¿Seguro que deseas eliminar este registro? Esta acción no se puede deshacer.</p>
+      <p>
+        ¿Seguro que deseas eliminar este registro? Esta acción no se puede
+        deshacer.
+      </p>
     </Dialog>
   );
 };

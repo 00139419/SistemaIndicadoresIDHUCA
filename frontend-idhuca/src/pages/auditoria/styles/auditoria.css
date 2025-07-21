@@ -42,11 +42,9 @@
   background: #555;
 }
 
-/* Header sticky para la tabla */
-.table thead.sticky-top th {
-  position: sticky;
+/* Header  para la tabla */
+.table thead th {
   top: 0;
-  z-index: 10;
   background-color: var(--bs-dark) !important;
   border-color: var(--bs-dark) !important;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);

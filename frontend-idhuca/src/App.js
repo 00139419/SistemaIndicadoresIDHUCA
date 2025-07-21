@@ -22,14 +22,17 @@ import Graficos from './pages/registros/Graficos';
 import Filtros from './pages/registros/FiltradoRegistros';
 import RegistrosUpdate from './pages/registros/EditarRegistro.jsx';
 import EliminarRegistro from './pages/registros/EliminarRegistro.jsx';
+import ChangePassword from './pages/configuraciones/ChangePassword.jsx';
 import SelectEjeX from './pages/registros/SelectEjeX.jsx';
 import { UserProvider } from './Contexts/UserContext';
+import './styles/navbar.css';   // 👈 tu override después de Bootstrap
 
 // Estilos de PrimeReact
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
+
 
 function App() {
   return (
@@ -89,6 +92,11 @@ function App() {
             <Route path="/select-register" element={
               <ProtectedRoute>
                 <Registros />
+              </ProtectedRoute>
+            } />
+            <Route path="/configuraciones" element={
+              <ProtectedRoute>
+                <ChangePassword />
               </ProtectedRoute>
             } />
             <Route
