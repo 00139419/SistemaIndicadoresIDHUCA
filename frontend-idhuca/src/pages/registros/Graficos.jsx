@@ -17,6 +17,8 @@ const Graficos = () => {
   const location = useLocation();
   let { derechoId, filtros, categoriaEjeX } = location.state || {};
 
+  console.log("categoriaEjeX inicial grafico" + JSON.stringify(categoriaEjeX))
+
   const hasPermission = (action) => {
     switch (action) {
       case "generate":
@@ -190,7 +192,7 @@ const Graficos = () => {
     chartConfig.subTitleFont,
   ]);
 
-  const copyToClipboard = async () => {};
+  const copyToClipboard = async () => { };
 
   const downloadAsPNG = () => {
     // En la implementación real, aquí generar y descargar el PNG del gráfico
@@ -264,6 +266,32 @@ const Graficos = () => {
     }
   };
 
+  function getCampoEjeXVisual() {
+    if (
+      categoriaEjeX &&
+      categoriaEjeX.eventoFiltro &&
+      categoriaEjeX.eventoFiltro.departamentos &&
+      categoriaEjeX.eventoFiltro.municipios
+    ) {
+      return "eventoFiltro.municipios";
+    }
+    if (
+      categoriaEjeX &&
+      categoriaEjeX.afectadaFiltro &&
+      categoriaEjeX.afectadaFiltro.departamentosResidencia &&
+      categoriaEjeX.afectadaFiltro.municipiosResidencia
+    ) {
+      return "afectadaFiltro.municipiosResidencia";
+    }
+    // Lógica original
+    if (!categoriaEjeX) return null;
+    const padre = Object.keys(categoriaEjeX)[0];
+    if (!padre) return null;
+    const hijo = Object.keys(categoriaEjeX[padre] || {})[0];
+    if (!hijo) return null;
+    return `${padre}.${hijo}`;
+  }
+
   return (
     <div
       className="container-fluid px-0"
@@ -330,8 +358,8 @@ const Graficos = () => {
                       }}
                       onClick={handleClick}
                     >
-                      {nombreCampo
-                        ? `Eje X: ${nombreCampo}`
+                      {getCampoEjeXVisual()
+                        ? `Eje X: ${nombresCamposEjeX[getCampoEjeXVisual()] || getCampoEjeXVisual()}`
                         : "Seleccionar eje X..."}
                     </button>
                   </div>
@@ -385,11 +413,10 @@ const Graficos = () => {
                     <div className="btn-group w-100" role="group">
                       <button
                         type="button"
-                        className={`btn btn-sm ${
-                          chartConfig.dimension === "2D"
-                            ? "btn-primary"
-                            : "btn-outline-primary"
-                        }`}
+                        className={`btn btn-sm ${chartConfig.dimension === "2D"
+                          ? "btn-primary"
+                          : "btn-outline-primary"
+                          }`}
                         onClick={() => handleConfigChange("dimension", "2D")}
                         style={{
                           fontSize: "0.8rem",
@@ -404,11 +431,10 @@ const Graficos = () => {
                       </button>
                       <button
                         type="button"
-                        className={`btn btn-sm ${
-                          chartConfig.dimension === "3D"
-                            ? "btn-primary"
-                            : "btn-outline-primary"
-                        }`}
+                        className={`btn btn-sm ${chartConfig.dimension === "3D"
+                          ? "btn-primary"
+                          : "btn-outline-primary"
+                          }`}
                         onClick={() => handleConfigChange("dimension", "3D")}
                         style={{
                           fontSize: "0.8rem",
