@@ -161,10 +161,10 @@ public class UserImpl implements IUser {
 
 		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
 	}
-	
+
 	@Override
 	public SuperGenericResponse updateNameCurrent(UserDto request) throws ValidationException, NotFoundException {
-		List<String> errorsList = validarUpdateUser(request);
+		List<String> errorsList = RequestValidations.validarIdGiven(Math.toIntExact(request.getId()));
 		if (!errorsList.isEmpty()) {
 			throw new ValidationException(ERROR, errorsList.get(0));
 		}
@@ -175,24 +175,16 @@ public class UserImpl implements IUser {
 		Usuario usuario = userRepository.findById(request.getId())
 				.orElseThrow(() -> new NotFoundException(ERROR, "Usuario no existe."));
 
-		RecoveryPassword recovery = recoveryPasswordRepository.findByUsuario(usuario)
-				.orElseThrow(() -> new NotFoundException(ERROR, "Recovery no existe."));
-
-		useCase.darFormatoUpdate(request, usuario);
-		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
-
-		useCase.darFormatoUpdateRecovery(request, recovery);
-		log.info("[{}] Actualizando recovery... [{}]", key, recovery);
+		usuario.setNombre(request.getNombre());
+		log.info("[{}] Actualizando nombre de usuario... [{}]", key, usuario);
 
 		userRepository.save(usuario);
-		recoveryPasswordRepository.save(recovery);
-		log.info("[{}] Usuario actualizado correctamente.", key);
+		log.info("[{}] Nombre de usuario actualizado correctamente.", key);
 
 		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
-		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, recovery));
 		log.info("[{}] Auditoria creada correctamente.", key);
 
-		return new SuperGenericResponse(OK, "Usuario actualizado correctamente.");
+		return new SuperGenericResponse(OK, "Nombre de usuario actualizado correctamente.");
 	}
 
 	@Override
@@ -377,6 +369,44 @@ public class UserImpl implements IUser {
 		log.info("[{}] Auditoria creada correctamente.", request.getEmail());
 		
 		return new SuperGenericResponse(OK, "Contraseña actualizada exitosamente");
+	}
+
+	/* * Cambia la contraseña del usuario autenticado sin necesidad de email y pregunta de seguridad.
+	 * Utiliza el token de autorización para obtener el usuario autenticado.
+	 */
+	@Override
+	public SuperGenericResponse changePasswordSimple(UserDto request) throws ValidationException, NotFoundException {
+		// Validate the request
+		List<String> validations = RequestValidations.validarChangePassword(request);
+		if (!validations.isEmpty()) {
+			throw new ValidationException(ERROR, validations.get(0));
+		}
+
+		// Get the authenticated user using the Authorization token
+		Usuario usuario = utils.obtenerUsuarioAutenticado();
+
+		// Validate the current password
+		if (!pEncoder.matches(request.getPassword(), usuario.getContrasenaHash())) {
+			throw new ValidationException(ERROR, "La contraseña actual es incorrecta");
+		}
+		log.info("[{}] Contraseña actual válida.", usuario.getEmail());
+
+		// Validate the new password against the password policy
+		if (!validatePasswordPolicy(request.getNewPassword())) {
+			throw new ValidationException(ERROR, "La nueva contraseña no cumple con los requisitos de seguridad");
+		}
+		log.info("[{}] Nueva contraseña válida.", usuario.getEmail());
+
+		// Update the user's password
+		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
+		usuario.setEsPasswordProvisional(false);
+		userRepository.save(usuario);
+
+		// Log the change and add an audit entry
+		auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, usuario));
+		log.info("[{}] Contraseña actualizada exitosamente.", usuario.getEmail());
+
+		return new SuperGenericResponse(OK, "Contraseña actualizada exitosamente.");
 	}
 
 	@Override

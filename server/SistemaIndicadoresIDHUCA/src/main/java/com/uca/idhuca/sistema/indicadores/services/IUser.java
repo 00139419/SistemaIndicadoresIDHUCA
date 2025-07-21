@@ -100,7 +100,12 @@ public interface IUser {
 	 */
 	SuperGenericResponse changePassword(UserDto request) throws ValidationException, NotFoundException;
 
-	/**
+    /* * Cambia la contraseña del usuario autenticado sin necesidad de email y pregunta de seguridad.
+     * Utiliza el token de autorización para obtener el usuario autenticado.
+     */
+    SuperGenericResponse changePasswordSimple(UserDto request) throws ValidationException, NotFoundException;
+
+    /**
 	 * Desbloquea a un usuario previamente bloqueado (por ejemplo, por múltiples intentos fallidos).
 	 *
 	 * @param request Objeto {@link UserDto} que identifica al usuario a desbloquear.

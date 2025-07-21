@@ -190,6 +190,39 @@ public class CtrlUsers {
 			log.info("[" + key + "] ------ Fin de servicio '/update/current' ");
 		}
 	}
+
+	/**
+	 * Actualiza el nombre del usuario autenticado.
+	 * Este método permite cambiar el nombre del usuario actual en el sistema.
+	 *
+	 * @param request Objeto {@link UserDto} que contiene los datos del usuario y el nuevo nombre.
+	 * @return {@link SuperGenericResponse} indicando el resultado de la operación.
+	 */
+	@PostMapping(value = "/update/name/current", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> updateNameCurrent(@RequestBody UserDto request) {
+		String key = "SYSTEM";
+		SuperGenericResponse response;
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[{}] ------ Inicio de servicio '/update/name/current' ", key);
+
+			response = userServices.updateNameCurrent(request);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+
+		} catch (ValidationException e) {
+			return new ResponseEntity<>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()),
+					HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()),
+					HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			log.error("[{}] Error: ", key, e);
+			return new ResponseEntity<>(new SuperGenericResponse(ERROR, e.getMessage()),
+					HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[{}] ------ Fin de servicio '/update/name/current' ", key);
+		}
+	}
 	
 	@PostMapping(value = "/change/password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<SuperGenericResponse> changePassword(@RequestBody UserDto request) {
@@ -210,6 +243,39 @@ public class CtrlUsers {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/update' ");
+		}
+	}
+
+	/**
+	 * Cambia la contraseña de un usuario de forma simple, sin validaciones adicionales.
+	 * Este método es útil para casos donde se requiere un cambio rápido de contraseña.
+	 *
+	 * @param request Objeto {@link UserDto} que contiene los datos del usuario y la nueva contraseña.
+	 * @return {@link SuperGenericResponse} indicando el resultado de la operación.
+	 */
+	@PostMapping(value = "/change/password/simple", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<SuperGenericResponse> changePasswordSimple(@RequestBody UserDto request) {
+		String key = "SYSTEM";
+		SuperGenericResponse response;
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[{}] ------ Inicio de servicio '/change/password/simple' ", key);
+
+			response = userServices.changePasswordSimple(request);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+
+		} catch (ValidationException e) {
+			return new ResponseEntity<>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()),
+					HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()),
+					HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			log.error("[{}] Error: ", key, e);
+			return new ResponseEntity<>(new SuperGenericResponse(ERROR, e.getMessage()),
+					HttpStatus.BAD_REQUEST);
+		} finally {
+			log.info("[{}] ------ Fin de servicio '/change/password/simple' ", key);
 		}
 	}
 
