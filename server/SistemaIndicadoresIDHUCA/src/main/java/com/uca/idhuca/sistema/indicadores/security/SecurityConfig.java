@@ -1,6 +1,9 @@
 package com.uca.idhuca.sistema.indicadores.security;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
+import org.jfree.util.Log;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.uca.idhuca.sistema.indicadores.security.RutasPublicas.SIN_AUTENTICACION;
-import static com.uca.idhuca.sistema.indicadores.security.RutasAdministradores.RUTAS_ADMINISTRADORES;
+import static com.uca.idhuca.sistema.indicadores.security.RutasPrivadas.RUTAS_COMPARTIDAS;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_ADMINISTRADOR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_USER;
 
 import java.util.List;
 
+@Slf4j
 @Configuration
 public class SecurityConfig {
 
@@ -40,15 +44,19 @@ public class SecurityConfig {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(SIN_AUTENTICACION).permitAll()
-                .requestMatchers(RUTAS_ADMINISTRADORES).hasAuthority(ROL_ADMINISTRADOR)
-                .requestMatchers(RUTAS_ADMINISTRADORES).hasAuthority(ROL_USER)
+                .requestMatchers(RUTAS_COMPARTIDAS).hasAnyAuthority(ROL_ADMINISTRADOR, ROL_USER)
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex
-                .authenticationEntryPoint((request, response, authException) ->
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                    })
+                    .accessDeniedHandler((request, response, accessDeniedException) -> {
+                        
+                        log.info("Acceso denegado: el usuario no tiene permiso para acceder a esta ruta: {}", request.getRequestURI());
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+                    })
                 )
-            )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

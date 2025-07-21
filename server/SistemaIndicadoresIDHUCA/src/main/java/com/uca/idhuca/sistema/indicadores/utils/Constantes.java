@@ -17,9 +17,9 @@ public class Constantes {
 	 * Constantes para los roles
 	 * 
 	 */
-	public static final String ROL_ADMINISTRADOR = "admin";
-	public static final String ROL_USER = "user";
-	public static final String ROL_AYUDANTE = "ayudante";
+	public static final String ROL_ADMINISTRADOR = "ROL_1";
+	public static final String ROL_USER = "ROL_2";
+	public static final String ROL_AYUDANTE = "ROL_3";
 
 	public static final String CATALOGO_CONTEXTO ="CONTEXTO_";
 	
