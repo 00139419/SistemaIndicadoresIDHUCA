@@ -54,6 +54,8 @@ public class CtrlParametrosSistema {
 		} catch (ValidationException e) {
 			return new ResponseEntity<GenericEntityResponse<List<ParametroSistema>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
+			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<List<ParametroSistema>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/get'");
@@ -80,6 +82,8 @@ public class CtrlParametrosSistema {
 			return new ResponseEntity<>(new GenericEntityResponse<>(ERROR, e.getMensaje()),
 					HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
+			e.printStackTrace();
 			return new ResponseEntity<>(new GenericEntityResponse<>(ERROR, e.getMessage()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -103,6 +107,8 @@ public class CtrlParametrosSistema {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
+			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/update'");

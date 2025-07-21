@@ -5,6 +5,7 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.OK;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
 import static com.uca.idhuca.sistema.indicadores.utils.RequestValidations.validarUpdateParametrosSistema;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 		
 		return new GenericEntityResponse<>(OK, "parametos del sistema obtenidos correctamente.", ls);
 	}
+	
 
 	@Override
 	public SuperGenericResponse update(ParametrosSistemaDto request) throws ValidationException, NotFoundException {
@@ -67,6 +69,20 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 		} catch (ValidationException e) {
 			throw e;
 		}
+		
+		String clave = request.getClave();
+		
+		if (clave.equalsIgnoreCase("max_tiempo_inactividad") ||
+				clave.equalsIgnoreCase("max_intentos_pregunta_seguridad") || 
+					clave.equalsIgnoreCase("tiempo_de_vida_de_sesion")) {
+			try {
+				Double.parseDouble(request.getValor());
+			} catch (NumberFormatException e) {
+				throw new ValidationException(ERROR, "El valor debe ser un número.");
+			}
+		}
+
+
 		log.info("[{}] Request válido", key);
 		
 		parametro.setValor(request.getValor());

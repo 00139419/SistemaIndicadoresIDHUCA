@@ -34,7 +34,8 @@ public class CatalogoDto {
 	Catalogo catalogo;
 	Catalogo derecho;
 	Filtros filtros;
-	Boolean contexto;
+	Boolean contexto;	
+	Boolean cargarDeafult;
 	
 	public CatalogoDto(Catalogo derecho, Filtros filtros) {
 		super();

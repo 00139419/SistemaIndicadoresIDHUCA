@@ -66,6 +66,7 @@ public class CtrlFichaDerecho {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -86,6 +87,7 @@ public class CtrlFichaDerecho {
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -106,6 +108,7 @@ public class CtrlFichaDerecho {
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -124,6 +127,7 @@ public class CtrlFichaDerecho {
 	    } catch (ValidationException e) {
 			return new ResponseEntity<GenericEntityResponse<List<NotaDerechoDTO>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
 		}  catch (Exception e) {
+			log.info("stacktrace: ", e);
 	    	e.printStackTrace();
 	        log.error("[{}] Error en servicio '/getAll/post': {}", key, e.getMessage(), e);
 	        return new ResponseEntity<>(new GenericEntityResponse<List<NotaDerechoDTO>>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -161,6 +165,7 @@ public class CtrlFichaDerecho {
 	        log.warn("[{}] Archivo no encontrado en '/get/file': {}", key, e.getMessage());
 	        return ResponseEntity.noContent().build();
 	    } catch (Exception e) {
+	    	log.info("stacktrace: ", e);
 	    	e.printStackTrace();
 	        log.error("[{}] Error en servicio '/archivo': {}", key, e.getMessage(), e);
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

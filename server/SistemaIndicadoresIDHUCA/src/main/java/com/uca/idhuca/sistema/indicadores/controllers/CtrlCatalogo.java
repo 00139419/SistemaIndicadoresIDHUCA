@@ -53,6 +53,7 @@ public class CtrlCatalogo {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<GenericEntityResponse<List<Catalogo>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<List<Catalogo>>>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -74,6 +75,7 @@ public class CtrlCatalogo {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -95,6 +97,7 @@ public class CtrlCatalogo {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -116,6 +119,7 @@ public class CtrlCatalogo {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(-1, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {

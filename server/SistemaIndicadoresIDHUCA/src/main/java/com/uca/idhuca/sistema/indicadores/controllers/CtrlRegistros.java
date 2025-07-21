@@ -54,6 +54,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -75,6 +76,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<GenericEntityResponse<RegistroEvento>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<RegistroEvento>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -96,6 +98,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -117,6 +120,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -138,6 +142,7 @@ public class CtrlRegistros {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {

@@ -296,6 +296,10 @@ public class Utilidades {
 		    if (justicia.getInstancia() == null) {
 		    	justicia.setInstancia("");
 		    }
+		    
+		    if (justicia.getTipoProceso() == null || justicia.getTipoProceso().getCodigo() == null) {
+		    	justicia.setTipoProceso(new Catalogo(Constantes.CATALOGO_TIPO_PROCESO_JUDICIAL + "0",""));
+		    }
 		}
     }
     

@@ -53,6 +53,7 @@ public class CtrlUsers {
 			response = new GenericEntityResponse<>(OK, "Data obtenida correctamente", currentUser);
 			return new ResponseEntity<GenericEntityResponse<Usuario>>(response, HttpStatus.OK);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -74,6 +75,7 @@ public class CtrlUsers {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<List<Usuario>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -95,6 +97,7 @@ public class CtrlUsers {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<Usuario>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
@@ -114,6 +117,7 @@ public class CtrlUsers {
 		} catch (ValidationException e) {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
@@ -135,6 +139,7 @@ public class CtrlUsers {
 		}  catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
@@ -156,6 +161,7 @@ public class CtrlUsers {
 		}  catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
@@ -177,6 +183,7 @@ public class CtrlUsers {
 		}  catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
@@ -198,6 +205,7 @@ public class CtrlUsers {
 		}  catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {
@@ -211,6 +219,8 @@ public class CtrlUsers {
 			SuperGenericResponse response = userServices.changePassword(request);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (ValidationException | NotFoundException e) {
+			log.info("stacktrace: ", e);
+			e.printStackTrace();
 			return new ResponseEntity<>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -229,6 +239,7 @@ public class CtrlUsers {
 		}  catch (NotFoundException e) {
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(e.getCodigo(), e.getMensaje()), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<SuperGenericResponse>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
 		} finally {

@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static com.uca.idhuca.sistema.indicadores.security.RutasPublicas.SIN_AUTENTICACION;
 import static com.uca.idhuca.sistema.indicadores.security.RutasAdministradores.RUTAS_ADMINISTRADORES;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_ADMINISTRADOR;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_USER;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(SIN_AUTENTICACION).permitAll()
                 .requestMatchers(RUTAS_ADMINISTRADORES).hasAuthority(ROL_ADMINISTRADOR)
+                .requestMatchers(RUTAS_ADMINISTRADORES).hasAuthority(ROL_USER)
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex

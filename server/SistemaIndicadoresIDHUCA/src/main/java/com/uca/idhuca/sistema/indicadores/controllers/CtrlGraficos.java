@@ -57,6 +57,7 @@ public class CtrlGraficos {
 		} catch (ValidationException e) {
 			return new ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {

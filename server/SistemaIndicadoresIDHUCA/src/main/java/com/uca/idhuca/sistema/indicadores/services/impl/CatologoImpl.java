@@ -94,6 +94,11 @@ public class CatologoImpl implements ICatalogo {
 		for (Field field : request.getClass().getDeclaredFields()) {
 			field.setAccessible(true);
 			try {
+				
+				if(field.getName().equalsIgnoreCase("cargarDeafult")) {
+					continue;
+				}
+				
 				Object value = field.get(request);
 				if (value instanceof Boolean && Boolean.TRUE.equals(value)) {
 					if (nombreCampoActivo != null) {
@@ -192,10 +197,13 @@ public class CatologoImpl implements ICatalogo {
 		List<Catalogo> list = rc.getDatos();                             
 	    Long total          = rc.getTotalRegistros();                   
 
-	    list = list.stream()
-	               .filter(c -> c.getCodigo() == null || !c.getCodigo().endsWith("_0"))
-	               .collect(Collectors.toList());
-
+	    
+	    if(request.getCargarDeafult() == null || !request.getCargarDeafult()) {
+	    	list = list.stream()
+		               .filter(c -> c.getCodigo() == null || !c.getCodigo().endsWith("_0"))
+		               .collect(Collectors.toList());
+	    }
+	    
 	    if (list.isEmpty()) {
 	        throw new ValidationException(ERROR, "No hay más catálogos disponibles");
 	    }

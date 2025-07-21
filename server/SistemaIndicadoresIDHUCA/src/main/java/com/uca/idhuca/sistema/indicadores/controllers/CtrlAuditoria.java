@@ -55,6 +55,8 @@ public class CtrlAuditoria {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
+			log.info("stacktrace: ", e);
+			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<List<Auditoria>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/get'");
