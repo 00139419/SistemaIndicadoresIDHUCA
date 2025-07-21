@@ -111,8 +111,6 @@ public class GraphicsImpl implements IGraphics {
 		log.info("[{}] GraphicsRequest armado correctamente", key);
 
 		GraphicsResponseDTO response = generatorService.generate(gr);
-		log.info("[{}] Base64: {}", key, response.getBase64());
-
 		// Respuesta temporal, luego cambiar el tipo de respuesta
 		return new GenericEntityResponse<>(OK, "Datos obtenidos correctamente", response);
 	}

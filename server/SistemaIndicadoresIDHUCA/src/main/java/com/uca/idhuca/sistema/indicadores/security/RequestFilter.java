@@ -44,13 +44,13 @@ public class RequestFilter extends OncePerRequestFilter {
 	    log.info("Status: {}", response.getStatus());
 
 	    // Evitar loguear archivos binarios
-	    if (!endpoint.startsWith("/api/fichaDerecho/get/file")) {
+	    if (!endpoint.startsWith("/indicadores/api/fichaDerecho/get/file") && !endpoint.startsWith("/idhuca-indicadores/api/srv/graphics/generate")  ) {
 	        String responseBody = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
 	        if (!responseBody.isBlank()) {
 	            log.info("Body de la respuesta: {}", responseBody);
 	        }
 	    } else {
-	        log.info("Body de la respuesta: [omitido - archivo binario]");
+	        log.info("Body de la respuesta: [omitido - archivo binario o base64]");
 	    }
 
 	    log.info("===========================================================================");

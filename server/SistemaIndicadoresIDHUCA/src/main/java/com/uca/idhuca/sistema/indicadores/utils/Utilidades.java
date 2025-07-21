@@ -346,8 +346,8 @@ public class Utilidades {
     
     public static void formatDto(PersonaAfectadaDTO persona) {
     	if(persona != null) {
-    		if(persona.getNombre() == null) {
-				persona.setNombre("");
+    		if(persona.getNombre() == null || persona.getNombre().isEmpty()) {
+				persona.setNombre("Desconocido");
 			}
     		
     		if(persona.getGenero() == null || persona.getGenero().getCodigo() == null) {
@@ -360,13 +360,14 @@ public class Utilidades {
     			persona.setMunicipioResidencia(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
     		}
     		
-    		if(persona.getNacionalidad() != null && persona.getNacionalidad().getCodigo() != null && persona.getNacionalidad().getCodigo() != "9300") {
+    			
+    		if(persona.getNacionalidad() != null && persona.getNacionalidad().getCodigo() != null && !persona.getNacionalidad().getCodigo().equalsIgnoreCase("PAIS_9300")) {
     			persona.setDepartamentoResidencia(new Catalogo(Constantes.CATALOGO_DEPARTAMENTO + "0",""));
     			persona.setMunicipioResidencia(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
     		}
     		
-    		if(persona.getNacionalidad() != null && persona.getNacionalidad().getCodigo() != null && persona.getNacionalidad().getCodigo() == "9300") {
-    			
+    		
+    		if(persona.getNacionalidad() != null && persona.getNacionalidad().getCodigo() != null && persona.getNacionalidad().getCodigo().equalsIgnoreCase("PAIS_9300")) {
     			if(persona.getDepartamentoResidencia() == null || persona.getDepartamentoResidencia().getCodigo() == null) {
     				persona.setDepartamentoResidencia(new Catalogo(Constantes.CATALOGO_DEPARTAMENTO + "0",""));
         			persona.setMunicipioResidencia(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));

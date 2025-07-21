@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.auditoria.dto.AuditoriaRegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.auditoria.dto.PersonaAfectadaAuditoriaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.AccesoJusticiaDTO;
@@ -67,6 +69,9 @@ public class PersonasAfectadasImpl implements IPersonasAfectadas{
 	
 	@Autowired
 	private IAuditoria auditoriaService;
+	
+	@Autowired
+	private ObjectMapper mapper;
 	
 	@Override
 	public GenericEntityResponse<List<PersonaAfectada>> getAllByDerecho(CatalogoDto request)
@@ -187,6 +192,13 @@ public class PersonasAfectadasImpl implements IPersonasAfectadas{
 	        throw new ValidationException(ERROR, errorsList.get(0));
 	    }
 
+	    try {
+			log.info("Despues de validar " + mapper.writeValueAsString(request));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 	    Usuario usuarioAutenticado = utils.obtenerUsuarioAutenticado();
 	    String key = usuarioAutenticado.getEmail();
 

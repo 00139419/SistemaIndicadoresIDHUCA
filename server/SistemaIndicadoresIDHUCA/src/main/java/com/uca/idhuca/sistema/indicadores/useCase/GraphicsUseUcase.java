@@ -40,6 +40,7 @@ public class GraphicsUseUcase {
 	{
 		CAMPOS_NUMERICOS.put("edades", "edades");
 		CAMPOS_NUMERICOS.put("diasExactos", "diasExactos");
+		CAMPOS_NUMERICOS.put("nombres", "nombres");
 	}
 	
 	@Autowired
@@ -75,7 +76,13 @@ public class GraphicsUseUcase {
 									.stream()
 									.map(c -> ((Integer) c).toString())
 									.toList();
+					} else if (v instanceof List<?> lista && !lista.isEmpty() && lista.get(0) instanceof String) {
+						codigos = lista
+								.stream()
+								.map(c -> ((String) c).toString())
+								.toList();
 					}
+					
 					return new CampoSeleccionado(sf.getName(), // eventoFiltro / …
 							campo.getName(), // municipios / …
 							campo.getName(), // etiqueta “bonita”
@@ -112,8 +119,8 @@ public class GraphicsUseUcase {
 
 		gr.setCategoryAxisLabel(axisLabel);
 		gr.setValueAxisLabel("Numero de personas");
-		gr.setWidth(900);
-		gr.setHeight(550);
+		gr.setWidth(950);
+		gr.setHeight(500);
 		gr.setStyle(style);
 		gr.setThreeD(request.getGraphicsSettings().isThreeD());
 		gr.setSeries(List.of(serie));
@@ -392,7 +399,6 @@ public class GraphicsUseUcase {
 	        case "edades" -> re -> {
 	            if (re.getPersonasAfectadas() == null || re.getPersonasAfectadas().isEmpty())
 	                return List.of();
-
 	            // lista de edades permitidas (puede estar vacía)
 	            List<String> permitidosSet = permitidos == null ? List.of() : permitidos;
 
@@ -404,8 +410,21 @@ public class GraphicsUseUcase {
 	                                  || permitidosSet.contains(ed))
 	                    .toList();
 	        };
+	        
+	        case "nombres" -> re -> {
+	            if (re.getPersonasAfectadas() == null || re.getPersonasAfectadas().isEmpty())
+	                return List.of();
+	            // lista de edades permitidas (puede estar vacía)
+	            List<String> permitidosSet = permitidos == null ? List.of() : permitidos;
 
-
+	            return re.getPersonasAfectadas().stream()
+	                    .map(PersonaAfectada::getNombre)          
+	                    .filter(Objects::nonNull)
+	                    .map(String::valueOf)                   
+	                    .filter(ed -> permitidosSet.isEmpty()  
+	                                  || permitidosSet.contains(ed))
+	                    .toList();
+	        };
 
 	        default -> re -> List.of();
 	    };

@@ -22,7 +22,9 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UbicacionDTO;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.EventoFiltro;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
+import com.uca.idhuca.sistema.indicadores.filtros.dto.PersonaAfectadaFiltro;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
 import com.uca.idhuca.sistema.indicadores.models.DerechoVulnerado;
 import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
@@ -256,7 +258,30 @@ public class RequestValidations {
 
 			} catch (IllegalAccessException ignored) {}
 		}
-
+		
+		
+		if(request.getCategoriaEjeX().getAfectadaFiltro() != null) {
+			PersonaAfectadaFiltro pA = request.getCategoriaEjeX().getAfectadaFiltro();
+			
+			List<Catalogo> departamentoResidencia = pA.getDepartamentosResidencia();
+			List<Catalogo> municipioResidencia = pA.getMunicipiosResidencia();
+			
+			if(departamentoResidencia != null && municipioResidencia != null && departamentoResidencia.size() > 0 && municipioResidencia.size() > 0) {
+				camposConValor--;
+			}
+		}
+		
+		if(request.getCategoriaEjeX().getEventoFiltro() != null) {
+			EventoFiltro eF = request.getCategoriaEjeX().getEventoFiltro();
+			
+			List<Catalogo> departamento = eF.getDepartamentos();
+			List<Catalogo> municipio = eF.getMunicipios();
+			
+			if(departamento != null && municipio != null && departamento.size() > 0 && municipio.size() > 0) {
+				camposConValor--;
+			}
+		}
+		
 		if (camposConValor == 0) {
 			list.add("La categoría elegida no contiene ningún valor; debes indicar al menos uno.");
 		}
