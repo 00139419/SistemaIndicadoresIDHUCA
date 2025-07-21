@@ -1,0 +1,426 @@
+2025-06-05 00:05:38.706 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 00:05:39.036 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 00:05:39.039 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 00:05:39.044 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-06-05 00:05:39.046 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 00:05:39.047 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 00:05:39.049 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer
+2025-06-05 00:05:39.450 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [javieu2@gmail.com] ------ Inicio de servicio 'test/testConnection' {"email":"javieu2@gmail.com","password":"JAVI0104200a"}
+2025-06-05 00:05:39.465 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [javieu2@gmail.com] Request válido
+2025-06-05 00:05:40.004 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [javieu2@gmail.com] Usuario encontrado correctamente: Usuario(id=10, nombre=Eulises Gavdia, email=javieu2@gmail.com, contrasenaHash=$2a$10$ZYn0SNWLblWV0o0zA5vIP.fVPMyBNtzptVkA7f9R9kGffq0/GgcBe, rol=com.uca.idhuca.sistema.indicadores.models.Catalogo@49ec6ee3, activo=true, creadoEn=2025-06-04 22:24:55.156, esPasswordProvisional=false)
+2025-06-05 00:05:40.237 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [javieu2@gmail.com] Autenticación correcta.
+2025-06-05 00:05:40.511 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [javieu2@gmail.com] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTEwMzU0MCwiZXhwIjoxNzQ5MTg5OTQwfQ.coIzcR6OFNnT9uzWJfVYV1xTf4_HPRtdvTxk6PNSNSR2SZKdcEVc3kDvAOnWQanc7Es55T1WyXyJN3_biePj9w
+2025-06-05 00:05:40.607 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [javieu2@gmail.com] ------ Fin de servicio 'test/testConnection'
+2025-06-05 00:05:40.655 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 00:05:40.656 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-05 00:05:40.657 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTEwMzU0MCwiZXhwIjoxNzQ5MTg5OTQwfQ.coIzcR6OFNnT9uzWJfVYV1xTf4_HPRtdvTxk6PNSNSR2SZKdcEVc3kDvAOnWQanc7Es55T1WyXyJN3_biePj9w"}}
+2025-06-05 00:05:40.659 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 00:17:59.764 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 00:17:59.787 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 00:17:59.788 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 00:17:59.789 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/get/securityQuestion
+2025-06-05 00:17:59.790 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 00:17:59.790 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 00:17:59.791 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTEwMzU0MCwiZXhwIjoxNzQ5MTg5OTQwfQ.coIzcR6OFNnT9uzWJfVYV1xTf4_HPRtdvTxk6PNSNSR2SZKdcEVc3kDvAOnWQanc7Es55T1WyXyJN3_biePj9w
+2025-06-05 00:17:59.850 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:getSecurityQuestion:86] - [javieu2@gmail.com] ------ Inicio de servicio '/get/securityQuestion' {"nombre":null,"email":"javieu2@gmail.com","id":null,"provisionalPassword":null,"password":null,"rol":null,"securityQuestion":null,"securityAnswer":null,"newPassword":null,"debloquearUsuario":false}
+2025-06-05 00:17:59.854 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:getSecurityQuestio:274] - [javieu2@gmail.com] Request válido
+2025-06-05 00:18:00.147 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:getSecurityQuestio:289] - Recovery no existe.
+2025-06-05 00:18:00.149 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:getSecurityQuestion:97] - [javieu2@gmail.com] ------ Fin de servicio '/get/securityQuestion'
+2025-06-05 00:18:00.155 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 00:18:00.157 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-06-05 00:18:00.158 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"Recovery no existe."}
+2025-06-05 00:18:00.158 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 00:28:24.676 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 00:28:24.682 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 00:28:24.682 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 00:28:24.683 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/recovery/password
+2025-06-05 00:28:24.684 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 00:28:24.684 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 00:28:24.684 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTEwMzU0MCwiZXhwIjoxNzQ5MTg5OTQwfQ.coIzcR6OFNnT9uzWJfVYV1xTf4_HPRtdvTxk6PNSNSR2SZKdcEVc3kDvAOnWQanc7Es55T1WyXyJN3_biePj9w
+2025-06-05 00:28:24.701 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:recoverypassword:67] - [javieu2@gmail.com] ------ Inicio de servicio '/recovery/password' {"nombre":null,"email":"javieu2@gmail.com","id":null,"provisionalPassword":null,"password":null,"rol":null,"securityQuestion":null,"securityAnswer":"Homero","newPassword":"aaaa7823","debloquearUsuario":false}
+2025-06-05 00:28:24.707 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.utils.RequestValidations:validarRecoveryPassword:597] - [SYSTEM] La propiedad 'securityQuestion' y su 'codigo' son obligatorias.
+2025-06-05 00:28:24.710 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:recoverypassword:76] - [javieu2@gmail.com] ------ Fin de servicio '/recovery/password'
+2025-06-05 00:28:24.715 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 00:28:24.716 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-06-05 00:28:24.716 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"La propiedad 'securityQuestion' y su 'codigo' son obligatorias."}
+2025-06-05 00:28:24.717 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 00:32:29.247 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-05 00:32:29.282 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-06-05 00:32:29.309 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 00:32:29.348 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-06-05 00:32:29.360 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-06-05 00:50:27.903 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 6360 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-06-05 00:50:27.928 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-05 00:50:27.930 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-06-05 00:50:28.741 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 00:50:28.869 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 116 ms. Found 9 JPA repository interfaces.
+2025-06-05 00:50:29.522 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-06-05 00:50:29.541 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-06-05 00:50:29.544 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-06-05 00:50:29.545 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-05 00:50:29.618 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-06-05 00:50:29.619 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 1630 ms
+2025-06-05 00:50:29.780 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-05 00:50:29.862 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-05 00:50:29.924 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-06-05 00:50:30.290 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-05 00:50:30.329 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-06-05 00:50:30.575 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@e07b4db
+2025-06-05 00:50:30.579 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-06-05 00:50:30.698 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-05 00:50:32.095 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-05 00:50:33.592 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 00:50:33.949 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-05 00:50:33.951 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-06-05 00:50:34.007 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-05 00:50:34.794 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-05 00:50:34.831 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-06-05 00:50:34.916 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-05 00:50:35.051 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-05 00:50:35.307 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-06-05 00:50:35.330 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-06-05 00:50:35.337 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 8.229 seconds (process running for 8.66)
+2025-06-05 00:51:47.938 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-05 00:51:47.939 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-06-05 00:51:47.941 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 2 ms
+2025-06-05 00:51:48.003 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 00:51:48.004 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 00:51:48.004 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 00:51:48.005 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-06-05 00:51:48.005 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 00:51:48.006 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 00:51:48.006 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer
+2025-06-05 00:51:48.142 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00366519@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00366519@uca.edu.sv","password":"admin4"}
+2025-06-05 00:51:48.146 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00366519@uca.edu.sv] Request válido
+2025-06-05 00:51:48.304 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00366519@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Andrea Amaya, email=00366519@uca.edu.sv, contrasenaHash=$2a$10$L6wsEyXVUcvAZh40soUt3.hOigON/NB5kvlKeA1JkkmKc5L188uai, rol=com.uca.idhuca.sistema.indicadores.models.Catalogo@6b08742, activo=true, creadoEn=2025-05-17 22:36:53.763, esPasswordProvisional=true)
+2025-06-05 00:51:48.457 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00366519@uca.edu.sv] Autenticación correcta.
+2025-06-05 00:51:48.509 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00366519@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5MTA2MzA4LCJleHAiOjE3NDkxOTI3MDh9.eSsA_sVU7JmTeBzD2cxfpd7rel9RzOshBQfZC0hgnGTNFnitroL6BCc5HnaLCKDsuA1Hiwe70cMoGEMRQBlnNA
+2025-06-05 00:51:48.512 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00366519@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-06-05 00:51:48.531 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 00:51:48.531 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-05 00:51:48.531 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5MTA2MzA4LCJleHAiOjE3NDkxOTI3MDh9.eSsA_sVU7JmTeBzD2cxfpd7rel9RzOshBQfZC0hgnGTNFnitroL6BCc5HnaLCKDsuA1Hiwe70cMoGEMRQBlnNA"}}
+2025-06-05 00:51:48.532 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 00:52:01.749 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 00:52:01.750 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 00:52:01.750 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 00:52:01.750 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/add
+2025-06-05 00:52:01.751 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 00:52:01.751 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 00:52:01.752 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5MTA2MzA4LCJleHAiOjE3NDkxOTI3MDh9.eSsA_sVU7JmTeBzD2cxfpd7rel9RzOshBQfZC0hgnGTNFnitroL6BCc5HnaLCKDsuA1Hiwe70cMoGEMRQBlnNA
+2025-06-05 00:52:01.770 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:addUser:111] - [00366519@uca.edu.sv] ------ Inicio de servicio '/add' {"nombre":"Prueba 2","email":"prueba2@gmail.com","id":null,"provisionalPassword":null,"password":null,"rol":{"codigo":"ROL_3","descripcion":null},"securityQuestion":null,"securityAnswer":null,"newPassword":null,"debloquearUsuario":false}
+2025-06-05 00:52:01.774 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:add:71] - [00366519@uca.edu.sv] Request válido
+2025-06-05 00:52:01.933 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:add:99] - [00366519@uca.edu.sv] Creando usuario... [Usuario(id=null, nombre=Prueba 2, email=prueba2@gmail.com, contrasenaHash=$2a$10$zzmjPhFvpV20QZ45CMGqNuCA5ZttqPP9cUEn5utKEMJGnoEEWLuEu, rol=com.uca.idhuca.sistema.indicadores.models.Catalogo@27fc3fb, activo=true, creadoEn=Thu Jun 05 00:52:01 CST 2025, esPasswordProvisional=true)]
+2025-06-05 00:52:02.053 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:add:104] - [00366519@uca.edu.sv] Usuario creado: prueba2@gmail.com
+2025-06-05 00:52:02.089 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuditoriaImpl:add:81] - [00366519@uca.edu.sv] Auditoria creada correctamente: {"id":37,"usuario":{"id":2,"nombre":"Andrea Amaya","email":"00366519@uca.edu.sv","rol":{"codigo":"ROL_1","descripcion":"admin"},"activo":true,"creadoEn":"2025-05-18T04:36:53.763+00:00","esPasswordProvisional":true},"tablaAfectada":"usuarios","operacion":"crear","registroId":"11","descripcion":"Se realizó la operación 'crear' sobre la tabla 'usuarios' con los datos: {\"id\":11,\"nombre\":\"Prueba 2\",\"email\":\"prueba2@gmail.com\",\"rol\":{\"codigo\":\"ROL_3\",\"descripcion\":null},\"activo\":true,\"creadoEn\":\"2025-06-05T06:52:01.933+00:00\",\"esPasswordProvisional\":true}","fecha":"2025-06-05T06:52:02.059+00:00"}
+2025-06-05 00:52:02.090 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:addUser:120] - [00366519@uca.edu.sv] ------ Fin de servicio '/add'
+2025-06-05 00:52:02.093 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 00:52:02.093 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-05 00:52:02.094 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Usuario prueba2@gmail.com creado exitosamente. Contraseña provisional: 04a76651"}
+2025-06-05 00:52:02.094 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 00:52:52.868 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 00:52:52.869 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 00:52:52.869 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 00:52:52.870 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-06-05 00:52:52.870 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 00:52:52.871 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 00:52:52.872 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer
+2025-06-05 00:52:52.874 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [prueba2@gmail.com] ------ Inicio de servicio 'test/testConnection' {"email":"prueba2@gmail.com","password":"04a76651"}
+2025-06-05 00:52:52.875 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [prueba2@gmail.com] Request válido
+2025-06-05 00:52:52.882 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [prueba2@gmail.com] Usuario encontrado correctamente: Usuario(id=11, nombre=Prueba 2, email=prueba2@gmail.com, contrasenaHash=$2a$10$zzmjPhFvpV20QZ45CMGqNuCA5ZttqPP9cUEn5utKEMJGnoEEWLuEu, rol=com.uca.idhuca.sistema.indicadores.models.Catalogo@15df1eaf, activo=true, creadoEn=2025-06-05 00:52:01.933, esPasswordProvisional=true)
+2025-06-05 00:52:52.986 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [prueba2@gmail.com] Autenticación correcta.
+2025-06-05 00:52:52.988 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [prueba2@gmail.com] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcnVlYmEyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTEwNjM3MiwiZXhwIjoxNzQ5MTkyNzcyfQ.2nW2z-UZCqnNDOBmVSoJZDb9hkIFnTBkamc3dK6O2JjarOSAipOeggpgorXFm1gOrRhb-nKfUYyZjNrdVxagzg
+2025-06-05 00:52:52.989 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [prueba2@gmail.com] ------ Fin de servicio 'test/testConnection'
+2025-06-05 00:52:52.990 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 00:52:52.991 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-05 00:52:52.992 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcnVlYmEyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTEwNjM3MiwiZXhwIjoxNzQ5MTkyNzcyfQ.2nW2z-UZCqnNDOBmVSoJZDb9hkIFnTBkamc3dK6O2JjarOSAipOeggpgorXFm1gOrRhb-nKfUYyZjNrdVxagzg"}}
+2025-06-05 00:52:52.992 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 00:54:00.742 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 00:54:00.743 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 00:54:00.743 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 00:54:00.743 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/change/password
+2025-06-05 00:54:00.743 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 00:54:00.744 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 00:54:00.744 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTA5ODE4OCwiZXhwIjoxNzQ5MTg0NTg4fQ.Dj7D8N2T8-qdQgNaR9hAgPeV_6a-039IpoMk_txNelsqrCcLJoHRlqhsoBFu0rzW2qPDnDGwhR2ev9039y7YgQ
+2025-06-05 00:54:00.752 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:172] - [javieu2@gmail.com] ------ Inicio de servicio '/update' {"nombre":null,"email":"prueba2@gmail.com","id":null,"provisionalPassword":null,"password":"04a76651","rol":null,"securityQuestion":{"codigo":"SQ_01","descripcion":null},"securityAnswer":"Homero","newPassword":"prueba2P","debloquearUsuario":false}
+2025-06-05 00:54:00.864 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:changePassword:322] - [prueba2@gmail.com] Contraseña actual válida.
+2025-06-05 00:54:00.880 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:183] - [javieu2@gmail.com] ------ Fin de servicio '/update' 
+2025-06-05 00:54:00.882 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 00:54:00.883 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-05 00:54:00.883 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"Recovery no existe"}
+2025-06-05 00:54:00.883 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 01:03:27.791 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 01:03:27.800 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 01:03:27.800 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 01:03:27.801 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/change/password
+2025-06-05 01:03:27.801 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 01:03:27.801 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 01:03:27.801 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTA5ODE4OCwiZXhwIjoxNzQ5MTg0NTg4fQ.Dj7D8N2T8-qdQgNaR9hAgPeV_6a-039IpoMk_txNelsqrCcLJoHRlqhsoBFu0rzW2qPDnDGwhR2ev9039y7YgQ
+2025-06-05 01:03:27.824 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:172] - [javieu2@gmail.com] ------ Inicio de servicio '/update' {"nombre":null,"email":"prueba2@gmail.com","id":null,"provisionalPassword":null,"password":"04a76651","rol":null,"securityQuestion":{"codigo":"SQ_01","descripcion":null},"securityAnswer":"Homero","newPassword":"prueba2P","debloquearUsuario":false}
+2025-06-05 01:03:27.921 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:changePassword:322] - [prueba2@gmail.com] Contraseña actual válida.
+2025-06-05 01:03:27.931 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:183] - [javieu2@gmail.com] ------ Fin de servicio '/update' 
+2025-06-05 01:03:27.936 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 01:03:27.937 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-05 01:03:27.937 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"Recovery no existe"}
+2025-06-05 01:03:27.938 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 01:15:18.508 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-05 01:15:18.559 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-06-05 01:15:18.588 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 01:15:18.628 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-06-05 01:15:18.646 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-06-05 01:16:29.700 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 20000 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-06-05 01:16:29.704 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-05 01:16:29.705 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-06-05 01:16:30.468 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 01:16:30.641 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 165 ms. Found 9 JPA repository interfaces.
+2025-06-05 01:16:31.217 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-06-05 01:16:31.244 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-06-05 01:16:31.247 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-06-05 01:16:31.248 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-05 01:16:31.315 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-06-05 01:16:31.316 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 1561 ms
+2025-06-05 01:16:31.455 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-05 01:16:31.528 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-05 01:16:31.584 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-06-05 01:16:31.872 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-05 01:16:31.901 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-06-05 01:16:32.142 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@79604abe
+2025-06-05 01:16:32.145 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-06-05 01:16:32.256 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-05 01:16:33.627 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-05 01:16:35.294 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 01:16:35.641 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-05 01:16:35.643 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-06-05 01:16:35.693 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-05 01:16:36.431 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-05 01:16:36.473 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-06-05 01:16:36.527 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-05 01:16:36.646 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-05 01:16:36.885 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-06-05 01:16:36.909 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-06-05 01:16:36.917 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 7.892 seconds (process running for 8.976)
+2025-06-05 01:16:43.622 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-05 01:16:43.623 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-06-05 01:16:43.624 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 0 ms
+2025-06-05 01:16:43.914 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 01:16:43.915 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 01:16:43.916 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 01:16:43.916 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/change/password
+2025-06-05 01:16:43.917 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 01:16:43.917 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 01:16:43.918 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTA5ODE4OCwiZXhwIjoxNzQ5MTg0NTg4fQ.Dj7D8N2T8-qdQgNaR9hAgPeV_6a-039IpoMk_txNelsqrCcLJoHRlqhsoBFu0rzW2qPDnDGwhR2ev9039y7YgQ
+2025-06-05 01:16:44.048 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:172] - [javieu2@gmail.com] ------ Inicio de servicio '/update' {"nombre":null,"email":"prueba2@gmail.com","id":null,"provisionalPassword":null,"password":"04a76651","rol":null,"securityQuestion":{"codigo":"SQ_01","descripcion":null},"securityAnswer":"Homero","newPassword":"prueba2P","debloquearUsuario":false}
+2025-06-05 01:16:44.159 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:changePassword:322] - [04a76651] Contraseña actual válida.
+2025-06-05 01:16:44.171 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:183] - [javieu2@gmail.com] ------ Fin de servicio '/update' 
+2025-06-05 01:16:44.188 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 01:16:44.189 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-05 01:16:44.189 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"No existe configuración de recuperación para este usuario"}
+2025-06-05 01:16:44.190 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 01:23:24.240 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-05 01:23:24.302 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-06-05 01:23:24.325 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 01:23:24.363 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-06-05 01:23:24.385 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-06-05 01:23:51.799 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 17.0.3.1 with PID 12096 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-06-05 01:23:51.803 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-05 01:23:51.804 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "@active.profile@"
+2025-06-05 01:23:53.119 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 01:23:53.274 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 141 ms. Found 9 JPA repository interfaces.
+2025-06-05 01:23:54.198 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-06-05 01:23:54.214 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-06-05 01:23:54.216 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-06-05 01:23:54.216 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-05 01:23:54.297 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-06-05 01:23:54.297 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 2428 ms
+2025-06-05 01:23:54.317 [main] ERROR [org.springframework.boot.web.embedded.tomcat.TomcatStarter:onStartup:60] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter': Unsatisfied dependency expressed through field 'jwtUtils': Error creating bean with name 'jwtUtils' defined in file [D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes\com\uca\idhuca\sistema\indicadores\security\JwtUtils.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'projectProperties': Injection of autowired dependencies failed
+2025-06-05 01:23:54.349 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Stopping service [Tomcat]
+2025-06-05 01:23:54.361 [main] WARN  [org.springframework.context.support.AbstractApplicationContext:refresh:635] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-06-05 01:23:54.371 [main] INFO  [org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger:logMessage:82] - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-05 01:23:54.389 [main] ERROR [org.springframework.boot.SpringApplication:reportFailure:857] - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.uca.idhuca.sistema.indicadores.SistemaIndicadoresIdhucaApplication.main(SistemaIndicadoresIdhucaApplication.java:12)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	... 8 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter': Unsatisfied dependency expressed through field 'jwtUtils': Error creating bean with name 'jwtUtils' defined in file [D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes\com\uca\idhuca\sistema\indicadores\security\JwtUtils.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'projectProperties': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:788)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1445)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:211)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:174)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:169)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:154)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:87)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4467)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:264)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:264)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:415)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtUtils' defined in file [D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes\com\uca\idhuca\sistema\indicadores\security\JwtUtils.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'projectProperties': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1381)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1609)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	... 57 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'projectProperties': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:515)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1445)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1609)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 69 common frames omitted
+Caused by: org.springframework.util.PlaceholderResolutionException: Could not resolve placeholder 'spring.datasource.url' in value "${spring.datasource.url}"
+	at org.springframework.util.PlaceholderResolutionException.withValue(PlaceholderResolutionException.java:81)
+	at org.springframework.util.PlaceholderParser$ParsedValue.resolve(PlaceholderParser.java:423)
+	at org.springframework.util.PlaceholderParser.replacePlaceholders(PlaceholderParser.java:128)
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:118)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:114)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:255)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:226)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:201)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:971)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1577)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	... 80 common frames omitted
+2025-06-05 01:26:07.786 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 17.0.3.1 with PID 18504 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-06-05 01:26:07.789 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-05 01:26:07.790 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-06-05 01:26:08.894 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 01:26:09.023 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 116 ms. Found 9 JPA repository interfaces.
+2025-06-05 01:26:09.801 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-06-05 01:26:09.816 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-06-05 01:26:09.818 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-06-05 01:26:09.819 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-05 01:26:09.888 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-06-05 01:26:09.888 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 2044 ms
+2025-06-05 01:26:10.059 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-05 01:26:10.151 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-05 01:26:10.214 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-06-05 01:26:10.710 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-05 01:26:10.748 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-06-05 01:26:11.015 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@702f4124
+2025-06-05 01:26:11.018 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-06-05 01:26:11.151 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-05 01:26:12.783 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-05 01:26:15.005 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 01:26:15.424 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-05 01:26:15.425 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-06-05 01:26:15.491 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-05 01:26:16.272 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-05 01:26:16.336 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-06-05 01:26:16.423 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-05 01:26:16.606 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-05 01:26:16.899 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-06-05 01:26:16.922 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-06-05 01:26:16.933 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 9.995 seconds (process running for 11.28)
+2025-06-05 01:26:26.962 [http-nio-8080-exec-5] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-05 01:26:26.962 [http-nio-8080-exec-5] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-06-05 01:26:26.963 [http-nio-8080-exec-5] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 1 ms
+2025-06-05 01:26:27.374 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-05 01:26:27.375 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-05 01:26:27.375 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-05 01:26:27.376 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/change/password
+2025-06-05 01:26:27.377 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-06-05 01:26:27.377 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-06-05 01:26:27.378 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZpZXUyQGdtYWlsLmNvbSIsImlhdCI6MTc0OTA5ODE4OCwiZXhwIjoxNzQ5MTg0NTg4fQ.Dj7D8N2T8-qdQgNaR9hAgPeV_6a-039IpoMk_txNelsqrCcLJoHRlqhsoBFu0rzW2qPDnDGwhR2ev9039y7YgQ
+2025-06-05 01:26:27.539 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:172] - [javieu2@gmail.com] ------ Inicio de servicio '/update' {"nombre":null,"email":"prueba2@gmail.com","id":null,"provisionalPassword":null,"password":"04a76651","rol":null,"securityQuestion":{"codigo":"SQ_01","descripcion":null},"securityAnswer":"Homero","newPassword":"prueba2P","debloquearUsuario":false}
+2025-06-05 01:26:27.669 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.UserImpl:changePassword:322] - [04a76651] Contraseña actual válida.
+2025-06-05 01:27:37.969 [HikariPool-1 housekeeper] WARN  [com.zaxxer.hikari.pool.HikariPool$HouseKeeper:run:797] - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=52s159ms625µs).
+2025-06-05 01:27:57.119 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:changePassword:183] - [javieu2@gmail.com] ------ Fin de servicio '/update' 
+2025-06-05 01:27:57.136 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-05 01:27:57.136 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-05 01:27:57.137 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"No existe configuración de recuperación para este usuario"}
+2025-06-05 01:27:57.137 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-05 01:27:59.039 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-05 01:27:59.126 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-06-05 01:27:59.131 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 01:27:59.133 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-06-05 01:27:59.138 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.

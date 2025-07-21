@@ -1,0 +1,685 @@
+2025-07-20 10:50:10.906 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 21596 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-20 10:50:10.916 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-20 10:50:10.918 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-20 10:50:12.813 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-20 10:50:13.010 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 181 ms. Found 9 JPA repository interfaces.
+2025-07-20 10:50:14.816 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-20 10:50:14.842 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-20 10:50:14.846 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-20 10:50:14.847 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-20 10:50:15.115 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-20 10:50:15.135 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-20 10:50:15.138 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 4118 ms
+2025-07-20 10:50:15.895 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-20 10:50:16.029 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-20 10:50:16.105 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-20 10:50:16.709 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-20 10:50:16.792 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-20 10:50:17.206 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@65a80fdb
+2025-07-20 10:50:17.209 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-20 10:50:17.389 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-20 10:50:20.012 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-20 10:50:22.553 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 10:50:23.270 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-20 10:50:23.641 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-20 10:50:23.644 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-20 10:50:23.736 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:createDirectoriesIfNotExist:81] - Directorio de backups creado: D:\app\data\backups
+2025-07-20 10:50:23.737 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 10:50:24.610 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:validatePgDump:67] - pg_dump encontrado y funcional: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 10:50:26.211 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-20 10:50:26.381 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-20 10:50:26.568 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 10:50:27.302 [main] INFO  [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver:<init>:60] - Exposing 1 endpoint beneath base path '/actuator'
+2025-07-20 10:50:27.360 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 10:50:28.402 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-20 10:50:28.459 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-20 10:50:28.502 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 18.572 seconds (process running for 19.275)
+2025-07-20 10:53:52.749 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-20 10:53:52.750 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-20 10:53:52.754 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 2 ms
+2025-07-20 10:53:52.823 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 10:53:52.824 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 10:53:52.824 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 10:53:52.825 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-07-20 10:53:52.825 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 10:53:52.826 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 10:53:52.826 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-07-20 10:53:52.987 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00139419@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00139419@uca.edu.sv","password":"123"}
+2025-07-20 10:53:53.019 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00139419@uca.edu.sv] Request válido
+2025-07-20 10:53:53.241 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00139419@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Daniel Morales, email=00139419@uca.edu.sv, contrasenaHash=$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-06-14 19:51:01.174089, esPasswordProvisional=false)
+2025-07-20 10:53:53.377 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00139419@uca.edu.sv] Autenticación correcta.
+2025-07-20 10:53:53.378 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:86] - [SYSTEM] Request válido
+2025-07-20 10:53:54.356 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00139419@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUzMDMwNDM0LCJleHAiOjMxMjc5MzAzMDQzNH0.ptAiVY21IAdJ3PB_IiJ3rYN0kFW2LpL1HG4AjPVfnprxrHnUSUEP00ADFNLGv-w5mJXzRq4uNMqgKM_5Yf6RCQ
+2025-07-20 10:53:54.384 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00139419@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-07-20 10:53:54.429 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 10:53:54.430 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 10:53:54.430 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUzMDMwNDM0LCJleHAiOjMxMjc5MzAzMDQzNH0.ptAiVY21IAdJ3PB_IiJ3rYN0kFW2LpL1HG4AjPVfnprxrHnUSUEP00ADFNLGv-w5mJXzRq4uNMqgKM_5Yf6RCQ"},"paginacionInfo":null}
+2025-07-20 10:53:54.431 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 10:54:14.475 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 10:54:14.475 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 10:54:14.476 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 10:54:14.476 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba/execute
+2025-07-20 10:54:14.477 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 10:54:14.477 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 10:54:14.478 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 10:54:14.488 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:233] - Iniciando backup: backup_prueba
+2025-07-20 10:54:14.488 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba
+2025-07-20 10:54:14.489 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 10:54:14.494 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 10:54:14.495 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 10:54:14.496 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba","status":"success"}
+2025-07-20 10:54:14.496 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 10:54:14.617 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:293] - Error al realizar backup 'backup_prueba': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:239)
+	at com.uca.idhuca.sistema.indicadores.controllers.BackupController.lambda$executeManualBackup$0(BackupController.java:181)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 10:54:14.622 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.controllers.BackupController:lambda$executeManualBackup$0:183] - Error en backup manual 'backup_prueba': Error al realizar backup: No se puede conectar a la base de datos
+2025-07-20 10:55:18.529 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 10:55:18.530 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 10:55:18.530 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 10:55:18.531 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba1/execute
+2025-07-20 10:55:18.531 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 10:55:18.531 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 10:55:18.532 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 10:55:18.534 [Thread-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:233] - Iniciando backup: backup_prueba1
+2025-07-20 10:55:18.534 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba1
+2025-07-20 10:55:18.534 [Thread-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 10:55:18.535 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 10:55:18.536 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 10:55:18.536 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba1","status":"success"}
+2025-07-20 10:55:18.536 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 10:55:18.590 [Thread-2] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:293] - Error al realizar backup 'backup_prueba1': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:239)
+	at com.uca.idhuca.sistema.indicadores.controllers.BackupController.lambda$executeManualBackup$0(BackupController.java:181)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 10:55:18.593 [Thread-2] ERROR [com.uca.idhuca.sistema.indicadores.controllers.BackupController:lambda$executeManualBackup$0:183] - Error en backup manual 'backup_prueba1': Error al realizar backup: No se puede conectar a la base de datos
+2025-07-20 10:56:17.258 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-20 10:56:17.270 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-20 10:56:17.281 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 10:56:17.285 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-20 10:56:17.288 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-07-20 10:57:16.583 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 21420 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-20 10:57:16.587 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-20 10:57:16.588 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-20 10:57:17.800 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-20 10:57:17.917 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 106 ms. Found 9 JPA repository interfaces.
+2025-07-20 10:57:18.825 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-20 10:57:18.840 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-20 10:57:18.845 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-20 10:57:18.846 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-20 10:57:19.007 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-20 10:57:19.019 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-20 10:57:19.021 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 2374 ms
+2025-07-20 10:57:19.437 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-20 10:57:19.493 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-20 10:57:19.555 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-20 10:57:19.996 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-20 10:57:20.029 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-20 10:57:20.190 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2f262474
+2025-07-20 10:57:20.192 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-20 10:57:20.303 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-20 10:57:21.805 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-20 10:57:23.246 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 10:57:23.723 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-20 10:57:24.013 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-20 10:57:24.016 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-20 10:57:24.042 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 10:57:24.098 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:validatePgDump:67] - pg_dump encontrado y funcional: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 10:57:24.883 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-20 10:57:24.942 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-20 10:57:25.061 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 10:57:25.389 [main] INFO  [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver:<init>:60] - Exposing 1 endpoint beneath base path '/actuator'
+2025-07-20 10:57:25.415 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 10:57:26.036 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-20 10:57:26.069 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-20 10:57:26.086 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 10.164 seconds (process running for 10.577)
+2025-07-20 10:57:50.185 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-20 10:57:50.185 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-20 10:57:50.188 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 2 ms
+2025-07-20 10:57:50.444 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 10:57:50.445 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 10:57:50.445 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 10:57:50.446 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba1/execute
+2025-07-20 10:57:50.446 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 10:57:50.446 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 10:57:50.447 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 10:57:50.476 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:233] - Iniciando backup: backup_prueba1
+2025-07-20 10:57:50.476 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba1
+2025-07-20 10:57:50.476 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 10:57:50.521 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 10:57:50.522 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 10:57:50.523 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba1","status":"success"}
+2025-07-20 10:57:50.523 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 10:57:50.542 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:293] - Error al realizar backup 'backup_prueba1': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:239)
+	at com.uca.idhuca.sistema.indicadores.controllers.BackupController.lambda$executeManualBackup$0(BackupController.java:181)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 10:57:50.546 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.controllers.BackupController:lambda$executeManualBackup$0:183] - Error en backup manual 'backup_prueba1': Error al realizar backup: No se puede conectar a la base de datos
+2025-07-20 11:01:58.042 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 11:01:58.043 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 11:01:58.043 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 11:01:58.043 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba1/execute
+2025-07-20 11:01:58.044 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 11:01:58.044 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 11:01:58.044 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 11:01:58.046 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba1
+2025-07-20 11:01:58.047 [Thread-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:233] - Iniciando backup: backup_prueba1
+2025-07-20 11:01:58.047 [Thread-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 11:01:58.048 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 11:01:58.049 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 11:01:58.049 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba1","status":"success"}
+2025-07-20 11:01:58.050 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 11:01:58.105 [Thread-2] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:293] - Error al realizar backup 'backup_prueba1': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:239)
+	at com.uca.idhuca.sistema.indicadores.controllers.BackupController.lambda$executeManualBackup$0(BackupController.java:181)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 11:01:58.107 [Thread-2] ERROR [com.uca.idhuca.sistema.indicadores.controllers.BackupController:lambda$executeManualBackup$0:183] - Error en backup manual 'backup_prueba1': Error al realizar backup: No se puede conectar a la base de datos
+2025-07-20 11:50:43.749 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-20 11:50:43.784 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-20 11:50:43.826 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 11:50:43.870 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-20 11:50:43.883 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-07-20 11:51:12.214 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 7048 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-20 11:51:12.215 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-20 11:51:12.216 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-20 11:51:13.288 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-20 11:51:13.404 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 107 ms. Found 9 JPA repository interfaces.
+2025-07-20 11:51:14.273 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-20 11:51:14.286 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-20 11:51:14.289 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-20 11:51:14.289 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-20 11:51:14.442 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-20 11:51:14.452 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-20 11:51:14.453 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 2178 ms
+2025-07-20 11:51:14.806 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-20 11:51:14.857 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-20 11:51:14.907 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-20 11:51:15.327 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-20 11:51:15.363 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-20 11:51:15.536 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5d15789f
+2025-07-20 11:51:15.538 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-20 11:51:15.617 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-20 11:51:16.909 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-20 11:51:18.612 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 11:51:19.174 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-20 11:51:19.466 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-20 11:51:19.470 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-20 11:51:19.495 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 11:51:19.953 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:validatePgDump:67] - pg_dump encontrado y funcional: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 11:51:20.671 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-20 11:51:20.778 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-20 11:51:20.847 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 11:51:21.227 [main] INFO  [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver:<init>:60] - Exposing 1 endpoint beneath base path '/actuator'
+2025-07-20 11:51:21.285 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 11:51:21.815 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-20 11:51:21.849 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-20 11:51:21.864 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 10.298 seconds (process running for 10.712)
+2025-07-20 11:51:27.593 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-20 11:51:27.594 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-20 11:51:27.596 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 0 ms
+2025-07-20 11:51:27.847 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 11:51:27.848 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 11:51:27.849 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 11:51:27.849 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba1/execute
+2025-07-20 11:51:27.849 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 11:51:27.850 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 11:51:27.850 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 11:51:27.879 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:233] - Iniciando backup: backup_prueba1
+2025-07-20 11:51:27.879 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba1
+2025-07-20 11:51:27.880 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:112] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 11:51:27.913 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 11:51:27.914 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 11:51:27.914 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba1","status":"success"}
+2025-07-20 11:51:27.915 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 11:51:27.950 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:293] - Error al realizar backup 'backup_prueba1': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:239)
+	at com.uca.idhuca.sistema.indicadores.controllers.BackupController.lambda$executeManualBackup$0(BackupController.java:181)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 11:51:27.956 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.controllers.BackupController:lambda$executeManualBackup$0:183] - Error en backup manual 'backup_prueba1': Error al realizar backup: No se puede conectar a la base de datos
+2025-07-20 12:16:22.975 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-20 12:16:22.987 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-20 12:16:22.994 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 12:16:22.997 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-20 12:16:23.003 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-07-20 12:17:12.004 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 22140 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-20 12:17:12.007 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-20 12:17:12.008 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-20 12:17:13.232 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-20 12:17:13.357 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 108 ms. Found 9 JPA repository interfaces.
+2025-07-20 12:17:14.235 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-20 12:17:14.254 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-20 12:17:14.257 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-20 12:17:14.258 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-20 12:17:14.415 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-20 12:17:14.426 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-20 12:17:14.427 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 2368 ms
+2025-07-20 12:17:14.772 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-20 12:17:14.825 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-20 12:17:14.900 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-20 12:17:15.280 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-20 12:17:15.317 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-20 12:17:15.495 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@17189618
+2025-07-20 12:17:15.498 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-20 12:17:15.570 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-20 12:17:16.998 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-20 12:17:18.482 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 12:17:18.972 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-20 12:17:19.308 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-20 12:17:19.311 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-20 12:17:19.337 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:init:42] - Inicializando servicio de backup configurable...
+2025-07-20 12:17:19.338 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 12:17:19.393 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:validatePgDump:70] - pg_dump encontrado y funcional: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 12:17:19.394 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:initializeSchedules:161] - Inicializando sistema de backup...
+2025-07-20 12:17:19.395 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:initializeSchedules:162] - Configuración: BackupConfig{backupDir='./backups-dev', dbHost='localhost', dbUser='admin', dbName='tesis', enabled=true, dbPort='5432', schedules=1}
+2025-07-20 12:17:19.398 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:initializeSchedules:165] - Configurando 1 schedules...
+2025-07-20 12:17:19.404 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:scheduleBackup:217] - Backup programado exitosamente: 'backup-test' con expresión CRON: '0 */5 * * * *'
+2025-07-20 12:17:19.405 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:initializeSchedules:171] - Schedule 'backup-test' configurado correctamente
+2025-07-20 12:17:20.256 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-20 12:17:20.313 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-20 12:17:20.381 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 12:17:20.752 [main] INFO  [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver:<init>:60] - Exposing 1 endpoint beneath base path '/actuator'
+2025-07-20 12:17:20.809 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 12:17:21.274 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-20 12:17:21.299 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-20 12:17:21.313 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 9.965 seconds (process running for 10.371)
+2025-07-20 12:20:00.002 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:lambda$scheduleBackup$0:196] - Ejecutando backup programado: backup-test
+2025-07-20 12:20:00.003 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:237] - Iniciando backup: backup-test
+2025-07-20 12:20:00.003 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 12:20:00.051 [backup-scheduler-1] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:297] - Error al realizar backup 'backup-test': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 12:20:00.056 [backup-scheduler-1] ERROR [org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler:handleError:95] - Unexpected error occurred in scheduled task
+java.lang.RuntimeException: Error al realizar backup: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:298)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+Caused by: java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	... 10 common frames omitted
+2025-07-20 12:25:00.000 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:lambda$scheduleBackup$0:196] - Ejecutando backup programado: backup-test
+2025-07-20 12:25:00.003 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:237] - Iniciando backup: backup-test
+2025-07-20 12:25:00.005 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 12:25:00.057 [backup-scheduler-1] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:297] - Error al realizar backup 'backup-test': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 12:25:00.059 [backup-scheduler-1] ERROR [org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler:handleError:95] - Unexpected error occurred in scheduled task
+java.lang.RuntimeException: Error al realizar backup: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:298)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+Caused by: java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	... 10 common frames omitted
+2025-07-20 12:30:00.001 [backup-scheduler-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:lambda$scheduleBackup$0:196] - Ejecutando backup programado: backup-test
+2025-07-20 12:30:00.002 [backup-scheduler-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:237] - Iniciando backup: backup-test
+2025-07-20 12:30:00.003 [backup-scheduler-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 12:30:00.052 [backup-scheduler-2] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:297] - Error al realizar backup 'backup-test': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 12:30:00.054 [backup-scheduler-2] ERROR [org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler:handleError:95] - Unexpected error occurred in scheduled task
+java.lang.RuntimeException: Error al realizar backup: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:298)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+Caused by: java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	... 10 common frames omitted
+2025-07-20 12:35:00.000 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:lambda$scheduleBackup$0:196] - Ejecutando backup programado: backup-test
+2025-07-20 12:35:00.000 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:237] - Iniciando backup: backup-test
+2025-07-20 12:35:00.001 [backup-scheduler-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 12:35:00.045 [backup-scheduler-1] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:297] - Error al realizar backup 'backup-test': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 12:35:00.047 [backup-scheduler-1] ERROR [org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler:handleError:95] - Unexpected error occurred in scheduled task
+java.lang.RuntimeException: Error al realizar backup: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:298)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+Caused by: java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	... 10 common frames omitted
+2025-07-20 13:32:27.176 [HikariPool-1 housekeeper] WARN  [com.zaxxer.hikari.pool.HikariPool$HouseKeeper:run:797] - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=55m11s560ms493µs200ns).
+2025-07-20 13:32:37.746 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-20 13:32:37.747 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-20 13:32:37.749 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 2 ms
+2025-07-20 13:32:38.054 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 13:32:38.055 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 13:32:38.055 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 13:32:38.056 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba1/execute
+2025-07-20 13:32:38.056 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 13:32:38.056 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 13:32:38.056 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 13:32:38.086 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:237] - Iniciando backup: backup_prueba1
+2025-07-20 13:32:38.086 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba1
+2025-07-20 13:32:38.087 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 13:32:38.137 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 13:32:38.138 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 13:32:38.139 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba1","status":"success"}
+2025-07-20 13:32:38.139 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 13:32:38.540 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:297] - Error al realizar backup 'backup_prueba1': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	at com.uca.idhuca.sistema.indicadores.controllers.BackupController.lambda$executeManualBackup$0(BackupController.java:181)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 13:32:38.541 [Thread-1] ERROR [com.uca.idhuca.sistema.indicadores.controllers.BackupController:lambda$executeManualBackup$0:183] - Error en backup manual 'backup_prueba1': Error al realizar backup: No se puede conectar a la base de datos
+2025-07-20 13:34:41.515 [backup-scheduler-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:lambda$scheduleBackup$0:196] - Ejecutando backup programado: backup-test
+2025-07-20 13:34:41.516 [backup-scheduler-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:237] - Iniciando backup: backup-test
+2025-07-20 13:34:41.516 [backup-scheduler-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 13:34:41.574 [backup-scheduler-3] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:297] - Error al realizar backup 'backup-test': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 13:34:41.575 [backup-scheduler-3] ERROR [org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler:handleError:95] - Unexpected error occurred in scheduled task
+java.lang.RuntimeException: Error al realizar backup: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:298)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+Caused by: java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	... 10 common frames omitted
+2025-07-20 13:35:00.002 [backup-scheduler-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:lambda$scheduleBackup$0:196] - Ejecutando backup programado: backup-test
+2025-07-20 13:35:00.003 [backup-scheduler-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:237] - Iniciando backup: backup-test
+2025-07-20 13:35:00.003 [backup-scheduler-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:116] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 13:35:00.046 [backup-scheduler-3] ERROR [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:297] - Error al realizar backup 'backup-test': No se puede conectar a la base de datos
+java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-20 13:35:00.048 [backup-scheduler-3] ERROR [org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler:handleError:95] - Unexpected error occurred in scheduled task
+java.lang.RuntimeException: Error al realizar backup: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:298)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:227)
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.lambda$scheduleBackup$0(IConfigurableBackupService.java:197)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+Caused by: java.lang.RuntimeException: No se puede conectar a la base de datos
+	at com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService.realizarBackup(IConfigurableBackupService.java:243)
+	... 10 common frames omitted
+2025-07-20 13:38:41.626 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-20 13:38:41.638 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-20 13:38:41.648 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 13:38:41.652 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-20 13:38:41.658 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-07-20 13:39:08.818 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 19664 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-20 13:39:08.822 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-20 13:39:08.822 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-20 13:39:09.869 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-20 13:39:10.015 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 134 ms. Found 9 JPA repository interfaces.
+2025-07-20 13:39:10.851 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-20 13:39:10.865 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-20 13:39:10.868 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-20 13:39:10.869 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-20 13:39:11.025 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-20 13:39:11.034 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-20 13:39:11.035 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 2162 ms
+2025-07-20 13:39:11.378 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-20 13:39:11.426 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-20 13:39:11.492 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-20 13:39:11.786 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-20 13:39:11.846 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-20 13:39:12.025 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4c164f81
+2025-07-20 13:39:12.029 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-20 13:39:12.095 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-20 13:39:13.360 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-20 13:39:16.347 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 13:39:16.744 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-20 13:39:17.031 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-20 13:39:17.035 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-20 13:39:17.077 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:93] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 13:39:17.219 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:validatePgDump:64] - pg_dump encontrado y funcional: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 13:39:17.948 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-20 13:39:18.050 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-20 13:39:18.111 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 13:39:18.403 [main] INFO  [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver:<init>:60] - Exposing 1 endpoint beneath base path '/actuator'
+2025-07-20 13:39:18.453 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 13:39:18.925 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-20 13:39:18.958 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-20 13:39:18.985 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 10.756 seconds (process running for 11.194)
+2025-07-20 13:41:27.280 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-20 13:41:27.281 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-20 13:41:27.286 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 2 ms
+2025-07-20 13:41:27.932 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 13:41:27.933 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 13:41:27.934 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 13:41:27.935 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba1/execute
+2025-07-20 13:41:27.935 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 13:41:27.936 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 13:41:27.937 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 13:41:28.000 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:214] - Iniciando backup: backup_prueba1
+2025-07-20 13:41:28.000 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba1
+2025-07-20 13:41:28.002 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:93] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 13:41:28.004 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:268] - Ejecutando comando: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe -h localhost -p 5432 -U admin -d tesis -F p --no-password -f D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\.\backups-dev\backup_backup_prueba1_20250720_134128.sql
+2025-07-20 13:41:28.074 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 13:41:28.075 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 13:41:28.076 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba1","status":"success"}
+2025-07-20 13:41:28.077 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 13:41:29.574 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:276] - Backup completado exitosamente: 'backup_prueba1' | Archivo: D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\.\backups-dev\backup_backup_prueba1_20250720_134128.sql | Tamaño: 103785 bytes | Duración: 1573 ms
+2025-07-20 14:17:28.905 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-20 14:17:28.939 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-20 14:17:29.013 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 14:17:29.046 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-20 14:17:29.065 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-07-20 14:23:48.842 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 24012 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-20 14:23:48.846 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-20 14:23:48.847 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-20 14:23:51.349 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-20 14:23:51.634 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 262 ms. Found 9 JPA repository interfaces.
+2025-07-20 14:23:53.964 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-20 14:23:54.004 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-20 14:23:54.010 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-20 14:23:54.011 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-20 14:23:54.544 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-20 14:23:54.557 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-20 14:23:54.560 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 5599 ms
+2025-07-20 14:23:55.332 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-20 14:23:55.454 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-20 14:23:55.541 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-20 14:23:56.452 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-20 14:23:56.535 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-20 14:23:56.913 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6aadb092
+2025-07-20 14:23:56.918 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-20 14:23:57.264 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-20 14:24:00.672 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-20 14:24:03.493 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 14:24:04.614 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-20 14:24:05.193 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-20 14:24:05.198 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-20 14:24:05.276 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:100] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 14:24:05.439 [main] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:validatePgDump:71] - pg_dump encontrado y funcional: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 14:24:07.401 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-20 14:24:07.531 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-20 14:24:07.796 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 14:24:08.660 [main] INFO  [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver:<init>:60] - Exposing 1 endpoint beneath base path '/actuator'
+2025-07-20 14:24:08.739 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-20 14:24:10.083 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-20 14:24:10.155 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-20 14:24:10.187 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 22.707 seconds (process running for 23.605)
+2025-07-20 14:24:36.685 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-20 14:24:36.688 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-20 14:24:36.692 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 3 ms
+2025-07-20 14:24:37.442 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 14:24:37.444 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 14:24:37.446 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-20 14:24:37.448 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules/backup_prueba2/execute
+2025-07-20 14:24:37.449 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 14:24:37.450 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 14:24:37.451 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ
+2025-07-20 14:24:37.518 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:264] - Iniciando backup: backup_prueba2
+2025-07-20 14:24:37.517 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.BackupController:executeManualBackup:191] - Backup manual iniciado vía API: backup_prueba2
+2025-07-20 14:24:37.519 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:getPgDumpCommand:100] - Usando pg_dump desde ruta personalizada: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe
+2025-07-20 14:24:37.521 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:createAndValidateBackupDirectory:192] - Creando directorio de backup: .\data\database\.\backups-dev
+2025-07-20 14:24:37.587 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 14:24:37.599 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 14:24:37.600 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"message":"Backup manual iniciado: backup_prueba2","status":"success"}
+2025-07-20 14:24:37.600 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 14:24:37.616 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:createAndValidateBackupDirectory:204] - Directorio de backup configurado: D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\.\data\database\.\backups-dev
+2025-07-20 14:24:37.622 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:createAndValidateBackupDirectory:205] - Espacio libre en disco: 942583 MB
+2025-07-20 14:24:37.625 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:314] - Ejecutando comando: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe -h localhost -p 5432 -U admin -d tesis -F p --no-password -f D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\.\data\database\.\backups-dev\backup_backup_prueba2_20250720_142437.sql
+2025-07-20 14:24:38.561 [Thread-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.IConfigurableBackupService:realizarBackup:323] - Backup completado exitosamente: 'backup_prueba2' | Archivo: backup_backup_prueba2_20250720_142437.sql | Tamaño: 103785 bytes | Duración: 1043 ms | Directorio: D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\.\data\database\.\backups-dev
+2025-07-20 14:28:14.932 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-20 14:28:14.934 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-20 14:28:14.936 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: GET
+2025-07-20 14:28:14.938 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /api/backup/schedules
+2025-07-20 14:28:14.939 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-20 14:28:14.941 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-20 14:28:14.941 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzc0OTA0LCJleHAiOjMxMjc5MjM3NDkwNH0.5PPkp3nlOsvouDonykU0RxdYVEWwnd6dPEeeKr877u9l6VQsdzZYaOPDCcWnTqDt4u9SVqCg0x1pHsCkxx0wgQ
+2025-07-20 14:28:15.106 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-20 14:28:15.107 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-20 14:28:15.108 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"total":1,"data":[{"name":"backup-test","cronExpression":"0 */5 * * * *","enabled":true,"description":"Backup de prueba cada 5 minutos","lastExecution":null,"nextExecution":null,"validCronExpression":true}],"status":"success"}
+2025-07-20 14:28:15.110 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-20 17:08:46.323 [HikariPool-1 housekeeper] WARN  [com.zaxxer.hikari.pool.HikariPool$HouseKeeper:run:797] - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h52m19s97ms187µs).
+2025-07-20 18:14:13.462 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-20 18:14:13.619 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-20 18:14:13.691 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-20 18:14:13.756 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-20 18:14:15.272 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.

@@ -1,0 +1,600 @@
+2025-06-10 21:27:01.913 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 3928 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-06-10 21:27:01.965 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-10 21:27:01.968 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-06-10 21:27:03.588 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-10 21:27:03.888 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 257 ms. Found 9 JPA repository interfaces.
+2025-06-10 21:27:05.572 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-06-10 21:27:05.603 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-06-10 21:27:05.609 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-06-10 21:27:05.610 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-10 21:27:05.779 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-06-10 21:27:05.781 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 3713 ms
+2025-06-10 21:27:06.124 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-10 21:27:06.408 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-10 21:27:06.497 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-06-10 21:27:07.186 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-10 21:27:07.262 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-06-10 21:27:08.480 [main] WARN  [org.hibernate.engine.jdbc.spi.SqlExceptionHelper:logExceptions:145] - SQL Error: 0, SQLState: 08001
+2025-06-10 21:27:08.482 [main] ERROR [org.hibernate.engine.jdbc.spi.SqlExceptionHelper:logExceptions:150] - Connection to localhost:5432 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+2025-06-10 21:27:08.484 [main] WARN  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:getJdbcEnvironmentUsingJdbcMetadata:389] - HHH000342: Could not obtain connection to query metadata
+org.hibernate.exception.JDBCConnectionException: unable to obtain isolated JDBC connection [Connection to localhost:5432 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.] [n/a]
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:100)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:320)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1859)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:691)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1361)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1191)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1711)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1460)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1609)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1445)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1445)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:211)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:174)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:169)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:154)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:87)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4467)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:148)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:148)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:415)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.uca.idhuca.sistema.indicadores.SistemaIndicadoresIdhucaApplication.main(SistemaIndicadoresIdhucaApplication.java:10)
+Caused by: org.postgresql.util.PSQLException: Connection to localhost:5432 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:352)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:137)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:360)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:202)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:461)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:550)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:98)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:467)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
+	... 120 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:628)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:533)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:282)
+	at java.base/java.net.Socket.connect(Socket.java:665)
+	at org.postgresql.core.PGStream.createSocket(PGStream.java:260)
+	at org.postgresql.core.PGStream.<init>(PGStream.java:121)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:140)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:268)
+	... 134 common frames omitted
+2025-06-10 21:27:09.200 [main] ERROR [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:436] - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-06-10 21:27:09.205 [main] ERROR [org.springframework.boot.web.embedded.tomcat.TomcatStarter:onStartup:60] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter': Unsatisfied dependency expressed through field 'userDetailsService': Error creating bean with name 'userDetailsServiceImpl': Unsatisfied dependency expressed through field 'usuarioRepository': Error creating bean with name 'usuarioRepository' defined in com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2025-06-10 21:27:09.659 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Stopping service [Tomcat]
+2025-06-10 21:27:09.670 [main] WARN  [org.springframework.context.support.AbstractApplicationContext:refresh:635] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-06-10 21:27:09.697 [main] INFO  [org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger:logMessage:82] - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-10 21:27:09.753 [main] ERROR [org.springframework.boot.SpringApplication:reportFailure:857] - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.uca.idhuca.sistema.indicadores.SistemaIndicadoresIdhucaApplication.main(SistemaIndicadoresIdhucaApplication.java:10)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	... 8 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter': Unsatisfied dependency expressed through field 'userDetailsService': Error creating bean with name 'userDetailsServiceImpl': Unsatisfied dependency expressed through field 'usuarioRepository': Error creating bean with name 'usuarioRepository' defined in com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:788)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1445)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:211)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:174)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:169)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:154)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:87)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4467)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:148)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:148)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:415)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userDetailsServiceImpl': Unsatisfied dependency expressed through field 'usuarioRepository': Error creating bean with name 'usuarioRepository' defined in com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:788)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1445)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	... 55 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'usuarioRepository' defined in com.uca.idhuca.sistema.indicadores.repositories.UsuarioRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1711)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1460)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1609)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	... 69 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:691)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1361)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1191)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 81 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1812)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 93 common frames omitted
+Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:276)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1859)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
+	... 100 common frames omitted
+Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:191)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:87)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:181)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:392)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	... 115 common frames omitted
+2025-06-10 21:37:19.415 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 1528 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-06-10 21:37:19.419 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-10 21:37:19.423 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-06-10 21:37:21.091 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-10 21:37:21.374 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 256 ms. Found 9 JPA repository interfaces.
+2025-06-10 21:37:22.796 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-06-10 21:37:22.828 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-06-10 21:37:22.836 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-06-10 21:37:22.836 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-10 21:37:23.028 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-06-10 21:37:23.030 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 3487 ms
+2025-06-10 21:37:23.408 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-10 21:37:23.558 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-10 21:37:23.649 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-06-10 21:37:24.321 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-10 21:37:24.383 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-06-10 21:37:24.869 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2bfa17b0
+2025-06-10 21:37:24.874 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-06-10 21:37:25.046 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-10 21:37:36.234 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-10 21:37:40.439 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-10 21:37:41.967 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-10 21:37:41.970 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-06-10 21:37:42.222 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-10 21:37:44.775 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-10 21:37:44.863 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-06-10 21:37:45.005 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-10 21:37:45.285 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-06-10 21:37:45.722 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-06-10 21:37:45.770 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-06-10 21:37:45.788 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 27.738 seconds (process running for 28.584)
+2025-06-10 21:37:57.505 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-10 21:37:57.507 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-06-10 21:37:57.519 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 10 ms
+2025-06-10 21:37:57.699 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 21:37:57.700 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 21:37:57.701 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 21:37:57.702 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-06-10 21:37:57.703 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 21:37:57.704 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 21:37:57.706 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-06-10 21:37:58.037 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00366519@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00366519@uca.edu.sv","password":"admin4"}
+2025-06-10 21:37:58.054 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00366519@uca.edu.sv] Request válido
+2025-06-10 21:37:58.449 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00366519@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Andrea Amaya, email=00366519@uca.edu.sv, contrasenaHash=$2a$10$L6wsEyXVUcvAZh40soUt3.hOigON/NB5kvlKeA1JkkmKc5L188uai, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-05-17 22:36:53.763, esPasswordProvisional=false)
+2025-06-10 21:37:58.688 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00366519@uca.edu.sv] Autenticación correcta.
+2025-06-10 21:37:58.781 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00366519@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjEzMDc4LCJleHAiOjE3NDk2OTk0Nzh9.LUwlecn_AyqxN5mt5RIuW648T9V8n99X7JAHnP11JnYDWu5B7B9e2JLql67VF-dLhh75IWnVlOXiPTRVih_fiw
+2025-06-10 21:37:58.788 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00366519@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-06-10 21:37:58.815 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 21:37:58.817 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 21:37:58.818 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjEzMDc4LCJleHAiOjE3NDk2OTk0Nzh9.LUwlecn_AyqxN5mt5RIuW648T9V8n99X7JAHnP11JnYDWu5B7B9e2JLql67VF-dLhh75IWnVlOXiPTRVih_fiw"},"paginacionInfo":null}
+2025-06-10 21:37:58.819 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 21:37:59.134 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 21:37:59.136 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 21:37:59.137 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 21:37:59.139 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/get/current
+2025-06-10 21:37:59.140 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 21:37:59.141 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 21:37:59.142 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjEzMDc4LCJleHAiOjE3NDk2OTk0Nzh9.LUwlecn_AyqxN5mt5RIuW648T9V8n99X7JAHnP11JnYDWu5B7B9e2JLql67VF-dLhh75IWnVlOXiPTRVih_fiw
+2025-06-10 21:37:59.168 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:52] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get/current/'
+2025-06-10 21:37:59.169 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get/current/'
+2025-06-10 21:37:59.183 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 21:37:59.184 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 21:37:59.185 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Data obtenida correctamente","entity":{"id":2,"nombre":"Andrea Amaya","email":"00366519@uca.edu.sv","rol":{"codigo":"ROL_1","descripcion":"admin"},"activo":true,"creadoEn":"2025-05-17 22:36:53","esPasswordProvisional":false},"paginacionInfo":null}
+2025-06-10 21:37:59.186 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 21:37:59.217 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 21:37:59.218 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 21:37:59.219 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 21:37:59.220 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/get/current
+2025-06-10 21:37:59.222 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 21:37:59.226 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 21:37:59.227 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjEzMDc4LCJleHAiOjE3NDk2OTk0Nzh9.LUwlecn_AyqxN5mt5RIuW648T9V8n99X7JAHnP11JnYDWu5B7B9e2JLql67VF-dLhh75IWnVlOXiPTRVih_fiw
+2025-06-10 21:37:59.239 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:52] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get/current/'
+2025-06-10 21:37:59.241 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get/current/'
+2025-06-10 21:37:59.243 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 21:37:59.244 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 21:37:59.245 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Data obtenida correctamente","entity":{"id":2,"nombre":"Andrea Amaya","email":"00366519@uca.edu.sv","rol":{"codigo":"ROL_1","descripcion":"admin"},"activo":true,"creadoEn":"2025-05-17 22:36:53","esPasswordProvisional":false},"paginacionInfo":null}
+2025-06-10 21:37:59.246 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:21:34.755 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:21:34.755 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:21:34.833 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:21:34.833 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:21:34.834 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:21:34.834 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:21:34.837 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/verify
+2025-06-10 22:21:34.837 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/verify
+2025-06-10 22:21:34.837 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:21:34.837 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:21:34.838 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:21:34.838 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:21:34.839 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjEzMDc4LCJleHAiOjE3NDk2OTk0Nzh9.LUwlecn_AyqxN5mt5RIuW648T9V8n99X7JAHnP11JnYDWu5B7B9e2JLql67VF-dLhh75IWnVlOXiPTRVih_fiw
+2025-06-10 22:21:34.838 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjEzMDc4LCJleHAiOjE3NDk2OTk0Nzh9.LUwlecn_AyqxN5mt5RIuW648T9V8n99X7JAHnP11JnYDWu5B7B9e2JLql67VF-dLhh75IWnVlOXiPTRVih_fiw
+2025-06-10 22:21:35.619 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:21:35.619 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:21:35.620 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-10 22:21:35.620 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-10 22:21:35.622 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:21:35.622 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:22:14.127 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:22:14.129 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:22:14.130 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:22:14.130 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-06-10 22:22:14.131 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:22:14.132 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:22:14.132 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-06-10 22:22:14.195 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00366519@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00366519@uca.edu.sv","password":"admin4"}
+2025-06-10 22:22:14.203 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00366519@uca.edu.sv] Request válido
+2025-06-10 22:22:14.224 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00366519@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Andrea Amaya, email=00366519@uca.edu.sv, contrasenaHash=$2a$10$L6wsEyXVUcvAZh40soUt3.hOigON/NB5kvlKeA1JkkmKc5L188uai, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-05-17 22:36:53.763, esPasswordProvisional=false)
+2025-06-10 22:22:14.376 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00366519@uca.edu.sv] Autenticación correcta.
+2025-06-10 22:22:14.387 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00366519@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 22:22:14.389 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00366519@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-06-10 22:22:14.407 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:22:14.407 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 22:22:14.408 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw"},"paginacionInfo":null}
+2025-06-10 22:22:14.409 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:22:14.444 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:22:14.445 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:22:14.445 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:22:14.446 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/get/current
+2025-06-10 22:22:14.446 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:22:14.448 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:22:14.448 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 22:22:14.461 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:52] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get/current/'
+2025-06-10 22:22:14.462 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get/current/'
+2025-06-10 22:22:14.465 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:22:14.466 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 22:22:14.466 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Data obtenida correctamente","entity":{"id":2,"nombre":"Andrea Amaya","email":"00366519@uca.edu.sv","rol":{"codigo":"ROL_1","descripcion":"admin"},"activo":true,"creadoEn":"2025-05-17 22:36:53","esPasswordProvisional":false},"paginacionInfo":null}
+2025-06-10 22:22:14.468 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:22:14.493 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:22:14.495 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:22:14.495 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:22:14.496 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/get/current
+2025-06-10 22:22:14.496 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:22:14.497 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:22:14.498 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 22:22:14.526 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:52] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get/current/'
+2025-06-10 22:22:14.527 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get/current/'
+2025-06-10 22:22:14.530 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:22:14.530 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 22:22:14.531 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Data obtenida correctamente","entity":{"id":2,"nombre":"Andrea Amaya","email":"00366519@uca.edu.sv","rol":{"codigo":"ROL_1","descripcion":"admin"},"activo":true,"creadoEn":"2025-05-17 22:36:53","esPasswordProvisional":false},"paginacionInfo":null}
+2025-06-10 22:22:14.531 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:37:04.870 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:37:04.870 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:37:04.908 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:37:04.908 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:37:04.910 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:37:04.909 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:37:04.912 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getAll
+2025-06-10 22:37:04.912 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getAll
+2025-06-10 22:37:04.912 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:37:04.913 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:37:04.913 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:37:04.913 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:37:04.913 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 22:37:04.914 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 22:37:04.983 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:50] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get' 
+2025-06-10 22:37:04.983 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:50] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get' 
+2025-06-10 22:37:05.001 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:42] - [00366519@uca.edu.sv] Request válido
+2025-06-10 22:37:05.001 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:42] - [00366519@uca.edu.sv] Request válido
+2025-06-10 22:37:05.664 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:45] - [00366519@uca.edu.sv] parametos del sistema obtenidos correctamente.
+2025-06-10 22:37:05.664 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:45] - [00366519@uca.edu.sv] parametos del sistema obtenidos correctamente.
+2025-06-10 22:37:05.666 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get'
+2025-06-10 22:37:05.666 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get'
+2025-06-10 22:37:05.769 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:37:05.769 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:37:05.770 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 22:37:05.770 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 22:37:05.770 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"parametos del sistema obtenidos correctamente.","entity":[{"id":1,"clave":"max_intentos_pregunta_seguridad","valor":"8","descripcion":"Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña","actualizadoEn":"2025-05-29T22:18:37.813985"}],"paginacionInfo":null}
+2025-06-10 22:37:05.770 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"parametos del sistema obtenidos correctamente.","entity":[{"id":1,"clave":"max_intentos_pregunta_seguridad","valor":"8","descripcion":"Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña","actualizadoEn":"2025-05-29T22:18:37.813985"}],"paginacionInfo":null}
+2025-06-10 22:37:05.771 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:37:05.771 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:37:16.045 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:37:16.045 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:37:16.047 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:37:16.048 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getAll
+2025-06-10 22:37:16.048 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 22:37:16.050 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:37:16.050 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 22:37:16.050 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:37:16.051 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 22:37:16.051 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 22:37:16.051 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getAll
+2025-06-10 22:37:16.053 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 22:37:16.054 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 22:37:16.055 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 22:37:16.065 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:50] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get' 
+2025-06-10 22:37:16.067 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:50] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get' 
+2025-06-10 22:37:16.074 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:42] - [00366519@uca.edu.sv] Request válido
+2025-06-10 22:37:16.074 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:42] - [00366519@uca.edu.sv] Request válido
+2025-06-10 22:37:16.085 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:45] - [00366519@uca.edu.sv] parametos del sistema obtenidos correctamente.
+2025-06-10 22:37:16.087 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get'
+2025-06-10 22:37:16.089 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:45] - [00366519@uca.edu.sv] parametos del sistema obtenidos correctamente.
+2025-06-10 22:37:16.089 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:37:16.091 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 22:37:16.090 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get'
+2025-06-10 22:37:16.091 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"parametos del sistema obtenidos correctamente.","entity":[{"id":1,"clave":"max_intentos_pregunta_seguridad","valor":"8","descripcion":"Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña","actualizadoEn":"2025-05-29T22:18:37.813985"}],"paginacionInfo":null}
+2025-06-10 22:37:16.094 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 22:37:16.094 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 22:37:16.099 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 22:37:16.100 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"parametos del sistema obtenidos correctamente.","entity":[{"id":1,"clave":"max_intentos_pregunta_seguridad","valor":"8","descripcion":"Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña","actualizadoEn":"2025-05-29T22:18:37.813985"}],"paginacionInfo":null}
+2025-06-10 22:37:16.101 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 23:21:49.179 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 23:21:49.179 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 23:21:49.231 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 23:21:49.231 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 23:21:49.232 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 23:21:49.232 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 23:21:49.233 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/verify
+2025-06-10 23:21:49.234 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 23:21:49.234 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 23:21:49.233 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/verify
+2025-06-10 23:21:49.234 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 23:21:49.234 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 23:21:49.235 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 23:21:49.235 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE1NzM0LCJleHAiOjE3NDk3MDIxMzR9.Zu_C4SQEeBBT7nGeeHbi3ZvVe4TYvG5-Rnm975vWcGWedTlAew4Grq7S25d9wGOFzJuHhKROS_cEfZGegR4qkw
+2025-06-10 23:21:49.367 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 23:21:49.367 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 23:21:49.368 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-10 23:21:49.368 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 23:21:49.368 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 404
+2025-06-10 23:21:49.368 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 23:21:58.950 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 23:21:58.951 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 23:21:58.952 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 23:21:58.953 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-06-10 23:21:58.953 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 23:21:58.954 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 23:21:58.954 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-06-10 23:21:58.991 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00366519@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00366519@uca.edu.sv","password":"admin4"}
+2025-06-10 23:21:58.997 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00366519@uca.edu.sv] Request válido
+2025-06-10 23:21:59.010 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00366519@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Andrea Amaya, email=00366519@uca.edu.sv, contrasenaHash=$2a$10$L6wsEyXVUcvAZh40soUt3.hOigON/NB5kvlKeA1JkkmKc5L188uai, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-05-17 22:36:53.763, esPasswordProvisional=false)
+2025-06-10 23:21:59.133 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00366519@uca.edu.sv] Autenticación correcta.
+2025-06-10 23:21:59.142 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00366519@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE5MzE5LCJleHAiOjE3NDk3MDU3MTl9.i-eJ0klKYBVZmgof-IgOz26AxSI4mx3hWqeR7ysfeZHbfwthpomPoa1s9Hco0U4D3A4U0K_jHhAahF-wXrJ57g
+2025-06-10 23:21:59.143 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00366519@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-06-10 23:21:59.161 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 23:21:59.163 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 23:21:59.163 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE5MzE5LCJleHAiOjE3NDk3MDU3MTl9.i-eJ0klKYBVZmgof-IgOz26AxSI4mx3hWqeR7ysfeZHbfwthpomPoa1s9Hco0U4D3A4U0K_jHhAahF-wXrJ57g"},"paginacionInfo":null}
+2025-06-10 23:21:59.164 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 23:21:59.198 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 23:21:59.199 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 23:21:59.199 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 23:21:59.200 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/get/current
+2025-06-10 23:21:59.201 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 23:21:59.201 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 23:21:59.201 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE5MzE5LCJleHAiOjE3NDk3MDU3MTl9.i-eJ0klKYBVZmgof-IgOz26AxSI4mx3hWqeR7ysfeZHbfwthpomPoa1s9Hco0U4D3A4U0K_jHhAahF-wXrJ57g
+2025-06-10 23:21:59.211 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:52] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get/current/'
+2025-06-10 23:21:59.212 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get/current/'
+2025-06-10 23:21:59.225 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 23:21:59.226 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 23:21:59.226 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Data obtenida correctamente","entity":{"id":2,"nombre":"Andrea Amaya","email":"00366519@uca.edu.sv","rol":{"codigo":"ROL_1","descripcion":"admin"},"activo":true,"creadoEn":"2025-05-17 22:36:53","esPasswordProvisional":false},"paginacionInfo":null}
+2025-06-10 23:21:59.227 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-06-10 23:21:59.256 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-06-10 23:21:59.257 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-06-10 23:21:59.258 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-06-10 23:21:59.258 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/users/get/current
+2025-06-10 23:21:59.259 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 0:0:0:0:0:0:0:1
+2025-06-10 23:21:59.259 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-1)
+2025-06-10 23:21:59.259 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDM2NjUxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzQ5NjE5MzE5LCJleHAiOjE3NDk3MDU3MTl9.i-eJ0klKYBVZmgof-IgOz26AxSI4mx3hWqeR7ysfeZHbfwthpomPoa1s9Hco0U4D3A4U0K_jHhAahF-wXrJ57g
+2025-06-10 23:21:59.270 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:52] - [00366519@uca.edu.sv] ------ Inicio de servicio '/get/current/'
+2025-06-10 23:21:59.271 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlUsers:getCurrent:59] - [00366519@uca.edu.sv] ------ Fin de servicio '/get/current/'
+2025-06-10 23:21:59.273 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-06-10 23:21:59.274 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-06-10 23:21:59.274 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Data obtenida correctamente","entity":{"id":2,"nombre":"Andrea Amaya","email":"00366519@uca.edu.sv","rol":{"codigo":"ROL_1","descripcion":"admin"},"activo":true,"creadoEn":"2025-05-17 22:36:53","esPasswordProvisional":false},"paginacionInfo":null}
+2025-06-10 23:21:59.275 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================

@@ -1,0 +1,636 @@
+2025-07-08 18:39:19.416 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 20504 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-08 18:39:19.422 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-08 18:39:19.424 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-08 18:39:20.557 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-08 18:39:20.737 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 166 ms. Found 9 JPA repository interfaces.
+2025-07-08 18:39:21.588 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-08 18:39:21.610 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-08 18:39:21.615 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-08 18:39:21.616 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-08 18:39:21.852 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-08 18:39:21.860 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-08 18:39:21.862 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 2365 ms
+2025-07-08 18:39:22.048 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-08 18:39:22.150 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-08 18:39:22.203 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-08 18:39:22.606 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-08 18:39:22.661 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-08 18:39:22.937 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@23469199
+2025-07-08 18:39:22.939 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-08 18:39:23.066 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-08 18:39:24.912 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-08 18:39:26.746 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-08 18:39:27.209 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-08 18:39:27.440 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-08 18:39:27.442 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-08 18:39:28.413 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-08 18:39:28.457 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-08 18:39:28.554 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-08 18:39:28.743 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-08 18:39:29.093 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-08 18:39:29.128 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-08 18:39:29.140 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 10.714 seconds (process running for 11.271)
+2025-07-08 18:40:42.881 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-08 18:40:42.882 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-08 18:40:42.883 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 1 ms
+2025-07-08 18:40:42.920 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:40:42.922 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:40:42.922 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:40:42.922 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-07-08 18:40:42.923 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:40:42.924 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:40:42.924 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-07-08 18:40:43.047 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00139419@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00139419@uca.edu.sv","password":"123"}
+2025-07-08 18:40:43.392 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00139419@uca.edu.sv] Request válido
+2025-07-08 18:40:43.549 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00139419@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Daniel Morales, email=00139419@uca.edu.sv, contrasenaHash=$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-06-14 19:51:01.174089, esPasswordProvisional=false)
+2025-07-08 18:40:43.650 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00139419@uca.edu.sv] Autenticación correcta.
+2025-07-08 18:40:43.651 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:86] - [SYSTEM] Request válido
+2025-07-08 18:40:43.658 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:88] - [SYSTEM] parametos del sistema obtenidos correctamente.
+2025-07-08 18:40:43.995 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00139419@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIxNjQzLCJleHAiOjMxMjc5MjAyMTY0M30.c6cx-h9rn3vPBxGo36db9-XlxPBLPw9ZHkw6tuahh7izerJ_kVQUBqYg2qWVPxeHBJFZkTwjITIrXpirBr9AUw
+2025-07-08 18:40:43.999 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00139419@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-07-08 18:40:44.016 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:40:44.018 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 18:40:44.019 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIxNjQzLCJleHAiOjMxMjc5MjAyMTY0M30.c6cx-h9rn3vPBxGo36db9-XlxPBLPw9ZHkw6tuahh7izerJ_kVQUBqYg2qWVPxeHBJFZkTwjITIrXpirBr9AUw"},"paginacionInfo":null}
+2025-07-08 18:40:44.019 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:41:12.916 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:41:12.916 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:41:12.917 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:41:12.917 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 18:41:12.918 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:41:12.919 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:41:12.919 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIxNjQzLCJleHAiOjMxMjc5MjAyMTY0M30.c6cx-h9rn3vPBxGo36db9-XlxPBLPw9ZHkw6tuahh7izerJ_kVQUBqYg2qWVPxeHBJFZkTwjITIrXpirBr9AUw
+2025-07-08 18:41:12.928 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con código: null
+2025-07-08 18:41:12.929 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:86] - [SYSTEM] Request válido
+2025-07-08 18:41:12.937 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:88] - [SYSTEM] parametos del sistema obtenidos correctamente.
+2025-07-08 18:41:12.938 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:79] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 18:41:12.949 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:41:12.950 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 18:41:12.951 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"parameto del sistema obtenidos correctamente.","entity":null,"paginacionInfo":null}
+2025-07-08 18:41:12.951 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:46:42.551 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-08 18:46:42.565 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-08 18:46:42.572 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-08 18:46:42.576 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-08 18:46:42.581 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-07-08 18:47:31.081 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 11844 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-08 18:47:31.083 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-08 18:47:31.086 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-08 18:47:31.944 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-08 18:47:32.098 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 143 ms. Found 9 JPA repository interfaces.
+2025-07-08 18:47:32.731 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-08 18:47:32.762 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-08 18:47:32.766 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-08 18:47:32.767 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-08 18:47:32.917 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-08 18:47:32.925 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-08 18:47:32.926 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 1788 ms
+2025-07-08 18:47:33.088 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-08 18:47:33.141 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-08 18:47:33.179 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-08 18:47:33.453 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-08 18:47:33.499 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-08 18:47:33.687 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5403431a
+2025-07-08 18:47:33.692 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-08 18:47:33.771 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-08 18:47:35.164 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-08 18:47:36.925 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-08 18:47:37.209 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-08 18:47:37.997 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-08 18:47:37.998 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-08 18:47:38.177 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-08 18:47:38.210 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-08 18:47:38.305 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-08 18:47:38.480 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-08 18:47:38.712 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-08 18:47:38.740 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-08 18:47:38.749 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 8.289 seconds (process running for 8.69)
+2025-07-08 18:47:53.161 [http-nio-8080-exec-1] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-08 18:47:53.162 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-08 18:47:53.164 [http-nio-8080-exec-1] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 2 ms
+2025-07-08 18:47:53.204 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:47:53.205 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:47:53.206 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:47:53.206 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-07-08 18:47:53.207 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:47:53.208 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:47:53.208 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-07-08 18:47:53.334 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00139419@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00139419@uca.edu.sv","password":"123"}
+2025-07-08 18:47:53.336 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00139419@uca.edu.sv] Request válido
+2025-07-08 18:47:53.550 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00139419@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Daniel Morales, email=00139419@uca.edu.sv, contrasenaHash=$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-06-14 19:51:01.174089, esPasswordProvisional=false)
+2025-07-08 18:47:53.688 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00139419@uca.edu.sv] Autenticación correcta.
+2025-07-08 18:47:53.689 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:90] - [SYSTEM] Request válido
+2025-07-08 18:47:53.794 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00139419@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:47:53.797 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00139419@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-07-08 18:47:53.819 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:47:53.820 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 18:47:53.820 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA"},"paginacionInfo":null}
+2025-07-08 18:47:53.821 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:48:26.360 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:48:26.361 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:48:26.361 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:48:26.362 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 18:48:26.362 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:48:26.363 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:48:26.364 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:48:26.372 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con código: null
+2025-07-08 18:48:26.373 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:79] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 18:48:26.374 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:48:26.375 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-07-08 18:48:26.376 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"El código no puede estar vacío","entity":null,"paginacionInfo":null}
+2025-07-08 18:48:26.376 [http-nio-8080-exec-3] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:48:33.432 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:48:33.433 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:48:33.434 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:48:33.435 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 18:48:33.435 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:48:33.435 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:48:33.436 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:48:33.442 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con código: null
+2025-07-08 18:48:33.443 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:79] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 18:48:33.444 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:48:33.445 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-07-08 18:48:33.445 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"El código no puede estar vacío","entity":null,"paginacionInfo":null}
+2025-07-08 18:48:33.445 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:48:35.037 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:48:35.037 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:48:35.038 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:48:35.038 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 18:48:35.038 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:48:35.039 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:48:35.039 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:48:35.049 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con código: null
+2025-07-08 18:48:35.049 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:79] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 18:48:35.050 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:48:35.051 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-07-08 18:48:35.051 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"El código no puede estar vacío","entity":null,"paginacionInfo":null}
+2025-07-08 18:48:35.052 [http-nio-8080-exec-4] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:53:20.311 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:53:20.311 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:53:20.312 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:53:20.313 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 18:53:20.313 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:53:20.313 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:53:20.313 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:53:20.319 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con código: null
+2025-07-08 18:53:20.319 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:79] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 18:53:20.320 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:53:20.321 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-07-08 18:53:20.321 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"El código no puede estar vacío","entity":null,"paginacionInfo":null}
+2025-07-08 18:53:20.321 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:54:14.902 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:54:14.903 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:54:14.903 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:54:14.904 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 18:54:14.904 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:54:14.904 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:54:14.905 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:54:14.911 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con código: 1
+2025-07-08 18:54:14.912 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:90] - [SYSTEM] Request válido
+2025-07-08 18:54:14.916 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:79] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 18:54:14.918 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:54:14.919 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-07-08 18:54:14.919 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"No se encontró el parámetro con código: 1","entity":null,"paginacionInfo":null}
+2025-07-08 18:54:14.919 [http-nio-8080-exec-6] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:54:37.670 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:54:37.671 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:54:37.671 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:54:37.671 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getAll
+2025-07-08 18:54:37.671 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:54:37.672 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:54:37.672 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:54:37.680 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:50] - [00139419@uca.edu.sv] ------ Inicio de servicio '/get' 
+2025-07-08 18:54:37.685 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:42] - [00139419@uca.edu.sv] Request válido
+2025-07-08 18:54:37.715 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:45] - [00139419@uca.edu.sv] parametos del sistema obtenidos correctamente.
+2025-07-08 18:54:37.715 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:59] - [00139419@uca.edu.sv] ------ Fin de servicio '/get'
+2025-07-08 18:54:37.721 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:54:37.721 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 18:54:37.722 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"parametos del sistema obtenidos correctamente.","entity":[{"id":1,"clave":"max_intentos_pregunta_seguridad","valor":"3","descripcion":"Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña","actualizadoEn":"2025-06-14T19:47:14.462259"}],"paginacionInfo":null}
+2025-07-08 18:54:37.722 [http-nio-8080-exec-7] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 18:54:54.591 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 18:54:54.592 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 18:54:54.592 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 18:54:54.593 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 18:54:54.593 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 18:54:54.593 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 18:54:54.593 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 18:54:54.601 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con código: 1
+2025-07-08 18:54:54.602 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:90] - [SYSTEM] Request válido
+2025-07-08 18:54:54.604 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:79] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 18:54:54.607 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 18:54:54.607 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-07-08 18:54:54.608 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"No se encontró el parámetro con código: 1","entity":null,"paginacionInfo":null}
+2025-07-08 18:54:54.608 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 19:00:52.121 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-08 19:00:52.133 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-08 19:00:52.140 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-08 19:00:52.142 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-08 19:00:52.149 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
+2025-07-08 19:01:49.793 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarting:53] - Starting SistemaIndicadoresIdhucaApplication using Java 24.0.1 with PID 18408 (D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA\target\classes started by Andrea in D:\Tesis_2025\BACKEND\SistemaIndicadoresIDHUCA\server\SistemaIndicadoresIDHUCA)
+2025-07-08 19:01:49.818 [main] DEBUG [org.springframework.boot.StartupInfoLogger:logStarting:54] - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-07-08 19:01:49.819 [main] INFO  [org.springframework.boot.SpringApplication:logStartupProfileInfo:658] - The following 1 profile is active: "dev"
+2025-07-08 19:01:50.613 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:143] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-08 19:01:50.739 [main] INFO  [org.springframework.data.repository.config.RepositoryConfigurationDelegate:registerRepositoriesIn:211] - Finished Spring Data repository scanning in 116 ms. Found 9 JPA repository interfaces.
+2025-07-08 19:01:51.370 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:initialize:111] - Tomcat initialized with port 8080 (http)
+2025-07-08 19:01:51.402 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing ProtocolHandler ["http-nio-8080"]
+2025-07-08 19:01:51.404 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting service [Tomcat]
+2025-07-08 19:01:51.406 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-07-08 19:01:51.553 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2025-07-08 19:01:51.558 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring embedded WebApplicationContext
+2025-07-08 19:01:51.559 [main] INFO  [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:prepareWebApplicationContext:301] - Root WebApplicationContext: initialization completed in 1689 ms
+2025-07-08 19:01:51.768 [main] INFO  [org.hibernate.jpa.internal.util.LogHelper:logPersistenceUnitInformation:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-08 19:01:51.842 [main] INFO  [org.hibernate.Version:logVersion:44] - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-07-08 19:01:51.913 [main] INFO  [org.hibernate.cache.internal.RegionFactoryInitiator:initiateService:50] - HHH000026: Second-level cache disabled
+2025-07-08 19:01:52.188 [main] INFO  [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo:addTransformer:87] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-08 19:01:52.235 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:109] - HikariPool-1 - Starting...
+2025-07-08 19:01:52.394 [main] INFO  [com.zaxxer.hikari.pool.HikariPool:checkFailFast:554] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@72715e61
+2025-07-08 19:01:52.396 [main] INFO  [com.zaxxer.hikari.HikariDataSource:getConnection:122] - HikariPool-1 - Start completed.
+2025-07-08 19:01:52.477 [main] INFO  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:initiateService:157] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-08 19:01:54.003 [main] INFO  [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:initiateService:59] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-08 19:01:55.955 [main] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:buildNativeEntityManagerFactory:447] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-08 19:01:56.351 [main] INFO  [org.springframework.data.jpa.repository.query.QueryEnhancerFactory:<clinit>:49] - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-08 19:01:56.564 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'jwtAuthenticationFilter' configured for use
+2025-07-08 19:01:56.566 [main] DEBUG [org.springframework.web.filter.GenericFilterBean:init:240] - Filter 'requestFilter' configured for use
+2025-07-08 19:01:57.297 [main] WARN  [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:openEntityManagerInViewInterceptor:258] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-08 19:01:57.330 [main] INFO  [org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer:configure:114] - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-07-08 19:01:57.387 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/test/**, idhuca-indicadores/api/srv/auth/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-08 19:01:57.520 [main] WARN  [org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry:requestMatchers:203] - One of the patterns in [idhuca-indicadores/api/srv/user/**, idhuca-indicadores/api/srv/auditoria/**, idhuca-indicadores/api/srv/fichaDerecho/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-07-08 19:01:57.781 [main] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Starting ProtocolHandler ["http-nio-8080"]
+2025-07-08 19:01:57.823 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:start:243] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-08 19:01:57.832 [main] INFO  [org.springframework.boot.StartupInfoLogger:logStarted:59] - Started SistemaIndicadoresIdhucaApplication in 8.694 seconds (process running for 9.081)
+2025-07-08 19:02:11.964 [http-nio-8080-exec-2] INFO  [org.apache.juli.logging.DirectJDKLog:log:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-08 19:02:11.965 [http-nio-8080-exec-2] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:532] - Initializing Servlet 'dispatcherServlet'
+2025-07-08 19:02:11.967 [http-nio-8080-exec-2] INFO  [org.springframework.web.servlet.FrameworkServlet:initServletBean:554] - Completed initialization in 1 ms
+2025-07-08 19:02:12.007 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 19:02:12.008 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 19:02:12.009 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 19:02:12.010 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-07-08 19:02:12.011 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 19:02:12.012 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 19:02:12.013 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-07-08 19:02:12.174 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00139419@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00139419@uca.edu.sv","password":"123"}
+2025-07-08 19:02:12.175 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00139419@uca.edu.sv] Request válido
+2025-07-08 19:02:12.354 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00139419@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Daniel Morales, email=00139419@uca.edu.sv, contrasenaHash=$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-06-14 19:51:01.174089, esPasswordProvisional=false)
+2025-07-08 19:02:12.496 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00139419@uca.edu.sv] Autenticación correcta.
+2025-07-08 19:02:12.497 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:86] - [SYSTEM] Request válido
+2025-07-08 19:02:12.727 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00139419@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyOTMyLCJleHAiOjMxMjc5MjAyMjkzMn0.3NP8_JGDBTyggmzvP9iacI_DxmAb0ccmbOMsYJX4LcXPgkhw25pk_ieMPes5tICaiqXu1O9I8vFs110FxhBuNw
+2025-07-08 19:02:12.730 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00139419@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-07-08 19:02:12.753 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 19:02:12.754 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 19:02:12.754 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyOTMyLCJleHAiOjMxMjc5MjAyMjkzMn0.3NP8_JGDBTyggmzvP9iacI_DxmAb0ccmbOMsYJX4LcXPgkhw25pk_ieMPes5tICaiqXu1O9I8vFs110FxhBuNw"},"paginacionInfo":null}
+2025-07-08 19:02:12.755 [http-nio-8080-exec-2] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 19:02:49.249 [http-nio-8080-exec-4] ERROR [org.apache.juli.logging.DirectJDKLog:log:175] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.MalformedJwtException: JWT strings must contain exactly 2 period characters. Found: 0
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:275)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at com.uca.idhuca.sistema.indicadores.security.JwtUtils.getUserNameFromJwtToken(JwtUtils.java:71)
+	at com.uca.idhuca.sistema.indicadores.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:40)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-08 19:02:56.174 [http-nio-8080-exec-3] ERROR [org.apache.juli.logging.DirectJDKLog:log:175] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.MalformedJwtException: JWT strings must contain exactly 2 period characters. Found: 0
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:275)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at com.uca.idhuca.sistema.indicadores.security.JwtUtils.getUserNameFromJwtToken(JwtUtils.java:71)
+	at com.uca.idhuca.sistema.indicadores.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:40)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-08 19:03:16.911 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 19:03:16.912 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 19:03:16.912 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 19:03:16.912 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/auth/login
+2025-07-08 19:03:16.913 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 19:03:16.913 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 19:03:16.913 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: No JWT
+2025-07-08 19:03:16.915 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:48] - [00139419@uca.edu.sv] ------ Inicio de servicio 'test/testConnection' {"email":"00139419@uca.edu.sv","password":"123"}
+2025-07-08 19:03:16.915 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:47] - [00139419@uca.edu.sv] Request válido
+2025-07-08 19:03:16.922 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:53] - [00139419@uca.edu.sv] Usuario encontrado correctamente: Usuario(id=2, nombre=Daniel Morales, email=00139419@uca.edu.sv, contrasenaHash=$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG, rol=Catalogo(codigo=ROL_1, descripcion=admin), activo=true, creadoEn=2025-06-14 19:51:01.174089, esPasswordProvisional=false)
+2025-07-08 19:03:17.079 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:56] - [00139419@uca.edu.sv] Autenticación correcta.
+2025-07-08 19:03:17.080 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:86] - [SYSTEM] Request válido
+2025-07-08 19:03:17.099 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.AuthImpl:login:59] - [00139419@uca.edu.sv] JWT generado: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyOTk3LCJleHAiOjMxMjc5MjAyMjk5N30.AM2ZFqloDdlMBk4a0Tf_aTHGvFhuM9AEZDvyk6xsCmKwzCqdCJu1ATDclnXnYshXFv1dnTkLYb2OCcoIYFnx0g
+2025-07-08 19:03:17.100 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlAuth:login:57] - [00139419@uca.edu.sv] ------ Fin de servicio 'test/testConnection'
+2025-07-08 19:03:17.102 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 19:03:17.102 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 19:03:17.103 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"¡Éxito!","entity":{"jwt":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyOTk3LCJleHAiOjMxMjc5MjAyMjk5N30.AM2ZFqloDdlMBk4a0Tf_aTHGvFhuM9AEZDvyk6xsCmKwzCqdCJu1ATDclnXnYshXFv1dnTkLYb2OCcoIYFnx0g"},"paginacionInfo":null}
+2025-07-08 19:03:17.103 [http-nio-8080-exec-1] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 19:03:30.466 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 19:03:30.466 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 19:03:30.467 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 19:03:30.467 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getAll
+2025-07-08 19:03:30.467 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 19:03:30.468 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 19:03:30.468 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyOTk3LCJleHAiOjMxMjc5MjAyMjk5N30.AM2ZFqloDdlMBk4a0Tf_aTHGvFhuM9AEZDvyk6xsCmKwzCqdCJu1ATDclnXnYshXFv1dnTkLYb2OCcoIYFnx0g
+2025-07-08 19:03:30.476 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:50] - [00139419@uca.edu.sv] ------ Inicio de servicio '/get' 
+2025-07-08 19:03:30.479 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:42] - [00139419@uca.edu.sv] Request válido
+2025-07-08 19:03:30.500 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getAll:45] - [00139419@uca.edu.sv] parametos del sistema obtenidos correctamente.
+2025-07-08 19:03:30.501 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:get:59] - [00139419@uca.edu.sv] ------ Fin de servicio '/get'
+2025-07-08 19:03:30.507 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 19:03:30.508 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 19:03:30.508 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"parametos del sistema obtenidos correctamente.","entity":[{"id":1,"clave":"max_intentos_pregunta_seguridad","valor":"3","descripcion":"Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña","actualizadoEn":"2025-06-14T19:47:14.462259"}],"paginacionInfo":null}
+2025-07-08 19:03:30.509 [http-nio-8080-exec-5] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 19:03:36.764 [http-nio-8080-exec-6] ERROR [org.apache.juli.logging.DirectJDKLog:log:175] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.MalformedJwtException: JWT strings must contain exactly 2 period characters. Found: 0
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:275)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at com.uca.idhuca.sistema.indicadores.security.JwtUtils.getUserNameFromJwtToken(JwtUtils.java:71)
+	at com.uca.idhuca.sistema.indicadores.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:40)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-08 19:04:15.609 [http-nio-8080-exec-7] ERROR [org.apache.juli.logging.DirectJDKLog:log:175] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.MalformedJwtException: JWT strings must contain exactly 2 period characters. Found: 0
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:275)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at com.uca.idhuca.sistema.indicadores.security.JwtUtils.getUserNameFromJwtToken(JwtUtils.java:71)
+	at com.uca.idhuca.sistema.indicadores.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:40)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-07-08 19:05:52.017 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 19:05:52.018 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 19:05:52.018 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 19:05:52.019 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 19:05:52.019 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 19:05:52.019 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 19:05:52.020 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 19:05:52.028 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con clave: 1
+2025-07-08 19:05:52.028 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:86] - [SYSTEM] Request válido
+2025-07-08 19:05:52.032 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:86] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 19:05:52.033 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 19:05:52.034 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 400
+2025-07-08 19:05:52.034 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":-1,"mensaje":"Parámetro con clave 1 no encontrado","entity":null,"paginacionInfo":null}
+2025-07-08 19:05:52.034 [http-nio-8080-exec-8] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 19:07:50.401 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:33] - ===========================================================================
+2025-07-08 19:07:50.401 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:34] - =========================== [Petición Entrante] ==========================
+2025-07-08 19:07:50.402 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:35] - Método: POST
+2025-07-08 19:07:50.402 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:36] - Endpoint: /idhuca-indicadores/api/srv/parametros/sistema/getOne
+2025-07-08 19:07:50.402 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:37] - IP: 127.0.0.1
+2025-07-08 19:07:50.403 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:38] - User-Agent: insomnia/2022.4.2
+2025-07-08 19:07:50.403 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:39] - JWT: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMDIyMDczLCJleHAiOjMxMjc5MjAyMjA3M30.tSoPlX3Tc6c128jDQnL9WeFtUIO5q5_QlnTcbOShbAyav8PkZE-ZZHZ7BtFUkfmzyeWqxMG89jRqmnhTT7CaVA
+2025-07-08 19:07:50.409 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:70] - [00139419@uca.edu.sv] ------ Inicio de servicio '/getOne' con clave: max_intentos_pregunta_seguridad
+2025-07-08 19:07:50.410 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:86] - [SYSTEM] Request válido
+2025-07-08 19:07:50.416 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.services.impl.ParametrosSistemaImpl:getOne:93] - [SYSTEM] Parámetro del sistema obtenido correctamente.
+2025-07-08 19:07:50.417 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.controllers.CtrlParametrosSistema:getOne:86] - [00139419@uca.edu.sv] ------ Fin de servicio '/getOne'
+2025-07-08 19:07:50.418 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:43] - ============================== [Respuesta] ===============================
+2025-07-08 19:07:50.419 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:44] - Status: 200
+2025-07-08 19:07:50.419 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:50] - Body de la respuesta: {"codigo":0,"mensaje":"Parámetro del sistema obtenido correctamente.","entity":{"id":1,"clave":"max_intentos_pregunta_seguridad","valor":"3","descripcion":"Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña","actualizadoEn":"2025-06-14T19:47:14.462259"},"paginacionInfo":null}
+2025-07-08 19:07:50.420 [http-nio-8080-exec-10] INFO  [com.uca.idhuca.sistema.indicadores.security.RequestFilter:doFilterInternal:56] - ===========================================================================
+2025-07-08 19:09:08.835 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-08 19:09:08.853 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-08 19:09:08.858 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-08 19:09:08.862 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-08 19:09:08.869 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.
