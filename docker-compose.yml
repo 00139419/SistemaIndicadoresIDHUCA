@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   postgres:
     image: postgres:15
@@ -24,6 +22,8 @@ services:
       - "8080:8080"
     volumes:
       - ./backend/uploads:/app/uploads
+      - ./backend/logs:/app/data/logs
+      - ./backend/backup:/app/data/database/backups
     networks:
       - red_app
     environment:
