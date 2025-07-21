@@ -185,7 +185,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('SQ_8', '¿Cuál es el nombre de tu mejor amigo de la infancia?'),
 ('SQ_9', '¿Cuál es el nombre de tu primer profesor o profesora?'),
 ('SQ_10', '¿En qué calle viviste de niño?'),
-('DEP_0', 'OTROS PAISES'),
+('DEP_0', 'Desconocido'),
 ('DEP_1', 'AHUACHAPAN'),
 ('DEP_2', 'SANTA ANA'),
 ('DEP_3', 'SONSONATE'),
@@ -200,7 +200,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('DEP_12', 'SAN MIGUEL'),
 ('DEP_13', 'MORAZAN'),
 ('DEP_14', 'LA UNION'),
-('MUN_0_0', 'OTROS PAISES'),
+('MUN_0_0', 'Desconocido'),
 ('MUN_1_1', 'AHUACHAPAN'),
 ('MUN_1_2', 'APANECA'),
 ('MUN_1_3', 'ATIQUIZAYA'),
@@ -463,7 +463,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('MUN_14_16', 'SANTA ROSA DE LIMA'),
 ('MUN_14_17', 'YAYANTIQUE'),
 ('MUN_14_18', 'YUCUAIQUIN'),
-('PAIS_0','Otros paises'),
+('PAIS_0','Desconocido'),
 ('PAIS_9300','EL SALVADOR'),
 ('PAIS_9303','AFGANISTAN'),
 ('PAIS_9306','ALBANIA'),
@@ -794,7 +794,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('DER_2', 'Derecho a la Libertad de Expresión'),
 ('DER_3', 'Derecho de Acceso a la Justicia'),
 ('DER_4', 'Derecho a la Vida'),
-('LUGEXAC_0', 'Otro'),
+('LUGEXAC_0', 'Desconocido'),
 ('LUGEXAC_1', 'Fosa clandestina'),
 ('LUGEXAC_2', 'Lugar público'),
 ('LUGEXAC_3', 'Centro penitenciario'),
@@ -814,7 +814,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('LUGEXAC_17', 'Vehículo de transporte público'),
 ('LUGEXAC_18', 'Vehículo policial o militar'),
 ('LUGEXAC_19', 'Oficina pública o institución estatal'),
-('TIPOPER_0', 'Otro'),
+('TIPOPER_0', 'Desconocido'),
 ('TIPOPER_1', 'Persona particular'),
 ('TIPOPER_2', 'Servidor público'),
 ('TIPOPER_3', 'Miembro de la Policía Nacional Civil'),
@@ -826,14 +826,13 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('TIPOPER_9', 'Agente migratorio'),
 ('TIPOPER_10', 'Miembro de cuerpo diplomático'),
 ('TIPOPER_11', 'Persona no identificada'),
-('ESTSALUD_0', 'Otro'),
+('ESTSALUD_0', 'Desconocido'),
 ('ESTSALUD_1', 'Sin afectaciones visibles'),
 ('ESTSALUD_2', 'Lesiones leves'),
 ('ESTSALUD_3', 'Lesiones graves'),
 ('ESTSALUD_4', 'En estado crítico'),
 ('ESTSALUD_5', 'Con discapacidad permanente'),
 ('ESTSALUD_6', 'Fallecida'),
-('ESTSALUD_7', 'Desconocido'),
 ('TIPOVIOLENCIA_0', 'Otro'),
 ('TIPOVIOLENCIA_1', 'Violencia física'),
 ('TIPOVIOLENCIA_2', 'Violencia psicológica'),
@@ -850,7 +849,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('GEN_0', 'Desconocido'),
 ('GEN_1', 'Mujer'),
 ('GEN_2', 'Hombre'),
-('ARTEFACTO_0', 'Otros'),
+('ARTEFACTO_0', 'Desconocido'),
 ('ARTEFACTO_1', 'Arma de fuego'),
 ('ARTEFACTO_2', 'Cuchillo o arma blanca'),
 ('ARTEFACTO_3', 'Objeto contundente'),
@@ -860,14 +859,14 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('ARTEFACTO_7', 'Vehículo'),
 ('ARTEFACTO_8', 'Herramienta de inmovilización(esposas, grilletes, etc.)'),
 ('ARTEFACTO_9', 'Dispositivo electrónico(taser, etc.)'),
-('DETENCION_0', 'Otro'),
+('DETENCION_0', 'Desconocido'),
 ('DETENCION_1', 'Detención en flagrancia'),
 ('DETENCION_2', 'Detención administrativa'),
 ('DETENCION_3', 'Detención judicial'),
 ('DETENCION_4', 'Detención sin orden judicial'),
 ('DETENCION_5', 'Detención con uso excesivo de fuerza'),
 ('DETENCION_6', 'Detención arbitraria'),
-('MOTIVO_DETENCION_0', 'Otro'),
+('MOTIVO_DETENCION_0', 'Desconocido'),
 ('MOTIVO_DETENCION_1', 'Presunto delito de robo'),
 ('MOTIVO_DETENCION_2', 'Presunto delito de homicidio'),
 ('MOTIVO_DETENCION_3', 'Presunto delito de extorsión'),
@@ -887,7 +886,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('MEDIO_EXPRESION_7', 'Protesta o manifestación'),
 ('MEDIO_EXPRESION_8', 'Artículo de opinión'),
 ('MEDIO_EXPRESION_9', 'Blog o sitio web personal'),
-('TIPO_REPRESION_0', 'Otro'),
+('TIPO_REPRESION_0', 'Desconocido'),
 ('TIPO_REPRESION_1', 'Censura directa'),
 ('TIPO_REPRESION_2', 'Amenaza verbal'),
 ('TIPO_REPRESION_3', 'Agresión física'),
@@ -907,7 +906,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('TIPO_PROCESO_JUDICIAL_7', 'Proceso constitucional'),
 ('TIPO_PROCESO_JUDICIAL_8', 'Proceso disciplinario'),
 ('TIPO_PROCESO_JUDICIAL_9', 'Proceso en jurisdicción especializada(ej. niñez, género)'),
-('TIPO_DENUNCIANTE_0', 'Otro'),
+('TIPO_DENUNCIANTE_0', 'Desconocido'),
 ('TIPO_DENUNCIANTE_1', 'Denuncia de la víctima'),
 ('TIPO_DENUNCIANTE_2', 'Parte policial'),
 ('TIPO_DENUNCIANTE_3', 'Autoridad municipal'),
@@ -917,7 +916,7 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('TIPO_DENUNCIANTE_7', 'Docente o autoridad educativa'),
 ('TIPO_DENUNCIANTE_8', 'Personal médico o de salud'),
 ('TIPO_DENUNCIANTE_9', 'Testigo presencial'),
-('DURACION_PROCESO_0', 'Otro'),
+('DURACION_PROCESO_0', 'Desconocido'),
 ('DURACION_PROCESO_1', 'Menos de 3 meses'),
 ('DURACION_PROCESO_2', 'Entre 3 y 6 meses'),
 ('DURACION_PROCESO_3', 'Entre 6 meses y 1 año'),
@@ -949,21 +948,46 @@ INSERT INTO catalogo(codigo, descripcion) VALUES
 ('SUBDER_4_2', 'Uso excesivo de la fuerza letal'),
 ('SUBDER_4_3', 'Negligencia médica en custodia estatal'),
 ('SUBDER_4_4', 'Feminicidio o violencia letal de género'),
-('SUBDER_4_5', 'Falta de investigación en muertes violentas');
+('SUBDER_4_5', 'Falta de investigación en muertes violentas'),
+('CONTEXTO_0', 'Desconocido'),
+('CONTEXTO_1', 'Protesta social'),
+('CONTEXTO_2', 'Desalojo forzado'),
+('CONTEXTO_3', 'Conflicto con fuerzas de seguridad'),
+('CONTEXTO_4', 'Privación de libertad'),
+('CONTEXTO_5', 'Violencia intrafamiliar'),
+('CONTEXTO_6', 'Represalia por denuncia'),
+('CONTEXTO_7', 'Conflicto territorial o agrario'),
+('CONTEXTO_8', 'Discriminación estructural'),
+('CONTEXTO_9', 'Detención arbitraria'),
+('CONTEXTO_10', 'Crimen organizado'),
+('CONTEXTO_11', 'Violencia política'),
+('CONTEXTO_12', 'Violencia sexual');
 
  
-INSERT INTO parametro_sistema(clave, valor, descripcion)
-VALUES('max_intentos_pregunta_seguridad', '3', 'Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar contraseña');
+INSERT INTO parametro_sistema (clave, valor, descripcion) VALUES
+  ('max_intentos_pregunta_seguridad', '3', 'Número máximo de intentos fallidos permitidos al responder la pregunta de seguridad para recuperar la contraseña.'),
+  ('tiempo_de_vida_de_sesion', '3', 'Tiempo en horas durante el cual la sesión del usuario permanecerá activa.'),
+  ('descripcion_DER_1', 'El Derecho a la Libertad Personal e Integridad Personal protege a toda persona contra detenciones arbitrarias, tortura, desapariciones forzadas y cualquier forma de trato cruel, inhumano o degradante.', 'Descripción del Derecho a la Libertad Personal e Integridad Personal'),
+  ('descripcion_DER_2', 'El Derecho a la Libertad de Expresión garantiza a toda persona la facultad de buscar, recibir y difundir informaciones e ideas de toda índole, sin censura previa y por cualquier medio de comunicación.', 'Descripción del Derecho a la Libertad de Expresión'),
+  ('descripcion_DER_3', 'El Derecho de Acceso a la Justicia asegura a las personas la posibilidad de acudir a tribunales imparciales, competentes e independientes para hacer valer sus derechos, obtener reparación y garantizar el debido proceso.', 'Descripción del Derecho de Acceso a la Justicia'),
+  ('descripcion_DER_4', 'El Derecho a la Vida es el derecho fundamental de toda persona a no ser privada arbitrariamente de la vida, y obliga al Estado a proteger y garantizar este derecho en todo momento.', 'Descripción del Derecho a la Vida'),
+  ('investigador_DER_1', 'Nombre Ejemplo 1', 'Investigador responsable del Derecho a la Libertad Personal e Integridad personal'),
+  ('investigador_DER_2', 'Nombre Ejemplo 2', 'Investigador responsable del Derecho a la Libertad de Expresión'),
+  ('investigador_DER_3', 'Nombre Ejemplo 3', 'Investigador responsable del Derecho de Acceso a la Justicia'),
+  ('investigador_DER_4', 'Nombre Ejemplo 4', 'Investigador responsable del Derecho a la Vida'),
+  ('max_tiempo_inactividad','15', 'Tiempo máximo permitido, en minutos, que un usuario puede permanecer inactivo en la aplicación antes de cerrar la sesión automáticamente.'),
+  ('acerca_del_proyecto', 'El Sistema de registros del vulneraciones de derechos del IDHUCA es una plataforma diseñada para centralizar y analizar información clave sobre derechos humanos y justicia social. Su propósito es facilitar la recopilación y visualización de datos provenientes de diversas fuentes, permitiendo una interpretación clara y fundamentada. Mediante la centralización de datos y la generación de gráficos dinámicos, el sistema transforma la información en un recurso accesible que apoya la toma de decisiones y la incidencia en políticas públicas. Al unificar los datos en un solo espacio digital, mejora el seguimiento de tendencias y optimiza los procesos de análisis, facilitando el trabajo del IDHUCA en la defensa de los derechos humanos.', 'Descripción del proyecto visible al iniciar sesión');
+
+
  
 -- Insertar Adminitrador
 INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo, es_provisional)
 VALUES 
-('Admin Admin', 'admin@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_1', CURRENT_TIMESTAMP, TRUE, FALSE);
+('Admin', 'administrador@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_1', CURRENT_TIMESTAMP, TRUE, FALSE);
 
 INSERT INTO recovery_password(usuario_id, pregunta_codigo, respuesta_hash, intentos_fallidos) 
 VALUES
 (1, 'SQ_1', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 0);
-
 
 
 
