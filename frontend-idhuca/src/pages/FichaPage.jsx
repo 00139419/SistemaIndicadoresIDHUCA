@@ -634,7 +634,7 @@ const FichaDerechoView = () => {
                       value={filterDate}
                       onChange={(e) => handleFilterDateChange(e.target.value)}
                       className="form-control form-control-sm"
-                      style={{ fontSize: "10px", width: "130px" }}
+                      style={{ fontSize: "13px", width: "130px" }}
                     />
                   </div>
                   <div className="col-auto">
@@ -648,7 +648,7 @@ const FichaDerechoView = () => {
                         handleFilterDateEndChange(e.target.value)
                       }
                       className="form-control form-control-sm"
-                      style={{ fontSize: "10px", width: "130px" }}
+                      style={{ fontSize: "13px", width: "130px" }}
                     />
                   </div>
                   <div className="col-auto">

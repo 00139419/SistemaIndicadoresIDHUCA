@@ -121,11 +121,31 @@ const EditarRegistro = () => {
 
         // Cargar datos del evento
         const eventoData = await detailEvent(id);
-        const eventoEntity = eventoData.entity; // El evento real está en .entity
-        setEvento(transformarEventoParaEdicion(eventoEntity));
-        setMunicipiosResidenciaList(
-          (eventoEntity.personasAfectadas || []).map(() => [])
+        const eventoEntity = eventoData.entity;
+        const eventoEditado = transformarEventoParaEdicion(eventoEntity);
+
+        // Precargar municipios de residencia para cada persona
+        const municipiosPorPersona = await Promise.all(
+          (eventoEditado.personasAfectadas || []).map(async (p) => {
+            if (p.departamentoResidencia && p.departamentoResidencia.codigo) {
+              try {
+                const municipios = await getCatalogo({
+                  municipios: true,
+                  parentId: p.departamentoResidencia.codigo,
+                });
+                return municipios;
+              } catch {
+                return [];
+              }
+            }
+            return [];
+          })
         );
+
+        setEvento(eventoEditado);
+        setMunicipiosResidenciaList(municipiosPorPersona);
+
+        console.log(evento);
       } catch (err) {
         alert("Error al cargar datos: " + err.message);
       } finally {
@@ -233,7 +253,9 @@ const EditarRegistro = () => {
     }
     const payload = {
       id: evento.id,
-      fechaHecho: evento.fechaHecho.toISOString().split("T")[0],
+      fechaHecho: evento.fechaHecho
+        ? new Date(evento.fechaHecho).toISOString().split("T")[0]
+        : null,
       fuente: evento.fuente,
       estadoActual: evento.estadoActual,
       derechoAsociado: evento.derechoAsociado,
@@ -247,6 +269,8 @@ const EditarRegistro = () => {
       },
     };
     try {
+      console.log(payload);
+
       await updateEvento(payload);
       alert("Evento actualizado correctamente");
       navigate("/registros");
@@ -278,9 +302,20 @@ const EditarRegistro = () => {
       violencia: persona.violencia || null,
       detencionIntegridad: persona.detencionIntegridad || null,
       expresionCensura: persona.expresionCensura || null,
-      accesoJusticia: persona.accesoJusticia || null,
+      accesoJusticia: persona.accesoJusticia
+        ? {
+          ...persona.accesoJusticia,
+          fechaDenuncia: persona.accesoJusticia.fechaDenuncia
+            ? new Date(persona.accesoJusticia.fechaDenuncia).toISOString().split("T")[0]
+            : null,
+        }
+        : null,
+      fechaHecho: evento.fechaHecho
+        ? new Date(evento.fechaHecho).toISOString().split("T")[0]
+        : null,
     };
     try {
+      console.log("Actualizando persona: ", JSON.stringify(payload));
       await updatePersonaAfectada(payload);
       alert("Persona actualizada correctamente");
     } catch (error) {
@@ -350,17 +385,6 @@ const EditarRegistro = () => {
               options={estados}
               optionLabel="descripcion"
               placeholder="Seleccione un estado"
-              className="w-full"
-            />
-          </div>
-          <div className="col-12 md:col-5">
-            <label className="font-semibold mb-2 block">Derecho Asociado</label>
-            <Dropdown
-              value={evento.derechoAsociado}
-              onChange={(e) => handleChange("derechoAsociado", e.value)}
-              options={derechosPrincipales}
-              optionLabel="descripcion"
-              placeholder="Seleccione un derecho"
               className="w-full"
             />
           </div>
@@ -607,9 +631,8 @@ const EditarRegistro = () => {
                     persona.violencia ? "Quitar violencia" : "Agregar violencia"
                   }
                   icon={persona.violencia ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${
-                    persona.violencia ? "danger" : "success"
-                  }`}
+                  className={`p-button-${persona.violencia ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -617,16 +640,16 @@ const EditarRegistro = () => {
                       persona.violencia
                         ? null
                         : {
-                            esAsesinato: false,
-                            tipoViolencia: null,
-                            artefactoUtilizado: null,
-                            contexto: null,
-                            actorResponsable: null,
-                            estadoSaludActorResponsable: null,
-                            huboProteccion: false,
-                            investigacionAbierta: false,
-                            respuestaEstado: "",
-                          }
+                          esAsesinato: false,
+                          tipoViolencia: null,
+                          artefactoUtilizado: null,
+                          contexto: null,
+                          actorResponsable: null,
+                          estadoSaludActorResponsable: null,
+                          huboProteccion: false,
+                          investigacionAbierta: false,
+                          respuestaEstado: "",
+                        }
                     )
                   }
                 />
@@ -819,9 +842,8 @@ const EditarRegistro = () => {
                       : "Agregar sección"
                   }
                   icon={persona.accesoJusticia ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${
-                    persona.accesoJusticia ? "danger" : "success"
-                  }`}
+                  className={`p-button-${persona.accesoJusticia ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -829,15 +851,15 @@ const EditarRegistro = () => {
                       persona.accesoJusticia
                         ? null
                         : {
-                            tipoProceso: null,
-                            fechaDenuncia: null,
-                            tipoDenunciante: null,
-                            duracionProceso: null,
-                            accesoAbogado: false,
-                            huboParcialidad: false,
-                            resultadoProceso: "",
-                            instancia: "",
-                          }
+                          tipoProceso: null,
+                          fechaDenuncia: null,
+                          tipoDenunciante: null,
+                          duracionProceso: null,
+                          accesoAbogado: false,
+                          huboParcialidad: false,
+                          resultadoProceso: "",
+                          instancia: "",
+                        }
                     )
                   }
                 />
@@ -1009,9 +1031,8 @@ const EditarRegistro = () => {
                   icon={
                     persona.detencionIntegridad ? "pi pi-times" : "pi pi-plus"
                   }
-                  className={`p-button-${
-                    persona.detencionIntegridad ? "danger" : "success"
-                  }`}
+                  className={`p-button-${persona.detencionIntegridad ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -1019,15 +1040,15 @@ const EditarRegistro = () => {
                       persona.detencionIntegridad
                         ? null
                         : {
-                            tipoDetencion: null,
-                            ordenJudicial: false,
-                            autoridadInvolucrada: null,
-                            huboTortura: false,
-                            duracionDias: null,
-                            accesoAbogado: false,
-                            resultado: "",
-                            motivoDetencion: null,
-                          }
+                          tipoDetencion: null,
+                          ordenJudicial: false,
+                          autoridadInvolucrada: null,
+                          huboTortura: false,
+                          duracionDias: null,
+                          accesoAbogado: false,
+                          resultado: "",
+                          motivoDetencion: null,
+                        }
                     )
                   }
                 />
@@ -1196,9 +1217,8 @@ const EditarRegistro = () => {
                       : "Agregar sección"
                   }
                   icon={persona.expresionCensura ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${
-                    persona.expresionCensura ? "danger" : "success"
-                  }`}
+                  className={`p-button-${persona.expresionCensura ? "danger" : "success"
+                    }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -1206,13 +1226,13 @@ const EditarRegistro = () => {
                       persona.expresionCensura
                         ? null
                         : {
-                            medioExpresion: null,
-                            tipoRepresion: null,
-                            represaliasLegales: false,
-                            represaliasFisicas: false,
-                            actorCensor: null,
-                            consecuencia: "",
-                          }
+                          medioExpresion: null,
+                          tipoRepresion: null,
+                          represaliasLegales: false,
+                          represaliasFisicas: false,
+                          actorCensor: null,
+                          consecuencia: "",
+                        }
                     )
                   }
                 />

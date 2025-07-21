@@ -53,7 +53,7 @@ const Index = () => {
               lineHeight: "1.2",
             }}
           >
-            Bienvenido al Sistema de Registros de Vulnerabilidades
+            Bienvenido al Sistema de Registros de Vulneraciones
             <br />
             de Derechos Humanos del IDHUCA
           </h1>
