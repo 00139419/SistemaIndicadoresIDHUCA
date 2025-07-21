@@ -292,6 +292,7 @@ export const getCatalogo = async (paramsOverrides) => {
     municipios: false,
     securityQuestions: false,
     contexto: false,
+    cargarDeafult: false,
     parentId: "",
     filtros: {
       paginacion: {

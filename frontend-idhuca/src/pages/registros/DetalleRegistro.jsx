@@ -106,14 +106,14 @@ const DetalleRegistro = () => {
                     <div className="collapse show" id={`violencia-${idx}`}>
                       <div className="card-body">
                         <ul>
-                          <li><strong>¿Fue un asesinato?:</strong> {p.violencia.esAsesinato ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Fue un asesinato?:</strong> {p.violencia.esAsesinato === true ? 'Sí' : p.violencia.esAsesinato === false ? 'No' : 'No especificado'}</li>
                           <li><strong>Tipo de violencia:</strong> {p.violencia.tipoViolencia.descripcion}</li>
                           <li><strong>Artefacto utilizado:</strong> {p.violencia.artefactoUtilizado.descripcion}</li>
                           <li><strong>Contexto de la violencia:</strong> {p.violencia.contexto.descripcion}</li>
                           <li><strong>Actor responsable:</strong> {p.violencia.actorResponsable.descripcion}</li>
                           <li><strong>Estado de salud del actor responsable:</strong> {p.violencia.estadoSaludActorResponsable.descripcion}</li>
-                          <li><strong>Hubo protección:</strong> {p.violencia.huboProteccion ? 'Sí' : 'No'}</li>
-                          <li><strong>Investigación abierta:</strong> {p.violencia.investigacionAbierta ? 'Sí' : 'No'}</li>
+                          <li><strong>Hubo protección:</strong> {p.violencia.huboProteccion === true ? 'Sí' : p.violencia.huboProteccion === false ? 'No' : 'No especificado'}</li>
+                          <li><strong>Investigación abierta:</strong> {p.violencia.investigacionAbierta === true ? 'Sí' : p.violencia.investigacionAbierta === false ? 'No' : 'No especificado'}</li>
                           <li><strong>Respuesta del Estado:</strong> {p.violencia.respuestaEstado}</li>
                         </ul>
                       </div>
@@ -132,12 +132,12 @@ const DetalleRegistro = () => {
                         <ul>
                           <li><strong>Tipo de detención:</strong> {p.detencionIntegridad.tipoDetencion.descripcion}</li>
                           <li><strong>Autoridad involucrada:</strong> {p.detencionIntegridad.autoridadInvolucrada.descripcion}</li>
-                          <li><strong>¿Hubo tortura?:</strong> {p.detencionIntegridad.huboTortura ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Hubo tortura?:</strong> {p.detencionIntegridad.huboTortura === true ? 'Sí' : p.detencionIntegridad.huboTortura === false ? 'No' : 'No especificado'}</li>
                           <li><strong>Duración de la detención (días):</strong> {p.detencionIntegridad.duracionDias}</li>
-                          <li><strong>¿Existió acceso a un abogado?:</strong> {p.detencionIntegridad.accesoAbogado ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Existió acceso a un abogado?:</strong> {p.detencionIntegridad.accesoAbogado === true ? 'Sí' : p.detencionIntegridad.accesoAbogado === false ? 'No' : 'No especificado'}</li>
                           <li><strong>Resultado del proceso:</strong> {p.detencionIntegridad.resultado}</li>
                           <li><strong>Motivo de la detención:</strong> {p.detencionIntegridad.motivoDetencion.descripcion}</li>
-                          <li><strong>¿Existió orden judicial?:</strong> {p.detencionIntegridad.ordenJudicial ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Existió orden judicial?:</strong> {p.detencionIntegridad.ordenJudicial === true ? 'Sí' : p.detencionIntegridad.ordenJudicial === false ? 'No' : 'No especificado'}</li>
                         </ul>
                       </div>
                     </div>
@@ -155,8 +155,8 @@ const DetalleRegistro = () => {
                         <ul>
                           <li><strong>Medio de expresión:</strong> {p.expresionCensura.medioExpresion.descripcion}</li>
                           <li><strong>Tipo de represión:</strong> {p.expresionCensura.tipoRepresion.descripcion}</li>
-                          <li><strong>¿Hubo represalias legales?:</strong> {p.expresionCensura.represaliasLegales ? 'Sí' : 'No'}</li>
-                          <li><strong>¿Hubo represalias físicas?:</strong> {p.expresionCensura.represaliasFisicas ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Hubo represalias legales?:</strong> {p.expresionCensura.represaliasLegales === true ? 'Sí' : p.expresionCensura.represaliasLegales === false ? 'No' : 'No especificado'}</li>
+                          <li><strong>¿Hubo represalias físicas?:</strong> {p.expresionCensura.represaliasFisicas === true ? 'Sí' : p.expresionCensura.represaliasFisicas === false ? 'No' : 'No especificado'}</li>
                           <li><strong>Actor censor:</strong> {p.expresionCensura.actorCensor.descripcion}</li>
                           <li><strong>Consecuencias:</strong> {p.expresionCensura.consecuencia}</li>
                         </ul>
@@ -178,8 +178,8 @@ const DetalleRegistro = () => {
                           <li><strong>Fecha de presentación de denuncia:</strong> {p.accesoJusticia.fechaDenuncia}</li>
                           <li><strong>Tipo de denunciante:</strong> {p.accesoJusticia.tipoDenunciante.descripcion}</li>
                           <li><strong>Duración del proceso:</strong> {p.accesoJusticia.duracionProceso.descripcion}</li>
-                          <li><strong>¿Tuvo acceso a abogado?:</strong> {p.accesoJusticia.accesoAbogado ? 'Sí' : 'No'}</li>
-                          <li><strong>¿Hubo parcialidad en el proceso?:</strong> {p.accesoJusticia.huboParcialidad ? 'Sí' : 'No'}</li>
+                          <li><strong>¿Tuvo acceso a abogado?:</strong> {p.accesoJusticia.accesoAbogado === true ? 'Sí' : p.accesoJusticia.accesoAbogado === false ? 'No' : 'No especificado'}</li>
+                          <li><strong>¿Hubo parcialidad en el proceso?:</strong> {p.accesoJusticia.huboParcialidad === true ? 'Sí' : p.accesoJusticia.huboParcialidad === false ? 'No' : 'No especificado'}</li>
                           <li><strong>Resultado del proceso:</strong> {p.accesoJusticia.resultadoProceso}</li>
                           <li><strong>Instancia judicial:</strong> {p.accesoJusticia.instancia}</li>
                         </ul>

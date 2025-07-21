@@ -425,11 +425,11 @@ const FichaDerechoView = () => {
   };
 
   const handleSaveNewPost = async () => {
-    if (!newTitle.trim() || !newPost.trim()) {
+    if (!newTitle.trim() || !newPost.trim() || selectedFiles.length === 0) {
       setCreateResult({
         success: false,
         message:
-          "Por favor ingresa tanto el título como el contenido para la nueva ficha",
+          "Debes ingresar título, subtítulo y adjuntar al menos un archivo.",
       });
       setShowResultModal(true);
       return;
@@ -739,7 +739,7 @@ const FichaDerechoView = () => {
 
                           <p className="small text-dark mb-2 lh-sm">
                             {entry.content.length > 150
-                              ? entry.content.substring(0, 150) + "..."
+                              ? entry.content.substring(0, 50) + "..."
                               : entry.content}
                           </p>
 

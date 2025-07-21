@@ -98,26 +98,26 @@ const AgregarRegistro = () => {
         dp,
         ctx,
       ] = await Promise.all([
-        getCatalogo({ departamentos: true }),
-        getCatalogo({ fuentes: true }),
-        getCatalogo({ estadoRegistro: true }),
-        getCatalogo({ lugarExacto: true }),
-        getCatalogo({ genero: true }),
-        getCatalogo({ derechos: true }), // <-- derechos principales
-        getCatalogo({ subDerechos: true, parentId: "DER_1" }), // <-- subderechos
-        getCatalogo({ paises: true }),
-        getCatalogo({ estadoSalud: true }),
-        getCatalogo({ tipoPersona: true }),
-        getCatalogo({ tipoViolencia: true }),
-        getCatalogo({ tipoArma: true }),
-        getCatalogo({ tipoPersona: true }),
-        getCatalogo({ tipoDetencion: true }),
-        getCatalogo({ motivoDetencion: true }),
-        getCatalogo({ medioExpresion: true }),
-        getCatalogo({ tipoRepresion: true }),
-        getCatalogo({ tipoProcesoJudicial: true }),
-        getCatalogo({ duracionProceso: true }),
-        getCatalogo({ contexto: true }),
+        getCatalogo({ departamentos: true, cargarDeafult: true}),
+        getCatalogo({ fuentes: true, cargarDeafult: true }),
+        getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
+        getCatalogo({ lugarExacto: true, cargarDeafult: true }),
+        getCatalogo({ genero: true, cargarDeafult: true }),
+        getCatalogo({ derechos: true, cargarDeafult: true }), // <-- derechos principales
+        getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }), // <-- subderechos
+        getCatalogo({ paises: true, cargarDeafult: true }),
+        getCatalogo({ estadoSalud: true, cargarDeafult: true }),
+        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+        getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
+        getCatalogo({ tipoArma: true, cargarDeafult: true }),
+        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+        getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
+        getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
+        getCatalogo({ medioExpresion: true, cargarDeafult: true }),
+        getCatalogo({ tipoRepresion: true, cargarDeafult: true }),
+        getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
+        getCatalogo({ duracionProceso: true, cargarDeafult: true }),
+        getCatalogo({ contexto: true, cargarDeafult: true }),
       ]);
 
       setTiposPersona(tp);
