@@ -14,6 +14,7 @@ export default function LoginForm() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,7 +83,8 @@ export default function LoginForm() {
     } catch (err) {
       setError(true);
       setErrorMessage(
-        err.message || "Error en inicio de sesión, verifique usuario o contraseña"
+        err.message ||
+          "Error en inicio de sesión, verifique usuario o contraseña"
       );
       console.error("Error de login:", err);
     } finally {
@@ -147,10 +149,8 @@ export default function LoginForm() {
                 fontSize: "0.9rem",
               }}
             >
-              {
-                errorMessage ||
-                "Error en inicio de sesión, verifique usuario o contraseña"
-              }
+              {errorMessage ||
+                "Error en inicio de sesión, verifique usuario o contraseña"}
             </div>
           )}
 
@@ -181,7 +181,7 @@ export default function LoginForm() {
             </label>
             <div className="input-group">
               <input
-                type="password"
+                type={mostrarPassword ? "text" : "password"}
                 className="form-control form-control-lg bg-light"
                 id="password"
                 name="password"
@@ -189,8 +189,16 @@ export default function LoginForm() {
                 onChange={handleChange}
                 style={{ marginBottom: "0.5rem" }}
               />
-              <span className="input-group-text bg-light">
-                <i className="bi bi-eye"></i>
+              <span
+                className="input-group-text bg-light"
+                style={{ cursor: "pointer" }}
+                onClick={() => setMostrarPassword((prev) => !prev)}
+              >
+                <i
+                  className={`bi ${
+                    mostrarPassword ? "bi-eye-slash" : "bi-eye"
+                  }`}
+                ></i>
               </span>
             </div>
           </div>

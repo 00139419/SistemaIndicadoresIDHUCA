@@ -158,7 +158,7 @@ const VistaRegistrosDinamica = ({
             </div>
           ) : error ? (
             <div className="alert alert-danger m-3">
-              <strong>Error:</strong> {error}
+              <strong>Error2:</strong> {error}
             </div>
           ) : (
             <>

@@ -15,7 +15,9 @@ import { useLocation } from "react-router-dom";
 const Registros = () => {
   const location = useLocation();
   let { filtros, derechoId, categoriaEjeX } = location.state || {};
-  
+  // Asegurar que filtros siempre sea un objeto
+  if (!filtros) filtros = {};
+
   derechoId = String(derechoId || "");
 
   if (!derechoId.startsWith("DER_")) {
@@ -32,7 +34,7 @@ const Registros = () => {
   const [data, setData] = useState([]);
 
   const [paginacion, setPaginacion] = useState({
-    paginaActual: 1, // 1‑based para que sea intuitivo en la UI
+    paginaActual: 1, 
     totalPaginas: 0,
     totalRegistros: 0,
     registrosPorPagina: 5,
@@ -90,13 +92,20 @@ const Registros = () => {
       const derechoSeleccionado = derechos.find((d) => d.codigo === derechoId);
       if (!derechoSeleccionado) throw new Error("Código de derecho no válido");
 
+
+      // Siempre clonar filtros para no mutar el original
+      const filtrosUsados = { ...filtros };
+      filtrosUsados.paginacion = {
+        paginaActual: pagina - 1,
+        registrosPorPagina: paginacion.registrosPorPagina || 5,
+      };
+
       const resp = await getRegistrosByDerecho(
         {
           codigo: derechoSeleccionado.codigo,
           descripcion: derechoSeleccionado.descripcion,
         },
-        pagina - 1, // backend usa 0‑based
-        paginacion.registrosPorPagina
+        filtrosUsados
       );
 
       const formatted = (resp.registros ?? []).map((r) => ({

@@ -1,28 +1,36 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import Sidenav from '../components/Sidenav';
-import { fetchCatalog, addCatalogItem, updateCatalogItem, deleteCatalogItem } from '../services/CatalogService';
+import { useCallback, useMemo } from "react";
+import Sidenav from "../components/Sidenav";
+import {
+  fetchCatalog,
+  addCatalogItem,
+  updateCatalogItem,
+  deleteCatalogItem,
+} from "../services/CatalogService";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const MaintenancePage = () => {
+  const [esAdmin, setEsAdmin] = useState(false);
   const [catalogData, setCatalogData] = useState([]);
-  const [selectedCatalog, setSelectedCatalog] = useState('departamentos');
+  const [selectedCatalog, setSelectedCatalog] = useState("departamentos");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Estados para el selector de departamentos (cuando se selecciona municipios)
   const [departamentos, setDepartamentos] = useState([]);
-  const [selectedDepartamento, setSelectedDepartamento] = useState('');
+  const [selectedDepartamento, setSelectedDepartamento] = useState("");
   const [loadingDepartamentos, setLoadingDepartamentos] = useState(false);
 
   // Estados para el modal de nuevo registro
   const [showModal, setShowModal] = useState(false);
-  const [newItemDescription, setNewItemDescription] = useState('');
+  const [newItemDescription, setNewItemDescription] = useState("");
   const [addingItem, setAddingItem] = useState(false);
   const [addResult, setAddResult] = useState(null);
 
   // Estados para el modal de edición
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const [editDescription, setEditDescription] = useState('');
+  const [editDescription, setEditDescription] = useState("");
   const [updatingItem, setUpdatingItem] = useState(false);
   const [updateResult, setUpdateResult] = useState(null);
 
@@ -32,34 +40,74 @@ const MaintenancePage = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteResult, setDeleteResult] = useState(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      console.warn("No hay token disponible");
+      setEsAdmin(false);
+      return;
+    }
+
+    axios
+      .post(
+        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Usuario actual:", response.data);
+        const usuario = response.data.entity;
+        if (
+          usuario?.rol?.codigo === "ROL_1" &&
+          usuario.rol.descripcion === "admin"
+        ) {
+          setEsAdmin(true);
+        } else {
+          setEsAdmin(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error obteniendo el usuario:", error);
+        setEsAdmin(false); // por seguridad
+      });
+  }, []);
+
   // Estado para paginación del servidor
   const [serverPagination, setServerPagination] = useState({
     paginaActual: 1, // UI usa base 1
     totalPaginas: 0,
     totalRegistros: 0,
-    registrosPorPagina: 10
+    registrosPorPagina: 10,
   });
 
   // Función para determinar si un catálogo requiere parentId específico
   const needsParentId = useCallback((catalogKey) => {
-    return catalogKey === 'municipios';
+    return catalogKey === "municipios";
   }, []);
 
   // Nombre del departamento seleccionado
   const selectedDepartamentoNombre = useMemo(() => {
     if (!Array.isArray(departamentos) || departamentos.length === 0) {
-      return '';
+      return "";
     }
-    return departamentos.find(d => d.codigo === selectedDepartamento)?.descripcion || '';
+    return (
+      departamentos.find((d) => d.codigo === selectedDepartamento)
+        ?.descripcion || ""
+    );
   }, [departamentos, selectedDepartamento]);
 
   // Función para cargar departamentos
   const loadDepartamentos = useCallback(async () => {
     setLoadingDepartamentos(true);
     try {
-      const result = await fetchCatalog('departamentos', "1");
+      const result = await fetchCatalog("departamentos", "1");
 
-      console.log('Resultado de departamentos:', result);
+      console.log("Resultado de departamentos:", result);
 
       let departamentosData = [];
 
@@ -69,15 +117,16 @@ const MaintenancePage = () => {
         departamentosData = result;
       }
 
-      console.log('Departamentos procesados:', departamentosData);
+      console.log("Departamentos procesados:", departamentosData);
       setDepartamentos(departamentosData);
 
       if (departamentosData.length > 0) {
-        setSelectedDepartamento((prev) => prev || departamentosData[0]?.codigo || '');
+        setSelectedDepartamento(
+          (prev) => prev || departamentosData[0]?.codigo || ""
+        );
       }
-
     } catch (err) {
-      console.error('Error al cargar departamentos:', err);
+      console.error("Error al cargar departamentos:", err);
       setDepartamentos([]);
     } finally {
       setLoadingDepartamentos(false);
@@ -104,44 +153,55 @@ const MaintenancePage = () => {
         serverPagination.registrosPorPagina
       );
 
-      console.log('Resultado completo de fetchCatalog:', result);
+      console.log("Resultado completo de fetchCatalog:", result);
 
-      if (result && typeof result === 'object') {
+      if (result && typeof result === "object") {
         if (result.entity && result.paginacionInfo) {
           setCatalogData(result.entity || []);
-          setServerPagination(prev => ({
+          setServerPagination((prev) => ({
             ...prev,
             // Convertir respuesta del servidor (base 0) a UI (base 1)
             paginaActual: (result.paginacionInfo.paginaActual || 0) + 1, // servidor página 0 = UI página 1
             totalPaginas: result.paginacionInfo.totalPaginas || 1,
             totalRegistros: result.paginacionInfo.totalRegistros || 0,
-            registrosPorPagina: result.paginacionInfo.registrosPorPagina || prev.registrosPorPagina
+            registrosPorPagina:
+              result.paginacionInfo.registrosPorPagina ||
+              prev.registrosPorPagina,
           }));
         } else if (Array.isArray(result)) {
           setCatalogData(result);
         } else if (result.data) {
           setCatalogData(result.data || []);
           if (result.paginacionInfo) {
-            setServerPagination(prev => ({
+            setServerPagination((prev) => ({
               ...prev,
               paginaActual: (result.paginacionInfo.paginaActual || 0) + 1,
               totalPaginas: result.paginacionInfo.totalPaginas || 1,
               totalRegistros: result.paginacionInfo.totalRegistros || 0,
-              registrosPorPagina: result.paginacionInfo.registrosPorPagina || prev.registrosPorPagina
+              registrosPorPagina:
+                result.paginacionInfo.registrosPorPagina ||
+                prev.registrosPorPagina,
             }));
           }
         }
       } else {
         setCatalogData([]);
       }
-
     } catch (err) {
-      console.error('Error en loadCatalog:', err);
-      setError('Error al cargar datos: ' + (err.message || 'Error desconocido'));
+      console.error("Error en loadCatalog:", err);
+      setError(
+        "Error al cargar datos: " + (err.message || "Error desconocido")
+      );
     } finally {
       setLoading(false);
     }
-  }, [selectedCatalog, selectedDepartamento, needsParentId, serverPagination.paginaActual, serverPagination.registrosPorPagina]);
+  }, [
+    selectedCatalog,
+    selectedDepartamento,
+    needsParentId,
+    serverPagination.paginaActual,
+    serverPagination.registrosPorPagina,
+  ]);
 
   // Cargar catálogo cuando cambia la selección
   useEffect(() => {
@@ -167,7 +227,7 @@ const MaintenancePage = () => {
     if (!newItemDescription.trim()) {
       setAddResult({
         success: false,
-        message: 'La descripción no puede estar vacía'
+        message: "La descripción no puede estar vacía",
       });
       return;
     }
@@ -183,23 +243,26 @@ const MaintenancePage = () => {
 
       console.log("selectedCatalog " + selectedCatalog);
 
-      const result = await addCatalogItem(selectedCatalog, newItemDescription, parentId);
+      const result = await addCatalogItem(
+        selectedCatalog,
+        newItemDescription,
+        parentId
+      );
 
       setAddResult(result);
 
       if (result.success) {
-        setNewItemDescription('');
+        setNewItemDescription("");
         setTimeout(() => {
-        setShowModal(false);
-        loadCatalog();
-        setAddResult(null);
+          setShowModal(false);
+          loadCatalog();
+          setAddResult(null);
         }, 1000);
       }
-
     } catch (err) {
       setAddResult({
         success: false,
-        message: err.message || 'Error al agregar el registro'
+        message: err.message || "Error al agregar el registro",
       });
     } finally {
       setAddingItem(false);
@@ -221,7 +284,7 @@ const MaintenancePage = () => {
     if (!editDescription.trim()) {
       setUpdateResult({
         success: false,
-        message: 'La descripción no puede estar vacía'
+        message: "La descripción no puede estar vacía",
       });
       return;
     }
@@ -230,7 +293,10 @@ const MaintenancePage = () => {
     setUpdateResult(null);
 
     try {
-      const result = await updateCatalogItem(editingItem.codigo, editDescription);
+      const result = await updateCatalogItem(
+        editingItem.codigo,
+        editDescription
+      );
 
       setUpdateResult(result);
 
@@ -238,15 +304,14 @@ const MaintenancePage = () => {
         setTimeout(() => {
           setShowEditModal(false);
           setEditingItem(null);
-          setEditDescription('');
+          setEditDescription("");
           loadCatalog();
         }, 1500);
       }
-
     } catch (err) {
       setUpdateResult({
         success: false,
-        message: err.message || 'Error al actualizar el registro'
+        message: err.message || "Error al actualizar el registro",
       });
     } finally {
       setUpdatingItem(false);
@@ -277,11 +342,10 @@ const MaintenancePage = () => {
           loadCatalog();
         }, 1500);
       }
-
     } catch (err) {
       setDeleteResult({
         success: false,
-        message: err.message || 'Error al eliminar el registro'
+        message: err.message || "Error al eliminar el registro",
       });
     } finally {
       setDeletingItem(false);
@@ -291,43 +355,45 @@ const MaintenancePage = () => {
   // Manejar cambio de página
   const handlePageChange = (pageNumber) => {
     if (pageNumber < 1 || pageNumber > serverPagination.totalPaginas) return;
-    setServerPagination(prev => ({
+    setServerPagination((prev) => ({
       ...prev,
-      paginaActual: pageNumber
+      paginaActual: pageNumber,
     }));
   };
 
   // Manejar cambio de registros por página
   const handleItemsPerPageChange = (e) => {
     const newItemsPerPage = parseInt(e.target.value);
-    setServerPagination(prev => ({
+    setServerPagination((prev) => ({
       ...prev,
       registrosPorPagina: newItemsPerPage,
-      paginaActual: 1 // Resetear a la primera página
+      paginaActual: 1, // Resetear a la primera página
     }));
   };
 
   return (
-    <div className="d-flex" style={{ height: 'calc(100vh - 160px)' }}>
+    <div className="d-flex" style={{ height: "calc(100vh - 160px)" }}>
       <Sidenav onSelectCatalog={setSelectedCatalog} />
       <div
         className="flex-grow-1 d-flex flex-column"
         style={{
-          height: '100%',
-          overflow: 'hidden'
+          height: "100%",
+          overflow: "hidden",
         }}
       >
         {/* Header fijo */}
         <div className="px-4 pt-1 pb-3 border-bottom bg-white">
-          <h1 className="mb-0 text-capitalize fs-2 text-center fw-bold">{selectedCatalog === 'catalogos' ? 'Catálogos' : selectedCatalog}</h1>
+          <h1 className="mb-0 text-capitalize fs-2 text-center fw-bold">
+            {selectedCatalog === "catalogos" ? "Catálogos" : selectedCatalog}
+          </h1>
         </div>
 
         {/* Contenido con scroll */}
         <div
           className="flex-grow-1 px-4 py-3"
           style={{
-            overflowY: 'auto',
-            height: '100%'
+            overflowY: "auto",
+            height: "100%",
           }}
         >
           {loading && (
@@ -344,12 +410,14 @@ const MaintenancePage = () => {
             </div>
           )}
 
-          {!loading && !error && selectedCatalog !== 'catalogos' && (
+          {!loading && !error && selectedCatalog !== "catalogos" && (
             <>
               {/* Selector de departamentos cuando se selecciona municipios */}
               {needsParentId(selectedCatalog) && (
                 <div className="mb-3">
-                  <label htmlFor="departamentoSelect" className="form-label">Filtrar por Departamento:</label>
+                  <label htmlFor="departamentoSelect" className="form-label">
+                    Filtrar por Departamento:
+                  </label>
                   <select
                     id="departamentoSelect"
                     className="form-select"
@@ -359,23 +427,22 @@ const MaintenancePage = () => {
                   >
                     {loadingDepartamentos ? (
                       <option>Cargando departamentos...</option>
+                    ) : Array.isArray(departamentos) &&
+                      departamentos.length > 0 ? (
+                      departamentos.map((dept) => (
+                        <option key={dept.codigo} value={dept.codigo}>
+                          {dept.descripcion}
+                        </option>
+                      ))
                     ) : (
-                      Array.isArray(departamentos) && departamentos.length > 0 ? (
-                        departamentos.map((dept) => (
-                          <option key={dept.codigo} value={dept.codigo}>
-                            {dept.descripcion}
-                          </option>
-                        ))
-                      ) : (
-                        <option value="">No hay departamentos disponibles</option>
-                      )
+                      <option value="">No hay departamentos disponibles</option>
                     )}
                   </select>
                 </div>
               )}
 
               {/* Botón para agregar nuevo registro */}
-               <div className="d-flex justify-content-between align-items-center mb-3">
+              <div className="d-flex justify-content-between align-items-center mb-3">
                 <button
                   className="btn btn-primary"
                   onClick={() => setShowModal(true)}
@@ -389,14 +456,16 @@ const MaintenancePage = () => {
               {/* Información de registros */}
               <div className="mb-3 small text-muted">
                 <i className="bi bi-info-circle me-1"></i>
-                {catalogData && catalogData.length > 0 ?
-                  `Total de registros: ${catalogData.length} de ${serverPagination.totalRegistros}` :
-                  'No hay datos para mostrar'}
-                {needsParentId(selectedCatalog) && selectedDepartamento && departamentos.length > 0 && (
-                  <span className="ms-2">
-                    - Departamento: {selectedDepartamentoNombre}
-                  </span>
-                )}
+                {catalogData && catalogData.length > 0
+                  ? `Total de registros: ${catalogData.length} de ${serverPagination.totalRegistros}`
+                  : "No hay datos para mostrar"}
+                {needsParentId(selectedCatalog) &&
+                  selectedDepartamento &&
+                  departamentos.length > 0 && (
+                    <span className="ms-2">
+                      - Departamento: {selectedDepartamentoNombre}
+                    </span>
+                  )}
               </div>
 
               {/* Tabla de registros */}
@@ -404,13 +473,13 @@ const MaintenancePage = () => {
                 <table className="table table-bordered table-hover mb-0">
                   <thead className="table-dark">
                     <tr>
-                      <th style={{ width: '120px', minWidth: '120px' }}>
+                      <th style={{ width: "120px", minWidth: "120px" }}>
                         <i className="bi bi-hash me-1"></i>Código
                       </th>
-                      <th style={{ minWidth: '200px' }}>
+                      <th style={{ minWidth: "200px" }}>
                         <i className="bi bi-text-left me-1"></i>Descripción
                       </th>
-                      <th style={{ width: '160px', minWidth: '160px' }}>
+                      <th style={{ width: "160px", minWidth: "160px" }}>
                         <i className="bi bi-gear me-1"></i>Acciones
                       </th>
                     </tr>
@@ -432,13 +501,16 @@ const MaintenancePage = () => {
                           </td>
                           <td>
                             <div className="btn-group" role="group">
-                              <button
-                                className="btn btn-sm btn-outline-primary"
-                                title="Editar registro"
-                                onClick={() => handleEditClick(item)}
-                              >
-                                <i className="bi bi-pencil-square"></i>
-                              </button>
+                              {esAdmin && (
+                                <button
+                                  className="btn btn-sm btn-outline-primary"
+                                  title="Editar registro"
+                                  onClick={() => handleEditClick(item)}
+                                >
+                                  <i className="bi bi-pencil-square"></i>
+                                </button>
+                              )}
+
                               <button
                                 className="btn btn-sm btn-outline-danger"
                                 title="Eliminar registro"
@@ -465,73 +537,95 @@ const MaintenancePage = () => {
           )}
 
           {/* Mostrar una página de inicio cuando se selecciona 'catalogos' */}
-          {!loading && !error && selectedCatalog === 'catalogos' && (
+          {!loading && !error && selectedCatalog === "catalogos" && (
             <div className="text-center my-5">
-              <div className="display-4 mb-4">Sistema de Mantenimiento de Catálogos</div>
+              <div className="display-4 mb-4">
+                Sistema de Mantenimiento de Catálogos
+              </div>
               <p className="lead">
-                Seleccione un catálogo del menú lateral para comenzar a administrarlo.
+                Seleccione un catálogo del menú lateral para comenzar a
+                administrarlo.
               </p>
             </div>
           )}
         </div>
 
         {/* Paginación fija en la parte inferior */}
-        {!loading && !error && selectedCatalog !== 'catalogos' && catalogData && catalogData.length > 0 && (
-          <div className="px-4 py-3 border-top bg-white">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                Mostrar
-                <select
-                  className="form-select form-select-sm d-inline-block mx-2"
-                  style={{ width: "80px" }}
-                  value={serverPagination.registrosPorPagina}
-                  onChange={handleItemsPerPageChange}
-                >
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                  <option value="25">25</option>
-                </select>
-                registros por página
-              </div>
+        {!loading &&
+          !error &&
+          selectedCatalog !== "catalogos" &&
+          catalogData &&
+          catalogData.length > 0 && (
+            <div className="px-4 py-3 border-top bg-white">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  Mostrar
+                  <select
+                    className="form-select form-select-sm d-inline-block mx-2"
+                    style={{ width: "80px" }}
+                    value={serverPagination.registrosPorPagina}
+                    onChange={handleItemsPerPageChange}
+                  >
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                  </select>
+                  registros por página
+                </div>
 
-              <div>
-                Página {serverPagination.paginaActual} de {serverPagination.totalPaginas}
-                <div className="btn-group ms-2">
-                  <button
-                    className="btn btn-sm btn-outline-secondary"
-                    onClick={() => handlePageChange(serverPagination.paginaActual - 1)}
-                    disabled={serverPagination.paginaActual === 1}
-                  >
-                    &lt;
-                  </button>
-                  <button
-                    className="btn btn-sm btn-outline-secondary"
-                    onClick={() => handlePageChange(serverPagination.paginaActual + 1)}
-                    disabled={serverPagination.paginaActual === serverPagination.totalPaginas || serverPagination.totalPaginas === 0}
-                  >
-                    &gt;
-                  </button>
+                <div>
+                  Página {serverPagination.paginaActual} de{" "}
+                  {serverPagination.totalPaginas}
+                  <div className="btn-group ms-2">
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() =>
+                        handlePageChange(serverPagination.paginaActual - 1)
+                      }
+                      disabled={serverPagination.paginaActual === 1}
+                    >
+                      &lt;
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() =>
+                        handlePageChange(serverPagination.paginaActual + 1)
+                      }
+                      disabled={
+                        serverPagination.paginaActual ===
+                          serverPagination.totalPaginas ||
+                        serverPagination.totalPaginas === 0
+                      }
+                    >
+                      &gt;
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
         {/* Modal para agregar nuevo registro */}
         {showModal && (
-          <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div
+            className="modal show d-block"
+            tabIndex="-1"
+            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          >
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">Agregar nuevo {selectedCatalog}</h5>
+                  <h5 className="modal-title">
+                    Agregar nuevo {selectedCatalog}
+                  </h5>
                   <button
                     type="button"
                     className="btn-close"
                     onClick={() => {
                       setShowModal(false);
-                      setNewItemDescription('');
+                      setNewItemDescription("");
                       setAddResult(null);
                     }}
                     disabled={addingItem}
@@ -539,14 +633,23 @@ const MaintenancePage = () => {
                 </div>
                 <div className="modal-body">
                   {addResult && (
-                    <div className={`alert ${addResult.success ? 'alert-success' : 'alert-danger'}`}>
+                    <div
+                      className={`alert ${
+                        addResult.success ? "alert-success" : "alert-danger"
+                      }`}
+                    >
                       {addResult.message}
                     </div>
                   )}
 
                   <form onSubmit={handleAddItem}>
                     <div className="mb-3">
-                      <label htmlFor="newItemDescription" className="form-label">Descripción</label>
+                      <label
+                        htmlFor="newItemDescription"
+                        className="form-label"
+                      >
+                        Descripción
+                      </label>
                       <input
                         type="text"
                         className="form-control"
@@ -566,7 +669,7 @@ const MaintenancePage = () => {
                     className="btn btn-secondary"
                     onClick={() => {
                       setShowModal(false);
-                      setNewItemDescription('');
+                      setNewItemDescription("");
                       setAddResult(null);
                     }}
                     disabled={addingItem}
@@ -581,10 +684,16 @@ const MaintenancePage = () => {
                   >
                     {addingItem ? (
                       <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
                         Guardando...
                       </>
-                    ) : 'Guardar'}
+                    ) : (
+                      "Guardar"
+                    )}
                   </button>
                 </div>
               </div>
@@ -594,7 +703,11 @@ const MaintenancePage = () => {
 
         {/* Modal para editar registro */}
         {showEditModal && (
-          <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div
+            className="modal show d-block"
+            tabIndex="-1"
+            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          >
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -605,7 +718,7 @@ const MaintenancePage = () => {
                     onClick={() => {
                       setShowEditModal(false);
                       setEditingItem(null);
-                      setEditDescription('');
+                      setEditDescription("");
                       setUpdateResult(null);
                     }}
                     disabled={updatingItem}
@@ -613,24 +726,32 @@ const MaintenancePage = () => {
                 </div>
                 <div className="modal-body">
                   {updateResult && (
-                    <div className={`alert ${updateResult.success ? 'alert-success' : 'alert-danger'}`}>
+                    <div
+                      className={`alert ${
+                        updateResult.success ? "alert-success" : "alert-danger"
+                      }`}
+                    >
                       {updateResult.message}
                     </div>
                   )}
 
                   <form onSubmit={handleUpdateItem}>
                     <div className="mb-3">
-                      <label htmlFor="editCode" className="form-label">Código</label>
+                      <label htmlFor="editCode" className="form-label">
+                        Código
+                      </label>
                       <input
                         type="text"
                         className="form-control"
                         id="editCode"
-                        value={editingItem?.codigo || ''}
+                        value={editingItem?.codigo || ""}
                         disabled
                       />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="editDescription" className="form-label">Descripción</label>
+                      <label htmlFor="editDescription" className="form-label">
+                        Descripción
+                      </label>
                       <input
                         type="text"
                         className="form-control"
@@ -651,7 +772,7 @@ const MaintenancePage = () => {
                     onClick={() => {
                       setShowEditModal(false);
                       setEditingItem(null);
-                      setEditDescription('');
+                      setEditDescription("");
                       setUpdateResult(null);
                     }}
                     disabled={updatingItem}
@@ -666,10 +787,16 @@ const MaintenancePage = () => {
                   >
                     {updatingItem ? (
                       <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
                         Actualizando...
                       </>
-                    ) : 'Actualizar'}
+                    ) : (
+                      "Actualizar"
+                    )}
                   </button>
                 </div>
               </div>
@@ -679,7 +806,11 @@ const MaintenancePage = () => {
 
         {/* Modal para confirmación de eliminación */}
         {showDeleteModal && (
-          <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div
+            className="modal show d-block"
+            tabIndex="-1"
+            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          >
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -697,7 +828,11 @@ const MaintenancePage = () => {
                 </div>
                 <div className="modal-body">
                   {deleteResult && (
-                    <div className={`alert ${deleteResult.success ? 'alert-success' : 'alert-danger'}`}>
+                    <div
+                      className={`alert ${
+                        deleteResult.success ? "alert-success" : "alert-danger"
+                      }`}
+                    >
                       {deleteResult.message}
                     </div>
                   )}
@@ -705,12 +840,14 @@ const MaintenancePage = () => {
                   <p>¿Está seguro que desea eliminar el siguiente registro?</p>
                   <div className="card">
                     <div className="card-body">
-                      <strong>Código:</strong> {itemToDelete?.codigo}<br />
+                      <strong>Código:</strong> {itemToDelete?.codigo}
+                      <br />
                       <strong>Descripción:</strong> {itemToDelete?.descripcion}
                     </div>
                   </div>
                   <p className="text-danger mt-2">
-                    <i className="fas fa-exclamation-triangle"></i> Esta acción no se puede deshacer.
+                    <i className="fas fa-exclamation-triangle"></i> Esta acción
+                    no se puede deshacer.
                   </p>
                 </div>
                 <div className="modal-footer">
@@ -734,10 +871,16 @@ const MaintenancePage = () => {
                   >
                     {deletingItem ? (
                       <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
                         Eliminando...
                       </>
-                    ) : 'Eliminar'}
+                    ) : (
+                      "Eliminar"
+                    )}
                   </button>
                 </div>
               </div>

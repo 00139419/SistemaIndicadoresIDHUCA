@@ -56,7 +56,6 @@ const AgregarRegistro = () => {
   const [derechosPrincipales, setDerechosPrincipales] = useState([]);
   const [subDerechos, setSubDerechos] = useState([]);
   const location = useLocation();
-  console.log("location.state:", location.state);
   let derechoIdFromState = location.state?.derechoId;
 
   if (!derechoIdFromState) {
@@ -98,13 +97,17 @@ const AgregarRegistro = () => {
         dp,
         ctx,
       ] = await Promise.all([
-        getCatalogo({ departamentos: true, cargarDeafult: true}),
+        getCatalogo({ departamentos: true, cargarDeafult: true }),
         getCatalogo({ fuentes: true, cargarDeafult: true }),
         getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
         getCatalogo({ lugarExacto: true, cargarDeafult: true }),
         getCatalogo({ genero: true, cargarDeafult: true }),
         getCatalogo({ derechos: true, cargarDeafult: true }), // <-- derechos principales
-        getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }), // <-- subderechos
+        getCatalogo({
+          subDerechos: true,
+          cargarDeafult: true,
+          parentId: "DER_1",
+        }), // <-- subderechos
         getCatalogo({ paises: true, cargarDeafult: true }),
         getCatalogo({ estadoSalud: true, cargarDeafult: true }),
         getCatalogo({ tipoPersona: true, cargarDeafult: true }),
@@ -488,14 +491,14 @@ const AgregarRegistro = () => {
       if (data.codigo === 0) {
         setShowSuccessModal(true);
         setTimeout(() => {
-        setShowSuccessModal(false);
-        navigate("/select-register", {
-          state: {
-            filtros: {},
-            derechoId: derechoIdFromState,
-            categoriaEjeX: {}
-          }
-        });
+          setShowSuccessModal(false);
+          navigate("/select-register", {
+            state: {
+              filtros: {},
+              derechoId: derechoIdFromState,
+              categoriaEjeX: {},
+            },
+          });
         }, 2000); // 2 segundos
       } else {
         alert("Error: " + (data.mensaje || "No se pudo guardar"));
@@ -598,8 +601,8 @@ const AgregarRegistro = () => {
             state: {
               filtros: {},
               derechoId: derechoIdFromState,
-              categoriaEjeX: ""
-            }
+              categoriaEjeX: "",
+            },
           });
         }}
         closable={false}
@@ -817,6 +820,10 @@ const AgregarRegistro = () => {
                       optionLabel="descripcion"
                       placeholder="Seleccione un departamento"
                       className="w-full"
+                      disabled={!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300")}
+                      onClick={() => {
+                        console.log(`DepartamentoResidencia habilitado para persona #${index + 1}:`, persona.nacionalidad);
+                      }}
                     />
                   </div>
 
@@ -838,22 +845,40 @@ const AgregarRegistro = () => {
                           : "Seleccione un departamento primero"
                       }
                       className="w-full"
+                      disabled={!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300")}
+                      onClick={() => {
+                        console.log(`MunicipioResidencia habilitado para persona #${index + 1}:`, persona.nacionalidad);
+                      }}
                     />
                   </div>
 
+                  {/* Nacionalidad*/}
                   <div className="field col-12 md:col-4">
                     <label className="mb-2 d-block">Nacionalidad</label>
                     <Dropdown
                       value={persona.nacionalidad}
-                      onChange={(e) =>
-                        actualizarPersona(index, "nacionalidad", e.value)
-                      }
+                      onChange={(e) => {
+                        const nuevaNacionalidad = e.value;
+                        actualizarPersona(
+                          index,
+                          "nacionalidad",
+                          nuevaNacionalidad
+                        );
+                        console.log(`Nacionalidad seleccionada para persona #${index + 1}:`, nuevaNacionalidad);
+                        // Si NO es El Salvador (9300), borrar departamento y municipio
+                        if (!nuevaNacionalidad || nuevaNacionalidad.codigo !== "9300") {
+                          actualizarPersona(index, "departamentoResidencia", null);
+                          actualizarPersona(index, "municipioResidencia", null);
+                        }
+                      }}
                       options={paises}
                       optionLabel="descripcion"
                       placeholder="Seleccione país"
                       filter
                       filterPlaceholder="Buscar país..."
                       className="w-full"
+                      resetFilterOnHide
+                      showClear
                     />
                   </div>
 

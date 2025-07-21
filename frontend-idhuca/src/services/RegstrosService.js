@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/idhuca-indicadores/api/srv';
 
-export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPagina = 10) => {
+export const getRegistrosByDerecho = async (derecho, filtros) => {
   try {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -14,12 +14,7 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
         codigo: derecho.codigo,
         descripcion: derecho.descripcion || ''
       },
-      filtros: {
-        paginacion: {
-          paginaActual: pagina,
-          registrosPorPagina
-        }
-      }
+      filtros
     };
 
     const response = await fetch(`${API_URL}/registros/evento/getAllByDerecho`, {
@@ -36,10 +31,10 @@ export const getRegistrosByDerecho = async (derecho, pagina = 0, registrosPorPag
     return {
       registros: responseData.entity || [],
       paginacion: responseData.paginacionInfo || {
-        paginaActual: pagina,
+        paginaActual: filtros.paginacion?.paginaActual || 0,
         totalPaginas: 0,
         totalRegistros: 0,
-        registrosPorPagina
+        registrosPorPagina: filtros.paginacion?.registrosPorPagina || 10
       }
     };
   } catch (error) {
