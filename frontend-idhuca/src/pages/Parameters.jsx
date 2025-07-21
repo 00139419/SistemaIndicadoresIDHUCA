@@ -10,6 +10,7 @@ const SistemaParametros = () => {
   const [editingParam, setEditingParam] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [updatedValues, setUpdatedValues] = useState({ clave: "", valor: "" });
+  const [modalError, setModalError] = useState(null);
 
   const fetchParametros = async () => {
     try {
@@ -59,13 +60,12 @@ const SistemaParametros = () => {
 
   const handleUpdateParameter = async () => {
     try {
+      setModalError(null);
       const token = localStorage.getItem("authToken");
-
       if (!token || !isAuthenticated) {
         logout();
         throw new Error("No se encontró el token de autenticación.");
       }
-
       const config = {
         method: "post",
         url: "http://localhost:8080/idhuca-indicadores/api/srv/parametros/sistema/update",
@@ -78,16 +78,15 @@ const SistemaParametros = () => {
           valor: updatedValues.valor,
         },
       };
-
       await axios(config);
-      setError(null);
+      setModalError(null);
       setShowModal(false);
       setEditingParam(null);
       await fetchParametros();
     } catch (err) {
-      console.error("Error al actualizar parámetro:", err);
-      setError(
-        err.response?.data?.message || "Error al actualizar el parámetro"
+      console.error("Error al actualizar parámetro:", err.response.data.mensaje);
+      setModalError(
+        err.response.data.mensaje || "Error al actualizar el parámetro"
       );
       if (err.response?.status === 401) {
         logout();
@@ -283,10 +282,21 @@ const SistemaParametros = () => {
               <button
                 type="button"
                 className="btn-close"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setTimeout(() => setModalError(null), 300);
+                }}
               ></button>
             </div>
             <div className="modal-body">
+              {modalError && (
+                <div className="alert alert-danger py-2 small mb-3">
+                  <i className="bi bi-exclamation-triangle me-2"></i>
+                  {modalError}
+                </div>
+              )}
+              {/* Limpiar error automáticamente después de 3 segundos */}
+              {modalError && setTimeout(() => setModalError(null), 3000)}
               <div className="mb-3">
                 <label className="form-label">
                   <i className="bi bi-key me-1"></i>Clave

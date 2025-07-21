@@ -10,6 +10,8 @@ import { InputNumber } from "primereact/inputnumber";
 import { MultiSelect } from "primereact/multiselect";
 import { TabView, TabPanel } from "primereact/tabview";
 import { getCatalogo } from "./../../services/RegstrosService";
+import { useNavigate } from "react-router-dom";
+import { Dialog } from "primereact/dialog";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -17,6 +19,8 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 
 const AgregarRegistro = () => {
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const navigate = useNavigate();
   const [fechaHecho, setFechaHecho] = useState(null);
   const [fuente, setFuente] = useState(null);
   const [estadoActual, setEstadoActual] = useState(null);
@@ -94,26 +98,26 @@ const AgregarRegistro = () => {
         dp,
         ctx,
       ] = await Promise.all([
-        getCatalogo({ departamentos: true }),
-        getCatalogo({ fuentes: true }),
-        getCatalogo({ estadoRegistro: true }),
-        getCatalogo({ lugarExacto: true }),
-        getCatalogo({ genero: true }),
-        getCatalogo({ derechos: true }), // <-- derechos principales
-        getCatalogo({ subDerechos: true, parentId: "DER_1" }), // <-- subderechos
-        getCatalogo({ paises: true }),
-        getCatalogo({ estadoSalud: true }),
-        getCatalogo({ tipoPersona: true }),
-        getCatalogo({ tipoViolencia: true }),
-        getCatalogo({ tipoArma: true }),
-        getCatalogo({ tipoPersona: true }),
-        getCatalogo({ tipoDetencion: true }),
-        getCatalogo({ motivoDetencion: true }),
-        getCatalogo({ medioExpresion: true }),
-        getCatalogo({ tipoRepresion: true }),
-        getCatalogo({ tipoProcesoJudicial: true }),
-        getCatalogo({ duracionProceso: true }),
-        getCatalogo({ contexto: true }),
+        getCatalogo({ departamentos: true, cargarDeafult: true}),
+        getCatalogo({ fuentes: true, cargarDeafult: true }),
+        getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
+        getCatalogo({ lugarExacto: true, cargarDeafult: true }),
+        getCatalogo({ genero: true, cargarDeafult: true }),
+        getCatalogo({ derechos: true, cargarDeafult: true }), // <-- derechos principales
+        getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }), // <-- subderechos
+        getCatalogo({ paises: true, cargarDeafult: true }),
+        getCatalogo({ estadoSalud: true, cargarDeafult: true }),
+        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+        getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
+        getCatalogo({ tipoArma: true, cargarDeafult: true }),
+        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+        getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
+        getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
+        getCatalogo({ medioExpresion: true, cargarDeafult: true }),
+        getCatalogo({ tipoRepresion: true, cargarDeafult: true }),
+        getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
+        getCatalogo({ duracionProceso: true, cargarDeafult: true }),
+        getCatalogo({ contexto: true, cargarDeafult: true }),
       ]);
 
       setTiposPersona(tp);
@@ -269,7 +273,7 @@ const AgregarRegistro = () => {
       personasAfectadas: personas.map((p) => {
         const persona = {
           nombre: p.nombre || "",
-          edad: p.edad || 0,
+          ...(p.edad !== null && p.edad !== undefined ? { edad: p.edad } : {}),
           genero: p.genero
             ? {
                 codigo: p.genero.codigo,
@@ -461,14 +465,10 @@ const AgregarRegistro = () => {
     // Enviar el registro al backend
     try {
       const token = localStorage.getItem("authToken");
-
       if (!token) {
-        alert("No se encontró token de autenticación");
+        alert("No hay token de autenticación");
         return;
       }
-
-      console.log("Registro a enviar:", JSON.stringify(registro, null, 2));
-
       const response = await fetch(
         "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/add",
         {
@@ -480,20 +480,25 @@ const AgregarRegistro = () => {
           body: JSON.stringify(registro),
         }
       );
-
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error del servidor:", errorText);
-        alert(`Error del servidor (${response.status}): ${errorText}`);
+        alert("Error al guardar el registro");
         return;
       }
-
       const data = await response.json();
       if (data.codigo === 0) {
-        alert("Registro guardado correctamente");
-        // Limpiar formulario si es necesario
+        setShowSuccessModal(true);
+        setTimeout(() => {
+        setShowSuccessModal(false);
+        navigate("/select-register", {
+          state: {
+            filtros: {},
+            derechoId: derechoIdFromState,
+            categoriaEjeX: {}
+          }
+        });
+        }, 2000); // 2 segundos
       } else {
-        alert(data.mensaje || "Error al guardar el registro");
+        alert("Error: " + (data.mensaje || "No se pudo guardar"));
       }
     } catch (error) {
       alert("Error de red o del servidor");
@@ -584,6 +589,35 @@ const AgregarRegistro = () => {
 
   return (
     <div className="p-4 surface-100 min-h-screen">
+      <Dialog
+        header="Registro guardado"
+        visible={showSuccessModal}
+        onHide={() => {
+          setShowSuccessModal(false);
+          navigate("/select-register", {
+            state: {
+              filtros: {},
+              derechoId: derechoIdFromState,
+              categoriaEjeX: ""
+            }
+          });
+        }}
+        closable={false}
+        style={{ width: "350px" }}
+      >
+        <div
+          className="flex flex-column align-items-center justify-content-center"
+          style={{ minHeight: "100px" }}
+        >
+          <i
+            className="pi pi-check-circle"
+            style={{ fontSize: "2rem", color: "green" }}
+          ></i>
+          <p className="mt-3 text-center">
+            ¡El evento se guardó correctamente!
+          </p>
+        </div>
+      </Dialog>
       <Card title="📝 Registro del Hecho" className="shadow-4 border-round-lg">
         <div className="formgrid grid p-fluid gap-3">
           {/* Fecha del hecho */}
@@ -714,9 +748,6 @@ const AgregarRegistro = () => {
             </div>
 
             <TabView>
-
-
-              
               {/* Tab: Datos Generales */}
               <TabPanel header="Datos Generales">
                 <div className="formgrid grid">

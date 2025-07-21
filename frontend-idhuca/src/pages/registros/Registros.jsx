@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 const Registros = () => {
   const location = useLocation();
   let { filtros, derechoId, categoriaEjeX } = location.state || {};
-
+  
   derechoId = String(derechoId || "");
 
   if (!derechoId.startsWith("DER_")) {

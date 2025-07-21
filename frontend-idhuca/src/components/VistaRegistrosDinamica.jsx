@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from './AuthContext'; // Asegúrate de importar useAuth
+import { useAuth } from "./AuthContext"; // Asegúrate de importar useAuth
 
 const VistaRegistrosDinamica = ({
   categoriaEjeX,
@@ -24,7 +24,7 @@ const VistaRegistrosDinamica = ({
   itemsPerPage,
 }) => {
   const { userRole } = useAuth(); // Obtener el rol del usuarios
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const getCurrentPageData = () => {
     return data;
@@ -35,15 +35,15 @@ const VistaRegistrosDinamica = ({
   };
 
   const handleGenerateChart = () => {
-    navigate('/graphs',  { state: { derechoId, filtros, categoriaEjeX} }); 
+    navigate("/graphs", { state: { derechoId, filtros, categoriaEjeX } });
   };
 
   const handleCreateRegister = () => {
-    navigate('/registros/add');
+    navigate("/registros/add");
   };
 
   const handleFilter = () => {
-  navigate('/filter', { state: { derechoId, filtros } });  // Pasamos derechoId y filtros en el state
+    navigate("/filter", { state: { derechoId, filtros } }); // Pasamos derechoId y filtros en el state
   };
 
   const handleAction = (action, item, index) => {
@@ -52,11 +52,16 @@ const VistaRegistrosDinamica = ({
         onView && onView(item, index);
         break;
       case "edit":
-        // Redirigir a la página de edición con el id del registro
         navigate(`/registros/update/${item.id}`);
         break;
       case "delete":
-        navigate(`/registros/delete/${item.id}`);
+        navigate(`/registros/delete/${item.id}`, {
+          state: {
+            filtros,
+            derechoId,
+            categoriaEjeX,
+          },
+        });
         break;
       default:
         break;
@@ -73,22 +78,28 @@ const VistaRegistrosDinamica = ({
   // Función para verificar permisos
   const hasPermission = (action) => {
     switch (action) {
-      case 'view':
-        return ['ROL_1', 'ROL_2', 'ROL_3'].includes(userRole);
-      case 'edit':
-      case 'delete':
-        return ['ROL_1', 'ROL_2'].includes(userRole);
-      case 'filter':
-      case 'generateChart':
-        return ['ROL_1', 'ROL_2', 'ROL_3'].includes(userRole);
+      case "view":
+        return ["ROL_1", "ROL_2", "ROL_3"].includes(userRole);
+      case "edit":
+      case "delete":
+        return ["ROL_1", "ROL_2"].includes(userRole);
+      case "filter":
+      case "generateChart":
+        return ["ROL_1", "ROL_2", "ROL_3"].includes(userRole);
       default:
         return false;
     }
   };
 
   return (
-    <div className="container-fluid px-0" style={{ minHeight: "100%", width: "100vw", maxWidth: "100%"}}>
-      <div className="container-fluid px-4 py-1 " style={{ width: "100%", maxWidth: "100%"}}>
+    <div
+      className="container-fluid px-0"
+      style={{ minHeight: "100%", width: "100vw", maxWidth: "100%" }}
+    >
+      <div
+        className="container-fluid px-4 py-1 "
+        style={{ width: "100%", maxWidth: "100%" }}
+      >
         <div className="text-center mb-1">
           <h1
             className="display-4 fw-bold fs-2"
@@ -99,38 +110,46 @@ const VistaRegistrosDinamica = ({
         </div>
 
         <div className="mb-3">
-        <div className="d-flex gap-2">
-          {onCreate && hasPermission('edit') && (
-            <button
-              className="btn btn-primary"
-              onClick={handleCreateRegister}
-              style={{ fontSize: "14px" }}
-            >
-              Crear
-            </button>
-          )}
-          {onGenerateChart && hasPermission('generateChart') && (
-            <button
-              className="btn btn-success"
-              onClick={handleGenerateChart} // Cambiar aquí el onClick
-              style={{ fontSize: "14px" }}
-            >
-              Generar gráfico
-            </button>
-          )}
-          {onFilter && hasPermission('filter') && (
-            <button
-              className="btn btn-info text-white"
-              onClick={handleFilter}
-              style={{ fontSize: "14px" }}
-            >
-              Filtrar
-            </button>
-          )}
+          <div className="d-flex gap-2">
+            {onCreate && hasPermission("edit") && (
+              <button
+                className="btn btn-primary"
+                onClick={handleCreateRegister}
+                style={{ fontSize: "14px" }}
+              >
+                Crear
+              </button>
+            )}
+            {onGenerateChart && hasPermission("generateChart") && (
+              <button
+                className="btn btn-success"
+                onClick={handleGenerateChart} // Cambiar aquí el onClick
+                style={{ fontSize: "14px" }}
+              >
+                Generar gráfico
+              </button>
+            )}
+            {onFilter && hasPermission("filter") && (
+              <button
+                className="btn btn-info text-white"
+                onClick={handleFilter}
+                style={{ fontSize: "14px" }}
+              >
+                Filtrar
+              </button>
+            )}
           </div>
         </div>
 
-        <div className="bg-white rounded shadow-sm" style={{ overflow: "hidden", width: "100%", margin: "0 auto", maxWidth: "2400px" }}>
+        <div
+          className="bg-white rounded shadow-sm"
+          style={{
+            overflow: "hidden",
+            width: "100%",
+            margin: "0 auto",
+            maxWidth: "2400px",
+          }}
+        >
           {isLoading ? (
             <div className="d-flex justify-content-center py-5">
               <div className="spinner-border text-primary" role="status">
@@ -144,7 +163,14 @@ const VistaRegistrosDinamica = ({
           ) : (
             <>
               <div className="table-responsive" style={{ width: "100%" }}>
-                <table className="table table-hover mb-0" style={{ width: "100%", tableLayout: "fixed", minWidth: "1200px" }}>
+                <table
+                  className="table table-hover mb-0"
+                  style={{
+                    width: "100%",
+                    tableLayout: "fixed",
+                    minWidth: "1200px",
+                  }}
+                >
                   <thead>
                     <tr>
                       {columns.map((column, index) => (
@@ -158,8 +184,10 @@ const VistaRegistrosDinamica = ({
                             lineHeight: "14px",
                             fontWeight: "600",
                             border: "none",
-                            width: showActions ? `${150/columns.length}%` : `${100/columns.length}%`,
-                            textAlign: "center"
+                            width: showActions
+                              ? `${150 / columns.length}%`
+                              : `${100 / columns.length}%`,
+                            textAlign: "center",
                           }}
                         >
                           {column.title || column.key}
@@ -200,7 +228,7 @@ const VistaRegistrosDinamica = ({
                           {showActions && (
                             <td className="px-3 py-2">
                               <div className="d-flex justify-content-end gap-1">
-                                {onView && hasPermission('view') && (
+                                {onView && hasPermission("view") && (
                                   <button
                                     className="btn btn-sm btn-outline-info"
                                     onClick={() =>
@@ -211,7 +239,7 @@ const VistaRegistrosDinamica = ({
                                     <i className="bi bi-eye"></i>
                                   </button>
                                 )}
-                                {onEdit && hasPermission('edit') && (
+                                {onEdit && hasPermission("edit") && (
                                   <button
                                     className="btn btn-sm btn-outline-primary"
                                     onClick={() =>
@@ -222,7 +250,7 @@ const VistaRegistrosDinamica = ({
                                     <i className="bi bi-pencil-square"></i>
                                   </button>
                                 )}
-                                {onDelete && hasPermission('delete') && (
+                                {onDelete && hasPermission("delete") && (
                                   <button
                                     className="btn btn-sm btn-outline-danger"
                                     onClick={() =>
