@@ -13,13 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
-import java.util.ArrayList;
 
 @Service
 public class IConfigurableBackupService {
@@ -32,6 +33,12 @@ public class IConfigurableBackupService {
 
     @Value("${backup.postgres.bin.path:}")
     private String postgresBinPath;
+
+    @Value("${backup.base.dir:./data}")
+    private String baseBackupDir;
+
+    @Value("${backup.db.subdir:database}")
+    private String dbBackupSubdir;
 
     private ThreadPoolTaskScheduler taskScheduler;
     private Map<String, ScheduledFuture<?>> scheduledTasks;
@@ -157,6 +164,49 @@ public class IConfigurableBackupService {
         }
     }
 
+    /**
+     * Obtiene el directorio completo donde se guardarán los backups de base de datos
+     * Maneja tanto ambiente local como dockerizado
+     */
+    private String getFullBackupDirectory() {
+        // Si config.getBackupDir() es una ruta absoluta, la usamos directamente
+        if (config.getBackupDir().startsWith("/") || (config.getBackupDir().length() > 1 && config.getBackupDir().charAt(1) == ':')) {
+            return config.getBackupDir();
+        }
+
+        // Si es una ruta relativa, la combinamos con baseBackupDir y dbBackupSubdir
+        Path fullPath = Paths.get(baseBackupDir, dbBackupSubdir, config.getBackupDir());
+        return fullPath.toString();
+    }
+
+    /**
+     * Crea y valida el directorio de backup
+     * Incluye validaciones mejoradas para permisos
+     */
+    private File createAndValidateBackupDirectory() throws IOException {
+        String fullBackupPath = getFullBackupDirectory();
+        File backupDirectory = new File(fullBackupPath);
+
+        // Crear directorio si no existe
+        if (!backupDirectory.exists()) {
+            logger.info("Creando directorio de backup: {}", fullBackupPath);
+            if (!backupDirectory.mkdirs()) {
+                throw new IOException("No se pudo crear el directorio de backup: " + fullBackupPath);
+            }
+        }
+
+        // Validar permisos de escritura
+        if (!backupDirectory.canWrite()) {
+            throw new IOException("No hay permisos de escritura en el directorio de backup: " + fullBackupPath);
+        }
+
+        // Log de información útil
+        logger.info("Directorio de backup configurado: {}", backupDirectory.getAbsolutePath());
+        logger.info("Espacio libre en disco: {} MB", backupDirectory.getFreeSpace() / (1024 * 1024));
+
+        return backupDirectory;
+    }
+
     public void scheduleBackup(ScheduleConfig schedule) {
         if (!schedule.isValidCronExpression()) {
             throw new IllegalArgumentException("Expresión CRON inválida: " + schedule.getCronExpression());
@@ -234,11 +284,11 @@ public class IConfigurableBackupService {
             command.add(config.getDbPort());
             command.add("-U");
             command.add(config.getDbUser());
-            command.add("-d");  // CORREGIDO: Agregado parámetro para especificar la base de datos
+            command.add("-d");
             command.add(config.getDbName());
             command.add("-F");
             command.add("p"); // plain text format
-            command.add("--no-password"); // AGREGADO: Evita prompt de password
+            command.add("--no-password");
 
             // Crear nombre de archivo único
             String fecha = LocalDateTime.now().format(DATE_FORMAT);
@@ -246,12 +296,8 @@ public class IConfigurableBackupService {
                     scheduleName.replaceAll("[^a-zA-Z0-9]", "_"),
                     fecha);
 
-            // Crear directorio de backup si no existe
-            File backupDirectory = new File(config.getBackupDir());
-            if (!backupDirectory.exists() && !backupDirectory.mkdirs()) {
-                logger.error("No se pudo crear el directorio de backup: {}", config.getBackupDir());
-                return;
-            }
+            // Crear y validar directorio de backup (método mejorado)
+            File backupDirectory = createAndValidateBackupDirectory();
 
             // Archivo de backup
             File backupFile = new File(backupDirectory, nombreArchivo);
@@ -273,9 +319,15 @@ public class IConfigurableBackupService {
             long duration = System.currentTimeMillis() - startTime;
 
             if (exitCode == 0 && backupFile.exists() && backupFile.length() > 0) {
-                logger.info("Backup completado exitosamente: '{}' | Archivo: {} | Tamaño: {} bytes | Duración: {} ms",
-                        scheduleName, backupFile.getAbsolutePath(), backupFile.length(), duration);
+                // Log con información adicional útil para debugging
+                logger.info("Backup completado exitosamente: '{}' | Archivo: {} | Tamaño: {} bytes | Duración: {} ms | Directorio: {}",
+                        scheduleName, backupFile.getName(), backupFile.length(), duration, backupDirectory.getAbsolutePath());
+
                 updateLastExecution(scheduleName);
+
+                // Opcional: Limpiar backups antiguos
+                cleanupOldBackups(backupDirectory, scheduleName);
+
             } else {
                 logger.error("Error al realizar backup '{}'. Código de salida: {} | Duración: {} ms",
                         scheduleName, exitCode, duration);
@@ -287,6 +339,40 @@ public class IConfigurableBackupService {
             logger.error("Error al realizar backup '{}': {}", scheduleName, e.getMessage(), e);
         }
     }
+
+    /**
+     * Limpia backups antiguos para evitar llenar el disco
+     * Mantiene solo los últimos N backups por schedule
+     */
+    @Value("${backup.retention.count:7}")
+    private int backupRetentionCount;
+
+    private void cleanupOldBackups(File backupDirectory, String scheduleName) {
+        try {
+            String schedulePrefix = "backup_" + scheduleName.replaceAll("[^a-zA-Z0-9]", "_") + "_";
+
+            File[] backupFiles = backupDirectory.listFiles((dir, name) ->
+                    name.startsWith(schedulePrefix) && name.endsWith(".sql"));
+
+            if (backupFiles != null && backupFiles.length > backupRetentionCount) {
+                // Ordenar por fecha de modificación (más antiguos primero)
+                Arrays.sort(backupFiles, Comparator.comparingLong(File::lastModified));
+
+                // Eliminar archivos más antiguos
+                int filesToDelete = backupFiles.length - backupRetentionCount;
+                for (int i = 0; i < filesToDelete; i++) {
+                    if (backupFiles[i].delete()) {
+                        logger.info("Backup antiguo eliminado: {}", backupFiles[i].getName());
+                    } else {
+                        logger.warn("No se pudo eliminar backup antiguo: {}", backupFiles[i].getName());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Error al limpiar backups antiguos: {}", e.getMessage());
+        }
+    }
+
 
     private boolean validarConfiguracion() {
         boolean valid = config.getDbHost() != null && !config.getDbHost().trim().isEmpty() &&
@@ -415,12 +501,29 @@ public class IConfigurableBackupService {
     public Map<String, String> getSystemStatus() {
         Map<String, String> status = new ConcurrentHashMap<>();
         status.put("enabled", String.valueOf(config.isEnabled()));
-        status.put("totalSchedules", String.valueOf(config.getSchedules().size()));
+        status.put("totalSchedules", String.valueOf(config.getSchedules() != null ? config.getSchedules().size() : 0));
         status.put("activeSchedules", String.valueOf(scheduledTasks.size()));
-        status.put("backupDirectory", config.getBackupDir());
+        status.put("configuredBackupDir", config.getBackupDir());
+        status.put("fullBackupDirectory", getFullBackupDirectory());
+        status.put("baseBackupDir", baseBackupDir);
+        status.put("dbBackupSubdir", dbBackupSubdir);
         status.put("dbHost", config.getDbHost());
         status.put("dbName", config.getDbName());
         status.put("pgdumpCommand", getPgDumpCommand());
+        status.put("backupRetentionCount", String.valueOf(backupRetentionCount));
+
+        // Información del directorio
+        try {
+            File backupDir = new File(getFullBackupDirectory());
+            status.put("backupDirExists", String.valueOf(backupDir.exists()));
+            status.put("backupDirWritable", String.valueOf(backupDir.canWrite()));
+            if (backupDir.exists()) {
+                status.put("backupDirFreeSpace", String.valueOf(backupDir.getFreeSpace() / (1024 * 1024)) + " MB");
+            }
+        } catch (Exception e) {
+            status.put("backupDirError", e.getMessage());
+        }
+
         return status;
     }
 
@@ -441,4 +544,5 @@ public class IConfigurableBackupService {
 
         logger.info("Sistema de backup cerrado correctamente");
     }
+
 }

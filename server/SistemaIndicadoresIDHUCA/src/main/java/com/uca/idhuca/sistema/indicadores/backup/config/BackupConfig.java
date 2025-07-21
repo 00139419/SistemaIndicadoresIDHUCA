@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class BackupConfig {
     // Getters y setters
     private boolean enabled = true;
-    private String backupDir = "/ruta/a/respaldos";
+    private String backupDir = "/app/data/backups";
     private String dbHost = "localhost";
     private String dbPort = "3306";
     private String dbUser = "usuario";
