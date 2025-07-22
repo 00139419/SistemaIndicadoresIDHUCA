@@ -9,6 +9,7 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { MultiSelect } from "primereact/multiselect";
 import { TabView, TabPanel } from "primereact/tabview";
+import { Dialog } from "primereact/dialog";
 import {
   getCatalogo,
   updateEvento,
@@ -53,6 +54,33 @@ const EditarRegistro = () => {
   const [municipiosResidenciaList, setMunicipiosResidenciaList] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Estados para modales
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState({
+    type: "success",
+    title: "",
+    message: "",
+    onAccept: null,
+  });
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmData, setConfirmData] = useState({
+    message: "",
+    onConfirm: null,
+    onCancel: null,
+  });
+
+  // Función para mostrar modal de respuesta
+  const showResponseModal = (type, title, message, onAccept = null) => {
+    setModalData({ type, title, message, onAccept });
+    setShowModal(true);
+  };
+
+  // Función para mostrar modal de confirmación
+  const showConfirmDialog = (message, onConfirm, onCancel = null) => {
+    setConfirmData({ message, onConfirm, onCancel });
+    setShowConfirmModal(true);
+  };
+
   // Cargar catálogos y datos del evento
   useEffect(() => {
     const cargarTodo = async () => {
@@ -85,7 +113,11 @@ const EditarRegistro = () => {
           getCatalogo({ lugarExacto: true, cargarDeafult: true }),
           getCatalogo({ genero: true, cargarDeafult: true }),
           getCatalogo({ derechos: true, cargarDeafult: true }),
-          getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }),
+          getCatalogo({
+            subDerechos: true,
+            cargarDeafult: true,
+            parentId: "DER_1",
+          }),
           getCatalogo({ paises: true, cargarDeafult: true }),
           getCatalogo({ estadoSalud: true, cargarDeafult: true }),
           getCatalogo({ tipoPersona: true, cargarDeafult: true }),
@@ -192,10 +224,23 @@ const EditarRegistro = () => {
         derechosVulnerados: (p.derechosVulnerados || []).map(
           (dv) => dv.derecho
         ),
-        violencia: p.violencia || {},
-        detencionIntegridad: p.detencionIntegridad || {},
-        expresionCensura: p.expresionCensura || {},
-        accesoJusticia: p.accesoJusticia || {},
+        // Solo asignar si realmente existen datos, sino null
+        violencia:
+          p.violencia && Object.keys(p.violencia).length > 0
+            ? p.violencia
+            : null,
+        detencionIntegridad:
+          p.detencionIntegridad && Object.keys(p.detencionIntegridad).length > 0
+            ? p.detencionIntegridad
+            : null,
+        expresionCensura:
+          p.expresionCensura && Object.keys(p.expresionCensura).length > 0
+            ? p.expresionCensura
+            : null,
+        accesoJusticia:
+          p.accesoJusticia && Object.keys(p.accesoJusticia).length > 0
+            ? p.accesoJusticia
+            : null,
       })),
     };
   }
@@ -248,7 +293,11 @@ const EditarRegistro = () => {
       !evento.estadoActual ||
       !evento.derechoAsociado
     ) {
-      alert("Todos los campos principales son obligatorios");
+      showResponseModal(
+        "error",
+        "Campos Requeridos",
+        "Todos los campos principales son obligatorios"
+      );
       return;
     }
     const payload = {
@@ -272,10 +321,20 @@ const EditarRegistro = () => {
       console.log(payload);
 
       await updateEvento(payload);
-      alert("Evento actualizado correctamente");
-      navigate("/registros");
+      showResponseModal(
+        "success",
+        "¡Éxito!",
+        "Evento actualizado correctamente",
+        () => {
+          navigate("/registros");
+        }
+      );
     } catch (error) {
-      alert("Error al actualizar: " + error.message);
+      showResponseModal(
+        "error",
+        "Error",
+        `Error al actualizar: ${error.message}`
+      );
     }
   };
 
@@ -304,11 +363,13 @@ const EditarRegistro = () => {
       expresionCensura: persona.expresionCensura || null,
       accesoJusticia: persona.accesoJusticia
         ? {
-          ...persona.accesoJusticia,
-          fechaDenuncia: persona.accesoJusticia.fechaDenuncia
-            ? new Date(persona.accesoJusticia.fechaDenuncia).toISOString().split("T")[0]
-            : null,
-        }
+            ...persona.accesoJusticia,
+            fechaDenuncia: persona.accesoJusticia.fechaDenuncia
+              ? new Date(persona.accesoJusticia.fechaDenuncia)
+                  .toISOString()
+                  .split("T")[0]
+              : null,
+          }
         : null,
       fechaHecho: evento.fechaHecho
         ? new Date(evento.fechaHecho).toISOString().split("T")[0]
@@ -317,27 +378,46 @@ const EditarRegistro = () => {
     try {
       console.log("Actualizando persona: ", JSON.stringify(payload));
       await updatePersonaAfectada(payload);
-      alert("Persona actualizada correctamente");
+      showResponseModal(
+        "success",
+        "¡Éxito!",
+        "Persona actualizada correctamente"
+      );
     } catch (error) {
-      alert("Error al actualizar persona: " + error.message);
+      showResponseModal(
+        "error",
+        "Error",
+        `Error al actualizar persona: ${error.message}`
+      );
     }
   };
 
   const handleEliminarPersona = async (personaId) => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta persona afectada?"))
-      return;
-    try {
-      await deletePersonaAfectada(evento.id, personaId);
-      setEvento((prev) => ({
-        ...prev,
-        personasAfectadas: prev.personasAfectadas.filter(
-          (p) => p.id !== personaId
-        ),
-      }));
-      alert("Persona afectada eliminada correctamente");
-    } catch (error) {
-      alert("Error al eliminar persona: " + error.message);
-    }
+    showConfirmDialog(
+      "¿Seguro que deseas eliminar esta persona afectada?",
+      async () => {
+        try {
+          await deletePersonaAfectada(evento.id, personaId);
+          setEvento((prev) => ({
+            ...prev,
+            personasAfectadas: prev.personasAfectadas.filter(
+              (p) => p.id !== personaId
+            ),
+          }));
+          showResponseModal(
+            "success",
+            "¡Éxito!",
+            "Persona afectada eliminada correctamente"
+          );
+        } catch (error) {
+          showResponseModal(
+            "error",
+            "Error",
+            `Error al eliminar persona: ${error.message}`
+          );
+        }
+      }
+    );
   };
 
   if (loading || !evento) {
@@ -351,6 +431,107 @@ const EditarRegistro = () => {
 
   return (
     <div className="p-4 surface-100 min-h-screen">
+      {/* Modal de Respuesta */}
+      <Dialog
+        header={
+          <div className="flex align-items-center">
+            <i
+              className={`fas ${
+                modalData.type === "success"
+                  ? "fa-check-circle text-green-500"
+                  : "fa-exclamation-triangle text-red-500"
+              } mr-2`}
+            ></i>
+            {modalData.title}
+          </div>
+        }
+        visible={showModal}
+        onHide={() => setShowModal(false)}
+        style={{ width: "350px" }}
+        closable={false}
+      >
+        <div
+          className="flex flex-column align-items-center justify-content-center"
+          style={{ minHeight: "100px" }}
+        >
+          <i
+            className={`pi ${
+              modalData.type === "success"
+                ? "pi-check-circle"
+                : "pi-times-circle"
+            }`}
+            style={{
+              fontSize: "2rem",
+              color: modalData.type === "success" ? "green" : "red",
+            }}
+          ></i>
+          <p className="mt-3 text-center">{modalData.message}</p>
+          <Button
+            label="Aceptar"
+            icon="pi pi-check"
+            className={`mt-3 ${
+              modalData.type === "success"
+                ? "p-button-success"
+                : "p-button-danger"
+            }`}
+            onClick={() => {
+              setShowModal(false);
+              if (modalData.onAccept) {
+                modalData.onAccept();
+              }
+            }}
+          />
+        </div>
+      </Dialog>
+
+      {/* Modal de Confirmación */}
+      <Dialog
+        header={
+          <div className="flex align-items-center">
+            <i className="pi pi-question-circle text-orange-500 mr-2"></i>
+            Confirmación
+          </div>
+        }
+        visible={showConfirmModal}
+        onHide={() => setShowConfirmModal(false)}
+        style={{ width: "400px" }}
+        closable={false}
+      >
+        <div
+          className="flex flex-column align-items-center justify-content-center"
+          style={{ minHeight: "100px" }}
+        >
+          <i
+            className="pi pi-question-circle"
+            style={{ fontSize: "2rem", color: "orange" }}
+          ></i>
+          <p className="mt-3 text-center">{confirmData.message}</p>
+          <div className="flex gap-2 mt-3">
+            <Button
+              label="Cancelar"
+              icon="pi pi-times"
+              className="p-button-secondary"
+              onClick={() => {
+                setShowConfirmModal(false);
+                if (confirmData.onCancel) {
+                  confirmData.onCancel();
+                }
+              }}
+            />
+            <Button
+              label="Confirmar"
+              icon="pi pi-check"
+              className="p-button-danger"
+              onClick={() => {
+                setShowConfirmModal(false);
+                if (confirmData.onConfirm) {
+                  confirmData.onConfirm();
+                }
+              }}
+            />
+          </div>
+        </div>
+      </Dialog>
       <Card
         title="✏️ Editar Registro del Hecho"
         className="shadow-4 border-round-lg"
@@ -488,7 +669,6 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
-
                 {/* Edad */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Edad</label>
@@ -502,7 +682,6 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
-
                 {/* Género */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Género</label>
@@ -517,7 +696,6 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
-
                 {/* Tipo de persona */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Tipo de persona</label>
@@ -532,7 +710,8 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
-
+                // En la sección de Datos Generales, modifica los campos de
+                departamento y municipio de residencia:
                 {/* Departamento de residencia */}
                 <div className="field col-12 md:col-5">
                   <label className="mb-2 d-block font-semibold">
@@ -547,9 +726,22 @@ const EditarRegistro = () => {
                     optionLabel="descripcion"
                     placeholder="Seleccione un departamento"
                     className="w-full"
+                    disabled={
+                      !(
+                        persona.nacionalidad &&
+                        persona.nacionalidad.codigo === "PAIS_9300"
+                      )
+                    }
+                    onClick={() => {
+                      console.log(
+                        `DepartamentoResidencia habilitado para persona #${
+                          index + 1
+                        }:`,
+                        persona.nacionalidad
+                      );
+                    }}
                   />
                 </div>
-
                 {/* Municipio de residencia */}
                 <div className="field col-12 md:col-5">
                   <label className="mb-2 d-block font-semibold">
@@ -568,26 +760,66 @@ const EditarRegistro = () => {
                         : "Seleccione un departamento primero"
                     }
                     className="w-full"
+                    disabled={
+                      !(
+                        persona.nacionalidad &&
+                        persona.nacionalidad.codigo === "PAIS_9300"
+                      )
+                    }
+                    onClick={() => {
+                      console.log(
+                        `MunicipioResidencia habilitado para persona #${
+                          index + 1
+                        }:`,
+                        persona.nacionalidad
+                      );
+                    }}
                   />
                 </div>
-
-                {/* Nacionalidad */}
+                {/* Nacionalidad - también necesita lógica para limpiar campos */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Nacionalidad</label>
                   <Dropdown
                     value={persona.nacionalidad}
-                    onChange={(e) =>
-                      actualizarPersona(index, "nacionalidad", e.value)
-                    }
+                    onChange={(e) => {
+                      const nuevaNacionalidad = e.value;
+                      actualizarPersona(
+                        index,
+                        "nacionalidad",
+                        nuevaNacionalidad
+                      );
+                      console.log(
+                        `Nacionalidad seleccionada para persona #${index + 1}:`,
+                        nuevaNacionalidad
+                      );
+
+                      // Si NO es El Salvador (PAIS_9300), borrar departamento y municipio
+                      if (
+                        !nuevaNacionalidad ||
+                        nuevaNacionalidad.codigo !== "PAIS_9300"
+                      ) {
+                        actualizarPersona(
+                          index,
+                          "departamentoResidencia",
+                          null
+                        );
+                        actualizarPersona(index, "municipioResidencia", null);
+                        // También limpiar la lista de municipios para esta persona
+                        const nuevos = [...municipiosResidenciaList];
+                        nuevos[index] = [];
+                        setMunicipiosResidenciaList(nuevos);
+                      }
+                    }}
                     options={paises}
                     optionLabel="descripcion"
                     placeholder="Seleccione país"
                     filter
                     filterPlaceholder="Buscar país..."
                     className="w-full"
+                    resetFilterOnHide
+                    showClear
                   />
                 </div>
-
                 {/* Estado de salud */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Estado de salud</label>
@@ -631,8 +863,9 @@ const EditarRegistro = () => {
                     persona.violencia ? "Quitar violencia" : "Agregar violencia"
                   }
                   icon={persona.violencia ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${persona.violencia ? "danger" : "success"
-                    }`}
+                  className={`p-button-${
+                    persona.violencia ? "danger" : "success"
+                  }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -640,16 +873,16 @@ const EditarRegistro = () => {
                       persona.violencia
                         ? null
                         : {
-                          esAsesinato: false,
-                          tipoViolencia: null,
-                          artefactoUtilizado: null,
-                          contexto: null,
-                          actorResponsable: null,
-                          estadoSaludActorResponsable: null,
-                          huboProteccion: false,
-                          investigacionAbierta: false,
-                          respuestaEstado: "",
-                        }
+                            esAsesinato: false,
+                            tipoViolencia: null,
+                            artefactoUtilizado: null,
+                            contexto: null,
+                            actorResponsable: null,
+                            estadoSaludActorResponsable: null,
+                            huboProteccion: false,
+                            investigacionAbierta: false,
+                            respuestaEstado: "",
+                          }
                     )
                   }
                 />
@@ -842,8 +1075,9 @@ const EditarRegistro = () => {
                       : "Agregar sección"
                   }
                   icon={persona.accesoJusticia ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${persona.accesoJusticia ? "danger" : "success"
-                    }`}
+                  className={`p-button-${
+                    persona.accesoJusticia ? "danger" : "success"
+                  }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -851,15 +1085,15 @@ const EditarRegistro = () => {
                       persona.accesoJusticia
                         ? null
                         : {
-                          tipoProceso: null,
-                          fechaDenuncia: null,
-                          tipoDenunciante: null,
-                          duracionProceso: null,
-                          accesoAbogado: false,
-                          huboParcialidad: false,
-                          resultadoProceso: "",
-                          instancia: "",
-                        }
+                            tipoProceso: null,
+                            fechaDenuncia: null,
+                            tipoDenunciante: null,
+                            duracionProceso: null,
+                            accesoAbogado: false,
+                            huboParcialidad: false,
+                            resultadoProceso: "",
+                            instancia: "",
+                          }
                     )
                   }
                 />
@@ -1031,8 +1265,9 @@ const EditarRegistro = () => {
                   icon={
                     persona.detencionIntegridad ? "pi pi-times" : "pi pi-plus"
                   }
-                  className={`p-button-${persona.detencionIntegridad ? "danger" : "success"
-                    }`}
+                  className={`p-button-${
+                    persona.detencionIntegridad ? "danger" : "success"
+                  }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -1040,15 +1275,15 @@ const EditarRegistro = () => {
                       persona.detencionIntegridad
                         ? null
                         : {
-                          tipoDetencion: null,
-                          ordenJudicial: false,
-                          autoridadInvolucrada: null,
-                          huboTortura: false,
-                          duracionDias: null,
-                          accesoAbogado: false,
-                          resultado: "",
-                          motivoDetencion: null,
-                        }
+                            tipoDetencion: null,
+                            ordenJudicial: false,
+                            autoridadInvolucrada: null,
+                            huboTortura: false,
+                            duracionDias: null,
+                            accesoAbogado: false,
+                            resultado: "",
+                            motivoDetencion: null,
+                          }
                     )
                   }
                 />
@@ -1217,8 +1452,9 @@ const EditarRegistro = () => {
                       : "Agregar sección"
                   }
                   icon={persona.expresionCensura ? "pi pi-times" : "pi pi-plus"}
-                  className={`p-button-${persona.expresionCensura ? "danger" : "success"
-                    }`}
+                  className={`p-button-${
+                    persona.expresionCensura ? "danger" : "success"
+                  }`}
                   onClick={() =>
                     actualizarPersona(
                       index,
@@ -1226,13 +1462,13 @@ const EditarRegistro = () => {
                       persona.expresionCensura
                         ? null
                         : {
-                          medioExpresion: null,
-                          tipoRepresion: null,
-                          represaliasLegales: false,
-                          represaliasFisicas: false,
-                          actorCensor: null,
-                          consecuencia: "",
-                        }
+                            medioExpresion: null,
+                            tipoRepresion: null,
+                            represaliasLegales: false,
+                            represaliasFisicas: false,
+                            actorCensor: null,
+                            consecuencia: "",
+                          }
                     )
                   }
                 />

@@ -251,8 +251,8 @@ const AgregarRegistro = () => {
       flagExpresion: hayExpresion,
       flagJusticia: hayJusticia,
       flagCensura: hayCensura,
-      flagRegimenExcepcion: false, // Ajustar según tu lógica
-      observaciones: observaciones || "",
+      flagRegimenExcepcion: false,
+      observaciones: observaciones?.trim() || "", // Si está vacío o solo espacios, envía string vacío
       ubicacion: {
         departamento: departamento
           ? {
@@ -575,10 +575,11 @@ const AgregarRegistro = () => {
     tipoPersona: null,
     estadoSalud: null,
     derechosVulnerados: [],
-    violencia: {},
-    detencionIntegridad: {},
-    expresionCensura: {},
-    accesoJusticia: {},
+    // Cambiar de {} a null para que aparezcan los botones de "¿Desea registrar?"
+    violencia: null,
+    detencionIntegridad: null,
+    expresionCensura: null,
+    accesoJusticia: null,
   });
 
   if (loadingCatalogos) {
@@ -707,13 +708,17 @@ const AgregarRegistro = () => {
 
           {/* Observaciones */}
           <div className="col-12">
-            <label className="font-semibold mb-2 block">Observaciones</label>
+            <label className="font-semibold mb-2 block">
+              Observaciones{" "}
+              <span className="text-muted font-normal">(Opcional)</span>
+            </label>
             <InputTextarea
               value={observaciones}
               onChange={(e) => setObservaciones(e.target.value)}
               rows={4}
               className="w-full"
               autoResize
+              placeholder="Ingrese observaciones adicionales (opcional)"
             />
           </div>
         </div>
