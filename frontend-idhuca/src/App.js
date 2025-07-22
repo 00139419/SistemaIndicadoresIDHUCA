@@ -22,7 +22,7 @@ import Graficos from './pages/registros/Graficos';
 import Filtros from './pages/registros/FiltradoRegistros';
 import RegistrosUpdate from './pages/registros/EditarRegistro.jsx';
 import EliminarRegistro from './pages/registros/EliminarRegistro.jsx';
-import ChangePassword from './pages/configuraciones/ChangePassword.jsx';
+import Configuraciones from './pages/configuraciones/Configuraciones.jsx';
 import SelectEjeX from './pages/registros/SelectEjeX.jsx';
 import { UserProvider } from './Contexts/UserContext';
 import './styles/navbar.css';   // 👈 tu override después de Bootstrap
@@ -96,7 +96,7 @@ function App() {
             } />
             <Route path="/configuraciones" element={
               <ProtectedRoute>
-                <ChangePassword />
+                <Configuraciones />
               </ProtectedRoute>
             } />
             <Route
