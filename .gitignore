@@ -1,0 +1,4 @@
+# Ignorar respaldos, logs y archivos subidos
+/backend/backup/
+/backend/logs/
+/backend/uploads/
