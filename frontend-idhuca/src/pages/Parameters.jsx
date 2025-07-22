@@ -116,41 +116,41 @@ const SistemaParametros = () => {
   };
 
   const fetchBackups = async () => {
-  try {
-    setIsLoadingBackups(true);
-    setBackupError(null);
+    try {
+      setIsLoadingBackups(true);
+      setBackupError(null);
 
-    const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("authToken");
 
-    if (!token || !isAuthenticated) {
-      logout();
-      throw new Error("No se encontró el token de autenticación.");
+      if (!token || !isAuthenticated) {
+        logout();
+        throw new Error("No se encontró el token de autenticación.");
+      }
+
+      const config = {
+        method: "get",
+        url: "http://localhost:8080/api/backup/schedules",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios(config);
+
+      // Cambio aquí: acceder a response.data.data en lugar de response.data
+      setBackups(response.data?.data || []);
+    } catch (err) {
+      console.error("Error al obtener backups:", err);
+      setBackupError(
+        err.response?.data?.message || "Error al cargar los backups"
+      );
+      if (err.response?.status === 401) {
+        logout();
+      }
+    } finally {
+      setIsLoadingBackups(false);
     }
-
-    const config = {
-      method: "get",
-      url: "http://localhost:8080/api/backup/schedules",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await axios(config);
-    
-    // Cambio aquí: acceder a response.data.data en lugar de response.data
-    setBackups(response.data?.data || []);
-  } catch (err) {
-    console.error("Error al obtener backups:", err);
-    setBackupError(
-      err.response?.data?.message || "Error al cargar los backups"
-    );
-    if (err.response?.status === 401) {
-      logout();
-    }
-  } finally {
-    setIsLoadingBackups(false);
-  }
-};
+  };
 
   const executeManualBackup = async (backupName) => {
     try {
@@ -323,6 +323,13 @@ const SistemaParametros = () => {
     }
     return backup.cronExpression || "Programación personalizada";
   };
+
+  useEffect(() => {
+    if (modalError) {
+      const timer = setTimeout(() => setModalError(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [modalError]);
 
   return (
     <div
@@ -673,91 +680,6 @@ const SistemaParametros = () => {
                   {modalError}
                 </div>
               )}
-              {modalError && setTimeout(() => setModalError(null), 3000)}
-              <div className="mb-3">
-                <label className="form-label">
-                  <i className="bi bi-key me-1"></i>Clave
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={editingParam?.clave || ""}
-                  disabled
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">
-                  <i className="bi bi-tag me-1"></i>Valor
-                </label>
-                <textarea
-                  className="form-control"
-                  value={updatedValues.valor}
-                  onChange={(e) =>
-                    setUpdatedValues({
-                      ...updatedValues,
-                      valor: e.target.value,
-                    })
-                  }
-                  rows={6}
-                  style={{ resize: "vertical" }}
-                  required
-                />
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setShowModal(false)}
-              >
-                <i className="bi bi-x-circle me-1"></i>
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleUpdateParameter}
-              >
-                <i className="bi bi-check-circle me-1"></i>
-                Guardar Cambios
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      {showModal && <div className="modal-backdrop fade show"></div>}
-
-      {/* Modal de edición de parámetros */}
-      <div
-        className={`modal fade ${showModal ? "show" : ""}`}
-        style={{ display: showModal ? "block" : "none" }}
-        tabIndex="-1"
-        role="dialog"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">
-                <i className="bi bi-pencil-square me-2"></i>
-                Editar Parámetro
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={() => {
-                  setShowModal(false);
-                  setTimeout(() => setModalError(null), 300);
-                }}
-              ></button>
-            </div>
-            <div className="modal-body">
-              {modalError && (
-                <div className="alert alert-danger py-2 small mb-3">
-                  <i className="bi bi-exclamation-triangle me-2"></i>
-                  {modalError}
-                </div>
-              )}
-              {modalError && setTimeout(() => setModalError(null), 3000)}
               <div className="mb-3">
                 <label className="form-label">
                   <i className="bi bi-key me-1"></i>Clave
@@ -877,13 +799,17 @@ const SistemaParametros = () => {
                 <>
                   <div className="mb-3">
                     <label className="form-label">
-                      <i className="bi bi-calendar-week me-1"></i>Día de la Semana
+                      <i className="bi bi-calendar-week me-1"></i>Día de la
+                      Semana
                     </label>
                     <select
                       className="form-select"
                       value={backupForm.dayOfWeek}
                       onChange={(e) =>
-                        setBackupForm({ ...backupForm, dayOfWeek: e.target.value })
+                        setBackupForm({
+                          ...backupForm,
+                          dayOfWeek: e.target.value,
+                        })
                       }
                     >
                       {getDaysOfWeekOptions().map((day) => (
@@ -902,7 +828,10 @@ const SistemaParametros = () => {
                         className="form-select"
                         value={backupForm.hour}
                         onChange={(e) =>
-                          setBackupForm({ ...backupForm, hour: parseInt(e.target.value) })
+                          setBackupForm({
+                            ...backupForm,
+                            hour: parseInt(e.target.value),
+                          })
                         }
                       >
                         {Array.from({ length: 24 }, (_, i) => (
@@ -920,7 +849,10 @@ const SistemaParametros = () => {
                         className="form-select"
                         value={backupForm.minute}
                         onChange={(e) =>
-                          setBackupForm({ ...backupForm, minute: parseInt(e.target.value) })
+                          setBackupForm({
+                            ...backupForm,
+                            minute: parseInt(e.target.value),
+                          })
                         }
                       >
                         {Array.from({ length: 60 }, (_, i) => (
@@ -944,14 +876,19 @@ const SistemaParametros = () => {
                       className="form-select"
                       value={backupForm.dayOfMonth}
                       onChange={(e) =>
-                        setBackupForm({ ...backupForm, dayOfMonth: parseInt(e.target.value) })
+                        setBackupForm({
+                          ...backupForm,
+                          dayOfMonth: parseInt(e.target.value),
+                        })
                       }
                     >
-                      {Array.from({ length: 28 }, (_, i) => i + 1).map((day) => (
-                        <option key={day} value={day}>
-                          Día {day}
-                        </option>
-                      ))}
+                      {Array.from({ length: 28 }, (_, i) => i + 1).map(
+                        (day) => (
+                          <option key={day} value={day}>
+                            Día {day}
+                          </option>
+                        )
+                      )}
                     </select>
                   </div>
                   <div className="row">
@@ -963,7 +900,10 @@ const SistemaParametros = () => {
                         className="form-select"
                         value={backupForm.hour}
                         onChange={(e) =>
-                          setBackupForm({ ...backupForm, hour: parseInt(e.target.value) })
+                          setBackupForm({
+                            ...backupForm,
+                            hour: parseInt(e.target.value),
+                          })
                         }
                       >
                         {Array.from({ length: 24 }, (_, i) => (
@@ -973,7 +913,7 @@ const SistemaParametros = () => {
                         ))}
                       </select>
                     </div>
-                
+
                     <div className="col-6">
                       <label className="form-label">
                         <i className="bi bi-stopwatch me-1"></i>Minuto
@@ -982,7 +922,10 @@ const SistemaParametros = () => {
                         className="form-select"
                         value={backupForm.minute}
                         onChange={(e) =>
-                          setBackupForm({ ...backupForm, minute: parseInt(e.target.value) })
+                          setBackupForm({
+                            ...backupForm,
+                            minute: parseInt(e.target.value),
+                          })
                         }
                       >
                         {Array.from({ length: 60 }, (_, i) => (
@@ -992,8 +935,7 @@ const SistemaParametros = () => {
                         ))}
                       </select>
                     </div>
-                    </div>
-                 
+                  </div>
                 </>
               )}
             </div>
@@ -1047,7 +989,9 @@ const SistemaParametros = () => {
             <div className="modal-body">
               <div className="text-center py-3">
                 <i className="bi bi-trash fs-1 text-danger mb-3"></i>
-                <h6 className="mb-3">¿Estás seguro de que deseas eliminar el backup?</h6>
+                <h6 className="mb-3">
+                  ¿Estás seguro de que deseas eliminar el backup?
+                </h6>
                 <div className="alert alert-warning">
                   <strong>"{backupToDelete}"</strong>
                 </div>
