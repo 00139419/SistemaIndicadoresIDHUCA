@@ -381,7 +381,7 @@ export default function FiltradoRegistros() {
         getCatalogo({ tipoPersona: true }),
         getCatalogo({ tipoViolencia: true }),
         getCatalogo({ tipoArma: true }),
-        getCatalogo({ tipoPersona: true }),
+        getCatalogo({ contexto: true }),
         getCatalogo({ tipoDetencion: true }),
         getCatalogo({ motivoDetencion: true }),
         getCatalogo({ medioExpresion: true }),
@@ -798,7 +798,7 @@ export default function FiltradoRegistros() {
 
   return (
     <div className="border rounded p-3 mb-4">
-      <h3 className="mb-4">Filtros del Registro</h3>
+      <h3 className="mb-4">Seleccion de Eje X</h3>
 
       {/* Leyenda de campo seleccionado */}
       {campoSeleccionado && (
@@ -1828,58 +1828,6 @@ export default function FiltradoRegistros() {
               placeholder="Seleccionar tipos"
               className="w-100"
               disabled={!esCampoActivo("accesoJusticiaFiltro.tiposProceso")}
-            />
-          </div>
-
-          {/* Fecha de inicio de denuncia */}
-          <div className="col-md-4 mb-3">
-            <label>Fecha de inicio de denuncia</label>
-            <Calendar
-              value={accesoJusticiaFiltro.fechaDenunciaRango.fechaInicio}
-              onChange={(e) => {
-                setAccesoJusticiaFiltro((prev) => ({
-                  ...prev,
-                  fechaDenunciaRango: {
-                    ...prev.fechaDenunciaRango,
-                    fechaInicio: e.value,
-                  },
-                }));
-                setCampoSeleccionado(
-                  e.value ? "accesoJusticiaFiltro.fechaDenunciaRango" : null
-                );
-              }}
-              showIcon
-              dateFormat="yy-mm-dd"
-              className="w-100"
-              disabled={
-                !esCampoActivo("accesoJusticiaFiltro.fechaDenunciaRango")
-              }
-            />
-          </div>
-
-          {/* Fecha de fin de denuncia */}
-          <div className="col-md-4 mb-3">
-            <label>Fecha de fin de denuncia</label>
-            <Calendar
-              value={accesoJusticiaFiltro.fechaDenunciaRango.fechaFin}
-              onChange={(e) => {
-                setAccesoJusticiaFiltro((prev) => ({
-                  ...prev,
-                  fechaDenunciaRango: {
-                    ...prev.fechaDenunciaRango,
-                    fechaFin: e.value,
-                  },
-                }));
-                setCampoSeleccionado(
-                  e.value ? "accesoJusticiaFiltro.fechaDenunciaRango" : null
-                );
-              }}
-              showIcon
-              dateFormat="yy-mm-dd"
-              className="w-100"
-              disabled={
-                !esCampoActivo("accesoJusticiaFiltro.fechaDenunciaRango")
-              }
             />
           </div>
 

@@ -43,7 +43,6 @@ export const AuthProvider = ({ children }) => {
           },
         }
       );
-
       if (response.data && response.data.entity && response.data.entity.rol) {
         return response.data.entity.rol.codigo;
       }
@@ -99,20 +98,49 @@ export const AuthProvider = ({ children }) => {
     if (token) programLogoutOnExpiry(token);
   }, [token]);
 
+  const MAX_TIMEOUT = 2147483647; // ~24.8 días, límite de setTimeout
+
   const programLogoutOnExpiry = (jwt) => {
     try {
-      const { exp } = jwtDecode(jwt);
-      const msUntilExpiry = exp * 1000 - Date.now();
+      const { exp } = jwtDecode(jwt); // exp en segundos
+      const now = Date.now(); // en milisegundos
+      let msUntilExpiry = exp * 1000 - now;
+
+      console.log(
+        "[Auth] JWT exp:",
+        exp,
+        "(UTC seg)",
+        "now:",
+        now,
+        "(ms)",
+        "msUntilExpiry:",
+        msUntilExpiry
+      );
+
       if (msUntilExpiry <= 0) {
+        console.warn("[Auth] Token expirado, logout inmediato");
         logout();
       } else {
-        // Clean previous timer
+        // Limitar el timeout para evitar errores en navegadores
+        if (msUntilExpiry > MAX_TIMEOUT) {
+          console.warn(
+            `[Auth] Tiempo hasta expiración (${msUntilExpiry}) supera el máximo permitido (${MAX_TIMEOUT}). Truncando.`
+          );
+          msUntilExpiry = MAX_TIMEOUT;
+        }
+
+        // Limpiar temporizador anterior si existe
         if (window.__logoutTimer) clearTimeout(window.__logoutTimer);
+
         window.__logoutTimer = setTimeout(() => {
+          console.info(
+            "[Auth] Sesión cerrada automáticamente por expiración de JWT."
+          );
           logout();
         }, msUntilExpiry);
       }
-    } catch (_) {
+    } catch (err) {
+      console.error("[Auth] Error decodificando JWT:", err);
       logout(); // token corrupto
     }
   };
@@ -123,7 +151,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setUser(null);
     setUserRole(null);
-    setIdleTimeout(null); 
+    setIdleTimeout(null);
     navigate("/login");
   };
 
@@ -136,7 +164,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const response = await axios.post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/auth/verify",
+        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
         {},
         {
           headers: {
@@ -145,7 +173,7 @@ export const AuthProvider = ({ children }) => {
         }
       );
 
-      return response.status === 200;
+      return response.status === 200 || response.status < 300;
     } catch (err) {
       console.error("Error al verificar token:", err);
       logout();
@@ -197,12 +225,28 @@ export const AuthProvider = ({ children }) => {
         { headers: { Authorization: `Bearer ${tkn}` } }
       );
 
-      const min = Number(data?.entity?.valor);
+      const minutos = Number(data?.entity?.valor);
 
-      return !isNaN(min) && min > 0 ? min * 60 * 1000 : 15 * 60 * 1000;
+      const MAX_IDLE_MINUTES = Math.floor(2147483647 / (1000 * 60)); // ≈ 35791 min ≈ 596 h
+
+      if (isNaN(minutos) || minutos <= 0) {
+        console.warn(
+          "Tiempo inválido de inactividad. Usando por defecto 15 minutos."
+        );
+        return 15 * 60 * 1000;
+      }
+
+      if (minutos > MAX_IDLE_MINUTES) {
+        console.warn(
+          `Tiempo de inactividad demasiado alto (${minutos} min). Truncando a ${MAX_IDLE_MINUTES} min.`
+        );
+        return MAX_IDLE_MINUTES * 60 * 1000;
+      }
+
+      return minutos * 60 * 1000; // Tiempo válido
     } catch (e) {
       console.error("No se pudo obtener tiempo de inactividad:", e);
-      return 15 * 60 * 1000;
+      return 15 * 60 * 1000; // Valor por defecto
     }
   }, []);
 
