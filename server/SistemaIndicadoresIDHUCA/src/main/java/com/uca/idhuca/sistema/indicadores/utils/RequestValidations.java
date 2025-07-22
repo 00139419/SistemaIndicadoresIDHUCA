@@ -1001,7 +1001,7 @@ public class RequestValidations {
 			List<DerechoVulnerado> derechosVulnerados = persona.getDerechosVulnerados();
 
 			if(derechosVulnerados == null || derechosVulnerados.size() == 0) {
-				error = "La lista de 'derechosVulnerados' dentro del objeto 'personasAfectadas' debe de tener al menos una derecho vulnerado.";
+				error = "Cada persona debe tener al menos un derecho vulnerado registrado en la lista.";
 				list.add(error);
 				log.info("[" + key + "]" + " " + error);
 				return list;

@@ -143,7 +143,7 @@ public class UserImpl implements IUser {
 				.orElseThrow(() -> new NotFoundException(ERROR, "Usuario no existe."));
 
 		RecoveryPassword recovery = recoveryPasswordRepository.findByUsuario(usuario)
-				.orElseThrow(() -> new NotFoundException(ERROR, "Recovery no existe."));
+				.orElseThrow(() -> new NotFoundException(ERROR, "Para acceder a esta función, primero debe iniciar sesión y configurar una pregunta de seguridad."));
 
 		useCase.darFormatoUpdate(request, usuario);
 		log.info("[{}] Actualizando usuario... [{}]", key, usuario);
@@ -267,7 +267,7 @@ public class UserImpl implements IUser {
 		recoveryPasswordRepository.save(recovery);
 
 		if (!validatePasswordPolicy(request.getNewPassword())) {
-			throw new ValidationException(ERROR, "La nueva contraseña no cumple con los requisitos mínimos de seguridad.");
+			throw new ValidationException(ERROR, "La nueva contraseña debe tener al menos 8 caracteres e incluir al menos una letra y un número.");
 		}
 
 		usuario.setContrasenaHash(pEncoder.encode(request.getNewPassword()));
@@ -302,8 +302,8 @@ public class UserImpl implements IUser {
 		try {
 			recovery = recoveryPasswordRepository.findByUsuario(usuario).get();
 		} catch (NoSuchElementException e) {
-			log.info("Recovery no existe.");
-			throw new NotFoundException(ERROR, "Recovery no existe.");
+			log.info("Para acceder a esta función, primero debe iniciar sesión y configurar una pregunta de seguridad.");
+			throw new NotFoundException(ERROR, "Para acceder a esta función, primero debe iniciar sesión y configurar una pregunta de seguridad.");
 		}
 
 		Catalogo securityQuestion;
@@ -336,7 +336,7 @@ public class UserImpl implements IUser {
 		log.info("[{}] Contraseña actual válida.", request.getPassword());
 
 		if (!validatePasswordPolicy(request.getNewPassword())) {
-			throw new ValidationException(ERROR, "La nueva contraseña no cumple con los requisitos de seguridad");
+			throw new ValidationException(ERROR, "La nueva contraseña debe tener al menos 8 caracteres e incluir al menos una letra y un número.");
 		}
 		log.info("[{}] Nueva contraseña válida.", request.getEmail());
 
@@ -393,7 +393,7 @@ public class UserImpl implements IUser {
 
 		// Validate the new password against the password policy
 		if (!validatePasswordPolicy(request.getNewPassword())) {
-			throw new ValidationException(ERROR, "La nueva contraseña no cumple con los requisitos de seguridad");
+			throw new ValidationException(ERROR, "La nueva contraseña debe tener al menos 8 caracteres e incluir al menos una letra y un número.");
 		}
 		log.info("[{}] Nueva contraseña válida.", usuario.getEmail());
 
@@ -425,7 +425,7 @@ public class UserImpl implements IUser {
 		try {
 			userFound = userRepository.findById(request.getId()).get();
 		} catch (NoSuchElementException e) {
-			log.info("Recovery no existe.");
+			log.info("Para acceder a esta función, primero debe iniciar sesión y configurar una pregunta de seguridad.");
 			throw new NotFoundException(ERROR, "Usuario no existe.");
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
@@ -434,8 +434,8 @@ public class UserImpl implements IUser {
 		try {
 			recovery = recoveryPasswordRepository.findByUsuario(userFound).get();
 		} catch (NoSuchElementException e) {
-			log.info("Recovery no existe.");
-			throw new NotFoundException(ERROR, "Recovery no existe.");
+			log.info("Para acceder a esta función, primero debe iniciar sesión y configurar una pregunta de seguridad.");
+			throw new NotFoundException(ERROR, "Para acceder a esta función, primero debe iniciar sesión y configurar una pregunta de seguridad.");
 		}
 		log.info("[{}] Usuario encontrado correctamente.", key);
 

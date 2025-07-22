@@ -186,7 +186,7 @@ public class EventosUseCase {
 	
 	public void actualizarExpresionDesdeDTO(ExpresionCensura entidad, ExpresionCensuraDTO dto) throws ValidationException {
 		entidad.setMedioExpresion(getCatalogoOrThrow(dto.getMedioExpresion().getCodigo(), "Medio de expresion"));
-		entidad.setTipoRepresion(getCatalogoOrThrow(dto.getMedioExpresion().getCodigo(), "Tipo de represion"));
+		entidad.setTipoRepresion(getCatalogoOrThrow(dto.getTipoRepresion().getCodigo(), "Tipo de represion"));
 		entidad.setRepresaliasLegales(dto.getRepresaliasLegales());
 		entidad.setRepresaliasFisicas(dto.getRepresaliasFisicas());
 		entidad.setActorCensor(getCatalogoOrThrow(dto.getActorCensor().getCodigo(), "Actor censor: Tipo de persona"));
