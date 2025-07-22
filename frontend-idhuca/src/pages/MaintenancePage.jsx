@@ -442,15 +442,17 @@ const MaintenancePage = () => {
               )}
 
               {/* Botón para agregar nuevo registro */}
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => setShowModal(true)}
-                >
-                  <i className="bi bi-plus-circle me-2"></i>
-                  Nuevo Registro
-                </button>
-              </div>
+              {esAdmin && (
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => setShowModal(true)}
+                  >
+                    <i className="bi bi-plus-circle me-2"></i>
+                    Nuevo Registro
+                  </button>
+                </div>
+              )}
 
               {/* Información de registros */}
               {/* Información de registros */}
@@ -510,14 +512,15 @@ const MaintenancePage = () => {
                                   <i className="bi bi-pencil-square"></i>
                                 </button>
                               )}
-
-                              <button
-                                className="btn btn-sm btn-outline-danger"
-                                title="Eliminar registro"
-                                onClick={() => handleDeleteClick(item)}
-                              >
-                                <i className="bi bi-trash"></i>
-                              </button>
+                              {esAdmin && (
+                                <button
+                                  className="btn btn-sm btn-outline-danger"
+                                  title="Eliminar registro"
+                                  onClick={() => handleDeleteClick(item)}
+                                >
+                                  <i className="bi bi-trash"></i>
+                                </button>
+                              )}
                             </div>
                           </td>
                         </tr>
