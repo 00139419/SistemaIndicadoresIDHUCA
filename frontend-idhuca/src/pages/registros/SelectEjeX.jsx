@@ -53,7 +53,7 @@ export default function FiltradoRegistros() {
         Array.isArray(categoriaEjeX.afectadaFiltro.edades)
           ? categoriaEjeX.afectadaFiltro.edades.join(", ")
           : ""
-      );
+      );  
     }
   }, [categoriaEjeX]);
 

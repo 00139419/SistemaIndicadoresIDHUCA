@@ -60,7 +60,7 @@ const Graficos = () => {
     "detencionFiltro.autoridadesInvolucradas": "Autoridad involucrada",
     "detencionFiltro.huboTortura": "¿Hubo tortura?",
     "detencionFiltro.motivosDetencion": "Motivo de la detención",
-    "detencionFiltro.duracionDiasExactos": "Días de detención",
+    "detencionFiltro.diasExactos": "Días de detención",
     "detencionFiltro.accesoAbogado": "¿Acceso a abogado?",
     "detencionFiltro.resultados": "Resultado de la detención",
     "censuraFiltro.mediosExpresion": "Medio de expresión",
