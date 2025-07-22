@@ -45,7 +45,7 @@ const Graficos = () => {
     "afectadaFiltro.municipiosResidencia": "Municipio de residencia",
     "afectadaFiltro.tiposPersona": "Tipo de persona",
     "afectadaFiltro.estadosSalud": "Estado de salud",
-    "afectadaFiltro.rangoEdad": "Rango de edad",
+    "afectadaFiltro.edades": "Edades de los afectados/as",
     "derechosVulneradosFiltro.derechosVulnerados": "Derecho vulnerado",
     "violenciaFiltro.esAsesinato": "¿Hubo asesinato?",
     "violenciaFiltro.tiposViolencia": "Tipo de violencia",
@@ -152,7 +152,8 @@ const Graficos = () => {
         },
       };
 
-      console.log(request);
+      console.log("Generando gráfico con la siguiente configuración:");
+      console.log(JSON.stringify(request));
 
       const token = localStorage.getItem("authToken");
       if (!token) {
