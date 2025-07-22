@@ -83,54 +83,32 @@ const EditarRegistro = () => {
 
   // Cargar catálogos y datos del evento
   useEffect(() => {
-    const cargarTodo = async () => {
-      try {
-        setLoading(true);
-        const [
-          d,
-          f,
-          e,
-          l,
-          g,
-          dr,
-          sd,
-          p,
-          ss,
-          tp,
-          tv,
-          ar,
-          cv,
-          td,
-          md,
-          me,
-          tr,
-          tpJud,
-          dp,
-        ] = await Promise.all([
-          getCatalogo({ departamentos: true, cargarDeafult: true }),
-          getCatalogo({ fuentes: true, cargarDeafult: true }),
-          getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
-          getCatalogo({ lugarExacto: true, cargarDeafult: true }),
-          getCatalogo({ genero: true, cargarDeafult: true }),
-          getCatalogo({ derechos: true, cargarDeafult: true }),
-          getCatalogo({
-            subDerechos: true,
-            cargarDeafult: true,
-            parentId: "DER_1",
-          }),
-          getCatalogo({ paises: true, cargarDeafult: true }),
-          getCatalogo({ estadoSalud: true, cargarDeafult: true }),
-          getCatalogo({ tipoPersona: true, cargarDeafult: true }),
-          getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
-          getCatalogo({ tipoArma: true, cargarDeafult: true }),
-          getCatalogo({ tipoPersona: true, cargarDeafult: true }),
-          getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
-          getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
-          getCatalogo({ medioExpresion: true, cargarDeafult: true }),
-          getCatalogo({ tipoRepresion: true, cargarDeafult: true }),
-          getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
-          getCatalogo({ duracionProceso: true, cargarDeafult: true }),
-        ]);
+  const cargarTodo = async () => {
+    try {
+      setLoading(true);
+      const [
+        d, f, e, l, g, dr, sd, p, ss, tp, tv, ar, cv, td, md, me, tr, tpJud, dp,
+      ] = await Promise.all([
+        getCatalogo({ departamentos: true, cargarDeafult: true }),
+        getCatalogo({ fuentes: true, cargarDeafult: true }),
+        getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
+        getCatalogo({ lugarExacto: true, cargarDeafult: true }),
+        getCatalogo({ genero: true, cargarDeafult: true }),
+        getCatalogo({ derechos: true, cargarDeafult: true }),
+        getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }),
+        getCatalogo({ paises: true, cargarDeafult: true }),
+        getCatalogo({ estadoSalud: true, cargarDeafult: true }),
+        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+        getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
+        getCatalogo({ tipoArma: true, cargarDeafult: true }),
+        getCatalogo({ contexto: true, cargarDeafult: true }), // CONTEXTO PARA VIOLENCIA
+        getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
+        getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
+        getCatalogo({ medioExpresion: true, cargarDeafult: true }),
+        getCatalogo({ tipoRepresion: true, cargarDeafult: true }), // TIPOS REPRESION
+        getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
+        getCatalogo({ duracionProceso: true, cargarDeafult: true }),
+      ]);
         setDepartamentos(d);
         setFuentes(f);
         setEstados(e);
@@ -150,6 +128,11 @@ const EditarRegistro = () => {
         setTiposRepresion(tr);
         setTiposProcesoJudicial(tpJud);
         setDuracionesProceso(dp);
+
+
+        console.log("EditarRegistro - mediosExpresion:", me);
+      console.log("EditarRegistro - tiposRepresion:", tr);
+      
 
         // Cargar datos del evento
         const eventoData = await detailEvent(id);
@@ -179,7 +162,11 @@ const EditarRegistro = () => {
 
         console.log(evento);
       } catch (err) {
-        alert("Error al cargar datos: " + err.message);
+        showResponseModal(
+          "error",
+          "Error",
+          `Error al cargar datos: ${err.message}`
+        );
       } finally {
         setLoading(false);
       }
@@ -207,6 +194,7 @@ const EditarRegistro = () => {
   };
 
   // Utilidad para transformar el evento recibido del backend al formato del formulario
+  // Utilidad para transformar el evento recibido del backend al formato del formulario
   function transformarEventoParaEdicion(data) {
     return {
       id: data.id,
@@ -224,21 +212,62 @@ const EditarRegistro = () => {
         derechosVulnerados: (p.derechosVulnerados || []).map(
           (dv) => dv.derecho
         ),
-        // Solo asignar si realmente existen datos, sino null
+        // Mejorar la verificación para expresionCensura
+        expresionCensura:
+          p.expresionCensura &&
+          (p.expresionCensura.medioExpresion ||
+            p.expresionCensura.tipoRepresion ||
+            p.expresionCensura.actorCensor ||
+            p.expresionCensura.represaliasLegales !== undefined ||
+            p.expresionCensura.represaliasFisicas !== undefined ||
+            p.expresionCensura.consecuencia)
+            ? {
+                medioExpresion: p.expresionCensura.medioExpresion || null,
+                tipoRepresion: p.expresionCensura.tipoRepresion || null,
+                represaliasLegales:
+                  p.expresionCensura.represaliasLegales || false,
+                represaliasFisicas:
+                  p.expresionCensura.represaliasFisicas || false,
+                actorCensor: p.expresionCensura.actorCensor || null,
+                consecuencia: p.expresionCensura.consecuencia || "",
+              }
+            : null,
+        // Aplicar la misma lógica a las demás secciones
         violencia:
-          p.violencia && Object.keys(p.violencia).length > 0
+          p.violencia &&
+          (p.violencia.tipoViolencia ||
+            p.violencia.artefactoUtilizado ||
+            p.violencia.contexto ||
+            p.violencia.actorResponsable ||
+            p.violencia.estadoSaludActorResponsable ||
+            p.violencia.esAsesinato !== undefined ||
+            p.violencia.huboProteccion !== undefined ||
+            p.violencia.investigacionAbierta !== undefined ||
+            p.violencia.respuestaEstado)
             ? p.violencia
             : null,
         detencionIntegridad:
-          p.detencionIntegridad && Object.keys(p.detencionIntegridad).length > 0
+          p.detencionIntegridad &&
+          (p.detencionIntegridad.tipoDetencion ||
+            p.detencionIntegridad.autoridadInvolucrada ||
+            p.detencionIntegridad.motivoDetencion ||
+            p.detencionIntegridad.ordenJudicial !== undefined ||
+            p.detencionIntegridad.huboTortura !== undefined ||
+            p.detencionIntegridad.accesoAbogado !== undefined ||
+            p.detencionIntegridad.duracionDias ||
+            p.detencionIntegridad.resultado)
             ? p.detencionIntegridad
             : null,
-        expresionCensura:
-          p.expresionCensura && Object.keys(p.expresionCensura).length > 0
-            ? p.expresionCensura
-            : null,
         accesoJusticia:
-          p.accesoJusticia && Object.keys(p.accesoJusticia).length > 0
+          p.accesoJusticia &&
+          (p.accesoJusticia.tipoProceso ||
+            p.accesoJusticia.fechaDenuncia ||
+            p.accesoJusticia.tipoDenunciante ||
+            p.accesoJusticia.duracionProceso ||
+            p.accesoJusticia.accesoAbogado !== undefined ||
+            p.accesoJusticia.huboParcialidad !== undefined ||
+            p.accesoJusticia.resultadoProceso ||
+            p.accesoJusticia.instancia)
             ? p.accesoJusticia
             : null,
       })),

@@ -20,6 +20,12 @@ import "primeflex/primeflex.css";
 
 const AgregarRegistro = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // Estados para modales de error
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorTitle, setErrorTitle] = useState("Error");
+
   const navigate = useNavigate();
   const [fechaHecho, setFechaHecho] = useState(null);
   const [fuente, setFuente] = useState(null);
@@ -62,6 +68,13 @@ const AgregarRegistro = () => {
     derechoIdFromState = localStorage.getItem("selectedDerechoId");
   }
 
+  // Función helper para mostrar errores
+  const showError = (title, message) => {
+    setErrorTitle(title);
+    setErrorMessage(message);
+    setShowErrorModal(true);
+  };
+
   const DERECHO_ID_TO_CODIGO = {
     1: "DER_1", // Derecho a la Libertad Personal e Integridad personal
     2: "DER_2", // Derecho a la Libertad de Expresión
@@ -76,73 +89,73 @@ const AgregarRegistro = () => {
   const cargarCatalogos = async () => {
     try {
       const [
-        d,
-        f,
-        e,
-        l,
-        g,
+        d, // departamentos
+        f, // fuentes
+        e, // estados
+        l, // lugares exactos
+        g, // generos
         dr, // derechos principales
         sd, // subderechos
-        p,
-        ss,
-        tp,
-        tv,
-        ar,
-        cv,
-        td,
-        md,
-        me,
-        tr,
-        tpJud,
-        dp,
-        ctx,
+        p, // paises
+        ss, // estados salud
+        tp, // tipos persona
+        tv, // tipos violencia
+        ar, // artefactos/armas
+        cv, // contextos violencia
+        td, // tipos detencion
+        md, // motivos detencion
+        me, // medios expresion
+        tr, // tipos represion - ESTE DEBE SER EL CORRECTO
+        tpJud, // tipos proceso judicial
+        dp, // duraciones proceso
       ] = await Promise.all([
         getCatalogo({ departamentos: true, cargarDeafult: true }),
         getCatalogo({ fuentes: true, cargarDeafult: true }),
         getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
         getCatalogo({ lugarExacto: true, cargarDeafult: true }),
         getCatalogo({ genero: true, cargarDeafult: true }),
-        getCatalogo({ derechos: true, cargarDeafult: true }), // <-- derechos principales
+        getCatalogo({ derechos: true, cargarDeafult: true }),
         getCatalogo({
           subDerechos: true,
           cargarDeafult: true,
           parentId: "DER_1",
-        }), // <-- subderechos
+        }),
         getCatalogo({ paises: true, cargarDeafult: true }),
         getCatalogo({ estadoSalud: true, cargarDeafult: true }),
         getCatalogo({ tipoPersona: true, cargarDeafult: true }),
         getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
         getCatalogo({ tipoArma: true, cargarDeafult: true }),
-        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+        getCatalogo({ contexto: true, cargarDeafult: true }),
         getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
         getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
         getCatalogo({ medioExpresion: true, cargarDeafult: true }),
-        getCatalogo({ tipoRepresion: true, cargarDeafult: true }),
+        getCatalogo({ tipoRepresion: true, cargarDeafult: true }), // ASEGURAR QUE ESTE ES CORRECTO
         getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
         getCatalogo({ duracionProceso: true, cargarDeafult: true }),
-        getCatalogo({ contexto: true, cargarDeafult: true }),
       ]);
 
-      setTiposPersona(tp);
-      setEstadosSalud(ss);
+      // Asignaciones en el mismo orden
       setDepartamentos(d);
       setFuentes(f);
       setEstados(e);
       setLugaresExactos(l);
       setGeneros(g);
-      setDerechosPrincipales(dr); // <-- derechos principales
-      console.log("derechosPrincipales:", dr);
-      setSubDerechos(sd); // <-- subderechos
+      setDerechosPrincipales(dr);
+      setSubDerechos(sd);
       setPaises(p);
+      setEstadosSalud(ss);
+      setTiposPersona(tp);
       setTiposViolencia(tv);
       setArtefactos(ar);
-      setContextosViolencia(ctx);
+      setContextosViolencia(cv);
       setTiposDetencion(td);
       setMotivosDetencion(md);
       setMediosExpresion(me);
-      setTiposRepresion(tr);
+      setTiposRepresion(tr); // ESTE DEBE CONTENER LOS TIPOS DE REPRESIÓN CORRECTOS
       setTiposProcesoJudicial(tpJud);
       setDuracionesProceso(dp);
+
+      console.log("Tipos de represión cargados:", tr); // AGREGAR ESTE LOG PARA VERIFICAR
     } catch (error) {
       console.error("Error al cargar catálogos", error);
     } finally {
@@ -187,19 +200,19 @@ const AgregarRegistro = () => {
   }, [derechoIdFromState, derechosPrincipales]);
 
   const handleGuardar = async () => {
-    // Primero validar campos obligatorios
+    // Primero validar campos obligatorios - REEMPLAZAR ALERTS POR MODALES
     if (!fechaHecho) {
-      alert("La fecha del hecho es obligatoria");
+      showError("Campo Requerido", "La fecha del hecho es obligatoria");
       return;
     }
 
     if (!fuente) {
-      alert("La fuente es obligatoria");
+      showError("Campo Requerido", "La fuente es obligatoria");
       return;
     }
 
     if (!estadoActual) {
-      alert("El estado actual es obligatorio");
+      showError("Campo Requerido", "El estado actual es obligatorio");
       return;
     }
 
@@ -207,7 +220,7 @@ const AgregarRegistro = () => {
       console.error("derechoAsociado es null");
       console.log("derechoIdFromState:", derechoIdFromState);
       console.log("derechos disponibles:", derechos);
-      alert("El derecho asociado es obligatorio");
+      showError("Campo Requerido", "El derecho asociado es obligatorio");
       return;
     }
 
@@ -370,7 +383,7 @@ const AgregarRegistro = () => {
           p.detencionIntegridad &&
           Object.keys(p.detencionIntegridad).length > 0
         ) {
-          persona.detencion = {
+          persona.detencionIntegridad = {
             tipoDetencion: p.detencionIntegridad.tipoDetencion
               ? {
                   codigo: p.detencionIntegridad.tipoDetencion.codigo,
@@ -400,14 +413,19 @@ const AgregarRegistro = () => {
         }
 
         if (p.expresionCensura && Object.keys(p.expresionCensura).length > 0) {
-          persona.expresion = {
+          console.log(
+            "Datos de expresionCensura antes de guardar:",
+            p.expresionCensura
+          );
+
+          persona.expresionCensura = {
             medioExpresion: p.expresionCensura.medioExpresion
               ? {
                   codigo: p.expresionCensura.medioExpresion.codigo,
                   descripcion: p.expresionCensura.medioExpresion.descripcion,
                 }
               : null,
-            tipoRepresion: p.expresionCensura.tipoRepresion
+            tipoRepresion: p.expresionCensura.tipoRepresion // VERIFICAR ESTE CAMPO
               ? {
                   codigo: p.expresionCensura.tipoRepresion.codigo,
                   descripcion: p.expresionCensura.tipoRepresion.descripcion,
@@ -423,10 +441,15 @@ const AgregarRegistro = () => {
               : null,
             consecuencia: p.expresionCensura.consecuencia || "",
           };
+
+          console.log(
+            "persona.expresionCensura construida:",
+            persona.expresionCensura
+          );
         }
 
         if (p.accesoJusticia && Object.keys(p.accesoJusticia).length > 0) {
-          persona.justicia = {
+          persona.accesoJusticia = {
             tipoProceso: p.accesoJusticia.tipoProceso
               ? {
                   codigo: p.accesoJusticia.tipoProceso.codigo,
@@ -461,7 +484,7 @@ const AgregarRegistro = () => {
 
     // Validar que hay al menos una persona
     if (registro.personasAfectadas.length === 0) {
-      alert("Debe agregar al menos una persona afectada");
+      showError("Validación", "Debe agregar al menos una persona afectada");
       return;
     }
 
@@ -469,7 +492,7 @@ const AgregarRegistro = () => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
-        alert("No hay token de autenticación");
+        showError("Autenticación", "No hay token de autenticación");
         return;
       }
       const response = await fetch(
@@ -484,7 +507,7 @@ const AgregarRegistro = () => {
         }
       );
       if (!response.ok) {
-        alert("Error al guardar el registro");
+        showError("Error del Servidor", "Error al guardar el registro");
         return;
       }
       const data = await response.json();
@@ -501,10 +524,10 @@ const AgregarRegistro = () => {
           });
         }, 2000); // 2 segundos
       } else {
-        alert("Error: " + (data.mensaje || "No se pudo guardar"));
+        showError("Error", data.mensaje || "No se pudo guardar");
       }
     } catch (error) {
-      alert("Error de red o del servidor");
+      showError("Error de Conexión", "Error de red o del servidor");
       console.error("Error completo:", error);
     }
     console.log("Registro enviado:", registro);
@@ -593,6 +616,7 @@ const AgregarRegistro = () => {
 
   return (
     <div className="p-4 surface-100 min-h-screen">
+      {/* Modal de Éxito */}
       <Dialog
         header="Registro guardado"
         visible={showSuccessModal}
@@ -620,6 +644,37 @@ const AgregarRegistro = () => {
           <p className="mt-3 text-center">
             ¡El evento se guardó correctamente!
           </p>
+        </div>
+      </Dialog>
+
+      {/* Modal de Error */}
+      <Dialog
+        header={
+          <div className="flex align-items-center">
+            <i className="pi pi-exclamation-triangle text-red-500 mr-2"></i>
+            {errorTitle}
+          </div>
+        }
+        visible={showErrorModal}
+        onHide={() => setShowErrorModal(false)}
+        style={{ width: "400px" }}
+        closable={false}
+      >
+        <div
+          className="flex flex-column align-items-center justify-content-center"
+          style={{ minHeight: "100px" }}
+        >
+          <i
+            className="pi pi-times-circle"
+            style={{ fontSize: "2rem", color: "red" }}
+          ></i>
+          <p className="mt-3 text-center">{errorMessage}</p>
+          <Button
+            label="Aceptar"
+            icon="pi pi-check"
+            className="mt-3 p-button-danger"
+            onClick={() => setShowErrorModal(false)}
+          />
         </div>
       </Dialog>
       <Card title="📝 Registro del Hecho" className="shadow-4 border-round-lg">
@@ -825,9 +880,19 @@ const AgregarRegistro = () => {
                       optionLabel="descripcion"
                       placeholder="Seleccione un departamento"
                       className="w-full"
-                      disabled={!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300")}
+                      disabled={
+                        !(
+                          persona.nacionalidad &&
+                          persona.nacionalidad.codigo === "PAIS_9300"
+                        )
+                      }
                       onClick={() => {
-                        console.log(`DepartamentoResidencia habilitado para persona #${index + 1}:`, persona.nacionalidad);
+                        console.log(
+                          `DepartamentoResidencia habilitado para persona #${
+                            index + 1
+                          }:`,
+                          persona.nacionalidad
+                        );
                       }}
                     />
                   </div>
@@ -850,9 +915,19 @@ const AgregarRegistro = () => {
                           : "Seleccione un departamento primero"
                       }
                       className="w-full"
-                      disabled={!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300")}
+                      disabled={
+                        !(
+                          persona.nacionalidad &&
+                          persona.nacionalidad.codigo === "PAIS_9300"
+                        )
+                      }
                       onClick={() => {
-                        console.log(`MunicipioResidencia habilitado para persona #${index + 1}:`, persona.nacionalidad);
+                        console.log(
+                          `MunicipioResidencia habilitado para persona #${
+                            index + 1
+                          }:`,
+                          persona.nacionalidad
+                        );
                       }}
                     />
                   </div>
@@ -869,11 +944,27 @@ const AgregarRegistro = () => {
                           "nacionalidad",
                           nuevaNacionalidad
                         );
-                        console.log(`Nacionalidad seleccionada para persona #${index + 1}:`, nuevaNacionalidad);
-                        // Si NO es El Salvador (9300), borrar departamento y municipio
-                        if (!nuevaNacionalidad || nuevaNacionalidad.codigo !== "9300") {
-                          actualizarPersona(index, "departamentoResidencia", null);
+                        console.log(
+                          `Nacionalidad seleccionada para persona #${
+                            index + 1
+                          }:`,
+                          nuevaNacionalidad
+                        );
+                        // CORREGIR: El código debe ser "PAIS_9300", no "9300"
+                        if (
+                          !nuevaNacionalidad ||
+                          nuevaNacionalidad.codigo !== "PAIS_9300"
+                        ) {
+                          actualizarPersona(
+                            index,
+                            "departamentoResidencia",
+                            null
+                          );
                           actualizarPersona(index, "municipioResidencia", null);
+                          // También limpiar la lista de municipios para esta persona
+                          const nuevos = [...municipiosResidenciaList];
+                          nuevos[index] = [];
+                          setMunicipiosResidenciaList(nuevos);
                         }
                       }}
                       options={paises}
@@ -1547,14 +1638,15 @@ const AgregarRegistro = () => {
                       <label className="mb-2 d-block">Medio de expresión</label>
                       <Dropdown
                         value={persona.expresionCensura.medioExpresion}
-                        options={mediosExpresion}
+                        options={mediosExpresion} // VERIFICAR: debe ser mediosExpresion
                         optionLabel="descripcion"
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          console.log("MEDIO EXPRESION seleccionado:", e.value);
                           actualizarPersona(index, "expresionCensura", {
                             ...persona.expresionCensura,
-                            medioExpresion: e.value,
-                          })
-                        }
+                            medioExpresion: e.value, // CORRECTO: medioExpresion
+                          });
+                        }}
                         placeholder="Seleccione medio"
                         className="w-full"
                       />
@@ -1564,19 +1656,19 @@ const AgregarRegistro = () => {
                       <label className="mb-2 d-block">Tipo de represión</label>
                       <Dropdown
                         value={persona.expresionCensura.tipoRepresion}
-                        options={tiposRepresion}
+                        options={tiposRepresion} // VERIFICAR: debe ser tiposRepresion (diferente array)
                         optionLabel="descripcion"
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          console.log("TIPO REPRESION seleccionado:", e.value);
                           actualizarPersona(index, "expresionCensura", {
                             ...persona.expresionCensura,
-                            tipoRepresion: e.value,
-                          })
-                        }
+                            tipoRepresion: e.value, // CORRECTO: tipoRepresion
+                          });
+                        }}
                         placeholder="Seleccione tipo"
                         className="w-full"
                       />
                     </div>
-
                     <div className="field col-12 md:col-4">
                       <label className="mb-2 d-block">Actor censor</label>
                       <Dropdown
@@ -1593,7 +1685,6 @@ const AgregarRegistro = () => {
                         className="w-full"
                       />
                     </div>
-
                     <div className="field col-12 md:col-4">
                       <label className="mb-2 d-block">
                         ¿Represalias legales?
@@ -1614,7 +1705,6 @@ const AgregarRegistro = () => {
                         className="w-full"
                       />
                     </div>
-
                     <div className="field col-12 md:col-4">
                       <label className="mb-2 d-block">
                         ¿Represalias físicas?
@@ -1635,7 +1725,6 @@ const AgregarRegistro = () => {
                         className="w-full"
                       />
                     </div>
-
                     <div className="field col-12">
                       <label className="mb-2 d-block">Consecuencia</label>
                       <InputTextarea
