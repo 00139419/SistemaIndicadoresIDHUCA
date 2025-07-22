@@ -89,8 +89,15 @@ public class AuditoriaImpl implements IAuditoria {
 
 	public <E> SuperGenericResponse add(AuditoriaDto<E> dto) throws ValidationException {
 		Auditoria auditoria = new Auditoria();
-		String key = utils.obtenerUsuarioAutenticado().getEmail();
-
+		
+		String key = "ADMIN";
+		
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+		} catch (Exception e) {
+			log.info("Error " + e.getMessage());
+		}
+		
 		try {
 			String tablaAfectada = dto.getEntity().getClass().getSimpleName().toLowerCase() + "s";
 			
@@ -120,6 +127,10 @@ public class AuditoriaImpl implements IAuditoria {
 			
 			if(tablaAfectada.equalsIgnoreCase("notaderechoarchivos")) {
 				tablaAfectada = "Archivo de una ficha del derecho";
+			}
+			
+			if(tablaAfectada.equalsIgnoreCase("BackupConfig")) {
+				tablaAfectada = "Backup";
 			}
 			
 			auditoria.setTablaAfectada(tablaAfectada);

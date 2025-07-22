@@ -267,6 +267,7 @@ public class RequestValidations {
 			List<Catalogo> municipioResidencia = pA.getMunicipiosResidencia();
 			
 			if(departamentoResidencia != null && municipioResidencia != null && departamentoResidencia.size() > 0 && municipioResidencia.size() > 0) {
+				request.getCategoriaEjeX().getAfectadaFiltro().setDepartamentosResidencia(null);
 				camposConValor--;
 			}
 		}
@@ -278,6 +279,7 @@ public class RequestValidations {
 			List<Catalogo> municipio = eF.getMunicipios();
 			
 			if(departamento != null && municipio != null && departamento.size() > 0 && municipio.size() > 0) {
+				request.getCategoriaEjeX().getEventoFiltro().setDepartamentos(null);
 				camposConValor--;
 			}
 		}
@@ -940,6 +942,10 @@ public class RequestValidations {
 			log.info("[" + key + "]" + " " + error);
 			return list;
 		}
+		
+		if(ubicacion.getDepartamento() != null && ubicacion.getDepartamento().getCodigo() != null && ubicacion.getDepartamento().getCodigo().equals("DEP_0")) {
+			request.getUbicacion().setMunicipio(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0", ""));
+		}
 
 		Catalogo departamentoHecho = request.getUbicacion().getDepartamento();
 
@@ -994,7 +1000,7 @@ public class RequestValidations {
 
 			List<DerechoVulnerado> derechosVulnerados = persona.getDerechosVulnerados();
 
-			if(derechosVulnerados == null || derechosVulnerados.size() < 0) {
+			if(derechosVulnerados == null || derechosVulnerados.size() == 0) {
 				error = "La lista de 'derechosVulnerados' dentro del objeto 'personasAfectadas' debe de tener al menos una derecho vulnerado.";
 				list.add(error);
 				log.info("[" + key + "]" + " " + error);

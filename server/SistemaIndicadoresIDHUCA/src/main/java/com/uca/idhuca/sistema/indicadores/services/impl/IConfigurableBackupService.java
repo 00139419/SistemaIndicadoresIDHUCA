@@ -2,7 +2,7 @@ package com.uca.idhuca.sistema.indicadores.services.impl;
 
 import com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig;
 import com.uca.idhuca.sistema.indicadores.backup.config.ScheduleConfig;
-import com.uca.idhuca.sistema.indicadores.models.ParametroSistema;
+import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 import jakarta.annotation.PostConstruct;
@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
-import static com.uca.idhuca.sistema.indicadores.utils.Constantes.UPDATE;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.CREAR;
 
 @Service
 public class IConfigurableBackupService {
@@ -339,8 +339,12 @@ public class IConfigurableBackupService {
 
                 updateLastExecution(scheduleName);
 
-
-                auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), UPDATE, backupConfig));
+                Usuario u = new Usuario();
+                
+                u.setNombre("Sistema interno");
+                u.setEmail("SYSTEM");
+                
+                auditoriaService.add(utils.crearDto(u, CREAR, backupConfig));
 
                 // Opcional: Limpiar backups antiguos
                 cleanupOldBackups(backupDirectory, scheduleName);

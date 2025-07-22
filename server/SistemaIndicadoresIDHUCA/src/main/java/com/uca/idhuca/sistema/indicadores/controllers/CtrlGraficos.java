@@ -50,7 +50,7 @@ public class CtrlGraficos {
 		
 		try {
 			key = utils.obtenerUsuarioAutenticado().getEmail();
-			log.info("[" + key + "] ------ Inicio de servicio '/getAll' ");
+			log.info("[" + key + "] ------ Inicio de servicio '/generate' " + mapper.writeValueAsString(request));
 			
 			response = graphicsServices.generate(request);
 			return new ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>>(response, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class CtrlGraficos {
 			e.printStackTrace();
 			return new ResponseEntity<GenericEntityResponse<GraphicsResponseDTO>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
-			log.info("[" + key + "] ------ Fin de servicio '/getAll'");
+			log.info("[" + key + "] ------ Fin de servicio '/generate'");
 		}
 	}
 	

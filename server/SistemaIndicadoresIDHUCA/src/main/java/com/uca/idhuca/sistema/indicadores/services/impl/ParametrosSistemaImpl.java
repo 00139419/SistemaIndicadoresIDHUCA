@@ -76,6 +76,15 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 				clave.equalsIgnoreCase("max_intentos_pregunta_seguridad") ||
 				clave.equalsIgnoreCase("tiempo_de_vida_de_sesion")) {
 			try {
+				
+				if(request.getValor().length() > 6) {
+					throw new ValidationException(ERROR, "El valor debe ser un número de menos de 7 digitos.");
+				}
+				
+				if (request.getValor().matches(".*[.,].*")) {
+				    throw new ValidationException(ERROR, "El valor debe ser un número sin comas ni puntos.");
+				}
+				
 				Double.parseDouble(request.getValor());
 			} catch (NumberFormatException e) {
 				throw new ValidationException(ERROR, "El valor debe ser un número.");
