@@ -24,6 +24,8 @@ services:
       - "8080:8080"
     volumes:
       - ./backend/uploads:/app/uploads
+      - ./backend/logs:/app/data/logs
+      - ./backend/backup:/usr/local/tomcat/data/database/backups
     networks:
       - red_app
     environment:
