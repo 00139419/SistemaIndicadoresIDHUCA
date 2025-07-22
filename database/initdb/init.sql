@@ -977,17 +977,28 @@ INSERT INTO parametro_sistema (clave, valor, descripcion) VALUES
   ('investigador_DER_4', 'Mauricio Enrique Erazo Alfaro', 'Investigador responsable del Derecho a la Vida'),
   ('max_tiempo_inactividad','15', 'Tiempo máximo permitido, en minutos, que un usuario puede permanecer inactivo en la aplicación antes de cerrar la sesión automáticamente.'),
   ('acerca_del_proyecto', 'El Sistema de registros del vulneraciones de derechos del IDHUCA es una plataforma diseñada para centralizar y analizar información clave sobre derechos humanos y justicia social. Su propósito es facilitar la recopilación y visualización de datos provenientes de diversas fuentes, permitiendo una interpretación clara y fundamentada. Mediante la centralización de datos y la generación de gráficos dinámicos, el sistema transforma la información en un recurso accesible que apoya la toma de decisiones y la incidencia en políticas públicas. Al unificar los datos en un solo espacio digital, mejora el seguimiento de tendencias y optimiza los procesos de análisis, facilitando el trabajo del IDHUCA en la defensa de los derechos humanos.', 'Descripción del proyecto visible al iniciar sesión');
-
-
  
 -- Insertar Adminitrador
 INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo, es_provisional)
 VALUES 
-('Admin', 'administrador@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_1', CURRENT_TIMESTAMP, TRUE, FALSE);
+('Roberto Oswaldo López Salazar', 'rlopez@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_1', CURRENT_TIMESTAMP, TRUE, TRUE);
 
-INSERT INTO recovery_password(usuario_id, pregunta_codigo, respuesta_hash, intentos_fallidos) 
-VALUES
-(1, 'SQ_1', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 0);
+-- Insertar Adminitrador
+INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo, es_provisional)
+VALUES 
+('Admin', 'administrador@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_1', CURRENT_TIMESTAMP, TRUE, TRUE);
 
+-- Insertar Usuario
+INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo, es_provisional)
+VALUES 
+('Fátima Enriqueta Rosales Zelaya', 'ferosales@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_2', CURRENT_TIMESTAMP, TRUE, TRUE);
 
+-- Insertar Usuario
+INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo, es_provisional)
+VALUES 
+('Carlos Daniel Fernández Castro', 'cdfernandez@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_2', CURRENT_TIMESTAMP, TRUE, TRUE);
 
+-- Insertar Usuario
+INSERT INTO usuario(nombre, email, contrasena_hash, ROL_codigo, creado_en, activo, es_provisional)
+VALUES 
+('Álvaro Javier Delgado Portillo', 'ajdelgado@uca.edu.sv', '$2a$10$K7HufdmPI16g56n8O2hQtuk4mQ1RoXmx3uWB7AQO0FsIrjloRtTWG', 'ROL_2', CURRENT_TIMESTAMP, TRUE, TRUE);
