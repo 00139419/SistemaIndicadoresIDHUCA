@@ -75,7 +75,7 @@ const ResetPassword = () => {
       }
     } catch (err) {
       console.error("Error:", err);
-      setError("Error al actualizar la contraseña provisional");
+      setError(err.response?.data?.mensaje || "Error al actualizar la contraseña. Por favor intente más tarde.");
     } finally {
       setLoading(false);
     }
@@ -113,7 +113,7 @@ const ResetPassword = () => {
       if (err.response?.status === 404) {
         setError("No se encontró una cuenta con ese correo electrónico.");
       } else {
-        setError("Error al conectar con el servidor. Por favor intente más tarde.");
+        setError(err.response?.data?.mensaje || "Error al enviar el correo de recuperación. Por favor intente más tarde.");
       }
     } finally {
       setLoading(false);
