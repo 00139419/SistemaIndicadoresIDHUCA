@@ -133,6 +133,10 @@ public class AuditoriaImpl implements IAuditoria {
 				tablaAfectada = "Backup";
 			}
 			
+			if(tablaAfectada.equalsIgnoreCase("recoverypasswords")) {
+				tablaAfectada = "Recuperacion de contraseña";
+			}
+			
 			auditoria.setTablaAfectada(tablaAfectada);
 			auditoria.setRegistroId(dto.getRegistroModificado());
 			auditoria.setUsuario(dto.getUsuario());

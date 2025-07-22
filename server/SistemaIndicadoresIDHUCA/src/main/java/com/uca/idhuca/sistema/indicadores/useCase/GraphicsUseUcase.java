@@ -95,7 +95,6 @@ public class GraphicsUseUcase {
 	}
 
 	public GraphicsRequest buildGraphicsRequest(Map<String, Long> data, String axisLabel, CreateGraphicsDto request) {
-
 		SeriesDTO serie = new SeriesDTO();
 		serie.setName("");
 		serie.setData(new LinkedHashMap<>(data));

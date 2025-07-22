@@ -23,6 +23,7 @@ import static com.uca.idhuca.sistema.indicadores.security.RutasPublicas.SIN_AUTE
 import static com.uca.idhuca.sistema.indicadores.security.RutasPrivadas.RUTAS_COMPARTIDAS;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_ADMINISTRADOR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_USER;
+import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROL_AYUDANTE;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class SecurityConfig {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(SIN_AUTENTICACION).permitAll()
-                .requestMatchers(RUTAS_COMPARTIDAS).hasAnyAuthority(ROL_ADMINISTRADOR, ROL_USER)
+                .requestMatchers(RUTAS_COMPARTIDAS).hasAnyAuthority(ROL_ADMINISTRADOR, ROL_USER, ROL_AYUDANTE)
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex

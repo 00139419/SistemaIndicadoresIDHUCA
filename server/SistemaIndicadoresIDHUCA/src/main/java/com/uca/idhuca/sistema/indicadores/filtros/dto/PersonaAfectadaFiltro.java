@@ -16,4 +16,5 @@ public class PersonaAfectadaFiltro {
     private List<Catalogo> tiposPersona;
     private List<Catalogo> estadosSalud;
     private RangoEdad rangoEdad;
+    private List<Integer> edades;
 }
