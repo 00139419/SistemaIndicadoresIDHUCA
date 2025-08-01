@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="609d293c-6332-454e-909f-192eb90e5553" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/../.." value="server" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2xuuf98QxtAVI1vhWu58g3C4uVf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;server&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Andrea/OneDrive/Desktop/SistemaIndicadoresIDHUCA/server/SistemaIndicadoresIDHUCA&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.uca.idhuca.sistema.indicadores.controllers" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean" />
+      <command value="mvn clean install" />
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.All in SistemaRegistrosIDHUCA (3)">
+    <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
+      <option name="appName" />
+      <option name="appServicePlanName" />
+      <option name="appServicePlanResourceGroup" />
+      <option name="appSettingsKey" value="f49e98f4-a551-430a-8558-67aef2291471" />
+      <option name="artifact" />
+      <option name="debugOptions" />
+      <option name="deployment" />
+      <option name="deploymentStagingDirectoryPath" />
+      <option name="funcPath" />
+      <option name="functionHostArguments" />
+      <option name="hostJsonPath" />
+      <option name="insightsName" />
+      <option name="instrumentationKey" />
+      <option name="javaVersion" />
+      <option name="localSettingsJsonPath" />
+      <option name="moduleName" />
+      <option name="os" />
+      <option name="pricingTier" />
+      <option name="providerMap">
+        <map />
+      </option>
+      <option name="region" />
+      <option name="resourceGroup" />
+      <option name="stagingFolder" />
+      <option name="subscription" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in SistemaRegistrosIDHUCA (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SistemaRegistrosIDHUCA" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in SistemaRegistrosIDHUCA (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SistemaRegistrosIDHUCA" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in SistemaRegistrosIDHUCA (3)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SistemaRegistrosIDHUCA" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in SistemaRegistrosIDHUCA" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SistemaRegistrosIDHUCA" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SistemaIndicadoresIdhucaApplicationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SistemaRegistrosIDHUCA" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.uca.idhuca.sistema.indicadores.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.uca.idhuca.sistema.indicadores" />
+      <option name="MAIN_CLASS_NAME" value="com.uca.idhuca.sistema.indicadores.SistemaIndicadoresIdhucaApplicationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Unnamed" type="Remote" nameIsGenerated="true">
+      <module name="SistemaIndicadoresIDHUCA" />
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <option name="AUTO_RESTART" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SistemaIndicadoresIdhucaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" value="dev" />
+      <module name="SistemaRegistrosIDHUCA" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.uca.idhuca.sistema.indicadores.SistemaIndicadoresIdhucaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA (3)" />
+      <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA" />
+      <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA (1)" />
+      <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA (2)" />
+      <item itemvalue="JUnit.SistemaIndicadoresIdhucaApplicationTest" />
+      <item itemvalue="Remote JVM Debug.Unnamed" />
+      <item itemvalue="Spring Boot.SistemaIndicadoresIdhucaApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.SistemaIndicadoresIdhucaApplicationTest" />
+        <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA (2)" />
+        <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA (1)" />
+        <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA" />
+        <item itemvalue="JUnit.All in SistemaRegistrosIDHUCA (3)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="609d293c-6332-454e-909f-192eb90e5553" name="Changes" comment="" />
+      <created>1748800382446</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748800382446</updated>
+      <workItem from="1748800383417" duration="9280000" />
+      <workItem from="1748820701548" duration="4789000" />
+      <workItem from="1749010135447" duration="12331000" />
+      <workItem from="1749091105314" duration="26268000" />
+      <workItem from="1749260686264" duration="12735000" />
+      <workItem from="1749444910386" duration="8280000" />
+      <workItem from="1749612220077" duration="1409000" />
+      <workItem from="1749692549180" duration="3805000" />
+      <workItem from="1749773367310" duration="2952000" />
+      <workItem from="1750040319196" duration="1697000" />
+      <workItem from="1750047819529" duration="346000" />
+      <workItem from="1750049684694" duration="239000" />
+      <workItem from="1750276041633" duration="395000" />
+      <workItem from="1750294879186" duration="2337000" />
+      <workItem from="1750382683807" duration="6546000" />
+      <workItem from="1750469741599" duration="129000" />
+      <workItem from="1750471807281" duration="762000" />
+      <workItem from="1750561134909" duration="1904000" />
+      <workItem from="1750649228473" duration="1884000" />
+      <workItem from="1750730533433" duration="1328000" />
+      <workItem from="1750822315169" duration="1799000" />
+      <workItem from="1750901461686" duration="999000" />
+      <workItem from="1751324126229" duration="1398000" />
+      <workItem from="1751944606230" duration="2443000" />
+      <workItem from="1752020904976" duration="268000" />
+      <workItem from="1752021213140" duration="2762000" />
+      <workItem from="1752202659653" duration="9772000" />
+      <workItem from="1752364054800" duration="14516000" />
+      <workItem from="1752441005594" duration="16510000" />
+      <workItem from="1752546267575" duration="3345000" />
+      <workItem from="1752709854924" duration="800000" />
+      <workItem from="1752869765467" duration="21286000" />
+      <workItem from="1753067518818" duration="2232000" />
+      <workItem from="1753073492412" duration="10850000" />
+      <workItem from="1753107080958" duration="22323000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/uca/idhuca/sistema/indicadores/services/impl/UserImpl.java</url>
+          <line>331</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/uca/idhuca/sistema/indicadores/services/impl/UserImpl.java</url>
+          <line>324</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/uca/idhuca/sistema/indicadores/services/impl/UserImpl.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/uca/idhuca/sistema/indicadores/services/impl/UserImpl.java</url>
+          <line>497</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlCatalogoTest.ic" NAME="CtrlCatalogoTest Coverage Results" MODIFIED="1752464729835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlAuthTest.ic" NAME="CtrlAuthTest Coverage Results" MODIFIED="1752458605250" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlAuditoriaTest.ic" NAME="CtrlAuditoriaTest Coverage Results" MODIFIED="1752464746981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlParametrosSistemaTest.ic" NAME="CtrlParametrosSistemaTest Coverage Results" MODIFIED="1752468416369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$BackupControllerTest.ic" NAME="BackupControllerTest Coverage Results" MODIFIED="1752547993324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$All_in_SistemaRegistrosIDHUCA__3_.ic" NAME="All in SistemaRegistrosIDHUCA (3) Coverage Results" MODIFIED="1752709968794" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlFichaDerechoTest.ic" NAME="CtrlFichaDerechoTest Coverage Results" MODIFIED="1752464674080" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlGraficosTest.ic" NAME="CtrlGraficosTest Coverage Results" MODIFIED="1752467139898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlPersonasAfectadasTest.ic" NAME="CtrlPersonasAfectadasTest Coverage Results" MODIFIED="1752469265798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlRegistrosTest.ic" NAME="CtrlRegistrosTest Coverage Results" MODIFIED="1752469850193" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/SistemaIndicadoresIDHUCA$CtrlUsersTest.ic" NAME="CtrlUsersTest Coverage Results" MODIFIED="1752470562419" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.uca.idhuca.sistema.indicadores.controllers.*</FILTER>
+    </SUITE>
+  </component>
+</project>

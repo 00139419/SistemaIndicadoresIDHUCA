@@ -1,0 +1,79 @@
+{
+  "groups": [
+    {
+      "name": "backup",
+      "type": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "backup.backup-dir",
+      "type": "java.lang.String",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "defaultValue": "\/app\/data\/backups"
+    },
+    {
+      "name": "backup.db-host",
+      "type": "java.lang.String",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "backup.db-name",
+      "type": "java.lang.String",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "defaultValue": "nombre_base_datos"
+    },
+    {
+      "name": "backup.db-password",
+      "type": "java.lang.String",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "defaultValue": "contra"
+    },
+    {
+      "name": "backup.db-port",
+      "type": "java.lang.String",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "defaultValue": "3306"
+    },
+    {
+      "name": "backup.db-user",
+      "type": "java.lang.String",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "defaultValue": "usuario"
+    },
+    {
+      "name": "backup.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig",
+      "defaultValue": true
+    },
+    {
+      "name": "backup.schedules",
+      "type": "java.util.List<com.uca.idhuca.sistema.indicadores.backup.config.ScheduleConfig>",
+      "sourceType": "com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig"
+    },
+    {
+      "name": "ruta.archivos.fisicos",
+      "type": "java.lang.String",
+      "description": "A description for 'ruta.archivos.fisicos'"
+    },
+    {
+      "name": "security.jwt.expiration.ms",
+      "type": "java.lang.String",
+      "description": "A description for 'security.jwt.expiration.ms'"
+    },
+    {
+      "name": "security.jwt.expiration.time",
+      "type": "java.lang.String",
+      "description": "A description for 'security.jwt.expiration.time'"
+    },
+    {
+      "name": "security.jwt.secret",
+      "type": "java.lang.String",
+      "description": "A description for 'security.jwt.secret'"
+    }
+  ],
+  "hints": []
+}

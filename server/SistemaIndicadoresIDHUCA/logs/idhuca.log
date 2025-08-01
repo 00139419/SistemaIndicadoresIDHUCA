@@ -1,0 +1,5 @@
+2025-07-22 00:04:15.572 [SpringApplicationShutdownHook] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:shutDownGracefully:54] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-22 00:04:15.852 [tomcat-shutdown] INFO  [org.springframework.boot.web.embedded.tomcat.GracefulShutdown:doShutdown:76] - Graceful shutdown complete
+2025-07-22 00:04:15.877 [SpringApplicationShutdownHook] INFO  [org.springframework.orm.jpa.AbstractEntityManagerFactoryBean:destroy:660] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22 00:04:15.895 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:349] - HikariPool-1 - Shutdown initiated...
+2025-07-22 00:04:15.908 [SpringApplicationShutdownHook] INFO  [com.zaxxer.hikari.HikariDataSource:close:351] - HikariPool-1 - Shutdown completed.

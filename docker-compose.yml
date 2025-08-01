@@ -8,8 +8,6 @@ services:
       POSTGRES_USER: miusuario
       POSTGRES_PASSWORD: mipassword
       POSTGRES_DB: mibasededatos
-    ports:
-      - "5432:5432"
     volumes:
       - ./database/initdb:/docker-entrypoint-initdb.d
     networks:
@@ -20,8 +18,6 @@ services:
     container_name: backend
     depends_on:
       - postgres
-    ports:
-      - "8080:8080"
     volumes:
       - ./backend/uploads:/app/uploads
       - ./backend/logs:/app/data/logs
@@ -34,8 +30,6 @@ services:
   frontend:
     build: ./frontend
     container_name: frontend
-    ports:
-      - "3000:80"
     networks:
       - red_app
 
