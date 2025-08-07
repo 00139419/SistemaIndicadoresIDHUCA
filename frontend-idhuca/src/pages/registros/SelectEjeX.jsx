@@ -12,6 +12,7 @@ import { getCatalogo } from "./../../services/RegstrosService";
 import { useEffect } from "react";
 
 export default function FiltradoRegistros() {
+  const [edadesInput, setEdadesInput] = useState("");
   const [nombresInput, setNombresInput] = useState("");
   const [diasExactosInput, setDiasExactosInput] = useState("");
   const [consecuenciasInput, setConsecuenciasInput] = useState("");
@@ -47,6 +48,12 @@ export default function FiltradoRegistros() {
           ? categoriaEjeX.afectadaFiltro.nombres.join(", ")
           : ""
       );
+      // Precarga edadesInput si existe
+      setEdadesInput(
+        Array.isArray(categoriaEjeX.afectadaFiltro.edades)
+          ? categoriaEjeX.afectadaFiltro.edades.join(", ")
+          : ""
+      );  
     }
   }, [categoriaEjeX]);
 
@@ -132,7 +139,7 @@ export default function FiltradoRegistros() {
     municipiosResidencia: [],
     tiposPersona: [],
     estadosSalud: [],
-    rangoEdad: { edadInicio: null, edadFin: null },
+    edades: [], // nuevo campo
   });
 
   const [derechosVulneradosFiltro, setDerechosVulneradosFiltro] = useState({
@@ -202,7 +209,7 @@ export default function FiltradoRegistros() {
     municipiosResidencia: [],
     tiposPersona: [],
     estadosSalud: [],
-    rangoEdad: { edadInicio: null, edadFin: null },
+    edades: [], // nuevo campo
   };
 
   const filtroBaseDerechos = {
@@ -512,9 +519,13 @@ export default function FiltradoRegistros() {
   const cleanFiltro = (filtro) => {
     const limpio = {};
     for (const [key, val] of Object.entries(filtro)) {
-      if (!isEmptyValue(val)) {
+      if (key === "rangoEdad") continue; // ya no se usa
+      if (key === "edades" && Array.isArray(val) && val.length > 0) {
         limpio[key] = val;
+        continue;
       }
+      // lógica original para otros campos
+      if (!isEmptyValue(val)) limpio[key] = val;
     }
     return Object.keys(limpio).length > 0 ? limpio : null;
   };
@@ -587,16 +598,14 @@ export default function FiltradoRegistros() {
 
   const limpiarFiltros = () => {
     setCampoSeleccionado(null);
-
     // Limpia los inputs auxiliares
     setNombresInput("");
+    setEdadesInput(""); // limpiar edadesInput
     setDiasExactosInput("");
     setConsecuenciasInput("");
     setInstanciasInput("");
     setResultadosDetencionInput("");
     setResultadosProcesoInput("");
-
-
     setEventoFiltro({
       fechaHechoRango: { fechaInicio: null, fechaFin: null },
       fuentes: [],
@@ -606,7 +615,6 @@ export default function FiltradoRegistros() {
       municipios: [],
       lugaresExactos: [],
     });
-
     setAfectadaFiltro({
       nombres: [],
       generos: [],
@@ -615,11 +623,9 @@ export default function FiltradoRegistros() {
       municipiosResidencia: [],
       tiposPersona: [],
       estadosSalud: [],
-      rangoEdad: { edadInicio: null, edadFin: null },
+      edades: [],
     });
-
     setDerechosVulneradosFiltro({ derechosVulnerados: [] });
-
     setViolenciaFiltro({
       esAsesinato: null,
       tiposViolencia: [],
@@ -630,7 +636,6 @@ export default function FiltradoRegistros() {
       huboProteccion: null,
       investigacionAbierta: null,
     });
-
     setDetencionFiltro({
       tiposDetencion: [],
       ordenJudicial: null,
@@ -641,7 +646,6 @@ export default function FiltradoRegistros() {
       accesoAbogado: null,
       resultados: [],
     });
-
     setCensuraFiltro({
       mediosExpresion: [],
       tiposRepresion: [],
@@ -650,7 +654,6 @@ export default function FiltradoRegistros() {
       actoresCensores: [],
       consecuencias: [],
     });
-
     setAccesoJusticiaFiltro({
       tiposProceso: [],
       fechaDenunciaRango: { fechaInicio: null, fechaFin: null },
@@ -1197,46 +1200,32 @@ export default function FiltradoRegistros() {
           </div>
 
           {/*Edad mínima y máxima*/}
-          <div className="col-md-3 mb-3">
-            <label>Edad mínima</label>
+
+          {/* Edades (lista separada por coma) */}
+          <div className="col-md-6 mb-3">
+            <label>Edades</label>
             <input
-              type="number"
+              type="text"
               className="form-control"
-              value={afectadaFiltro.rangoEdad.edadInicio ?? ""}
+              placeholder="Ej: 5, 10, 15, 20"
+              value={edadesInput ?? ""}
               onChange={(e) => {
-                const valor = e.target.value ? parseInt(e.target.value) : null;
-                setAfectadaFiltro((prev) => ({
-                  ...prev,
-                  rangoEdad: { ...prev.rangoEdad, edadInicio: valor },
-                }));
+                setEdadesInput(e.target.value);
                 setCampoSeleccionado(
-                  valor === null && !afectadaFiltro.rangoEdad.edadFin
-                    ? null
-                    : "afectadaFiltro.rangoEdad"
+                  e.target.value.trim().length === 0 ? null : "afectadaFiltro.edades"
                 );
               }}
-              disabled={!esCampoActivo("afectadaFiltro.rangoEdad")}
-            />
-          </div>
-          <div className="col-md-3 mb-3">
-            <label>Edad máxima</label>
-            <input
-              type="number"
-              className="form-control"
-              value={afectadaFiltro.rangoEdad.edadFin ?? ""}
-              onChange={(e) => {
-                const valor = e.target.value ? parseInt(e.target.value) : null;
+              onBlur={() => {
+                const edades = edadesInput
+                  .split(",")
+                  .map((v) => parseInt(v.trim()))
+                  .filter((v) => !isNaN(v));
                 setAfectadaFiltro((prev) => ({
                   ...prev,
-                  rangoEdad: { ...prev.rangoEdad, edadFin: valor },
+                  edades,
                 }));
-                setCampoSeleccionado(
-                  !afectadaFiltro.rangoEdad.edadInicio && valor === null
-                    ? null
-                    : "afectadaFiltro.rangoEdad"
-                );
               }}
-              disabled={!esCampoActivo("afectadaFiltro.rangoEdad")}
+              disabled={!esCampoActivo("afectadaFiltro.edades")}
             />
           </div>
         </div>

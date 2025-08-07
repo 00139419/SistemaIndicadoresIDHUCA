@@ -8,11 +8,12 @@ import React, { useRef } from "react";
 import axios from "axios";
 
 const Graficos = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
   const imgRef = useRef(null);
   const { userRole } = useAuth();
   const navigate = useNavigate();
-
-  const API_URL = "http://localhost:8080/idhuca-indicadores/api/srv";
 
   const location = useLocation();
   let { derechoId, filtros, categoriaEjeX } = location.state || {};
@@ -45,7 +46,7 @@ const Graficos = () => {
     "afectadaFiltro.municipiosResidencia": "Municipio de residencia",
     "afectadaFiltro.tiposPersona": "Tipo de persona",
     "afectadaFiltro.estadosSalud": "Estado de salud",
-    "afectadaFiltro.rangoEdad": "Rango de edad",
+    "afectadaFiltro.edades": "Edades de los afectados/as",
     "derechosVulneradosFiltro.derechosVulnerados": "Derecho vulnerado",
     "violenciaFiltro.esAsesinato": "¿Hubo asesinato?",
     "violenciaFiltro.tiposViolencia": "Tipo de violencia",
@@ -60,7 +61,7 @@ const Graficos = () => {
     "detencionFiltro.autoridadesInvolucradas": "Autoridad involucrada",
     "detencionFiltro.huboTortura": "¿Hubo tortura?",
     "detencionFiltro.motivosDetencion": "Motivo de la detención",
-    "detencionFiltro.duracionDiasExactos": "Días de detención",
+    "detencionFiltro.diasExactos": "Días de detención",
     "detencionFiltro.accesoAbogado": "¿Acceso a abogado?",
     "detencionFiltro.resultados": "Resultado de la detención",
     "censuraFiltro.mediosExpresion": "Medio de expresión",
@@ -152,7 +153,8 @@ const Graficos = () => {
         },
       };
 
-      console.log(request);
+      console.log("Generando gráfico con la siguiente configuración:");
+      console.log(JSON.stringify(request));
 
       const token = localStorage.getItem("authToken");
       if (!token) {
@@ -160,7 +162,7 @@ const Graficos = () => {
       }
 
       const response = await axios.post(
-        `${API_URL}/graphics/generate`,
+        `${API_URL}graphics/generate`,
         request,
         {
           headers: {

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 
 const ChangePasswordModal = ({ show, onClose, onSuccess, user }) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+ 
   const [provisionalPassword, setProvisionalPassword] = useState("");
   const [isChanging, setIsChanging] = useState(false);
   const [error, setError] = useState(null);
@@ -23,7 +26,7 @@ const ChangePasswordModal = ({ show, onClose, onSuccess, user }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/unlock",
+        API_URL + "users/unlock",
         {
           method: "POST",
           headers: {

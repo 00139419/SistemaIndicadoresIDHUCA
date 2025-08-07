@@ -19,6 +19,9 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 
 const AgregarRegistro = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Estados para modales de error
@@ -496,7 +499,7 @@ const AgregarRegistro = () => {
         return;
       }
       const response = await fetch(
-        "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/add",
+        API_URL + "registros/evento/add",
         {
           method: "POST",
           headers: {

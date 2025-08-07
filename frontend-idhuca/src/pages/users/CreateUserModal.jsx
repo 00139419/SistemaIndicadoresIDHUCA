@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 
 const CreateUserModal = ({ show, onClose, onSuccess }) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+  
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -30,7 +33,7 @@ const CreateUserModal = ({ show, onClose, onSuccess }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/add",
+        API_URL  + "users/add",
         {
           method: "POST",
           headers: {

@@ -6,6 +6,11 @@ import ViewUserModal from "./ViewUserModal";
 import ChangePasswordModal from "./ChangePasswordModal";
 
 const GestionUsuarios = () => {
+
+const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+
   const [usuarios, setUsuarios] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -45,7 +50,7 @@ const GestionUsuarios = () => {
       }
 
       const response = await fetch(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/all",
+        API_URL + "users/get/all",
         {
           method: "POST",
           headers: {

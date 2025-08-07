@@ -16,6 +16,7 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const response = await axios.post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
+        API_URL + "users/get/current",
         {},
         {
           headers: {
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/auth/login",
+        API_URL + "auth/login",
         {
           email,
           password,
@@ -164,7 +165,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const response = await axios.post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
+        API_URL + "users/get/current",
         {},
         {
           headers: {
@@ -220,7 +221,7 @@ export const AuthProvider = ({ children }) => {
       if (!tkn) throw new Error("No token");
 
       const { data } = await axios.post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/parametros/sistema/getOne",
+        API_URL + "parametros/sistema/getOne",
         { clave: "max_tiempo_inactividad" },
         { headers: { Authorization: `Bearer ${tkn}` } }
       );

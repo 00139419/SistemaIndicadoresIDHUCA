@@ -4,7 +4,12 @@ import { useAuth } from "../components/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function LoginForm() {
+  
+  console.log("API_URL:", API_URL);
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -28,7 +33,7 @@ export default function LoginForm() {
   const checkProvisionalStatus = async (token) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
+        API_URL + "users/get/current",
         {},
         {
           headers: {

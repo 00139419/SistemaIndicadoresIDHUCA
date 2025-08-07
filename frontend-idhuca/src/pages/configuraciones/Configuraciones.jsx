@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 const Configuraciones = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
   const [formData, setFormData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -43,7 +46,7 @@ const Configuraciones = () => {
 
         // Llamar a la API correcta para obtener los datos del usuario actual
         const response = await fetch(
-          "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
+          API_URL +"users/get/current",
           {
             method: "POST",
             headers: {
@@ -209,7 +212,7 @@ const Configuraciones = () => {
       }
 
       const response = await fetch(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/change/password/simple",
+         API_URL + "users/change/password/simple",
         {
           method: "POST",
           headers: {
@@ -255,7 +258,7 @@ const Configuraciones = () => {
       }
 
       const response = await fetch(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/update/name/current",
+        API_URL + "users/update/name/current",
         {
           method: "POST",
           headers: {
