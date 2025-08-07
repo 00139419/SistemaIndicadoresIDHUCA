@@ -739,8 +739,6 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
-                // En la sección de Datos Generales, modifica los campos de
-                departamento y municipio de residencia:
                 {/* Departamento de residencia */}
                 <div className="field col-12 md:col-5">
                   <label className="mb-2 d-block font-semibold">
