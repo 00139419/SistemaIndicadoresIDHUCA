@@ -8,11 +8,12 @@ import React, { useRef } from "react";
 import axios from "axios";
 
 const Graficos = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
   const imgRef = useRef(null);
   const { userRole } = useAuth();
   const navigate = useNavigate();
-
-  const API_URL = "http://localhost:8080/idhuca-indicadores/api/srv";
 
   const location = useLocation();
   let { derechoId, filtros, categoriaEjeX } = location.state || {};
@@ -161,7 +162,7 @@ const Graficos = () => {
       }
 
       const response = await axios.post(
-        `${API_URL}/graphics/generate`,
+        `${API_URL}graphics/generate`,
         request,
         {
           headers: {

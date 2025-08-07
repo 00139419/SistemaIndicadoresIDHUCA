@@ -3,6 +3,8 @@ import { useAuth } from "../components/AuthContext";
 import axios from "axios";
 
 const SistemaParametros = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
   const [parametros, setParametros] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,7 +48,7 @@ const SistemaParametros = () => {
 
       const config = {
         method: "post",
-        url: "http://localhost:8080/idhuca-indicadores/api/srv/parametros/sistema/getAll",
+        url: API_URL +"parametros/sistema/getAll",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -86,7 +88,7 @@ const SistemaParametros = () => {
       }
       const config = {
         method: "post",
-        url: "http://localhost:8080/idhuca-indicadores/api/srv/parametros/sistema/update",
+        url: API_URL +"parametros/sistema/update",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -129,7 +131,7 @@ const SistemaParametros = () => {
 
       const config = {
         method: "get",
-        url: "http://localhost:8080/api/backup/schedules",
+        url: API_BACKUP_URL +"schedules",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -164,7 +166,7 @@ const SistemaParametros = () => {
 
       const config = {
         method: "post",
-        url: `http://localhost:8080/api/backup/schedules/${backupName}/execute`,
+        url: `${API_BACKUP_URL}schedules/${backupName}/execute`,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -195,7 +197,7 @@ const SistemaParametros = () => {
         throw new Error("No se encontró el token de autenticación.");
       }
 
-      let url = "http://localhost:8080/api/backup";
+      let url = API_BACKUP_URL;
       let params = new URLSearchParams();
 
       if (backupType === "manual") {
@@ -263,7 +265,7 @@ const SistemaParametros = () => {
 
       const config = {
         method: "delete",
-        url: `http://localhost:8080/api/backup/schedules/${backupToDelete}`,
+        url: `${API_BACKUP_URL}schedules/${backupToDelete}`,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

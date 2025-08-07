@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
 const DeleteUserModal = ({ show, onClose, onSuccess, user }) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,7 +19,7 @@ const DeleteUserModal = ({ show, onClose, onSuccess, user }) => {
       }
 
       const response = await fetch(
-        `http://localhost:8080/idhuca-indicadores/api/srv/users/delete/${user.id}`,
+        API_URL + `users/delete/${user.id}`,
         {
           method: 'POST',
           headers: {

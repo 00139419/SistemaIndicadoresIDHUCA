@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/idhuca-indicadores/api/srv/auditoria';
-const API_GET_URL = `${API_BASE_URL}/get`;
-
 // Función para obtener los registros de auditoría desde la API con paginación
 export const fetchAuditoria = async (params = {}) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+  
   // Obtener el token del almacenamiento local
   const TOKEN = localStorage.getItem('authToken');
   
@@ -34,7 +35,9 @@ export const fetchAuditoria = async (params = {}) => {
     console.log('Enviando payload:', payload);
     
     // Realizamos la solicitud POST con el payload
-    const response = await axios.post(API_GET_URL, payload, {
+    const response = await axios.post(
+      API_URL + 'auditoria/get',
+      payload, {
       headers: {
         Authorization: `Bearer ${TOKEN}`,
         'Content-Type': 'application/json'

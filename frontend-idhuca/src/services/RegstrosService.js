@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/idhuca-indicadores/api/srv';
-
 export const getRegistrosByDerecho = async (derecho, filtros) => {
+const API_URL = process.env.REACT_APP_API_URL;
+
   try {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -44,6 +44,8 @@ export const getRegistrosByDerecho = async (derecho, filtros) => {
 };
 
 export const fetchCatalog = async (params) => {
+  
+  const API_URL = process.env.REACT_APP_API_URL;
   try {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -88,12 +90,13 @@ export const fetchCatalog = async (params) => {
 };
 
 export const updateEvento = async (evento) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   try {
     const token = localStorage.getItem('authToken');
     if (!token) throw new Error('No hay token de autenticación');
 
     const response = await fetch(
-      'http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/update',
+      API_URL + 'evento/update',
       {
         method: 'POST',
         headers: {
@@ -115,10 +118,11 @@ export const updateEvento = async (evento) => {
 };
 
 export const updatePersonaAfectada = async (persona) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem('authToken');
   if (!token) throw new Error('No hay token de autenticación');
   const response = await fetch(
-    'http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/update',
+    API_URL + 'registros/personasAfectadas/update',
     {
       method: 'POST',
       headers: {
@@ -136,10 +140,12 @@ export const updatePersonaAfectada = async (persona) => {
 };
 
 export const deletePersonaAfectada = async (eventoId, personaId) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+ 
   const token = localStorage.getItem('authToken');
   if (!token) throw new Error('No hay token de autenticación');
   const response = await fetch(
-    'http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/delete',
+    API_URL + 'registros/personasAfectadas/delete',
     {
       method: 'POST',
       headers: {
@@ -160,6 +166,7 @@ export const deletePersonaAfectada = async (eventoId, personaId) => {
 };
 
 export const deleteEvent = async (eventId) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   try {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -193,6 +200,7 @@ export const deleteEvent = async (eventId) => {
 };
 
 export const detailEvent = async (eventId) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   try {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -226,6 +234,7 @@ export const detailEvent = async (eventId) => {
 };
 
 export const getDerechosCatalog = async () => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const params = {
     derechos: true,
     tipoProcesoJudicial: false,
@@ -263,6 +272,7 @@ export const getDerechosCatalog = async () => {
 };
 
 export const getCatalogo = async (paramsOverrides) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const baseParams = {
     derechos: false,
     tipoProcesoJudicial: false,

@@ -5,6 +5,8 @@ import logoUCA from "../../assets/idhuca-logo-blue.png";
 import axios from "axios";
 
 const ResetPassword = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ const ResetPassword = () => {
     try {
       const token = localStorage.getItem("tempAuthToken");
       const response = await axios.post(
-        'http://localhost:8080/idhuca-indicadores/api/srv/catalogo/get',
+        API_URL + 'catalogo/get',
         {
           securityQuestions: true
         },
@@ -50,7 +52,7 @@ const ResetPassword = () => {
     try {
       const token = localStorage.getItem("tempAuthToken");
       const response = await axios.post(
-        'http://localhost:8080/idhuca-indicadores/api/srv/users/change/password',
+        API_URL + 'users/change/password',
         {
           email: localStorage.getItem("userEmail"),
           password: provisionalData.currentPassword,
@@ -101,7 +103,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/idhuca-indicadores/api/srv/auth/get/securityQuestion',
+        API_URL + 'auth/get/securityQuestion',
         { email }
       );
 

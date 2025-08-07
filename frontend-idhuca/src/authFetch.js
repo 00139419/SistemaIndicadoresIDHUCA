@@ -2,8 +2,10 @@
 export async function authFetch(path, { headers = {}, ...options } = {}) {
   const token = localStorage.getItem('authToken');
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const response = await fetch(
-    `${'http://localhost:8080/idhuca-indicadores/api/srv/'}${path}`,
+    `${API_URL}${path}`,
     {
       
       headers: {

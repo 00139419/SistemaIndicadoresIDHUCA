@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const MaintenancePage = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
   const [esAdmin, setEsAdmin] = useState(false);
   const [catalogData, setCatalogData] = useState([]);
   const [selectedCatalog, setSelectedCatalog] = useState("departamentos");
@@ -51,7 +53,7 @@ const MaintenancePage = () => {
 
     axios
       .post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/get/current",
+        API_URL + "users/get/current",
         {},
         {
           headers: {

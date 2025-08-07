@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 
 const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
+const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
   const [formData, setFormData] = useState({
     id: "",
     nombre: "",
@@ -49,7 +52,7 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await fetch(
-          "http://localhost:8080/idhuca-indicadores/api/srv/catalogo/get",
+          API_URL + "catalogo/get",
           {
             method: "POST",
             headers: {
@@ -82,7 +85,7 @@ const UpdateUserModal = ({ show, onClose, onSuccess, user }) => {
       const token = localStorage.getItem("authToken");
 
       const updateResponse = await fetch(
-        "http://localhost:8080/idhuca-indicadores/api/srv/users/update",
+        API_URL + "users/update",
         {
           method: "POST",
           headers: {

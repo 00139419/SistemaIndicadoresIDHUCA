@@ -5,6 +5,8 @@ import logoUCA from "../../assets/idhuca-logo-blue.png";
 import axios from "axios";
 
 const SetNewPassword = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -40,7 +42,7 @@ const SetNewPassword = () => {
     }
 
     const response = await axios.post(
-      "http://localhost:8080/idhuca-indicadores/api/srv/auth/recovery/password",
+      API_URL + "auth/recovery/password",
       {
         email,
         newPassword,

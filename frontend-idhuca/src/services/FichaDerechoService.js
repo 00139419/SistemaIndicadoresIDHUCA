@@ -1,10 +1,15 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/idhuca-indicadores/api/srv/fichaDerecho';
-
 // Función para obtener todas las fichas de un derecho específico con paginación y filtros
 export const fetchFichasByDerecho = async (derechoCodigo, options = {}) => {
   const TOKEN = localStorage.getItem('authToken');
+
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+  const API_BASE_URL = API_URL + 'fichaDerecho';
+
+
 
   if (!TOKEN) {
     console.error('No se encontró token de autenticación');
@@ -83,6 +88,12 @@ export const fetchFichasByDerecho = async (derechoCodigo, options = {}) => {
 export const createFicha = async (fichaData, archivos = []) => {
   const TOKEN = localStorage.getItem('authToken');
 
+const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+  const API_BASE_URL = API_URL + 'fichaDerecho';
+
+
   if (!TOKEN) {
     throw new Error('No se encontró token de autenticación');
   }
@@ -144,6 +155,12 @@ export const createFicha = async (fichaData, archivos = []) => {
 export const updateFicha = async (fichaId, fichaData) => {
   const TOKEN = localStorage.getItem('authToken');
 
+const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+  const API_BASE_URL = API_URL + 'fichaDerecho';
+
+
   if (!TOKEN) {
     throw new Error('No se encontró token de autenticación');
   }
@@ -188,6 +205,12 @@ export const updateFicha = async (fichaId, fichaData) => {
 export const deleteFicha = async (fichaId) => {
   const TOKEN = localStorage.getItem('authToken');
 
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+  const API_BASE_URL = API_URL + 'fichaDerecho';
+
+
   if (!TOKEN) {
     throw new Error('No se encontró token de autenticación');
   }
@@ -225,6 +248,12 @@ export const deleteFicha = async (fichaId) => {
 
 // Función utilitaria para formatear fechas
 export const formatDate = (dateString) => {
+const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+  const API_BASE_URL = API_URL + 'fichaDerecho';
+
+
   if (!dateString) return '';
 
   try {
@@ -275,6 +304,12 @@ export const getDerechoDescripcion = (derechoId) => {
 // Función para descargar archivo
 export const downloadFile = async (archivoUrl, nombreOriginal) => {
   const TOKEN = localStorage.getItem('authToken');
+
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
+  const API_BASE_URL = API_URL + 'fichaDerecho';
+
 
   if (!TOKEN) {
     throw new Error('No se encontró token de autenticación');

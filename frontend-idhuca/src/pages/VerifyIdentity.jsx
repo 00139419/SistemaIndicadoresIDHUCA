@@ -5,6 +5,8 @@ import logoUCA from "../assets/idhuca-logo-blue.png";
 import axios from "axios";
 
 const VerifyIdentity = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
   const [securityAnswer, setSecurityAnswer] = useState("");
   const [securityQuestion, setSecurityQuestion] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -32,7 +34,7 @@ const VerifyIdentity = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/idhuca-indicadores/api/srv/auth/get/securityQuestion",
+        API_URL +"auth/get/securityQuestion",
         {
           email: userEmail,
           securityAnswer,

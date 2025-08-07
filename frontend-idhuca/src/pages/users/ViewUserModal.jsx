@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 
 const ViewUserModal = ({ show, onClose, userId }) => {
+
+const API_URL = process.env.REACT_APP_API_URL;
+  const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
+
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +19,7 @@ const ViewUserModal = ({ show, onClose, userId }) => {
       try {
         const token = localStorage.getItem('authToken');
         const response = await fetch(
-          `http://localhost:8080/idhuca-indicadores/api/srv/users/get/one/${userId}`,
+          API_URL + `users/get/one/${userId}`,
           {
             method: 'POST',
             headers: {
