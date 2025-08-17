@@ -29,6 +29,7 @@ import com.uca.idhuca.sistema.indicadores.repositories.CatalogoRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.custom.CatalogoRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.services.ICatalogo;
+import com.uca.idhuca.sistema.indicadores.utils.Constantes;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import lombok.extern.slf4j.Slf4j;
@@ -417,6 +418,13 @@ public class CatologoImpl implements ICatalogo {
 		 
 		 
 		 try {
+			 
+			 if(catalogo.getCodigo().startsWith(Constantes.CATALOGO_DEPARTAMENTO)) {
+				 String prefijo = Constantes.CATALOGO_MUNICIPIO + request.getCatalogo().getCodigo().replace(Constantes.CATALOGO_DEPARTAMENTO, "") + "_";
+				 catalogoRepository.deleteByCodigoPrefijo(prefijo);
+				 log.info("[{}] Eliminando hijos de este catalogo", key);
+			 }
+			 
 			 catalogoRepository.delete(catalogo);
 		} catch (DataIntegrityViolationException e) {
 			log.info("[{}] Error elimnado catalogo: {}.",key, e.getMessage());
