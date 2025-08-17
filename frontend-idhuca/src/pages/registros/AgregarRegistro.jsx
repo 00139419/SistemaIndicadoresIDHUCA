@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../../custom-alerts.css";
 import { Tooltip } from "primereact/tooltip";
 import { useLocation } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
@@ -24,6 +25,9 @@ const AgregarRegistro = () => {
   const API_BACKUP_URL = process.env.REACT_APP_API_BACKUP;
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(
+    "Registro guardado exitosamente"
+  );
 
   // Estados para modales de error
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -212,6 +216,21 @@ const AgregarRegistro = () => {
 
     if (!fuente) {
       showError("Campo Requerido", "La fuente es obligatoria");
+      return;
+    }
+
+    if (!departamento) {
+      showError("Campo Requerido", "El departamento es obligatorio");
+      return;
+    }
+
+    if (!municipio) {
+      showError("Campo Requerido", "El municipio es obligatorio");
+      return;
+    }
+
+    if (!lugarExacto) {
+      showError("Campo Requerido", "El lugar exacto es obligatorio");
       return;
     }
 
@@ -499,23 +518,31 @@ const AgregarRegistro = () => {
         showError("Autenticación", "No hay token de autenticación");
         return;
       }
-      const response = await fetch(
-        API_URL + "registros/evento/add",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(registro),
-        }
-      );
+      const response = await fetch(API_URL + "registros/evento/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(registro),
+      });
       if (!response.ok) {
-        showError("Error del Servidor", "Error al guardar el registro");
+        let errorMsg = "No se pudo guardar el registro";
+        // Si es 400, intentar extraer el mensaje del cuerpo
+        if (response.status === 400) {
+          try {
+            const errorData = await response.json();
+            errorMsg = errorData.mensaje || errorMsg;
+          } catch (e) {
+            // Si falla el parseo, usar mensaje por defecto
+          }
+        }
+        showError("Ocurrió un error inesperado", errorMsg);
         return;
       }
       const data = await response.json();
       if (data.codigo === 0) {
+        setSuccessMessage("Registro guardado exitosamente");
         setShowSuccessModal(true);
         setTimeout(() => {
           setShowSuccessModal(false);
@@ -620,67 +647,6 @@ const AgregarRegistro = () => {
 
   return (
     <div className="p-4 surface-100 min-h-screen">
-      {/* Modal de Éxito */}
-      <Dialog
-        header="Registro guardado"
-        visible={showSuccessModal}
-        onHide={() => {
-          setShowSuccessModal(false);
-          navigate("/select-register", {
-            state: {
-              filtros: {},
-              derechoId: derechoIdFromState,
-              categoriaEjeX: "",
-            },
-          });
-        }}
-        closable={false}
-        style={{ width: "350px" }}
-      >
-        <div
-          className="flex flex-column align-items-center justify-content-center"
-          style={{ minHeight: "100px" }}
-        >
-          <i
-            className="pi pi-check-circle"
-            style={{ fontSize: "2rem", color: "green" }}
-          ></i>
-          <p className="mt-3 text-center">
-            ¡El evento se guardó correctamente!
-          </p>
-        </div>
-      </Dialog>
-
-      {/* Modal de Error */}
-      <Dialog
-        header={
-          <div className="flex align-items-center">
-            <i className="pi pi-exclamation-triangle text-red-500 mr-2"></i>
-            {errorTitle}
-          </div>
-        }
-        visible={showErrorModal}
-        onHide={() => setShowErrorModal(false)}
-        style={{ width: "400px" }}
-        closable={false}
-      >
-        <div
-          className="flex flex-column align-items-center justify-content-center"
-          style={{ minHeight: "100px" }}
-        >
-          <i
-            className="pi pi-times-circle"
-            style={{ fontSize: "2rem", color: "red" }}
-          ></i>
-          <p className="mt-3 text-center">{errorMessage}</p>
-          <Button
-            label="Aceptar"
-            icon="pi pi-check"
-            className="mt-3 p-button-danger"
-            onClick={() => setShowErrorModal(false)}
-          />
-        </div>
-      </Dialog>
       <Card title="📝 Registro del Hecho" className="shadow-4 border-round-lg">
         <div className="formgrid grid p-fluid gap-3">
           {/* Fecha del hecho */}
@@ -727,7 +693,7 @@ const AgregarRegistro = () => {
             <Dropdown
               value={departamento}
               onChange={(e) => setDepartamento(e.value)}
-              options={departamentos}
+              options={departamentos.filter(curr => curr.codigo !== 'DEP_0')}
               optionLabel="descripcion"
               placeholder="Seleccione un departamento"
               className="w-full"
@@ -921,7 +887,10 @@ const AgregarRegistro = () => {
                     <label className="mb-2 d-block font-semibold">
                       Departamento de residencia
                     </label>
-                    <span id={`tooltip-departamento-${index}`} style={{ display: 'inline-block', width: '100%' }}>
+                    <span
+                      id={`tooltip-departamento-${index}`}
+                      style={{ display: "inline-block", width: "100%" }}
+                    >
                       <Dropdown
                         value={persona.departamentoResidencia}
                         onChange={(e) =>
@@ -939,13 +908,22 @@ const AgregarRegistro = () => {
                         }
                         onClick={() => {
                           console.log(
-                            `DepartamentoResidencia habilitado para persona #${index + 1}:`,
+                            `DepartamentoResidencia habilitado para persona #${
+                              index + 1
+                            }:`,
                             persona.nacionalidad
                           );
                         }}
                       />
-                      {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
-                        <Tooltip target={`#tooltip-departamento-${index}`} position="top" content="Seleccione 'El Salvador' en nacionalidad para habilitar" />
+                      {!(
+                        persona.nacionalidad &&
+                        persona.nacionalidad.codigo === "PAIS_9300"
+                      ) && (
+                        <Tooltip
+                          target={`#tooltip-departamento-${index}`}
+                          position="top"
+                          content="Seleccione 'El Salvador' en nacionalidad para habilitar"
+                        />
                       )}
                     </span>
                   </div>
@@ -955,11 +933,18 @@ const AgregarRegistro = () => {
                     <label className="mb-2 d-block font-semibold">
                       Municipio de residencia
                     </label>
-                    <span id={`tooltip-municipio-${index}`} style={{ display: 'inline-block', width: '100%' }}>
+                    <span
+                      id={`tooltip-municipio-${index}`}
+                      style={{ display: "inline-block", width: "100%" }}
+                    >
                       <Dropdown
                         value={persona.municipioResidencia}
                         onChange={(e) =>
-                          actualizarPersona(index, "municipioResidencia", e.value)
+                          actualizarPersona(
+                            index,
+                            "municipioResidencia",
+                            e.value
+                          )
                         }
                         options={municipiosResidenciaList[index] || []}
                         optionLabel="descripcion"
@@ -977,13 +962,22 @@ const AgregarRegistro = () => {
                         }
                         onClick={() => {
                           console.log(
-                            `MunicipioResidencia habilitado para persona #${index + 1}:`,
+                            `MunicipioResidencia habilitado para persona #${
+                              index + 1
+                            }:`,
                             persona.nacionalidad
                           );
                         }}
                       />
-                      {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
-                        <Tooltip target={`#tooltip-municipio-${index}`} position="top" content="Seleccione 'El Salvador' en nacionalidad para habilitar" />
+                      {!(
+                        persona.nacionalidad &&
+                        persona.nacionalidad.codigo === "PAIS_9300"
+                      ) && (
+                        <Tooltip
+                          target={`#tooltip-municipio-${index}`}
+                          position="top"
+                          content="Seleccione 'El Salvador' en nacionalidad para habilitar"
+                        />
                       )}
                     </span>
                   </div>
@@ -1765,6 +1759,118 @@ const AgregarRegistro = () => {
           onClick={handleGuardar}
         />
       </div>
+
+      {/* Modal de éxito homologado */}
+      {showSuccessModal && (
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-body text-center py-5">
+                <div className="custom-alert alert-success justify-content-center">
+                  <span className="custom-alert-icon">
+                    <span className="animated-check">
+                      <svg viewBox="0 0 52 52">
+                        <circle
+                          cx="26"
+                          cy="26"
+                          r="25"
+                          fill="none"
+                          stroke="#4BB543"
+                          strokeWidth="2"
+                        />
+                        <path
+                          fill="none"
+                          stroke="#4BB543"
+                          strokeWidth="4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M14 27l7 7 16-16"
+                        >
+                          <animate
+                            attributeName="stroke-dasharray"
+                            from="0,40"
+                            to="40,0"
+                            dur="0.5s"
+                            fill="freeze"
+                          />
+                        </path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span className="custom-alert-message fs-4 fw-bold">
+                    {successMessage}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de error homologado */}
+      {showErrorModal && (
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-body text-center py-5">
+                <div className="custom-alert alert-danger justify-content-center">
+                  <span className="custom-alert-icon">
+                    <span className="animated-error">
+                      <svg viewBox="0 0 52 52">
+                        <circle
+                          cx="26"
+                          cy="26"
+                          r="25"
+                          fill="none"
+                          stroke="#d32f2f"
+                          strokeWidth="2"
+                        />
+                        <path
+                          fill="none"
+                          stroke="#d32f2f"
+                          strokeWidth="4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M18 18l16 16M34 18l-16 16"
+                        >
+                          <animate
+                            attributeName="stroke-dasharray"
+                            from="0,40"
+                            to="40,0"
+                            dur="0.5s"
+                            fill="freeze"
+                          />
+                        </path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span className="custom-alert-message fs-4 fw-bold">
+                    {errorTitle}
+                  </span>
+                </div>
+                <div className="mt-3 custom-alert-message text-center">
+                  {errorMessage}
+                </div>
+                <div className="mt-4">
+                  <Button
+                    label="Cerrar"
+                    className="p-button-danger px-4"
+                    onClick={() => setShowErrorModal(false)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

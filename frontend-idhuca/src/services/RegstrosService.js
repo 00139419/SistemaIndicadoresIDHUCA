@@ -173,7 +173,7 @@ export const deleteEvent = async (eventId) => {
       throw new Error('No hay token de autenticación');
     }
 
-    const response = await fetch(`${API_URL}/registros/evento/delete`, {
+    const response = await fetch(`${API_URL}registros/evento/delete`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
