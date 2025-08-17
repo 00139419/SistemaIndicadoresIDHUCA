@@ -207,7 +207,7 @@ export const detailEvent = async (eventId) => {
       throw new Error('No hay token de autenticación');
     }
 
-    const response = await fetch(`${API_URL}/registros/evento/getOne`, {
+    const response = await fetch(`${API_URL}registros/evento/getOne`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
