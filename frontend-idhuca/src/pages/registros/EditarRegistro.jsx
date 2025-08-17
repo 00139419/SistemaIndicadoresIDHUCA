@@ -11,6 +11,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { MultiSelect } from "primereact/multiselect";
 import { TabView, TabPanel } from "primereact/tabview";
 import { Dialog } from "primereact/dialog";
+import { useLocation } from "react-router-dom";
 import {
   getCatalogo,
   updateEvento,
@@ -26,6 +27,8 @@ import "primeflex/primeflex.css";
 
 const EditarRegistro = () => {
   const { id } = useParams();
+  const location = useLocation();
+  let { filtros, derechoId, categoriaEjeX } = location.state || {};
   const navigate = useNavigate();
 
   // Estados para los catálogos
@@ -356,7 +359,11 @@ const EditarRegistro = () => {
         "¡Éxito!",
         "Evento actualizado correctamente",
         () => {
-          navigate("/registros");
+          navigate("/select-register", {
+            state: {
+              filtros, derechoId, categoriaEjeX
+            }
+          });
         }
       );
     } catch (error) {

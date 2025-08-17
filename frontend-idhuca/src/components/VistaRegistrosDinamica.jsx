@@ -52,7 +52,13 @@ const VistaRegistrosDinamica = ({
         onView && onView(item, index);
         break;
       case "edit":
-        navigate(`/registros/update/${item.id}`);
+        navigate(`/registros/update/${item.id}`, {
+          state: {
+            filtros,
+            derechoId,
+            categoriaEjeX,
+          },
+        });
         break;
       case "delete":
         navigate(`/registros/delete/${item.id}`, {
@@ -103,7 +109,11 @@ const VistaRegistrosDinamica = ({
         <div className="text-center mb-1">
           <h1
             className="display-4 fw-bold fs-2"
-            style={{color: "#0f0f0f", fontFamily: 'Montserrat, Arial, sans-serif', letterSpacing: '1px' }}
+            style={{
+              color: "#0f0f0f",
+              fontFamily: "Montserrat, Arial, sans-serif",
+              letterSpacing: "1px",
+            }}
           >
             {title}
           </h1>
@@ -131,14 +141,32 @@ const VistaRegistrosDinamica = ({
             )}
             {onFilter && hasPermission("filter") && (
               <button
-                className={`btn btn-info text-white d-flex align-items-center gap-2 position-relative ${filtros && Object.keys(filtros).length > 0 ? 'active-filter' : ''}`}
+                className={`btn btn-info text-white d-flex align-items-center gap-2 position-relative ${
+                  filtros && Object.keys(filtros).length > 0
+                    ? "active-filter"
+                    : ""
+                }`}
                 onClick={handleFilter}
                 style={{ fontSize: "14px" }}
               >
-                <i className={`bi bi-funnel${filtros && Object.keys(filtros).length > 0 ? '-fill text-light' : ''}`} style={{ fontSize: "18px" }}></i>
-                <span>{filtros && Object.keys(filtros).length > 0 ? 'Filtro (Activos)' : 'Filtrar'}</span>
+                <i
+                  className={`bi bi-funnel${
+                    filtros && Object.keys(filtros).length > 0
+                      ? "-fill text-light"
+                      : ""
+                  }`}
+                  style={{ fontSize: "18px" }}
+                ></i>
+                <span>
+                  {filtros && Object.keys(filtros).length > 0
+                    ? "Filtro (Activos)"
+                    : "Filtrar"}
+                </span>
                 {filtros && Object.keys(filtros).length > 0 && (
-                  <span className="position-absolute top-0 end-0 translate-middle p-1 bg-light border border-info rounded-circle" style={{ width: "12px", height: "12px" }}></span>
+                  <span
+                    className="position-absolute top-0 end-0 translate-middle p-1 bg-light border border-info rounded-circle"
+                    style={{ width: "12px", height: "12px" }}
+                  ></span>
                 )}
               </button>
             )}

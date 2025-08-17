@@ -96,7 +96,7 @@ export const updateEvento = async (evento) => {
     if (!token) throw new Error('No hay token de autenticación');
 
     const response = await fetch(
-      API_URL + 'evento/update',
+      API_URL + 'registros/evento/update',
       {
         method: 'POST',
         headers: {
