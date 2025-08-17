@@ -45,16 +45,13 @@ const Configuraciones = () => {
         }
 
         // Llamar a la API correcta para obtener los datos del usuario actual
-        const response = await fetch(
-          API_URL +"users/get/current",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(API_URL + "users/get/current", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const userData = await response.json();
@@ -211,20 +208,17 @@ const Configuraciones = () => {
         throw new Error("No hay token de autenticación");
       }
 
-      const response = await fetch(
-         API_URL + "users/change/password/simple",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            password: currentPassword,
-            newPassword: newPassword,
-          }),
-        }
-      );
+      const response = await fetch(API_URL + "users/change/password/simple", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: currentPassword,
+          newPassword: newPassword,
+        }),
+      });
 
       const data = await response.json();
 
@@ -257,20 +251,17 @@ const Configuraciones = () => {
         throw new Error("No hay token de autenticación");
       }
 
-      const response = await fetch(
-        API_URL + "users/update/name/current",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: userId,
-            nombre: newName,
-          }),
-        }
-      );
+      const response = await fetch(API_URL + "users/update/name/current", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userId,
+          nombre: newName,
+        }),
+      });
 
       const data = await response.json();
 
@@ -433,13 +424,15 @@ const Configuraciones = () => {
                     }`}
                     onClick={() => setActiveTab("profile")}
                     style={{
+                      textAlign: "center",
                       border: "none",
-                      background: "none",
-                      color: activeTab === "profile" ? "#0d6efd" : "#000", // azul para activo, negro para inactivo
+                      borderRadius: "5px",
+                      background: activeTab === "profile" ? "#4e4e4e" : "none",
+                      color: activeTab === "profile" ? "#ffffff" : "#000", // azul para activo, negro para inactivo
                     }}
                   >
-                    <i className="fas fa-user me-2"></i>
-                    Perfil
+                    <i className="fas fa-user me-2">Perfil</i>
+                    
                   </button>
                 </li>
                 <li className="nav-item">
@@ -450,12 +443,13 @@ const Configuraciones = () => {
                     onClick={() => setActiveTab("password")}
                     style={{
                       border: "none",
-                      background: "none",
-                      color: activeTab === "password" ? "#0d6efd" : "#000",
+                      borderRadius: "5px",
+                      background: activeTab === "password" ? "#4e4e4e" : "none",
+                      color: activeTab === "password" ? "#ffffff" : "#000", // azul para activo, negro para inactivo
                     }}
                   >
-                    <i className="fas fa-lock me-2"></i>
-                    Contraseña
+                    <i className="fas fa-lock me-2">Contraseña</i>
+                    
                   </button>
                 </li>
               </ul>
@@ -619,14 +613,17 @@ const Configuraciones = () => {
                         {/* Barra de progreso de requisitos */}
                         <div className="progress" style={{ height: "8px" }}>
                           <div
-                            className={`progress-bar ${getProgressClass(passwordStrength.score)}`}
+                            className={`progress-bar ${getProgressClass(
+                              passwordStrength.score
+                            )}`}
                             role="progressbar"
-                            style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                            style={{
+                              width: `${(passwordStrength.score / 5) * 100}%`,
+                            }}
                             aria-valuenow={passwordStrength.score}
                             aria-valuemin="0"
                             aria-valuemax="5"
-                          >
-                          </div>
+                          ></div>
                         </div>
                         <small className="text-muted mt-1 d-block">
                           {passwordStrength.score <= 2
@@ -684,7 +681,9 @@ const Configuraciones = () => {
                               <i className="bi bi-circle text-secondary"></i>
                             )}
                           </span>
-                          <small className="text-muted">Mínimo 8 caracteres</small>
+                          <small className="text-muted">
+                            Mínimo 8 caracteres
+                          </small>
                         </li>
                         <li className="py-1 d-flex align-items-center">
                           <span className="me-2">
@@ -694,7 +693,9 @@ const Configuraciones = () => {
                               <i className="bi bi-circle text-secondary"></i>
                             )}
                           </span>
-                          <small className="text-muted">Al menos una letra mayúscula</small>
+                          <small className="text-muted">
+                            Al menos una letra mayúscula
+                          </small>
                         </li>
                         <li className="py-1 d-flex align-items-center">
                           <span className="me-2">
@@ -704,7 +705,9 @@ const Configuraciones = () => {
                               <i className="bi bi-circle text-secondary"></i>
                             )}
                           </span>
-                          <small className="text-muted">Al menos una letra minúscula</small>
+                          <small className="text-muted">
+                            Al menos una letra minúscula
+                          </small>
                         </li>
                         <li className="py-1 d-flex align-items-center">
                           <span className="me-2">
@@ -714,17 +717,23 @@ const Configuraciones = () => {
                               <i className="bi bi-circle text-secondary"></i>
                             )}
                           </span>
-                          <small className="text-muted">Al menos un número</small>
+                          <small className="text-muted">
+                            Al menos un número
+                          </small>
                         </li>
                         <li className="py-1 d-flex align-items-center">
                           <span className="me-2">
-                            {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.newPassword) ? (
+                            {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                              formData.newPassword
+                            ) ? (
                               <i className="bi bi-check-circle-fill text-success"></i>
                             ) : (
                               <i className="bi bi-circle text-secondary"></i>
                             )}
                           </span>
-                          <small className="text-muted">Al menos un carácter especial (!@#$%^&*)</small>
+                          <small className="text-muted">
+                            Al menos un carácter especial (!@#$%^&*)
+                          </small>
                         </li>
                       </ul>
                     </div>
@@ -735,7 +744,14 @@ const Configuraciones = () => {
                       type="button"
                       onClick={handleSubmit}
                       className="btn btn-primary flex-fill"
-                      disabled={loading}
+                      disabled={
+                        loading ||
+                        !formData.currentPassword ||
+                        !formData.newPassword ||
+                        !formData.confirmPassword ||
+                        passwordStrength.score < 5 ||
+                        formData.newPassword !== formData.confirmPassword
+                      }
                     >
                       {loading ? (
                         <>
