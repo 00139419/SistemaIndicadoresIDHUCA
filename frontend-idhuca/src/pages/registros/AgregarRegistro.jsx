@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Tooltip } from "primereact/tooltip";
 import { useLocation } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
@@ -869,72 +870,6 @@ const AgregarRegistro = () => {
                     />
                   </div>
 
-                  {/* Departamento de residencia */}
-                  <div className="field col-12 md:col-5">
-                    <label className="mb-2 d-block font-semibold">
-                      Departamento de residencia
-                    </label>
-                    <Dropdown
-                      value={persona.departamentoResidencia}
-                      onChange={(e) =>
-                        handleDepartamentoResidenciaChange(index, e.value)
-                      }
-                      options={departamentos}
-                      optionLabel="descripcion"
-                      placeholder="Seleccione un departamento"
-                      className="w-full"
-                      disabled={
-                        !(
-                          persona.nacionalidad &&
-                          persona.nacionalidad.codigo === "PAIS_9300"
-                        )
-                      }
-                      onClick={() => {
-                        console.log(
-                          `DepartamentoResidencia habilitado para persona #${
-                            index + 1
-                          }:`,
-                          persona.nacionalidad
-                        );
-                      }}
-                    />
-                  </div>
-
-                  {/* Municipio de residencia */}
-                  <div className="field col-12 md:col-5">
-                    <label className="mb-2 d-block font-semibold">
-                      Municipio de residencia
-                    </label>
-                    <Dropdown
-                      value={persona.municipioResidencia}
-                      onChange={(e) =>
-                        actualizarPersona(index, "municipioResidencia", e.value)
-                      }
-                      options={municipiosResidenciaList[index] || []}
-                      optionLabel="descripcion"
-                      placeholder={
-                        persona.departamentoResidencia
-                          ? "Seleccione un municipio"
-                          : "Seleccione un departamento primero"
-                      }
-                      className="w-full"
-                      disabled={
-                        !(
-                          persona.nacionalidad &&
-                          persona.nacionalidad.codigo === "PAIS_9300"
-                        )
-                      }
-                      onClick={() => {
-                        console.log(
-                          `MunicipioResidencia habilitado para persona #${
-                            index + 1
-                          }:`,
-                          persona.nacionalidad
-                        );
-                      }}
-                    />
-                  </div>
-
                   {/* Nacionalidad*/}
                   <div className="field col-12 md:col-4">
                     <label className="mb-2 d-block">Nacionalidad</label>
@@ -979,6 +914,78 @@ const AgregarRegistro = () => {
                       resetFilterOnHide
                       showClear
                     />
+                  </div>
+
+                  {/* Departamento de residencia */}
+                  <div className="field col-12 md:col-5">
+                    <label className="mb-2 d-block font-semibold">
+                      Departamento de residencia
+                    </label>
+                    <span id={`tooltip-departamento-${index}`} style={{ display: 'inline-block', width: '100%' }}>
+                      <Dropdown
+                        value={persona.departamentoResidencia}
+                        onChange={(e) =>
+                          handleDepartamentoResidenciaChange(index, e.value)
+                        }
+                        options={departamentos}
+                        optionLabel="descripcion"
+                        placeholder="Seleccione un departamento"
+                        className="w-full"
+                        disabled={
+                          !(
+                            persona.nacionalidad &&
+                            persona.nacionalidad.codigo === "PAIS_9300"
+                          )
+                        }
+                        onClick={() => {
+                          console.log(
+                            `DepartamentoResidencia habilitado para persona #${index + 1}:`,
+                            persona.nacionalidad
+                          );
+                        }}
+                      />
+                      {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
+                        <Tooltip target={`#tooltip-departamento-${index}`} position="top" content="Seleccione 'El Salvador' en nacionalidad para habilitar" />
+                      )}
+                    </span>
+                  </div>
+
+                  {/* Municipio de residencia */}
+                  <div className="field col-12 md:col-5">
+                    <label className="mb-2 d-block font-semibold">
+                      Municipio de residencia
+                    </label>
+                    <span id={`tooltip-municipio-${index}`} style={{ display: 'inline-block', width: '100%' }}>
+                      <Dropdown
+                        value={persona.municipioResidencia}
+                        onChange={(e) =>
+                          actualizarPersona(index, "municipioResidencia", e.value)
+                        }
+                        options={municipiosResidenciaList[index] || []}
+                        optionLabel="descripcion"
+                        placeholder={
+                          persona.departamentoResidencia
+                            ? "Seleccione un municipio"
+                            : "Seleccione un departamento primero"
+                        }
+                        className="w-full"
+                        disabled={
+                          !(
+                            persona.nacionalidad &&
+                            persona.nacionalidad.codigo === "PAIS_9300"
+                          )
+                        }
+                        onClick={() => {
+                          console.log(
+                            `MunicipioResidencia habilitado para persona #${index + 1}:`,
+                            persona.nacionalidad
+                          );
+                        }}
+                      />
+                      {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
+                        <Tooltip target={`#tooltip-municipio-${index}`} position="top" content="Seleccione 'El Salvador' en nacionalidad para habilitar" />
+                      )}
+                    </span>
                   </div>
 
                   <div className="field col-12 md:col-4">
