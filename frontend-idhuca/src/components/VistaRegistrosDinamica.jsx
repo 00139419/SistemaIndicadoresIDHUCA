@@ -131,11 +131,15 @@ const VistaRegistrosDinamica = ({
             )}
             {onFilter && hasPermission("filter") && (
               <button
-                className="btn btn-info text-white"
+                className={`btn btn-info text-white d-flex align-items-center gap-2 position-relative ${filtros && Object.keys(filtros).length > 0 ? 'active-filter' : ''}`}
                 onClick={handleFilter}
                 style={{ fontSize: "14px" }}
               >
-                Filtrar
+                <i className={`bi bi-funnel${filtros && Object.keys(filtros).length > 0 ? '-fill text-light' : ''}`} style={{ fontSize: "18px" }}></i>
+                <span>{filtros && Object.keys(filtros).length > 0 ? 'Filtro (Activos)' : 'Filtrar'}</span>
+                {filtros && Object.keys(filtros).length > 0 && (
+                  <span className="position-absolute top-0 end-0 translate-middle p-1 bg-light border border-info rounded-circle" style={{ width: "12px", height: "12px" }}></span>
+                )}
               </button>
             )}
           </div>
