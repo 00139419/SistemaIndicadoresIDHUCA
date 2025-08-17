@@ -137,8 +137,13 @@ public class PersonasAfectadasImpl implements IPersonasAfectadas{
 	            return new ValidationException(ERROR, "No existe el evento con ID: " + request.getId());
 	        });
 	    
-	    log.info("[{}] Request válido", key);
+	    log.info("[{}] Request válido Cantidad de persopnas {}", key, evento.getPersonasAfectadas().size());
 
+	    if(evento.getCantidadPersonas() == 1) {
+	    	log.info("[{}] No es posible eliminar la única persona de un registro de personas vulneradas.", key);
+	    	throw new ValidationException(ERROR, "No es posible eliminar la única persona de un registro de personas vulneradas.");
+	    }
+	    
 	    Set<Long> idsAEliminar = request.getPersonasAfectadas().stream()
 	        .map(PersonaAfectadaDTO::getId)
 	        .collect(Collectors.toSet());
@@ -154,6 +159,10 @@ public class PersonasAfectadasImpl implements IPersonasAfectadas{
 
 	        personaRepository.delete(persona);
 	    }
+	    
+	    evento.setCantidadPersonas(evento.getCantidadPersonas() - 1);
+	    eventoRepository.save(evento);
+	    log.info("[{}] Cantidad de personas afectadas actualizada correctamente", key);
 	    
 	    eventoUseCase.actualizarFlagsDerechosPorEvento(evento.getId());
 	    AuditoriaRegistroEventoDTO auditoria = utils.fromRegistroEvento(evento);

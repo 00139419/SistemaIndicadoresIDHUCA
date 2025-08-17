@@ -169,6 +169,8 @@ public class RegistrosImpl implements IRegistros{
 	    boolean flagExpresion = request.isFlagExpresion();
 	    boolean flagJusticia = request.isFlagJusticia();
 
+	    nuevoEvento.setCantidadPersonas(request.getPersonasAfectadas().size());
+	    
 	    List<PersonaAfectada> personasAfectadas = new ArrayList<>();
 	    for (PersonaAfectadaDTO dto : request.getPersonasAfectadas()) {
 	        PersonaAfectada persona = 

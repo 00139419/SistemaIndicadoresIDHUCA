@@ -28,6 +28,8 @@ public class RegistroEventoDTO {
     private boolean flagJusticia;
     private boolean flagCensura;
     private boolean flagRegimenExcepcion;
+    
+    private int cantidadPersonas;
 
     private String observaciones;
 

@@ -67,6 +67,9 @@ public class RegistroEvento {
 
     @Column(name = "flag_censura")
     private Boolean flagCensura;
+    
+    @Column(name = "cantidadPersonas")
+    private Integer cantidadPersonas;
 
     @Column(name = "flag_regimen_excepcion")
     private Boolean flagRegimenExcepcion;
