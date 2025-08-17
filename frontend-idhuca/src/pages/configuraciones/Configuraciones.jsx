@@ -430,9 +430,7 @@ const Configuraciones = () => {
                       background: activeTab === "profile" ? "#4e4e4e" : "none",
                       color: activeTab === "profile" ? "#ffffff" : "#000", // azul para activo, negro para inactivo
                     }}
-                  >
-                    <i className="fas fa-user me-2">Perfil</i>
-                    
+                  ><i className="fas fa-user me-2">Perfil</i>
                   </button>
                 </li>
                 <li className="nav-item">
@@ -447,10 +445,8 @@ const Configuraciones = () => {
                       background: activeTab === "password" ? "#4e4e4e" : "none",
                       color: activeTab === "password" ? "#ffffff" : "#000", // azul para activo, negro para inactivo
                     }}
-                  >
-                    <i className="fas fa-lock me-2">Contraseña</i>
-                    
-                  </button>
+                  ><i className="fas fa-lock me-2">Contraseña</i>
+                 </button>
                 </li>
               </ul>
             </div>
@@ -476,24 +472,6 @@ const Configuraciones = () => {
                   <h6 className="mb-3 text-muted">
                     Actualizar Información Personal
                   </h6>
-
-                  {/* Campo de ID del usuario (oculto) */}
-                  <div className="mb-3">
-                    <label className="form-label">
-                      <i className="fas fa-id-badge me-1"></i>
-                      ID de Usuario
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={profileData.id || "Cargando..."}
-                      disabled
-                      style={{ backgroundColor: "#f8f9fa" }}
-                    />
-                    <small className="text-muted">
-                      Identificador único del usuario en el sistema
-                    </small>
-                  </div>
 
                   <div className="mb-3">
                     <label className="form-label">
@@ -521,18 +499,22 @@ const Configuraciones = () => {
                     <input
                       type="text"
                       name="newName"
-                      className="form-control"
+                      className={`form-control ${profileData.newName.trim().length > 0 && profileData.newName.trim().length < 2 ? 'is-invalid' : ''}`}
                       value={profileData.newName}
                       onChange={handleProfileInputChange}
                       placeholder="Ingrese su nuevo nombre"
                       maxLength={50}
                     />
                     <div className="d-flex justify-content-between mt-1">
-                      <small className="text-muted">Mínimo 2 caracteres</small>
                       <small className="text-muted">
                         {profileData.newName.length}/50
                       </small>
                     </div>
+                    {profileData.newName.trim().length > 0 && profileData.newName.trim().length < 2 && (
+                      <div className="invalid-feedback">
+                        El nombre debe tener al menos 2 caracteres.
+                      </div>
+                    )}
                   </div>
 
                   <div className="d-flex gap-3 pt-3 border-top">
@@ -543,7 +525,9 @@ const Configuraciones = () => {
                       disabled={
                         loadingProfile ||
                         !profileData.newName.trim() ||
-                        !profileData.id
+                        profileData.newName.trim().length < 2 ||
+                        !profileData.id ||
+                        profileData.currentName === profileData.newName.trim()
                       }
                     >
                       {loadingProfile ? (
