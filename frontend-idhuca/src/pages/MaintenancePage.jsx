@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import "../custom-alerts.css";
 import Sidenav from "../components/Sidenav";
 import {
   fetchCatalog,
@@ -35,12 +36,14 @@ const MaintenancePage = () => {
   const [editDescription, setEditDescription] = useState("");
   const [updatingItem, setUpdatingItem] = useState(false);
   const [updateResult, setUpdateResult] = useState(null);
+  const [editAlertOpen, setEditAlertOpen] = useState(false);
 
   // Estados para confirmación de eliminación
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletingItem, setDeletingItem] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteResult, setDeleteResult] = useState(null);
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -291,8 +294,9 @@ const MaintenancePage = () => {
       return;
     }
 
-    setUpdatingItem(true);
-    setUpdateResult(null);
+  setUpdatingItem(true);
+  setUpdateResult(null);
+  setEditAlertOpen(false);
 
     try {
       const result = await updateCatalogItem(
@@ -301,22 +305,24 @@ const MaintenancePage = () => {
       );
 
       setUpdateResult(result);
-
+      setEditAlertOpen(true);
       if (result.success) {
         setTimeout(() => {
+          setEditAlertOpen(false);
           setShowEditModal(false);
           setEditingItem(null);
           setEditDescription("");
           loadCatalog();
-        }, 1500);
+        }, 3000);
       }
     } catch (err) {
       setUpdateResult({
         success: false,
         message: err.message || "Error al actualizar el registro",
       });
+      setEditAlertOpen(true);
     } finally {
-      setUpdatingItem(false);
+  setUpdatingItem(false);
     }
   };
 
@@ -329,28 +335,31 @@ const MaintenancePage = () => {
 
   // Función para eliminar un elemento del catálogo
   const handleDeleteItem = async () => {
-    setDeletingItem(true);
-    setDeleteResult(null);
+  setDeletingItem(true);
+  setDeleteResult(null);
+  setDeleteAlertOpen(false);
 
     try {
       const result = await deleteCatalogItem(itemToDelete.codigo);
 
       setDeleteResult(result);
-
+      setDeleteAlertOpen(true);
       if (result.success) {
         setTimeout(() => {
+          setDeleteAlertOpen(false);
           setShowDeleteModal(false);
           setItemToDelete(null);
           loadCatalog();
-        }, 1500);
+        }, 3000);
       }
     } catch (err) {
       setDeleteResult({
         success: false,
         message: err.message || "Error al eliminar el registro",
       });
+      setDeleteAlertOpen(true);
     } finally {
-      setDeletingItem(false);
+  setDeletingItem(false);
     }
   };
 
@@ -707,7 +716,7 @@ const MaintenancePage = () => {
         )}
 
         {/* Modal para editar registro */}
-        {showEditModal && (
+  {showEditModal && (
           <div
             className="modal show d-block"
             tabIndex="-1"
@@ -730,13 +739,45 @@ const MaintenancePage = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  {updateResult && (
-                    <div
-                      className={`alert ${
-                        updateResult.success ? "alert-success" : "alert-danger"
-                      }`}
-                    >
-                      {updateResult.message}
+                  {updateResult && editAlertOpen && (
+                    <div className={`custom-alert ${updateResult.success ? "alert-success" : "alert-danger"}`}>
+                      <span className="custom-alert-icon">
+                        {updateResult.success ? (
+                          <span className="animated-check">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#4BB543" strokeWidth="2"/>
+                              <path fill="none" stroke="#4BB543" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M14 27l7 7 16-16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="animated-error">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#d32f2f" strokeWidth="2"/>
+                              <path fill="none" stroke="#d32f2f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M18 18l16 16M34 18l-16 16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        )}
+                      </span>
+                      <span className="custom-alert-message">{updateResult.message}</span>
+                      <button
+                        type="button"
+                        className="btn-close ms-2"
+                        aria-label="Cerrar"
+                        onClick={() => {
+                          setEditAlertOpen(false);
+                          if (updateResult.success) {
+                            setShowEditModal(false);
+                            setEditingItem(null);
+                            setEditDescription("");
+                            loadCatalog();
+                          }
+                        }}
+                        style={{ fontSize: "1rem" }}
+                      ></button>
                     </div>
                   )}
 
@@ -780,7 +821,7 @@ const MaintenancePage = () => {
                       setEditDescription("");
                       setUpdateResult(null);
                     }}
-                    disabled={updatingItem}
+                    disabled={updatingItem || (updateResult && editAlertOpen)}
                   >
                     Cancelar
                   </button>
@@ -788,7 +829,7 @@ const MaintenancePage = () => {
                     type="button"
                     className="btn btn-primary"
                     onClick={handleUpdateItem}
-                    disabled={updatingItem || !editDescription.trim()}
+                    disabled={updatingItem || !editDescription.trim() || (updateResult && editAlertOpen)}
                   >
                     {updatingItem ? (
                       <>
@@ -810,7 +851,7 @@ const MaintenancePage = () => {
         )}
 
         {/* Modal para confirmación de eliminación */}
-        {showDeleteModal && (
+  {showDeleteModal && (
           <div
             className="modal show d-block"
             tabIndex="-1"
@@ -832,13 +873,44 @@ const MaintenancePage = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  {deleteResult && (
-                    <div
-                      className={`alert ${
-                        deleteResult.success ? "alert-success" : "alert-danger"
-                      }`}
-                    >
-                      {deleteResult.message}
+                  {deleteResult && deleteAlertOpen && (
+                    <div className={`custom-alert ${deleteResult.success ? "alert-success" : "alert-danger"}`}>
+                      <span className="custom-alert-icon">
+                        {deleteResult.success ? (
+                          <span className="animated-check">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#4BB543" strokeWidth="2"/>
+                              <path fill="none" stroke="#4BB543" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M14 27l7 7 16-16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="animated-error">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#d32f2f" strokeWidth="2"/>
+                              <path fill="none" stroke="#d32f2f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M18 18l16 16M34 18l-16 16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        )}
+                      </span>
+                      <span className="custom-alert-message">{deleteResult.message}</span>
+                      <button
+                        type="button"
+                        className="btn-close ms-2"
+                        aria-label="Cerrar"
+                        onClick={() => {
+                          setDeleteAlertOpen(false);
+                          if (deleteResult.success) {
+                            setShowDeleteModal(false);
+                            setItemToDelete(null);
+                            loadCatalog();
+                          }
+                        }}
+                        style={{ fontSize: "1rem" }}
+                      ></button>
                     </div>
                   )}
 
@@ -850,10 +922,18 @@ const MaintenancePage = () => {
                       <strong>Descripción:</strong> {itemToDelete?.descripcion}
                     </div>
                   </div>
-                  <p className="text-danger mt-2">
-                    <i className="fas fa-exclamation-triangle"></i> Esta acción
+                  <div className="alert alert-warning mt-3">
+                      <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                      <strong>Advertencia:</strong> Esta acción
                     no se puede deshacer.
-                  </p>
+                    </div>
+                  {/* ADVERTENCIA SOLO PARA DEPARTAMENTOS */}
+                  {selectedCatalog === "departamentos" && (
+                    <div className="alert alert-warning mt-3">
+                      <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                      <strong>Advertencia:</strong> Al eliminar un departamento, también se eliminarán todos los municipios asociados.
+                    </div>
+                  )}
                 </div>
                 <div className="modal-footer">
                   <button
@@ -864,7 +944,7 @@ const MaintenancePage = () => {
                       setItemToDelete(null);
                       setDeleteResult(null);
                     }}
-                    disabled={deletingItem}
+                    disabled={deletingItem || (deleteResult && deleteAlertOpen)}
                   >
                     Cancelar
                   </button>
@@ -872,7 +952,7 @@ const MaintenancePage = () => {
                     type="button"
                     className="btn btn-danger"
                     onClick={handleDeleteItem}
-                    disabled={deletingItem}
+                    disabled={deletingItem || (deleteResult && deleteAlertOpen)}
                   >
                     {deletingItem ? (
                       <>
