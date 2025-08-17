@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
@@ -414,7 +415,14 @@ public class CatologoImpl implements ICatalogo {
 		}
 		 log.info("[{}] Catalogo válido", key);
 		 
-		 catalogoRepository.delete(catalogo);
+		 
+		 try {
+			 catalogoRepository.delete(catalogo);
+		} catch (DataIntegrityViolationException e) {
+			log.info("[{}] Error elimnado catalogo: {}.",key, e.getMessage());
+			throw new ValidationException(ERROR, "No es posible eliminar el catálogo porque está siendo utilizado en uno o más registros. Para poder eliminarlo, primero debes eliminar los registros asociados.");
+		}
+		 
 		 auditoriaService.add(utils.crearDto(utils.obtenerUsuarioAutenticado(), DELETE, catalogo));
 		 log.info("[{}] Catalogo eliminado correctamente.",key);
 		 
