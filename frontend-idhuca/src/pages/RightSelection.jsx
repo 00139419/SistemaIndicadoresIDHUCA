@@ -95,14 +95,20 @@ export default function SelectDerechosPage() {
     <div
       className="d-flex flex-column justify-content-center align-items-center"
       style={{
-        overflow: "hidden", // evita cualquier scroll
-        padding: "0px 0 0", // solo padding superior (opcional)
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "100vw",
+        minHeight: "auto",
+        margin: 0,
+        padding: 0,
+        overflow: "hidden"
       }}
     >
       {/* Título */}
       <h1
-        className="fw-bold text-primary text-center"
-        style={{ fontSize: "2.5rem" }}
+        className="fw-bold text-primary text-center fs-2"
       >
         Selecciona un derecho
       </h1>
