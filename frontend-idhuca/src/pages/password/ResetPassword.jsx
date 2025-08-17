@@ -16,11 +16,15 @@ const ResetPassword = () => {
   const [provisionalData, setProvisionalData] = useState({
     currentPassword: "",
     newPassword: "",
+    confirmNewPassword: "",
     selectedQuestion: "",
-    securityAnswer: ""
+    securityAnswer: "",
   });
   // Password strength for provisional password
-  const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: "" });
+  const [passwordStrength, setPasswordStrength] = useState({
+    score: 0,
+    text: "",
+  });
 
   const navigate = useNavigate();
 
@@ -28,15 +32,15 @@ const ResetPassword = () => {
     try {
       const token = localStorage.getItem("tempAuthToken");
       const response = await axios.post(
-        API_URL + 'catalogo/get',
+        API_URL + "catalogo/get",
         {
-          securityQuestions: true
+          securityQuestions: true,
         },
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       setSecurityQuestions(response.data.entity || []);
@@ -54,21 +58,21 @@ const ResetPassword = () => {
     try {
       const token = localStorage.getItem("tempAuthToken");
       const response = await axios.post(
-        API_URL + 'users/change/password',
+        API_URL + "users/change/password",
         {
           email: localStorage.getItem("userEmail"),
           password: provisionalData.currentPassword,
           newPassword: provisionalData.newPassword,
           securityQuestion: {
-            codigo: provisionalData.selectedQuestion
+            codigo: provisionalData.selectedQuestion,
           },
-          securityAnswer: provisionalData.securityAnswer
+          securityAnswer: provisionalData.securityAnswer,
         },
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -79,7 +83,10 @@ const ResetPassword = () => {
       }
     } catch (err) {
       console.error("Error:", err);
-      setError(err.response?.data?.mensaje || "Error al actualizar la contraseña. Por favor intente más tarde.");
+      setError(
+        err.response?.data?.mensaje ||
+          "Error al actualizar la contraseña. Por favor intente más tarde."
+      );
     } finally {
       setLoading(false);
     }
@@ -88,7 +95,7 @@ const ResetPassword = () => {
   useEffect(() => {
     const token = localStorage.getItem("tempAuthToken");
     const userEmail = localStorage.getItem("userEmail");
-    
+
     if (token && userEmail) {
       setEmail(userEmail);
       setIsProvisional(true);
@@ -104,20 +111,25 @@ const ResetPassword = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        API_URL + 'auth/get/securityQuestion',
-        { email }
-      );
+      const response = await axios.post(API_URL + "auth/get/securityQuestion", {
+        email,
+      });
 
       localStorage.setItem("resetEmail", email);
-      localStorage.setItem("securityQuestion", response.data.entity.descripcion);
+      localStorage.setItem(
+        "securityQuestion",
+        response.data.entity.descripcion
+      );
       navigate("/verify-identity");
     } catch (err) {
       console.error("Error:", err);
       if (err.response?.status === 404) {
         setError("No se encontró una cuenta con ese correo electrónico.");
       } else {
-        setError(err.response?.data?.mensaje || "Error al enviar el correo de recuperación. Por favor intente más tarde.");
+        setError(
+          err.response?.data?.mensaje ||
+            "Error al enviar el correo de recuperación. Por favor intente más tarde."
+        );
       }
     } finally {
       setLoading(false);
@@ -179,13 +191,19 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#003C71" }}>
-      <div className="bg-white rounded-4 p-4 p-md-5 shadow" style={{ maxWidth: "500px", width: "100%" }}>
+    <div
+      className="vh-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: "#003C71" }}
+    >
+      <div
+        className="bg-white rounded-4 p-4 p-md-5 shadow"
+        style={{ maxWidth: "500px", width: "100%" }}
+      >
         <div className="text-center mb-4">
-          <h1 className="fw-bold mb-2 mt-5">Recuperar Contraseña</h1>
+          <h1 className="fw-bold mb-2 mt-5">Establecer Contraseña</h1>
           <p className="text-muted mb-3 mt-3">
-            {showProvisionalForm 
-              ? "Configure su nueva contraseña y pregunta de seguridad" 
+            {showProvisionalForm
+              ? "Configure su nueva contraseña y pregunta de seguridad"
               : "Ingresa tu correo electrónico para comenzar"}
           </p>
         </div>
@@ -238,10 +256,12 @@ const ResetPassword = () => {
                 className="form-control bg-light"
                 id="currentPassword"
                 value={provisionalData.currentPassword}
-                onChange={(e) => setProvisionalData({
-                  ...provisionalData,
-                  currentPassword: e.target.value
-                })}
+                onChange={(e) =>
+                  setProvisionalData({
+                    ...provisionalData,
+                    currentPassword: e.target.value,
+                  })
+                }
                 required
               />
             </div>
@@ -255,19 +275,25 @@ const ResetPassword = () => {
                 className="form-control bg-light"
                 id="newPassword"
                 value={provisionalData.newPassword}
-                onChange={(e) => setProvisionalData({
-                  ...provisionalData,
-                  newPassword: e.target.value
-                })}
+                onChange={(e) =>
+                  setProvisionalData({
+                    ...provisionalData,
+                    newPassword: e.target.value,
+                  })
+                }
                 required
               />
               {provisionalData.newPassword && (
                 <div className="mt-2">
                   <div className="progress" style={{ height: "8px" }}>
                     <div
-                      className={`progress-bar ${getProgressClass(passwordStrength.score)}`}
+                      className={`progress-bar ${getProgressClass(
+                        passwordStrength.score
+                      )}`}
                       role="progressbar"
-                      style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                      style={{
+                        width: `${(passwordStrength.score / 5) * 100}%`,
+                      }}
                       aria-valuenow={passwordStrength.score}
                       aria-valuemin="0"
                       aria-valuemax="5"
@@ -287,10 +313,49 @@ const ResetPassword = () => {
                 </div>
               )}
             </div>
+
+            <div className="mb-3">
+              <label
+                htmlFor="confirmNewPassword"
+                className="form-label fw-medium"
+              >
+                Confirmar Nueva Contraseña
+              </label>
+              <input
+                type="password"
+                className={`form-control bg-light ${
+                  provisionalData.confirmNewPassword &&
+                  provisionalData.newPassword !==
+                    provisionalData.confirmNewPassword
+                    ? "is-invalid"
+                    : ""
+                }`}
+                id="confirmNewPassword"
+                value={provisionalData.confirmNewPassword || ""}
+                onChange={(e) =>
+                  setProvisionalData({
+                    ...provisionalData,
+                    confirmNewPassword: e.target.value,
+                  })
+                }
+                required
+                placeholder="Repita la nueva contraseña"
+              />
+              {provisionalData.confirmNewPassword &&
+                provisionalData.newPassword !==
+                  provisionalData.confirmNewPassword && (
+                  <div className="invalid-feedback">
+                    Las contraseñas no coinciden.
+                  </div>
+                )}
+            </div>
+
             {/* Requisitos visuales */}
             <div className="card bg-light mb-4">
               <div className="card-body py-3">
-                <h6 className="card-title mb-2">Requisitos de la contraseña:</h6>
+                <h6 className="card-title mb-2">
+                  Requisitos de la contraseña:
+                </h6>
                 <ul className="list-unstyled mb-0">
                   <li className="py-1 d-flex align-items-center">
                     <span className="me-2">
@@ -310,7 +375,9 @@ const ResetPassword = () => {
                         <i className="bi bi-circle text-secondary"></i>
                       )}
                     </span>
-                    <small className="text-muted">Al menos una letra mayúscula</small>
+                    <small className="text-muted">
+                      Al menos una letra mayúscula
+                    </small>
                   </li>
                   <li className="py-1 d-flex align-items-center">
                     <span className="me-2">
@@ -320,7 +387,9 @@ const ResetPassword = () => {
                         <i className="bi bi-circle text-secondary"></i>
                       )}
                     </span>
-                    <small className="text-muted">Al menos una letra minúscula</small>
+                    <small className="text-muted">
+                      Al menos una letra minúscula
+                    </small>
                   </li>
                   <li className="py-1 d-flex align-items-center">
                     <span className="me-2">
@@ -334,30 +403,39 @@ const ResetPassword = () => {
                   </li>
                   <li className="py-1 d-flex align-items-center">
                     <span className="me-2">
-                      {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(provisionalData.newPassword) ? (
+                      {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                        provisionalData.newPassword
+                      ) ? (
                         <i className="bi bi-check-circle-fill text-success"></i>
                       ) : (
                         <i className="bi bi-circle text-secondary"></i>
                       )}
                     </span>
-                    <small className="text-muted">Al menos un carácter especial (!@#$%^&*)</small>
+                    <small className="text-muted">
+                      Al menos un carácter especial (!@#$%^&*)
+                    </small>
                   </li>
                 </ul>
               </div>
             </div>
 
             <div className="mb-3">
-              <label htmlFor="securityQuestion" className="form-label fw-medium">
+              <label
+                htmlFor="securityQuestion"
+                className="form-label fw-medium"
+              >
                 Pregunta de Seguridad
               </label>
               <select
                 className="form-select bg-light"
                 id="securityQuestion"
                 value={provisionalData.selectedQuestion}
-                onChange={(e) => setProvisionalData({
-                  ...provisionalData,
-                  selectedQuestion: e.target.value
-                })}
+                onChange={(e) =>
+                  setProvisionalData({
+                    ...provisionalData,
+                    selectedQuestion: e.target.value,
+                  })
+                }
                 required
               >
                 <option value="">Seleccione una pregunta</option>
@@ -378,10 +456,12 @@ const ResetPassword = () => {
                 className="form-control bg-light"
                 id="securityAnswer"
                 value={provisionalData.securityAnswer}
-                onChange={(e) => setProvisionalData({
-                  ...provisionalData,
-                  securityAnswer: e.target.value
-                })}
+                onChange={(e) =>
+                  setProvisionalData({
+                    ...provisionalData,
+                    securityAnswer: e.target.value,
+                  })
+                }
                 required
               />
             </div>
@@ -389,20 +469,24 @@ const ResetPassword = () => {
             <button
               type="submit"
               className="btn btn-dark w-100 py-2"
-              disabled={loading}
+              disabled={
+                loading ||
+                !provisionalData.currentPassword ||
+                !provisionalData.newPassword ||
+                !provisionalData.confirmNewPassword ||
+                !provisionalData.selectedQuestion ||
+                !provisionalData.securityAnswer ||
+                passwordStrength.score < 5 ||
+                provisionalData.newPassword !==
+                  provisionalData.confirmNewPassword
+              }
             >
               {loading ? "Actualizando..." : "Actualizar Contraseña"}
             </button>
           </form>
         )}
 
-        <div className="text-center mt-5">
-          <img
-            src={logoUCA}
-            alt="Instituto de Derechos Humanos de la UCA"
-            style={{ height: "50px", width: "auto" }}
-          />
-        </div>
+       
       </div>
     </div>
   );
