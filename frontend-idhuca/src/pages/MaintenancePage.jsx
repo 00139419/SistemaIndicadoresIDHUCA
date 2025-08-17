@@ -647,12 +647,29 @@ const MaintenancePage = () => {
                 </div>
                 <div className="modal-body">
                   {addResult && (
-                    <div
-                      className={`alert ${
-                        addResult.success ? "alert-success" : "alert-danger"
-                      }`}
-                    >
-                      {addResult.message}
+                    <div className={`custom-alert ${addResult.success ? "alert-success" : "alert-danger"}`}>
+                      <span className="custom-alert-icon">
+                        {addResult.success ? (
+                          <span className="animated-check">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#4BB543" strokeWidth="2"/>
+                              <path fill="none" stroke="#4BB543" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M14 27l7 7 16-16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="animated-error">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#d32f2f" strokeWidth="2"/>
+                              <path fill="none" stroke="#d32f2f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M18 18l16 16M34 18l-16 16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        )}
+                      </span>
+                      <span className="custom-alert-message">{addResult.message}</span>
                     </div>
                   )}
 
