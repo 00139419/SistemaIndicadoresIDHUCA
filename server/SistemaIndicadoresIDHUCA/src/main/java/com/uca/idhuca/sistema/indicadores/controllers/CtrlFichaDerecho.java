@@ -95,7 +95,7 @@ public class CtrlFichaDerecho {
 		}
 	}
 	
-	@PutMapping(value = "/update/post/note", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/update/post/note", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SuperGenericResponse> updateNote(@RequestBody NotaDerechoRequest request) {
 		String key = "SYSTEM";
 		SuperGenericResponse response = new SuperGenericResponse();
