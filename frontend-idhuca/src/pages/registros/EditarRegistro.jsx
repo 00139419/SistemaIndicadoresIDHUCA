@@ -450,7 +450,7 @@ const EditarRegistro = () => {
           showResponseModal(
             "error",
             "Error",
-            `Error al eliminar persona: ${error.message}`
+            `${error.message}`
           );
         }
       }
@@ -477,7 +477,7 @@ const EditarRegistro = () => {
                 modalData.type === "success"
                   ? "fa-check-circle text-green-500"
                   : "fa-exclamation-triangle text-red-500"
-              } mr-2`}
+              } mr-2 `}
             ></i>
             {modalData.title}
           </div>

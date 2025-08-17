@@ -52,7 +52,7 @@ const Registros = () => {
     { key: "flagDetencion", title: "Detención" },
     { key: "flagExpresion", title: "Expresión" },
     { key: "flagJusticia", title: "Justicia" },
-    { key: "flagCensura", title: "Censura" },
+    { key: "cantidadPersonas", title: "Cantidad de personas" },
     { key: "flagRegimenExcepcion", title: "Régimen de Excepción" },
     { key: "observaciones", title: "Observaciones" },
   ];
@@ -119,7 +119,7 @@ const Registros = () => {
         flagDetencion: renderCheck(r.flagDetencion),
         flagExpresion: renderCheck(r.flagExpresion),
         flagJusticia: renderCheck(r.flagJusticia),
-        flagCensura: renderCheck(r.flagCensura),
+        cantidadPersonas: r.cantidadPersonas || "N/A",
         flagRegimenExcepcion: renderCheck(r.flagRegimenExcepcion),
         observaciones: r.observaciones || "N/A",
       }));
