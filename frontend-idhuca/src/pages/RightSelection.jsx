@@ -86,9 +86,10 @@ export default function SelectDerechosPage() {
   };
 
   const hoveredStyle = {
-    transform: "scale(1.05)",
-    boxShadow:
-      "0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05)",
+    transform: "translateY(-8px) scale(1.03)",
+    boxShadow: "0 16px 32px -8px rgba(0,0,0,0.18), 0 4px 12px -2px rgba(0,0,0,0.10)",
+    background: "linear-gradient(90deg, #e3f0ff 0%, #f8faff 100%)",
+    border: "2px solid #1976d2",
   };
 
   return (
@@ -133,11 +134,16 @@ export default function SelectDerechosPage() {
                 onClick={() => handleSelect(derecho)}
               >
                 <div className="mb-4" style={{ transform: "scale(1.3)" }}>
-                  {derecho.icon}
+                  <span style={{
+                    display: "inline-block",
+                    filter: hoveredCard === index ? "drop-shadow(0 0 1px #1976d2)" : "none"
+                  }}>
+                    {derecho.icon}
+                  </span>
                 </div>
                 <p
-                  className="text-center text-secondary mb-0 fw-medium"
-                  style={{ fontSize: "1.1rem", lineHeight: "1.4" }}
+                  className={`text-center mb-0 fw-medium ${hoveredCard === index ? "text-primary" : "text-secondary"}`}
+                  style={{ fontSize: "1.1rem", lineHeight: "1.4", transition: "color 0.2s" }}
                 >
                   {derecho.title}
                 </p>
