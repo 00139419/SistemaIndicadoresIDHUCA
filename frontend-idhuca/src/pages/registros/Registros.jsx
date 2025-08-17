@@ -259,7 +259,7 @@ const Registros = () => {
       )}
 
       {!isLoading && !error && (
-        <div className="px-4 py-3 border-top bg-white">
+        <div className="px-4 py-3 border-top bg-#ffffff">
           <div className="d-flex justify-content-between align-items-center">
             <div>
               Mostrar

@@ -158,7 +158,7 @@ const VistaRegistrosDinamica = ({
             </div>
           ) : error ? (
             <div className="alert alert-danger m-3">
-              <strong>Error2:</strong> {error}
+              <strong>Error:</strong> {error}
             </div>
           ) : (
             <>
@@ -220,7 +220,7 @@ const VistaRegistrosDinamica = ({
                             <td
                               key={colIndex}
                               className="px-3 py-2"
-                              style={{ fontSize: "13px" }}
+                              style={{ fontSize: "13px", textAlign: "center" }}
                             >
                               {renderCellValue(item, column)}
                             </td>
