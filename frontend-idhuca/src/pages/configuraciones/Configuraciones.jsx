@@ -616,17 +616,28 @@ const Configuraciones = () => {
 
                     {formData.newPassword && (
                       <div className="mt-2">
-                        <div className="progress" style={{ height: "6px" }}>
+                        {/* Barra de progreso de requisitos */}
+                        <div className="progress" style={{ height: "8px" }}>
                           <div
-                            className={`progress-bar ${getProgressClass(
-                              passwordStrength.score
-                            )}`}
+                            className={`progress-bar ${getProgressClass(passwordStrength.score)}`}
                             role="progressbar"
-                            style={{ width: `${passwordStrength.score * 20}%` }}
-                          ></div>
+                            style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                            aria-valuenow={passwordStrength.score}
+                            aria-valuemin="0"
+                            aria-valuemax="5"
+                          >
+                          </div>
                         </div>
                         <small className="text-muted mt-1 d-block">
-                          Fortaleza: {passwordStrength.text}
+                          {passwordStrength.score <= 2
+                            ? "Contraseña vulnerable"
+                            : passwordStrength.score === 3
+                            ? "Contraseña segura"
+                            : passwordStrength.score === 4
+                            ? "Contraseña muy segura"
+                            : passwordStrength.score === 5
+                            ? "Contraseña super segura"
+                            : ""}
                         </small>
                       </div>
                     )}
@@ -665,35 +676,55 @@ const Configuraciones = () => {
                         Requisitos de la contraseña:
                       </h6>
                       <ul className="list-unstyled mb-0">
-                        <li className="py-1">
-                          <small className="text-muted">
-                            <i className="fas fa-check-circle me-2"></i>
-                            Mínimo 8 caracteres
-                          </small>
+                        <li className="py-1 d-flex align-items-center">
+                          <span className="me-2">
+                            {formData.newPassword.length >= 8 ? (
+                              <i className="bi bi-check-circle-fill text-success"></i>
+                            ) : (
+                              <i className="bi bi-circle text-secondary"></i>
+                            )}
+                          </span>
+                          <small className="text-muted">Mínimo 8 caracteres</small>
                         </li>
-                        <li className="py-1">
-                          <small className="text-muted">
-                            <i className="fas fa-check-circle me-2"></i>
-                            Al menos una letra mayúscula
-                          </small>
+                        <li className="py-1 d-flex align-items-center">
+                          <span className="me-2">
+                            {/[A-Z]/.test(formData.newPassword) ? (
+                              <i className="bi bi-check-circle-fill text-success"></i>
+                            ) : (
+                              <i className="bi bi-circle text-secondary"></i>
+                            )}
+                          </span>
+                          <small className="text-muted">Al menos una letra mayúscula</small>
                         </li>
-                        <li className="py-1">
-                          <small className="text-muted">
-                            <i className="fas fa-check-circle me-2"></i>
-                            Al menos una letra minúscula
-                          </small>
+                        <li className="py-1 d-flex align-items-center">
+                          <span className="me-2">
+                            {/[a-z]/.test(formData.newPassword) ? (
+                              <i className="bi bi-check-circle-fill text-success"></i>
+                            ) : (
+                              <i className="bi bi-circle text-secondary"></i>
+                            )}
+                          </span>
+                          <small className="text-muted">Al menos una letra minúscula</small>
                         </li>
-                        <li className="py-1">
-                          <small className="text-muted">
-                            <i className="fas fa-check-circle me-2"></i>
-                            Al menos un número
-                          </small>
+                        <li className="py-1 d-flex align-items-center">
+                          <span className="me-2">
+                            {/\d/.test(formData.newPassword) ? (
+                              <i className="bi bi-check-circle-fill text-success"></i>
+                            ) : (
+                              <i className="bi bi-circle text-secondary"></i>
+                            )}
+                          </span>
+                          <small className="text-muted">Al menos un número</small>
                         </li>
-                        <li className="py-1">
-                          <small className="text-muted">
-                            <i className="fas fa-check-circle me-2"></i>
-                            Al menos un carácter especial (!@#$%^&*)
-                          </small>
+                        <li className="py-1 d-flex align-items-center">
+                          <span className="me-2">
+                            {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.newPassword) ? (
+                              <i className="bi bi-check-circle-fill text-success"></i>
+                            ) : (
+                              <i className="bi bi-circle text-secondary"></i>
+                            )}
+                          </span>
+                          <small className="text-muted">Al menos un carácter especial (!@#$%^&*)</small>
                         </li>
                       </ul>
                     </div>

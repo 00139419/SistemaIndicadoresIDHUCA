@@ -19,6 +19,8 @@ const ResetPassword = () => {
     selectedQuestion: "",
     securityAnswer: ""
   });
+  // Password strength for provisional password
+  const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: "" });
 
   const navigate = useNavigate();
 
@@ -122,6 +124,60 @@ const ResetPassword = () => {
     }
   };
 
+  // Helper for password strength
+  const checkPasswordStrength = (password) => {
+    let score = 0;
+    let text = "";
+    if (password.length >= 8) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) score++;
+    switch (score) {
+      case 0:
+      case 1:
+        text = "Muy débil";
+        break;
+      case 2:
+        text = "Débil";
+        break;
+      case 3:
+        text = "Regular";
+        break;
+      case 4:
+        text = "Buena";
+        break;
+      case 5:
+        text = "Fuerte";
+        break;
+      default:
+        text = "";
+    }
+    return { score, text };
+  };
+
+  // Update password strength on change
+  useEffect(() => {
+    setPasswordStrength(checkPasswordStrength(provisionalData.newPassword));
+  }, [provisionalData.newPassword]);
+
+  // Helper for progress bar color
+  const getProgressClass = (score) => {
+    switch (score) {
+      case 1:
+      case 2:
+        return "bg-danger";
+      case 3:
+        return "bg-warning";
+      case 4:
+        return "bg-info";
+      case 5:
+        return "bg-success";
+      default:
+        return "bg-secondary";
+    }
+  };
+
   return (
     <div className="vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#003C71" }}>
       <div className="bg-white rounded-4 p-4 p-md-5 shadow" style={{ maxWidth: "500px", width: "100%" }}>
@@ -205,6 +261,89 @@ const ResetPassword = () => {
                 })}
                 required
               />
+              {provisionalData.newPassword && (
+                <div className="mt-2">
+                  <div className="progress" style={{ height: "8px" }}>
+                    <div
+                      className={`progress-bar ${getProgressClass(passwordStrength.score)}`}
+                      role="progressbar"
+                      style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                      aria-valuenow={passwordStrength.score}
+                      aria-valuemin="0"
+                      aria-valuemax="5"
+                    ></div>
+                  </div>
+                  <small className="text-muted mt-1 d-block">
+                    {passwordStrength.score <= 2
+                      ? "Contraseña vulnerable"
+                      : passwordStrength.score === 3
+                      ? "Contraseña segura"
+                      : passwordStrength.score === 4
+                      ? "Contraseña muy segura"
+                      : passwordStrength.score === 5
+                      ? "Contraseña super segura"
+                      : ""}
+                  </small>
+                </div>
+              )}
+            </div>
+            {/* Requisitos visuales */}
+            <div className="card bg-light mb-4">
+              <div className="card-body py-3">
+                <h6 className="card-title mb-2">Requisitos de la contraseña:</h6>
+                <ul className="list-unstyled mb-0">
+                  <li className="py-1 d-flex align-items-center">
+                    <span className="me-2">
+                      {provisionalData.newPassword.length >= 8 ? (
+                        <i className="bi bi-check-circle-fill text-success"></i>
+                      ) : (
+                        <i className="bi bi-circle text-secondary"></i>
+                      )}
+                    </span>
+                    <small className="text-muted">Mínimo 8 caracteres</small>
+                  </li>
+                  <li className="py-1 d-flex align-items-center">
+                    <span className="me-2">
+                      {/[A-Z]/.test(provisionalData.newPassword) ? (
+                        <i className="bi bi-check-circle-fill text-success"></i>
+                      ) : (
+                        <i className="bi bi-circle text-secondary"></i>
+                      )}
+                    </span>
+                    <small className="text-muted">Al menos una letra mayúscula</small>
+                  </li>
+                  <li className="py-1 d-flex align-items-center">
+                    <span className="me-2">
+                      {/[a-z]/.test(provisionalData.newPassword) ? (
+                        <i className="bi bi-check-circle-fill text-success"></i>
+                      ) : (
+                        <i className="bi bi-circle text-secondary"></i>
+                      )}
+                    </span>
+                    <small className="text-muted">Al menos una letra minúscula</small>
+                  </li>
+                  <li className="py-1 d-flex align-items-center">
+                    <span className="me-2">
+                      {/\d/.test(provisionalData.newPassword) ? (
+                        <i className="bi bi-check-circle-fill text-success"></i>
+                      ) : (
+                        <i className="bi bi-circle text-secondary"></i>
+                      )}
+                    </span>
+                    <small className="text-muted">Al menos un número</small>
+                  </li>
+                  <li className="py-1 d-flex align-items-center">
+                    <span className="me-2">
+                      {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(provisionalData.newPassword) ? (
+                        <i className="bi bi-check-circle-fill text-success"></i>
+                      ) : (
+                        <i className="bi bi-circle text-secondary"></i>
+                      )}
+                    </span>
+                    <small className="text-muted">Al menos un carácter especial (!@#$%^&*)</small>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="mb-3">
