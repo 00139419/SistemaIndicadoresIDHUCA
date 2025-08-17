@@ -25,6 +25,8 @@ const VistaRegistrosDinamica = ({
 }) => {
   const { userRole } = useAuth(); // Obtener el rol del usuarios
   const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
   const getCurrentPageData = () => {
     return data;
@@ -52,26 +54,28 @@ const VistaRegistrosDinamica = ({
         onView && onView(item, index);
         break;
       case "edit":
-        navigate(`/registros/update/${item.id}`, {
-          state: {
-            filtros,
-            derechoId,
-            categoriaEjeX,
-          },
-        });
+        navigate(`/registros/update/${item.id}`);
         break;
       case "delete":
-        navigate(`/registros/delete/${item.id}`, {
-          state: {
-            filtros,
-            derechoId,
-            categoriaEjeX,
-          },
-        });
+        setDeleteItem(item);
+        setShowDeleteModal(true);
         break;
       default:
         break;
     }
+  };
+
+  const confirmDelete = () => {
+    if (onDelete && deleteItem) {
+      onDelete(deleteItem);
+    }
+    setShowDeleteModal(false);
+    setDeleteItem(null);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setDeleteItem(null);
   };
 
   const renderCellValue = (item, column) => {
@@ -315,6 +319,52 @@ const VistaRegistrosDinamica = ({
           )}
         </div>
       </div>
+
+      {/* Modal de confirmación de eliminación */}
+      {showDeleteModal && (
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+        >
+          <div className="modal-dialog modal-sm modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header bg-danger text-white py-2">
+                <h6 className="modal-title">
+                  <i className="bi bi-exclamation-triangle me-2"></i>
+                  Confirmar eliminación
+                </h6>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={cancelDelete}
+                ></button>
+              </div>
+              <div className="modal-body text-center">
+                <p>¿Está seguro que desea eliminar este registro?</p>
+                <p className="text-warning">
+                  <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                  Esta acción no se puede deshacer.
+                </p>
+              </div>
+              <div className="modal-footer d-flex justify-content-between py-2">
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={cancelDelete}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={confirmDelete}
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -148,11 +148,6 @@ const Registros = () => {
   };
 
   const handleDelete = async (item) => {
-    const confirmDelete = window.confirm(
-      "¿Estás seguro de que deseas eliminar este registro?"
-    );
-
-    if (!confirmDelete) return;
 
     try {
       // Elimina el registro del estado local antes de hacer fetch
