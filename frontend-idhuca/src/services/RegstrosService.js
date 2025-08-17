@@ -17,7 +17,7 @@ const API_URL = process.env.REACT_APP_API_URL;
       filtros
     };
 
-    const response = await fetch(`${API_URL}/registros/evento/getAllByDerecho`, {
+    const response = await fetch(`${API_URL}registros/evento/getAllByDerecho`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -52,7 +52,7 @@ export const fetchCatalog = async (params) => {
       throw new Error('No hay token de autenticación');
     }
 
-    const url = `${API_URL}/catalogo/get`;
+    const url = `${API_URL}catalogo/get`;
     const requestBody = {
       ...params
     };
