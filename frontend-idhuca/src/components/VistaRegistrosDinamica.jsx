@@ -103,7 +103,7 @@ const VistaRegistrosDinamica = ({
         <div className="text-center mb-1">
           <h1
             className="display-4 fw-bold fs-2"
-            style={{ fontSize: "3rem", color: "#0f0f0f" }}
+            style={{color: "#0f0f0f", fontFamily: 'Montserrat, Arial, sans-serif', letterSpacing: '1px' }}
           >
             {title}
           </h1>

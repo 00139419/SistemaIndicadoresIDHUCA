@@ -110,6 +110,7 @@ export default function SelectDerechosPage() {
       {/* Título */}
       <h1
         className="fw-bold text-primary text-center fs-2"
+        style={{ fontFamily: 'Montserrat, Arial, sans-serif', letterSpacing: '1px' }}
       >
         Selecciona un derecho
       </h1>
@@ -143,7 +144,7 @@ export default function SelectDerechosPage() {
                 </div>
                 <p
                   className={`text-center mb-0 fw-medium ${hoveredCard === index ? "text-primary" : "text-secondary"}`}
-                  style={{ fontSize: "1.1rem", lineHeight: "1.4", transition: "color 0.2s" }}
+                  style={{ fontSize: "1.1rem", lineHeight: "1.4" }}
                 >
                   {derecho.title}
                 </p>

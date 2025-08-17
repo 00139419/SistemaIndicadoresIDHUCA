@@ -668,7 +668,7 @@ const FichaDerechoView = () => {
                       <span className="fw-semibold text-primary me-1 small">
                         {paginacionInfo.totalRegistros}
                       </span>
-                      <span className="small text-dark">entradas</span>
+                      <span className="small text-dark">Ficha</span>
                     </div>
                   </div>
                   <div className="col-auto ms-auto">
