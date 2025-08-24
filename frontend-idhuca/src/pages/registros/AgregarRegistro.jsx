@@ -693,7 +693,7 @@ const AgregarRegistro = () => {
             <Dropdown
               value={departamento}
               onChange={(e) => setDepartamento(e.value)}
-              options={departamentos.filter(curr => curr.codigo !== 'DEP_0')}
+              options={departamentos.filter((curr) => curr.codigo !== "DEP_0")}
               optionLabel="descripcion"
               placeholder="Seleccione un departamento"
               className="w-full"
@@ -1009,10 +1009,44 @@ const AgregarRegistro = () => {
                   optionLabel="descripcion"
                   placeholder="Seleccione derechos"
                   className="w-full"
-                  display="chip"
                   filter
                   filterPlaceholder="Buscar derecho..."
+                  display="comma" // Oculta los chips por defecto
                 />
+                {/* Lista vertical de seleccionados con opción de eliminar */}
+                {persona.derechosVulnerados &&
+                  persona.derechosVulnerados.length > 0 && (
+                    <div className="mt-3">
+                      <strong>Seleccionados:</strong>
+                      <ul className="list-unstyled mt-2">
+                        {persona.derechosVulnerados.map((derecho, idx) => (
+                          <li
+                            key={derecho.codigo || idx}
+                            className="d-flex align-items-center justify-content-between py-1 px-2 border rounded mb-2 bg-light"
+                          >
+                            <span>{derecho.descripcion}</span>
+                            <Button
+                              icon="pi pi-times"
+                              className="p-button-text p-button-danger p-0"
+                              style={{ fontSize: "1rem" }}
+                              tooltip="Eliminar"
+                              onClick={() => {
+                                const nuevos =
+                                  persona.derechosVulnerados.filter(
+                                    (d, i) => i !== idx
+                                  );
+                                actualizarPersona(
+                                  index,
+                                  "derechosVulnerados",
+                                  nuevos
+                                );
+                              }}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
               </TabPanel>
 
               <TabPanel header="Violencia">

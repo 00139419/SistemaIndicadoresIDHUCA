@@ -87,32 +87,54 @@ const EditarRegistro = () => {
 
   // Cargar catálogos y datos del evento
   useEffect(() => {
-  const cargarTodo = async () => {
-    try {
-      setLoading(true);
-      const [
-        d, f, e, l, g, dr, sd, p, ss, tp, tv, ar, cv, td, md, me, tr, tpJud, dp,
-      ] = await Promise.all([
-        getCatalogo({ departamentos: true, cargarDeafult: true }),
-        getCatalogo({ fuentes: true, cargarDeafult: true }),
-        getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
-        getCatalogo({ lugarExacto: true, cargarDeafult: true }),
-        getCatalogo({ genero: true, cargarDeafult: true }),
-        getCatalogo({ derechos: true, cargarDeafult: true }),
-        getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }),
-        getCatalogo({ paises: true, cargarDeafult: true }),
-        getCatalogo({ estadoSalud: true, cargarDeafult: true }),
-        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
-        getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
-        getCatalogo({ tipoArma: true, cargarDeafult: true }),
-        getCatalogo({ contexto: true, cargarDeafult: true }), // CONTEXTO PARA VIOLENCIA
-        getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
-        getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
-        getCatalogo({ medioExpresion: true, cargarDeafult: true }),
-        getCatalogo({ tipoRepresion: true, cargarDeafult: true }), // TIPOS REPRESION
-        getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
-        getCatalogo({ duracionProceso: true, cargarDeafult: true }),
-      ]);
+    const cargarTodo = async () => {
+      try {
+        setLoading(true);
+        const [
+          d,
+          f,
+          e,
+          l,
+          g,
+          dr,
+          sd,
+          p,
+          ss,
+          tp,
+          tv,
+          ar,
+          cv,
+          td,
+          md,
+          me,
+          tr,
+          tpJud,
+          dp,
+        ] = await Promise.all([
+          getCatalogo({ departamentos: true, cargarDeafult: true }),
+          getCatalogo({ fuentes: true, cargarDeafult: true }),
+          getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
+          getCatalogo({ lugarExacto: true, cargarDeafult: true }),
+          getCatalogo({ genero: true, cargarDeafult: true }),
+          getCatalogo({ derechos: true, cargarDeafult: true }),
+          getCatalogo({
+            subDerechos: true,
+            cargarDeafult: true,
+            parentId: "DER_1",
+          }),
+          getCatalogo({ paises: true, cargarDeafult: true }),
+          getCatalogo({ estadoSalud: true, cargarDeafult: true }),
+          getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+          getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
+          getCatalogo({ tipoArma: true, cargarDeafult: true }),
+          getCatalogo({ contexto: true, cargarDeafult: true }), // CONTEXTO PARA VIOLENCIA
+          getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
+          getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
+          getCatalogo({ medioExpresion: true, cargarDeafult: true }),
+          getCatalogo({ tipoRepresion: true, cargarDeafult: true }), // TIPOS REPRESION
+          getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
+          getCatalogo({ duracionProceso: true, cargarDeafult: true }),
+        ]);
         setDepartamentos(d);
         setFuentes(f);
         setEstados(e);
@@ -133,10 +155,8 @@ const EditarRegistro = () => {
         setTiposProcesoJudicial(tpJud);
         setDuracionesProceso(dp);
 
-
         console.log("EditarRegistro - mediosExpresion:", me);
-      console.log("EditarRegistro - tiposRepresion:", tr);
-      
+        console.log("EditarRegistro - tiposRepresion:", tr);
 
         // Cargar datos del evento
         const eventoData = await detailEvent(id);
@@ -361,8 +381,10 @@ const EditarRegistro = () => {
         () => {
           navigate("/select-register", {
             state: {
-              filtros, derechoId, categoriaEjeX
-            }
+              filtros,
+              derechoId,
+              categoriaEjeX,
+            },
           });
         }
       );
@@ -447,11 +469,7 @@ const EditarRegistro = () => {
             "Persona afectada eliminada correctamente"
           );
         } catch (error) {
-          showResponseModal(
-            "error",
-            "Error",
-            `${error.message}`
-          );
+          showResponseModal("error", "Error", `${error.message}`);
         }
       }
     );
@@ -796,7 +814,10 @@ const EditarRegistro = () => {
                   <label className="mb-2 d-block font-semibold">
                     Departamento de residencia
                   </label>
-                  <span id={`tooltip-departamento-${index}`} style={{ display: 'inline-block', width: '100%' }}>
+                  <span
+                    id={`tooltip-departamento-${index}`}
+                    style={{ display: "inline-block", width: "100%" }}
+                  >
                     <Dropdown
                       value={persona.departamentoResidencia}
                       onChange={(e) =>
@@ -814,13 +835,22 @@ const EditarRegistro = () => {
                       }
                       onClick={() => {
                         console.log(
-                          `DepartamentoResidencia habilitado para persona #${index + 1}:`,
+                          `DepartamentoResidencia habilitado para persona #${
+                            index + 1
+                          }:`,
                           persona.nacionalidad
                         );
                       }}
                     />
-                    {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
-                      <Tooltip target={`#tooltip-departamento-${index}`} position="top" content="Seleccione 'El Salvador' en nacionalidad para habilitar" />
+                    {!(
+                      persona.nacionalidad &&
+                      persona.nacionalidad.codigo === "PAIS_9300"
+                    ) && (
+                      <Tooltip
+                        target={`#tooltip-departamento-${index}`}
+                        position="top"
+                        content="Seleccione 'El Salvador' en nacionalidad para habilitar"
+                      />
                     )}
                   </span>
                 </div>
@@ -829,7 +859,10 @@ const EditarRegistro = () => {
                   <label className="mb-2 d-block font-semibold">
                     Municipio de residencia
                   </label>
-                  <span id={`tooltip-municipio-${index}`} style={{ display: 'inline-block', width: '100%' }}>
+                  <span
+                    id={`tooltip-municipio-${index}`}
+                    style={{ display: "inline-block", width: "100%" }}
+                  >
                     <Dropdown
                       value={persona.municipioResidencia}
                       onChange={(e) =>
@@ -851,13 +884,22 @@ const EditarRegistro = () => {
                       }
                       onClick={() => {
                         console.log(
-                          `MunicipioResidencia habilitado para persona #${index + 1}:`,
+                          `MunicipioResidencia habilitado para persona #${
+                            index + 1
+                          }:`,
                           persona.nacionalidad
                         );
                       }}
                     />
-                    {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
-                      <Tooltip target={`#tooltip-municipio-${index}`} position="top" content="Seleccione 'El Salvador' en nacionalidad para habilitar" />
+                    {!(
+                      persona.nacionalidad &&
+                      persona.nacionalidad.codigo === "PAIS_9300"
+                    ) && (
+                      <Tooltip
+                        target={`#tooltip-municipio-${index}`}
+                        position="top"
+                        content="Seleccione 'El Salvador' en nacionalidad para habilitar"
+                      />
                     )}
                   </span>
                 </div>
@@ -889,10 +931,43 @@ const EditarRegistro = () => {
                 optionLabel="descripcion"
                 placeholder="Seleccione derechos"
                 className="w-full"
-                display="chip"
                 filter
                 filterPlaceholder="Buscar derecho..."
+                display="comma" // Oculta los chips por defecto
               />
+              {/* Lista vertical de seleccionados con opción de eliminar */}
+              {persona.derechosVulnerados &&
+                persona.derechosVulnerados.length > 0 && (
+                  <div className="mt-3">
+                    <strong>Seleccionados:</strong>
+                    <ul className="list-unstyled mt-2">
+                      {persona.derechosVulnerados.map((derecho, idx) => (
+                        <li
+                          key={derecho.codigo || idx}
+                          className="d-flex align-items-center justify-content-between py-1 px-2 border rounded mb-2 bg-light"
+                        >
+                          <span>{derecho.descripcion}</span>
+                          <Button
+                            icon="pi pi-times"
+                            className="p-button-text p-button-danger p-0"
+                            style={{ fontSize: "1rem" }}
+                            tooltip="Eliminar"
+                            onClick={() => {
+                              const nuevos = persona.derechosVulnerados.filter(
+                                (d, i) => i !== idx
+                              );
+                              actualizarPersona(
+                                index,
+                                "derechosVulnerados",
+                                nuevos
+                              );
+                            }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
             </TabPanel>
 
             {/* Tab: Violencia */}
