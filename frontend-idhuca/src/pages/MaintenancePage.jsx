@@ -24,6 +24,11 @@ const MaintenancePage = () => {
   const [selectedDepartamento, setSelectedDepartamento] = useState("");
   const [loadingDepartamentos, setLoadingDepartamentos] = useState(false);
 
+  // Estados para el selector de derechos (cuando se selecciona subDerechos)
+  const [derechos, setDerechos] = useState([]);
+  const [selectedDerecho, setSelectedDerecho] = useState("");
+  const [loadingDerechos, setLoadingDerechos] = useState(false);
+
   // Estados para el modal de nuevo registro
   const [showModal, setShowModal] = useState(false);
   const [newItemDescription, setNewItemDescription] = useState("");
@@ -92,7 +97,7 @@ const MaintenancePage = () => {
 
   // Función para determinar si un catálogo requiere parentId específico
   const needsParentId = useCallback((catalogKey) => {
-    return catalogKey === "municipios";
+    return catalogKey === "municipios" || catalogKey === "subDerechos";
   }, []);
 
   // Nombre del departamento seleccionado
@@ -106,35 +111,58 @@ const MaintenancePage = () => {
     );
   }, [departamentos, selectedDepartamento]);
 
+  // Nombre del derecho seleccionado
+  const selectedDerechoNombre = useMemo(() => {
+    if (!Array.isArray(derechos) || derechos.length === 0) {
+      return "";
+    }
+    return (
+      derechos.find((d) => d.codigo === selectedDerecho)?.descripcion || ""
+    );
+  }, [derechos, selectedDerecho]);
+
   // Función para cargar departamentos
   const loadDepartamentos = useCallback(async () => {
     setLoadingDepartamentos(true);
     try {
       const result = await fetchCatalog("departamentos", "1");
-
-      console.log("Resultado de departamentos:", result);
-
       let departamentosData = [];
-
       if (result && result.entity && Array.isArray(result.entity)) {
         departamentosData = result.entity;
       } else if (Array.isArray(result)) {
         departamentosData = result;
       }
-
-      console.log("Departamentos procesados:", departamentosData);
       setDepartamentos(departamentosData);
-
       if (departamentosData.length > 0) {
-        setSelectedDepartamento(
-          (prev) => prev || departamentosData[0]?.codigo || ""
-        );
+        setSelectedDepartamento((prev) => prev || departamentosData[0]?.codigo || "");
       }
     } catch (err) {
-      console.error("Error al cargar departamentos:", err);
       setDepartamentos([]);
     } finally {
       setLoadingDepartamentos(false);
+    }
+  }, []);
+
+  // Función para cargar derechos
+  const loadDerechos = useCallback(async () => {
+    setLoadingDerechos(true);
+    try {
+      // Aquí sí se manda derechos: true
+      const result = await fetchCatalog("derechos", "1", undefined, undefined, { derechos: true });
+      let derechosData = [];
+      if (result && result.entity && Array.isArray(result.entity)) {
+        derechosData = result.entity;
+      } else if (Array.isArray(result)) {
+        derechosData = result;
+      }
+      setDerechos(derechosData);
+      if (derechosData.length > 0) {
+        setSelectedDerecho((prev) => prev || derechosData[0]?.codigo || "");
+      }
+    } catch (err) {
+      setDerechos([]);
+    } finally {
+      setLoadingDerechos(false);
     }
   }, []);
 
@@ -146,27 +174,28 @@ const MaintenancePage = () => {
 
     try {
       let parentId = "1";
-      if (needsParentId(selectedCatalog)) {
+      let extraProps = {};
+      if (selectedCatalog === "municipios") {
         parentId = selectedDepartamento || "DEP_1";
+      } else if (selectedCatalog === "subDerechos") {
+        parentId = selectedDerecho || "DER_1";
       }
 
       // Convertir a índice base 0 para el servidor (UI base 1 -> servidor base 0)
       const result = await fetchCatalog(
         selectedCatalog,
         parentId,
-        serverPagination.paginaActual - 1, // UI página 1 = servidor página 0
-        serverPagination.registrosPorPagina
+        serverPagination.paginaActual - 1,
+        serverPagination.registrosPorPagina,
+        extraProps
       );
-
-      console.log("Resultado completo de fetchCatalog:", result);
 
       if (result && typeof result === "object") {
         if (result.entity && result.paginacionInfo) {
           setCatalogData(result.entity || []);
           setServerPagination((prev) => ({
             ...prev,
-            // Convertir respuesta del servidor (base 0) a UI (base 1)
-            paginaActual: (result.paginacionInfo.paginaActual || 0) + 1, // servidor página 0 = UI página 1
+            paginaActual: (result.paginacionInfo.paginaActual || 0) + 1,
             totalPaginas: result.paginacionInfo.totalPaginas || 1,
             totalRegistros: result.paginacionInfo.totalRegistros || 0,
             registrosPorPagina:
@@ -193,7 +222,6 @@ const MaintenancePage = () => {
         setCatalogData([]);
       }
     } catch (err) {
-      console.error("Error en loadCatalog:", err);
       setError(
         "Error al cargar datos: " + (err.message || "Error desconocido")
       );
@@ -203,6 +231,7 @@ const MaintenancePage = () => {
   }, [
     selectedCatalog,
     selectedDepartamento,
+    selectedDerecho,
     needsParentId,
     serverPagination.paginaActual,
     serverPagination.registrosPorPagina,
@@ -210,19 +239,28 @@ const MaintenancePage = () => {
 
   // Cargar catálogo cuando cambia la selección
   useEffect(() => {
-    if (needsParentId(selectedCatalog)) {
+    if (selectedCatalog === "municipios") {
       loadDepartamentos();
+    } else if (selectedCatalog === "subDerechos") {
+      loadDerechos();
     } else {
       loadCatalog();
     }
-  }, [selectedCatalog, loadDepartamentos, loadCatalog, needsParentId]);
+  }, [selectedCatalog, loadDepartamentos, loadDerechos, loadCatalog]);
 
   // Cargar municipios cuando cambia el departamento seleccionado
   useEffect(() => {
-    if (needsParentId(selectedCatalog) && selectedDepartamento) {
+    if (selectedCatalog === "municipios" && selectedDepartamento) {
       loadCatalog();
     }
-  }, [selectedDepartamento, selectedCatalog, loadCatalog, needsParentId]);
+  }, [selectedDepartamento, selectedCatalog, loadCatalog]);
+
+  // Cargar subDerechos cuando cambia el derecho seleccionado
+  useEffect(() => {
+    if (selectedCatalog === "subDerechos" && selectedDerecho) {
+      loadCatalog();
+    }
+  }, [selectedDerecho, selectedCatalog, loadCatalog]);
 
   // Función para agregar un nuevo elemento al catálogo
   const handleAddItem = async (e) => {
@@ -242,6 +280,7 @@ const MaintenancePage = () => {
 
     try {
       let parentId = "1";
+      
       if (needsParentId(selectedCatalog)) {
         parentId = selectedDepartamento || "DEP_1";
       }
@@ -424,7 +463,7 @@ const MaintenancePage = () => {
           {!loading && !error && selectedCatalog !== "catalogos" && (
             <>
               {/* Selector de departamentos cuando se selecciona municipios */}
-              {needsParentId(selectedCatalog) && (
+              {selectedCatalog === "municipios" && (
                 <div className="mb-3">
                   <label htmlFor="departamentoSelect" className="form-label">
                     Filtrar por Departamento:
@@ -452,6 +491,34 @@ const MaintenancePage = () => {
                 </div>
               )}
 
+              {/* Selector de derechos cuando se selecciona subDerechos */}
+              {selectedCatalog === "subDerechos" && (
+                <div className="mb-3">
+                  <label htmlFor="derechoSelect" className="form-label">
+                    Filtrar por Derecho:
+                  </label>
+                  <select
+                    id="derechoSelect"
+                    className="form-select"
+                    value={selectedDerecho}
+                    onChange={(e) => setSelectedDerecho(e.target.value)}
+                    disabled={loadingDerechos}
+                  >
+                    {loadingDerechos ? (
+                      <option>Cargando derechos...</option>
+                    ) : Array.isArray(derechos) && derechos.length > 0 ? (
+                      derechos.map((der) => (
+                        <option key={der.codigo} value={der.codigo}>
+                          {der.descripcion}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No hay derechos disponibles</option>
+                    )}
+                  </select>
+                </div>
+              )}
+
               {/* Botón para agregar nuevo registro */}
               {esAdmin && (
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -470,13 +537,20 @@ const MaintenancePage = () => {
               <div className="mb-3 small text-muted">
                 <i className="bi bi-info-circle me-1"></i>
                 {catalogData && catalogData.length > 0
-                  ? `Total de registros: ${catalogData.length} de ${serverPagination.totalRegistros}`
+                  ? `Total de registros: ${catalogData.length} de ${serverPagination.totalRegistros - 1}`
                   : "No hay datos para mostrar"}
-                {needsParentId(selectedCatalog) &&
+                {selectedCatalog === "municipios" &&
                   selectedDepartamento &&
                   departamentos.length > 0 && (
                     <span className="ms-2">
                       - Departamento: {selectedDepartamentoNombre}
+                    </span>
+                  )}
+                {selectedCatalog === "subDerechos" &&
+                  selectedDerecho &&
+                  derechos.length > 0 && (
+                    <span className="ms-2">
+                      - Derecho: {selectedDerechoNombre}
                     </span>
                   )}
               </div>
