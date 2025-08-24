@@ -302,6 +302,7 @@ public class IConfigurableBackupService {
             command.add(config.getDbName());
             command.add("-F");
             command.add("p"); // plain text format
+            command.add("--inserts"); // fuerza INSERT INTO ... VALUES(...) en lugar de COPY
             command.add("--no-password");
 
             // Crear nombre de archivo único

@@ -137,6 +137,10 @@ public class AuditoriaImpl implements IAuditoria {
 				tablaAfectada = "Recuperacion de contraseña";
 			}
 			
+			if(tablaAfectada.equalsIgnoreCase("personaafectadaauditoriadtos")) {
+				tablaAfectada = "Persona afectada de un registro";
+			}
+			
 			auditoria.setTablaAfectada(tablaAfectada);
 			auditoria.setRegistroId(dto.getRegistroModificado());
 			auditoria.setUsuario(dto.getUsuario());
