@@ -111,7 +111,7 @@ const Registros = () => {
       const formatted = (resp.registros ?? []).map((r) => ({
         id: r.id,
         fechaHecho: r.fechaHecho
-          ? new Date(r.fechaHecho).toLocaleDateString()
+          ? r.fechaHecho.split("-").reverse().join("/")
           : "N/A",
         fuente: r.fuente?.descripcion || "N/A",
         estadoActual: r.estadoActual?.descripcion || "N/A",
