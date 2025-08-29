@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Tooltip } from "primereact/tooltip";
 import { useParams, useNavigate } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
@@ -10,6 +11,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { MultiSelect } from "primereact/multiselect";
 import { TabView, TabPanel } from "primereact/tabview";
 import { Dialog } from "primereact/dialog";
+import { useLocation } from "react-router-dom";
 import {
   getCatalogo,
   updateEvento,
@@ -25,6 +27,8 @@ import "primeflex/primeflex.css";
 
 const EditarRegistro = () => {
   const { id } = useParams();
+  const location = useLocation();
+  let { filtros, derechoId, categoriaEjeX } = location.state || {};
   const navigate = useNavigate();
 
   // Estados para los catálogos
@@ -83,32 +87,54 @@ const EditarRegistro = () => {
 
   // Cargar catálogos y datos del evento
   useEffect(() => {
-  const cargarTodo = async () => {
-    try {
-      setLoading(true);
-      const [
-        d, f, e, l, g, dr, sd, p, ss, tp, tv, ar, cv, td, md, me, tr, tpJud, dp,
-      ] = await Promise.all([
-        getCatalogo({ departamentos: true, cargarDeafult: true }),
-        getCatalogo({ fuentes: true, cargarDeafult: true }),
-        getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
-        getCatalogo({ lugarExacto: true, cargarDeafult: true }),
-        getCatalogo({ genero: true, cargarDeafult: true }),
-        getCatalogo({ derechos: true, cargarDeafult: true }),
-        getCatalogo({ subDerechos: true, cargarDeafult: true, parentId: "DER_1" }),
-        getCatalogo({ paises: true, cargarDeafult: true }),
-        getCatalogo({ estadoSalud: true, cargarDeafult: true }),
-        getCatalogo({ tipoPersona: true, cargarDeafult: true }),
-        getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
-        getCatalogo({ tipoArma: true, cargarDeafult: true }),
-        getCatalogo({ contexto: true, cargarDeafult: true }), // CONTEXTO PARA VIOLENCIA
-        getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
-        getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
-        getCatalogo({ medioExpresion: true, cargarDeafult: true }),
-        getCatalogo({ tipoRepresion: true, cargarDeafult: true }), // TIPOS REPRESION
-        getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
-        getCatalogo({ duracionProceso: true, cargarDeafult: true }),
-      ]);
+    const cargarTodo = async () => {
+      try {
+        setLoading(true);
+        const [
+          d,
+          f,
+          e,
+          l,
+          g,
+          dr,
+          sd,
+          p,
+          ss,
+          tp,
+          tv,
+          ar,
+          cv,
+          td,
+          md,
+          me,
+          tr,
+          tpJud,
+          dp,
+        ] = await Promise.all([
+          getCatalogo({ departamentos: true, cargarDeafult: true }),
+          getCatalogo({ fuentes: true, cargarDeafult: true }),
+          getCatalogo({ estadoRegistro: true, cargarDeafult: true }),
+          getCatalogo({ lugarExacto: true, cargarDeafult: true }),
+          getCatalogo({ genero: true, cargarDeafult: true }),
+          getCatalogo({ derechos: true, cargarDeafult: true }),
+          getCatalogo({
+            subDerechos: true,
+            cargarDeafult: true,
+            parentId: "DER_1",
+          }),
+          getCatalogo({ paises: true, cargarDeafult: true }),
+          getCatalogo({ estadoSalud: true, cargarDeafult: true }),
+          getCatalogo({ tipoPersona: true, cargarDeafult: true }),
+          getCatalogo({ tipoViolencia: true, cargarDeafult: true }),
+          getCatalogo({ tipoArma: true, cargarDeafult: true }),
+          getCatalogo({ contexto: true, cargarDeafult: true }), // CONTEXTO PARA VIOLENCIA
+          getCatalogo({ tipoDetencion: true, cargarDeafult: true }),
+          getCatalogo({ motivoDetencion: true, cargarDeafult: true }),
+          getCatalogo({ medioExpresion: true, cargarDeafult: true }),
+          getCatalogo({ tipoRepresion: true, cargarDeafult: true }), // TIPOS REPRESION
+          getCatalogo({ tipoProcesoJudicial: true, cargarDeafult: true }),
+          getCatalogo({ duracionProceso: true, cargarDeafult: true }),
+        ]);
         setDepartamentos(d);
         setFuentes(f);
         setEstados(e);
@@ -129,10 +155,8 @@ const EditarRegistro = () => {
         setTiposProcesoJudicial(tpJud);
         setDuracionesProceso(dp);
 
-
         console.log("EditarRegistro - mediosExpresion:", me);
-      console.log("EditarRegistro - tiposRepresion:", tr);
-      
+        console.log("EditarRegistro - tiposRepresion:", tr);
 
         // Cargar datos del evento
         const eventoData = await detailEvent(id);
@@ -355,7 +379,13 @@ const EditarRegistro = () => {
         "¡Éxito!",
         "Evento actualizado correctamente",
         () => {
-          navigate("/registros");
+          navigate("/select-register", {
+            state: {
+              filtros,
+              derechoId,
+              categoriaEjeX,
+            },
+          });
         }
       );
     } catch (error) {
@@ -439,11 +469,7 @@ const EditarRegistro = () => {
             "Persona afectada eliminada correctamente"
           );
         } catch (error) {
-          showResponseModal(
-            "error",
-            "Error",
-            `Error al eliminar persona: ${error.message}`
-          );
+          showResponseModal("error", "Error", `${error.message}`);
         }
       }
     );
@@ -469,7 +495,7 @@ const EditarRegistro = () => {
                 modalData.type === "success"
                   ? "fa-check-circle text-green-500"
                   : "fa-exclamation-triangle text-red-500"
-              } mr-2`}
+              } mr-2 `}
             ></i>
             {modalData.title}
           </div>
@@ -847,6 +873,100 @@ const EditarRegistro = () => {
                     showClear
                   />
                 </div>
+                {/* Departamento de residencia */}
+                <div className="field col-12 md:col-5">
+                  <label className="mb-2 d-block font-semibold">
+                    Departamento de residencia
+                  </label>
+                  <span
+                    id={`tooltip-departamento-${index}`}
+                    style={{ display: "inline-block", width: "100%" }}
+                  >
+                    <Dropdown
+                      value={persona.departamentoResidencia}
+                      onChange={(e) =>
+                        handleDepartamentoResidenciaChange(index, e.value)
+                      }
+                      options={departamentos}
+                      optionLabel="descripcion"
+                      placeholder="Seleccione un departamento"
+                      className="w-full"
+                      disabled={
+                        !(
+                          persona.nacionalidad &&
+                          persona.nacionalidad.codigo === "PAIS_9300"
+                        )
+                      }
+                      onClick={() => {
+                        console.log(
+                          `DepartamentoResidencia habilitado para persona #${
+                            index + 1
+                          }:`,
+                          persona.nacionalidad
+                        );
+                      }}
+                    />
+                    {!(
+                      persona.nacionalidad &&
+                      persona.nacionalidad.codigo === "PAIS_9300"
+                    ) && (
+                      <Tooltip
+                        target={`#tooltip-departamento-${index}`}
+                        position="top"
+                        content="Seleccione 'El Salvador' en nacionalidad para habilitar"
+                      />
+                    )}
+                  </span>
+                </div>
+                {/* Municipio de residencia */}
+                <div className="field col-12 md:col-5">
+                  <label className="mb-2 d-block font-semibold">
+                    Municipio de residencia
+                  </label>
+                  <span
+                    id={`tooltip-municipio-${index}`}
+                    style={{ display: "inline-block", width: "100%" }}
+                  >
+                    <Dropdown
+                      value={persona.municipioResidencia}
+                      onChange={(e) =>
+                        actualizarPersona(index, "municipioResidencia", e.value)
+                      }
+                      options={municipiosResidenciaList[index] || []}
+                      optionLabel="descripcion"
+                      placeholder={
+                        persona.departamentoResidencia
+                          ? "Seleccione un municipio"
+                          : "Seleccione un departamento primero"
+                      }
+                      className="w-full"
+                      disabled={
+                        !(
+                          persona.nacionalidad &&
+                          persona.nacionalidad.codigo === "PAIS_9300"
+                        )
+                      }
+                      onClick={() => {
+                        console.log(
+                          `MunicipioResidencia habilitado para persona #${
+                            index + 1
+                          }:`,
+                          persona.nacionalidad
+                        );
+                      }}
+                    />
+                    {!(
+                      persona.nacionalidad &&
+                      persona.nacionalidad.codigo === "PAIS_9300"
+                    ) && (
+                      <Tooltip
+                        target={`#tooltip-municipio-${index}`}
+                        position="top"
+                        content="Seleccione 'El Salvador' en nacionalidad para habilitar"
+                      />
+                    )}
+                  </span>
+                </div>
                 {/* Estado de salud */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Estado de salud</label>
@@ -875,10 +995,43 @@ const EditarRegistro = () => {
                 optionLabel="descripcion"
                 placeholder="Seleccione derechos"
                 className="w-full"
-                display="chip"
                 filter
                 filterPlaceholder="Buscar derecho..."
+                display="comma" // Oculta los chips por defecto
               />
+              {/* Lista vertical de seleccionados con opción de eliminar */}
+              {persona.derechosVulnerados &&
+                persona.derechosVulnerados.length > 0 && (
+                  <div className="mt-3">
+                    <strong>Seleccionados:</strong>
+                    <ul className="list-unstyled mt-2">
+                      {persona.derechosVulnerados.map((derecho, idx) => (
+                        <li
+                          key={derecho.codigo || idx}
+                          className="d-flex align-items-center justify-content-between py-1 px-2 border rounded mb-2 bg-light"
+                        >
+                          <span>{derecho.descripcion}</span>
+                          <Button
+                            icon="pi pi-times"
+                            className="p-button-text p-button-danger p-0"
+                            style={{ fontSize: "1rem" }}
+                            tooltip="Eliminar"
+                            onClick={() => {
+                              const nuevos = persona.derechosVulnerados.filter(
+                                (d, i) => i !== idx
+                              );
+                              actualizarPersona(
+                                index,
+                                "derechosVulnerados",
+                                nuevos
+                              );
+                            }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
             </TabPanel>
 
             {/* Tab: Violencia */}

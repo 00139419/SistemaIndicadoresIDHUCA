@@ -105,10 +105,10 @@ const Sidenav = ({ onSelectCatalog }) => {
     { name: "Fuentes", label: "Fuentes", icon: "bi-book", key: "fuentes" },
     { name: "Paises", label: "Países", icon: "bi-globe", key: "paises" },
     {
-      name: "Derechos",
-      label: "Derechos",
+      name: "subDerechos",
+      label: "subDerechos",
       icon: "bi-shield-check",
-      key: "derechos",
+      key: "subDerechos",
     },
     {
       name: "Roles",

@@ -17,7 +17,7 @@ const API_URL = process.env.REACT_APP_API_URL;
       filtros
     };
 
-    const response = await fetch(`${API_URL}/registros/evento/getAllByDerecho`, {
+    const response = await fetch(`${API_URL}registros/evento/getAllByDerecho`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -52,7 +52,7 @@ export const fetchCatalog = async (params) => {
       throw new Error('No hay token de autenticación');
     }
 
-    const url = `${API_URL}/catalogo/get`;
+    const url = `${API_URL}catalogo/get`;
     const requestBody = {
       ...params
     };
@@ -96,7 +96,7 @@ export const updateEvento = async (evento) => {
     if (!token) throw new Error('No hay token de autenticación');
 
     const response = await fetch(
-      API_URL + 'evento/update',
+      API_URL + 'registros/evento/update',
       {
         method: 'POST',
         headers: {
@@ -173,7 +173,7 @@ export const deleteEvent = async (eventId) => {
       throw new Error('No hay token de autenticación');
     }
 
-    const response = await fetch(`${API_URL}/registros/evento/delete`, {
+    const response = await fetch(`${API_URL}registros/evento/delete`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -207,7 +207,7 @@ export const detailEvent = async (eventId) => {
       throw new Error('No hay token de autenticación');
     }
 
-    const response = await fetch(`${API_URL}/registros/evento/getOne`, {
+    const response = await fetch(`${API_URL}registros/evento/getOne`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

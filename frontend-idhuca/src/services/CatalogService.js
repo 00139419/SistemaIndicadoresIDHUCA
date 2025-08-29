@@ -38,6 +38,7 @@ export const fetchCatalog = async (catalogKey, parentId = "1", paginaActual = 0,
     fuentes: false,
     paises: false,
     derechos: false,
+    subDerechos: false,
     roles: false,
     departamentos: false,
     municipios: false,
@@ -128,6 +129,7 @@ export const addCatalogItem = async (catalogKey, newItemDescription, parentId = 
     fuentes: false,
     paises: false,
     derechos: false,
+    subDerechos: false,
     roles: false,
     departamentos: false,
     municipios: false,
@@ -268,19 +270,19 @@ export const deleteCatalogItem = async (codigo) => {
     if (response.data && response.data.codigo === 0) {
       return {
         success: true,
-        message: response.data.mensaje || 'Registro eliminado correctamente',
+        message: response.data.mensaje || 'El registro del catálogo se eliminó correctamente.',
         data: response.data
       };
     } else {
       return {
         success: false,
-        message: response.data?.mensaje || 'Error al eliminar el registro',
+        message: response.data?.mensaje || 'No se pudo eliminar el registro.',
         data: response.data
       };
     }
 
   } catch (error) {
     console.error('Error al eliminar elemento del catálogo:', error);
-    throw new Error(error.response?.data?.mensaje || 'Error al eliminar el registro');
+    throw new Error(error.response?.data?.mensaje || 'No se pudo eliminar el registro.');
   }
 };

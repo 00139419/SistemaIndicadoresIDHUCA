@@ -62,6 +62,8 @@ const FichaDerechoView = () => {
   const [editContent, setEditContent] = useState("");
   const [updating, setUpdating] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [viewingEntry, setViewingEntry] = useState(null);
   const [updateResult, setUpdateResult] = useState(null);
   const location = useLocation();
   const derechoId = location.state?.derechoId;
@@ -374,6 +376,11 @@ const FichaDerechoView = () => {
     setUpdateResult(null);
   };
 
+  const handleViewClick = (entry) => {
+    setViewingEntry(entry);
+    setShowViewModal(true);
+  };
+
   const handleCancelEdit = () => {
     setShowEditModal(false);
     setEditingEntry(null);
@@ -668,7 +675,7 @@ const FichaDerechoView = () => {
                       <span className="fw-semibold text-primary me-1 small">
                         {paginacionInfo.totalRegistros}
                       </span>
-                      <span className="small text-dark">entradas</span>
+                      <span className="small text-dark">Ficha</span>
                     </div>
                   </div>
                   <div className="col-auto ms-auto">
@@ -711,8 +718,15 @@ const FichaDerechoView = () => {
                             <div className="d-flex align-items-center gap-1">
                               <button
                                 className="btn p-0 border-0 bg-transparent"
-                                title="Editar"
+                                onClick={() => handleViewClick(entry)}
+                                title="Ver información"
+                              >
+                                <FileText size={14} className="text-primary" />
+                              </button>
+                              <button
+                                className="btn p-0 border-0 bg-transparent"
                                 onClick={() => handleEditClick(entry)}
+                                title="Editar"
                               >
                                 <Edit3 size={14} className="text-muted" />
                               </button>
@@ -1227,18 +1241,6 @@ const FichaDerechoView = () => {
                     placeholder="Contenido de la ficha"
                   />
                 </div>
-
-                {editingEntry && (
-                  <div className="card bg-light">
-                    <div className="card-body p-2">
-                      <div className="small text-muted">
-                        <strong>Creado por:</strong> {editingEntry.creator}
-                        <br />
-                        <strong>Fecha:</strong> {editingEntry.creationDate}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
               <div className="modal-footer py-2">
                 <button
@@ -1269,6 +1271,72 @@ const FichaDerechoView = () => {
                   ) : (
                     "Guardar Cambios"
                   )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showViewModal && viewingEntry && (
+        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header py-2">
+                <h6 className="modal-title">Información completa</h6>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => { setShowViewModal(false); setViewingEntry(null); }}
+                ></button>
+              </div>
+              <div className="modal-body py-2">
+                <div className="mb-2">
+                  <strong>Título:</strong> {viewingEntry.title}
+                </div>
+                <div className="mb-2">
+                  <strong>Descripción:</strong> {viewingEntry.content}
+                </div>
+                <div className="mb-2">
+                  <strong>Fecha de creación:</strong> {viewingEntry.creationDate}
+                </div>
+                <div className="mb-2">
+                  <strong>Fecha de modificación:</strong> {viewingEntry.lastModified || viewingEntry.modificadoEn || "-"}
+                </div>
+                <div className="mb-2">
+                  <strong>Creado por:</strong> {viewingEntry.creadoPor?.nombre || viewingEntry.creator || "-"}
+                </div>
+                <div className="mb-2">
+                  <strong>Modificado por:</strong> {viewingEntry.modificadoPor?.nombre || "-"}
+                </div>
+                <div className="mb-2">
+                  <strong>Archivos:</strong>
+                  {viewingEntry.archivos && viewingEntry.archivos.length > 0 ? (
+                    <ul className="mb-0">
+                      {viewingEntry.archivos.map((archivo, idx) => (
+                        <li key={idx}>
+                          <button
+                            type="button"
+                            className="btn btn-link p-0"
+                            style={{ color: "#0d6efd", textDecoration: "underline", fontSize: "inherit" }}
+                            onClick={() => handleDownloadFile(archivo)}
+                          >
+                            {archivo.nombreOriginal}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span className="text-muted">No hay archivos</span>
+                  )}
+                </div>
+              </div>
+              <div className="modal-footer py-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-secondary"
+                  onClick={() => { setShowViewModal(false); setViewingEntry(null); }}
+                >
+                  Cerrar
                 </button>
               </div>
             </div>

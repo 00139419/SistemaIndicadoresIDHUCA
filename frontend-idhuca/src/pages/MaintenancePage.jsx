@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import "../custom-alerts.css";
 import Sidenav from "../components/Sidenav";
 import {
   fetchCatalog,
@@ -23,6 +24,11 @@ const MaintenancePage = () => {
   const [selectedDepartamento, setSelectedDepartamento] = useState("");
   const [loadingDepartamentos, setLoadingDepartamentos] = useState(false);
 
+  // Estados para el selector de derechos (cuando se selecciona subDerechos)
+  const [derechos, setDerechos] = useState([]);
+  const [selectedDerecho, setSelectedDerecho] = useState("");
+  const [loadingDerechos, setLoadingDerechos] = useState(false);
+
   // Estados para el modal de nuevo registro
   const [showModal, setShowModal] = useState(false);
   const [newItemDescription, setNewItemDescription] = useState("");
@@ -35,12 +41,14 @@ const MaintenancePage = () => {
   const [editDescription, setEditDescription] = useState("");
   const [updatingItem, setUpdatingItem] = useState(false);
   const [updateResult, setUpdateResult] = useState(null);
+  const [editAlertOpen, setEditAlertOpen] = useState(false);
 
   // Estados para confirmación de eliminación
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletingItem, setDeletingItem] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteResult, setDeleteResult] = useState(null);
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -89,7 +97,7 @@ const MaintenancePage = () => {
 
   // Función para determinar si un catálogo requiere parentId específico
   const needsParentId = useCallback((catalogKey) => {
-    return catalogKey === "municipios";
+    return catalogKey === "municipios" || catalogKey === "subDerechos";
   }, []);
 
   // Nombre del departamento seleccionado
@@ -103,35 +111,58 @@ const MaintenancePage = () => {
     );
   }, [departamentos, selectedDepartamento]);
 
+  // Nombre del derecho seleccionado
+  const selectedDerechoNombre = useMemo(() => {
+    if (!Array.isArray(derechos) || derechos.length === 0) {
+      return "";
+    }
+    return (
+      derechos.find((d) => d.codigo === selectedDerecho)?.descripcion || ""
+    );
+  }, [derechos, selectedDerecho]);
+
   // Función para cargar departamentos
   const loadDepartamentos = useCallback(async () => {
     setLoadingDepartamentos(true);
     try {
       const result = await fetchCatalog("departamentos", "1");
-
-      console.log("Resultado de departamentos:", result);
-
       let departamentosData = [];
-
       if (result && result.entity && Array.isArray(result.entity)) {
         departamentosData = result.entity;
       } else if (Array.isArray(result)) {
         departamentosData = result;
       }
-
-      console.log("Departamentos procesados:", departamentosData);
       setDepartamentos(departamentosData);
-
       if (departamentosData.length > 0) {
-        setSelectedDepartamento(
-          (prev) => prev || departamentosData[0]?.codigo || ""
-        );
+        setSelectedDepartamento((prev) => prev || departamentosData[0]?.codigo || "");
       }
     } catch (err) {
-      console.error("Error al cargar departamentos:", err);
       setDepartamentos([]);
     } finally {
       setLoadingDepartamentos(false);
+    }
+  }, []);
+
+  // Función para cargar derechos
+  const loadDerechos = useCallback(async () => {
+    setLoadingDerechos(true);
+    try {
+      // Aquí sí se manda derechos: true
+      const result = await fetchCatalog("derechos", "1", undefined, undefined, { derechos: true });
+      let derechosData = [];
+      if (result && result.entity && Array.isArray(result.entity)) {
+        derechosData = result.entity;
+      } else if (Array.isArray(result)) {
+        derechosData = result;
+      }
+      setDerechos(derechosData);
+      if (derechosData.length > 0) {
+        setSelectedDerecho((prev) => prev || derechosData[0]?.codigo || "");
+      }
+    } catch (err) {
+      setDerechos([]);
+    } finally {
+      setLoadingDerechos(false);
     }
   }, []);
 
@@ -143,27 +174,28 @@ const MaintenancePage = () => {
 
     try {
       let parentId = "1";
-      if (needsParentId(selectedCatalog)) {
+      let extraProps = {};
+      if (selectedCatalog === "municipios") {
         parentId = selectedDepartamento || "DEP_1";
+      } else if (selectedCatalog === "subDerechos") {
+        parentId = selectedDerecho || "DER_1";
       }
 
       // Convertir a índice base 0 para el servidor (UI base 1 -> servidor base 0)
       const result = await fetchCatalog(
         selectedCatalog,
         parentId,
-        serverPagination.paginaActual - 1, // UI página 1 = servidor página 0
-        serverPagination.registrosPorPagina
+        serverPagination.paginaActual - 1,
+        serverPagination.registrosPorPagina,
+        extraProps
       );
-
-      console.log("Resultado completo de fetchCatalog:", result);
 
       if (result && typeof result === "object") {
         if (result.entity && result.paginacionInfo) {
           setCatalogData(result.entity || []);
           setServerPagination((prev) => ({
             ...prev,
-            // Convertir respuesta del servidor (base 0) a UI (base 1)
-            paginaActual: (result.paginacionInfo.paginaActual || 0) + 1, // servidor página 0 = UI página 1
+            paginaActual: (result.paginacionInfo.paginaActual || 0) + 1,
             totalPaginas: result.paginacionInfo.totalPaginas || 1,
             totalRegistros: result.paginacionInfo.totalRegistros || 0,
             registrosPorPagina:
@@ -190,7 +222,6 @@ const MaintenancePage = () => {
         setCatalogData([]);
       }
     } catch (err) {
-      console.error("Error en loadCatalog:", err);
       setError(
         "Error al cargar datos: " + (err.message || "Error desconocido")
       );
@@ -200,6 +231,7 @@ const MaintenancePage = () => {
   }, [
     selectedCatalog,
     selectedDepartamento,
+    selectedDerecho,
     needsParentId,
     serverPagination.paginaActual,
     serverPagination.registrosPorPagina,
@@ -207,19 +239,28 @@ const MaintenancePage = () => {
 
   // Cargar catálogo cuando cambia la selección
   useEffect(() => {
-    if (needsParentId(selectedCatalog)) {
+    if (selectedCatalog === "municipios") {
       loadDepartamentos();
+    } else if (selectedCatalog === "subDerechos") {
+      loadDerechos();
     } else {
       loadCatalog();
     }
-  }, [selectedCatalog, loadDepartamentos, loadCatalog, needsParentId]);
+  }, [selectedCatalog, loadDepartamentos, loadDerechos, loadCatalog]);
 
   // Cargar municipios cuando cambia el departamento seleccionado
   useEffect(() => {
-    if (needsParentId(selectedCatalog) && selectedDepartamento) {
+    if (selectedCatalog === "municipios" && selectedDepartamento) {
       loadCatalog();
     }
-  }, [selectedDepartamento, selectedCatalog, loadCatalog, needsParentId]);
+  }, [selectedDepartamento, selectedCatalog, loadCatalog]);
+
+  // Cargar subDerechos cuando cambia el derecho seleccionado
+  useEffect(() => {
+    if (selectedCatalog === "subDerechos" && selectedDerecho) {
+      loadCatalog();
+    }
+  }, [selectedDerecho, selectedCatalog, loadCatalog]);
 
   // Función para agregar un nuevo elemento al catálogo
   const handleAddItem = async (e) => {
@@ -239,6 +280,7 @@ const MaintenancePage = () => {
 
     try {
       let parentId = "1";
+      
       if (needsParentId(selectedCatalog)) {
         parentId = selectedDepartamento || "DEP_1";
       }
@@ -291,8 +333,9 @@ const MaintenancePage = () => {
       return;
     }
 
-    setUpdatingItem(true);
-    setUpdateResult(null);
+  setUpdatingItem(true);
+  setUpdateResult(null);
+  setEditAlertOpen(false);
 
     try {
       const result = await updateCatalogItem(
@@ -301,22 +344,24 @@ const MaintenancePage = () => {
       );
 
       setUpdateResult(result);
-
+      setEditAlertOpen(true);
       if (result.success) {
         setTimeout(() => {
+          setEditAlertOpen(false);
           setShowEditModal(false);
           setEditingItem(null);
           setEditDescription("");
           loadCatalog();
-        }, 1500);
+        }, 3000);
       }
     } catch (err) {
       setUpdateResult({
         success: false,
         message: err.message || "Error al actualizar el registro",
       });
+      setEditAlertOpen(true);
     } finally {
-      setUpdatingItem(false);
+  setUpdatingItem(false);
     }
   };
 
@@ -329,28 +374,31 @@ const MaintenancePage = () => {
 
   // Función para eliminar un elemento del catálogo
   const handleDeleteItem = async () => {
-    setDeletingItem(true);
-    setDeleteResult(null);
+  setDeletingItem(true);
+  setDeleteResult(null);
+  setDeleteAlertOpen(false);
 
     try {
       const result = await deleteCatalogItem(itemToDelete.codigo);
 
       setDeleteResult(result);
-
+      setDeleteAlertOpen(true);
       if (result.success) {
         setTimeout(() => {
+          setDeleteAlertOpen(false);
           setShowDeleteModal(false);
           setItemToDelete(null);
           loadCatalog();
-        }, 1500);
+        }, 3000);
       }
     } catch (err) {
       setDeleteResult({
         success: false,
         message: err.message || "Error al eliminar el registro",
       });
+      setDeleteAlertOpen(true);
     } finally {
-      setDeletingItem(false);
+  setDeletingItem(false);
     }
   };
 
@@ -415,7 +463,7 @@ const MaintenancePage = () => {
           {!loading && !error && selectedCatalog !== "catalogos" && (
             <>
               {/* Selector de departamentos cuando se selecciona municipios */}
-              {needsParentId(selectedCatalog) && (
+              {selectedCatalog === "municipios" && (
                 <div className="mb-3">
                   <label htmlFor="departamentoSelect" className="form-label">
                     Filtrar por Departamento:
@@ -443,6 +491,34 @@ const MaintenancePage = () => {
                 </div>
               )}
 
+              {/* Selector de derechos cuando se selecciona subDerechos */}
+              {selectedCatalog === "subDerechos" && (
+                <div className="mb-3">
+                  <label htmlFor="derechoSelect" className="form-label">
+                    Filtrar por Derecho:
+                  </label>
+                  <select
+                    id="derechoSelect"
+                    className="form-select"
+                    value={selectedDerecho}
+                    onChange={(e) => setSelectedDerecho(e.target.value)}
+                    disabled={loadingDerechos}
+                  >
+                    {loadingDerechos ? (
+                      <option>Cargando derechos...</option>
+                    ) : Array.isArray(derechos) && derechos.length > 0 ? (
+                      derechos.map((der) => (
+                        <option key={der.codigo} value={der.codigo}>
+                          {der.descripcion}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No hay derechos disponibles</option>
+                    )}
+                  </select>
+                </div>
+              )}
+
               {/* Botón para agregar nuevo registro */}
               {esAdmin && (
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -461,13 +537,20 @@ const MaintenancePage = () => {
               <div className="mb-3 small text-muted">
                 <i className="bi bi-info-circle me-1"></i>
                 {catalogData && catalogData.length > 0
-                  ? `Total de registros: ${catalogData.length} de ${serverPagination.totalRegistros}`
+                  ? `Total de registros: ${catalogData.length} de ${serverPagination.totalRegistros - 1}`
                   : "No hay datos para mostrar"}
-                {needsParentId(selectedCatalog) &&
+                {selectedCatalog === "municipios" &&
                   selectedDepartamento &&
                   departamentos.length > 0 && (
                     <span className="ms-2">
                       - Departamento: {selectedDepartamentoNombre}
+                    </span>
+                  )}
+                {selectedCatalog === "subDerechos" &&
+                  selectedDerecho &&
+                  derechos.length > 0 && (
+                    <span className="ms-2">
+                      - Derecho: {selectedDerechoNombre}
                     </span>
                   )}
               </div>
@@ -638,12 +721,29 @@ const MaintenancePage = () => {
                 </div>
                 <div className="modal-body">
                   {addResult && (
-                    <div
-                      className={`alert ${
-                        addResult.success ? "alert-success" : "alert-danger"
-                      }`}
-                    >
-                      {addResult.message}
+                    <div className={`custom-alert ${addResult.success ? "alert-success" : "alert-danger"}`}>
+                      <span className="custom-alert-icon">
+                        {addResult.success ? (
+                          <span className="animated-check">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#4BB543" strokeWidth="2"/>
+                              <path fill="none" stroke="#4BB543" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M14 27l7 7 16-16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="animated-error">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#d32f2f" strokeWidth="2"/>
+                              <path fill="none" stroke="#d32f2f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M18 18l16 16M34 18l-16 16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        )}
+                      </span>
+                      <span className="custom-alert-message">{addResult.message}</span>
                     </div>
                   )}
 
@@ -707,7 +807,7 @@ const MaintenancePage = () => {
         )}
 
         {/* Modal para editar registro */}
-        {showEditModal && (
+  {showEditModal && (
           <div
             className="modal show d-block"
             tabIndex="-1"
@@ -730,13 +830,45 @@ const MaintenancePage = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  {updateResult && (
-                    <div
-                      className={`alert ${
-                        updateResult.success ? "alert-success" : "alert-danger"
-                      }`}
-                    >
-                      {updateResult.message}
+                  {updateResult && editAlertOpen && (
+                    <div className={`custom-alert ${updateResult.success ? "alert-success" : "alert-danger"}`}>
+                      <span className="custom-alert-icon">
+                        {updateResult.success ? (
+                          <span className="animated-check">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#4BB543" strokeWidth="2"/>
+                              <path fill="none" stroke="#4BB543" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M14 27l7 7 16-16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="animated-error">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#d32f2f" strokeWidth="2"/>
+                              <path fill="none" stroke="#d32f2f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M18 18l16 16M34 18l-16 16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        )}
+                      </span>
+                      <span className="custom-alert-message">{updateResult.message}</span>
+                      <button
+                        type="button"
+                        className="btn-close ms-2"
+                        aria-label="Cerrar"
+                        onClick={() => {
+                          setEditAlertOpen(false);
+                          if (updateResult.success) {
+                            setShowEditModal(false);
+                            setEditingItem(null);
+                            setEditDescription("");
+                            loadCatalog();
+                          }
+                        }}
+                        style={{ fontSize: "1rem" }}
+                      ></button>
                     </div>
                   )}
 
@@ -780,7 +912,7 @@ const MaintenancePage = () => {
                       setEditDescription("");
                       setUpdateResult(null);
                     }}
-                    disabled={updatingItem}
+                    disabled={updatingItem || (updateResult && editAlertOpen)}
                   >
                     Cancelar
                   </button>
@@ -788,7 +920,7 @@ const MaintenancePage = () => {
                     type="button"
                     className="btn btn-primary"
                     onClick={handleUpdateItem}
-                    disabled={updatingItem || !editDescription.trim()}
+                    disabled={updatingItem || !editDescription.trim() || (updateResult && editAlertOpen)}
                   >
                     {updatingItem ? (
                       <>
@@ -810,7 +942,7 @@ const MaintenancePage = () => {
         )}
 
         {/* Modal para confirmación de eliminación */}
-        {showDeleteModal && (
+  {showDeleteModal && (
           <div
             className="modal show d-block"
             tabIndex="-1"
@@ -832,13 +964,44 @@ const MaintenancePage = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  {deleteResult && (
-                    <div
-                      className={`alert ${
-                        deleteResult.success ? "alert-success" : "alert-danger"
-                      }`}
-                    >
-                      {deleteResult.message}
+                  {deleteResult && deleteAlertOpen && (
+                    <div className={`custom-alert ${deleteResult.success ? "alert-success" : "alert-danger"}`}>
+                      <span className="custom-alert-icon">
+                        {deleteResult.success ? (
+                          <span className="animated-check">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#4BB543" strokeWidth="2"/>
+                              <path fill="none" stroke="#4BB543" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M14 27l7 7 16-16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="animated-error">
+                            <svg viewBox="0 0 52 52">
+                              <circle cx="26" cy="26" r="25" fill="none" stroke="#d32f2f" strokeWidth="2"/>
+                              <path fill="none" stroke="#d32f2f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M18 18l16 16M34 18l-16 16">
+                                <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                              </path>
+                            </svg>
+                          </span>
+                        )}
+                      </span>
+                      <span className="custom-alert-message">{deleteResult.message}</span>
+                      <button
+                        type="button"
+                        className="btn-close ms-2"
+                        aria-label="Cerrar"
+                        onClick={() => {
+                          setDeleteAlertOpen(false);
+                          if (deleteResult.success) {
+                            setShowDeleteModal(false);
+                            setItemToDelete(null);
+                            loadCatalog();
+                          }
+                        }}
+                        style={{ fontSize: "1rem" }}
+                      ></button>
                     </div>
                   )}
 
@@ -850,10 +1013,18 @@ const MaintenancePage = () => {
                       <strong>Descripción:</strong> {itemToDelete?.descripcion}
                     </div>
                   </div>
-                  <p className="text-danger mt-2">
-                    <i className="fas fa-exclamation-triangle"></i> Esta acción
+                  <div className="alert alert-warning mt-3">
+                      <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                      <strong>Advertencia:</strong> Esta acción
                     no se puede deshacer.
-                  </p>
+                    </div>
+                  {/* ADVERTENCIA SOLO PARA DEPARTAMENTOS */}
+                  {selectedCatalog === "departamentos" && (
+                    <div className="alert alert-warning mt-3">
+                      <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                      <strong>Advertencia:</strong> Al eliminar un departamento, también se eliminarán todos los municipios asociados.
+                    </div>
+                  )}
                 </div>
                 <div className="modal-footer">
                   <button
@@ -864,7 +1035,7 @@ const MaintenancePage = () => {
                       setItemToDelete(null);
                       setDeleteResult(null);
                     }}
-                    disabled={deletingItem}
+                    disabled={deletingItem || (deleteResult && deleteAlertOpen)}
                   >
                     Cancelar
                   </button>
@@ -872,7 +1043,7 @@ const MaintenancePage = () => {
                     type="button"
                     className="btn btn-danger"
                     onClick={handleDeleteItem}
-                    disabled={deletingItem}
+                    disabled={deletingItem || (deleteResult && deleteAlertOpen)}
                   >
                     {deletingItem ? (
                       <>

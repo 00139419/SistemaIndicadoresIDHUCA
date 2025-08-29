@@ -25,6 +25,8 @@ const VistaRegistrosDinamica = ({
 }) => {
   const { userRole } = useAuth(); // Obtener el rol del usuarios
   const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
   const getCurrentPageData = () => {
     return data;
@@ -55,17 +57,25 @@ const VistaRegistrosDinamica = ({
         navigate(`/registros/update/${item.id}`);
         break;
       case "delete":
-        navigate(`/registros/delete/${item.id}`, {
-          state: {
-            filtros,
-            derechoId,
-            categoriaEjeX,
-          },
-        });
+        setDeleteItem(item);
+        setShowDeleteModal(true);
         break;
       default:
         break;
     }
+  };
+
+  const confirmDelete = () => {
+    if (onDelete && deleteItem) {
+      onDelete(deleteItem);
+    }
+    setShowDeleteModal(false);
+    setDeleteItem(null);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setDeleteItem(null);
   };
 
   const renderCellValue = (item, column) => {
@@ -103,7 +113,11 @@ const VistaRegistrosDinamica = ({
         <div className="text-center mb-1">
           <h1
             className="display-4 fw-bold fs-2"
-            style={{ fontSize: "3rem", color: "#0f0f0f" }}
+            style={{
+              color: "#0f0f0f",
+              fontFamily: "Montserrat, Arial, sans-serif",
+              letterSpacing: "1px",
+            }}
           >
             {title}
           </h1>
@@ -131,11 +145,33 @@ const VistaRegistrosDinamica = ({
             )}
             {onFilter && hasPermission("filter") && (
               <button
-                className="btn btn-info text-white"
+                className={`btn btn-info text-white d-flex align-items-center gap-2 position-relative ${
+                  filtros && Object.keys(filtros).length > 0
+                    ? "active-filter"
+                    : ""
+                }`}
                 onClick={handleFilter}
                 style={{ fontSize: "14px" }}
               >
-                Filtrar
+                <i
+                  className={`bi bi-funnel${
+                    filtros && Object.keys(filtros).length > 0
+                      ? "-fill text-light"
+                      : ""
+                  }`}
+                  style={{ fontSize: "18px" }}
+                ></i>
+                <span>
+                  {filtros && Object.keys(filtros).length > 0
+                    ? "Filtro (Activos)"
+                    : "Filtrar"}
+                </span>
+                {filtros && Object.keys(filtros).length > 0 && (
+                  <span
+                    className="position-absolute top-0 end-0 translate-middle p-1 bg-light border border-info rounded-circle"
+                    style={{ width: "12px", height: "12px" }}
+                  ></span>
+                )}
               </button>
             )}
           </div>
@@ -158,7 +194,7 @@ const VistaRegistrosDinamica = ({
             </div>
           ) : error ? (
             <div className="alert alert-danger m-3">
-              <strong>Error2:</strong> {error}
+              <strong>Error:</strong> {error}
             </div>
           ) : (
             <>
@@ -220,7 +256,7 @@ const VistaRegistrosDinamica = ({
                             <td
                               key={colIndex}
                               className="px-3 py-2"
-                              style={{ fontSize: "13px" }}
+                              style={{ fontSize: "13px", textAlign: "center" }}
                             >
                               {renderCellValue(item, column)}
                             </td>
@@ -283,6 +319,52 @@ const VistaRegistrosDinamica = ({
           )}
         </div>
       </div>
+
+      {/* Modal de confirmación de eliminación */}
+      {showDeleteModal && (
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+        >
+          <div className="modal-dialog modal-sm modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header bg-danger text-white py-2">
+                <h6 className="modal-title">
+                  <i className="bi bi-exclamation-triangle me-2"></i>
+                  Confirmar eliminación
+                </h6>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={cancelDelete}
+                ></button>
+              </div>
+              <div className="modal-body text-center">
+                <p>¿Está seguro que desea eliminar este registro?</p>
+                <p className="text-warning">
+                  <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                  Esta acción no se puede deshacer.
+                </p>
+              </div>
+              <div className="modal-footer d-flex justify-content-between py-2">
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={cancelDelete}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={confirmDelete}
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

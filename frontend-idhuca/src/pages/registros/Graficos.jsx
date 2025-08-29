@@ -106,6 +106,9 @@ const Graficos = () => {
     subTitleFont: "13",
   });
 
+  const [useTitle, setUseTitle] = useState(true);
+  const [useSubtitle, setUseSubtitle] = useState(true);
+
   const tiposGrafico = ["Pastel", "Barras", "Líneas", "Área"];
 
   const handleConfigChange = (field, value) => {
@@ -148,8 +151,8 @@ const Graficos = () => {
           threeD: dimension3D,
           title: chartConfig.titulo,
           subtitle: chartConfig.subtitulo,
-          titleFont: chartConfig.titleFont,
-          subTitleFont: chartConfig.subTitleFont,
+          titleFont: useTitle ? chartConfig.titleFont : 0,
+          subTitleFont: useSubtitle ? chartConfig.subTitleFont : 0,
         },
       };
 
@@ -192,6 +195,8 @@ const Graficos = () => {
     chartConfig.subtitulo,
     chartConfig.titleFont,
     chartConfig.subTitleFont,
+    useTitle,
+    useSubtitle,
   ]);
 
   const copyToClipboard = async () => { };
@@ -249,6 +254,8 @@ const Graficos = () => {
     }
   };
 
+  const [showCopyModal, setShowCopyModal] = useState(false);
+
   // Función para copiar la imagen al portapapeles como blob
   const copiarAlPortapapeles = async () => {
     try {
@@ -261,7 +268,8 @@ const Graficos = () => {
         new ClipboardItem({ [blob.type]: blob }),
       ]);
 
-      alert("Imagen copiada al portapapeles");
+      setShowCopyModal(true);
+      setTimeout(() => setShowCopyModal(false), 1800);
     } catch (err) {
       alert("Error al copiar la imagen al portapapeles: " + err.message);
       console.error(err);
@@ -452,98 +460,72 @@ const Graficos = () => {
                     </div>
                   </div>
 
-                  {/* TÍTULO */}
+                  {/* TÍTULO con checklist */}
                   <div className="mb-3">
-                    <label
-                      className="form-label fw-semibold"
-                      style={{ fontSize: "0.9rem" }}
-                    >
+                    <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
+                      <input
+                        type="checkbox"
+                        className="form-check-input me-2"
+                        checked={useTitle}
+                        onChange={() => setUseTitle((prev) => !prev)}
+                      />
                       Título
                     </label>
                     <div className="d-flex gap-2">
                       <input
                         type="text"
                         className="form-control form-control-sm"
-                        style={{
-                          backgroundColor: "#f8f9fa",
-                          border: "1px solid #ced4da",
-                          borderRadius: "6px",
-                          fontSize: "0.85rem",
-                        }}
+                        style={{ backgroundColor: "#f8f9fa", border: "1px solid #ced4da", borderRadius: "6px", fontSize: "0.85rem" }}
                         value={chartConfig.titulo}
-                        onChange={(e) =>
-                          handleConfigChange("titulo", e.target.value)
-                        }
+                        onChange={(e) => handleConfigChange("titulo", e.target.value)}
                         placeholder="Ingresa aquí el título que deseas utilizar."
+                        disabled={!useTitle}
                       />
                       <input
                         type="number"
                         min="10"
                         max="100"
                         className="form-control form-control-sm"
-                        style={{
-                          width: "80px",
-                          backgroundColor: "#f8f9fa",
-                          border: "1px solid #ced4da",
-                          borderRadius: "6px",
-                          fontSize: "0.85rem",
-                        }}
+                        style={{ width: "80px", backgroundColor: "#f8f9fa", border: "1px solid #ced4da", borderRadius: "6px", fontSize: "0.85rem" }}
                         value={chartConfig.titleFont ?? 20}
-                        onChange={(e) =>
-                          handleConfigChange(
-                            "titleFont",
-                            parseInt(e.target.value)
-                          )
-                        }
+                        onChange={(e) => handleConfigChange("titleFont", parseInt(e.target.value))}
                         title="Tamaño de fuente"
+                        disabled={!useTitle}
                       />
                     </div>
                   </div>
 
-                  {/* SUBTÍTULO */}
+                  {/* SUBTÍTULO con checklist */}
                   <div className="mb-3">
-                    <label
-                      className="form-label fw-semibold"
-                      style={{ fontSize: "0.9rem" }}
-                    >
+                    <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
+                      <input
+                        type="checkbox"
+                        className="form-check-input me-2"
+                        checked={useSubtitle}
+                        onChange={() => setUseSubtitle((prev) => !prev)}
+                      />
                       Subtítulo
                     </label>
                     <div className="d-flex gap-2">
                       <input
                         type="text"
                         className="form-control form-control-sm"
-                        style={{
-                          backgroundColor: "#f8f9fa",
-                          border: "1px solid #ced4da",
-                          borderRadius: "6px",
-                          fontSize: "0.85rem",
-                        }}
+                        style={{ backgroundColor: "#f8f9fa", border: "1px solid #ced4da", borderRadius: "6px", fontSize: "0.85rem" }}
                         value={chartConfig.subtitulo}
-                        onChange={(e) =>
-                          handleConfigChange("subtitulo", e.target.value)
-                        }
+                        onChange={(e) => handleConfigChange("subtitulo", e.target.value)}
                         placeholder="Subtítulo de ejemplo."
+                        disabled={!useSubtitle}
                       />
                       <input
                         type="number"
                         min="8"
                         max="100"
                         className="form-control form-control-sm"
-                        style={{
-                          width: "80px",
-                          backgroundColor: "#f8f9fa",
-                          border: "1px solid #ced4da",
-                          borderRadius: "6px",
-                          fontSize: "0.85rem",
-                        }}
+                        style={{ width: "80px", backgroundColor: "#f8f9fa", border: "1px solid #ced4da", borderRadius: "6px", fontSize: "0.85rem" }}
                         value={chartConfig.subTitleFont ?? 13}
-                        onChange={(e) =>
-                          handleConfigChange(
-                            "subTitleFont",
-                            parseInt(e.target.value)
-                          )
-                        }
+                        onChange={(e) => handleConfigChange("subTitleFont", parseInt(e.target.value))}
                         title="Tamaño de fuente"
+                        disabled={!useSubtitle}
                       />
                     </div>
                   </div>
@@ -609,6 +591,29 @@ const Graficos = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmación de copia al portapapeles */}
+      {showCopyModal && (
+        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.2)" }}>
+          <div className="modal-dialog modal-sm modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-body text-center py-4">
+                <div className="d-flex align-items-center justify-content-center gap-2">
+                  <span className="animated-check">
+                    <svg width="32" height="32" viewBox="0 0 48 48">
+                      <circle cx="24" cy="24" r="22" fill="none" stroke="#4BB543" strokeWidth="3" />
+                      <path fill="none" stroke="#4BB543" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" d="M14 26l6 6 14-14">
+                        <animate attributeName="stroke-dasharray" from="0,40" to="40,0" dur="0.5s" fill="freeze" />
+                      </path>
+                    </svg>
+                  </span>
+                  <h6 className="fw-bold text-success mb-0">¡Imagen copiada!</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

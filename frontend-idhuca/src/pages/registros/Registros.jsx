@@ -52,7 +52,7 @@ const Registros = () => {
     { key: "flagDetencion", title: "Detención" },
     { key: "flagExpresion", title: "Expresión" },
     { key: "flagJusticia", title: "Justicia" },
-    { key: "flagCensura", title: "Censura" },
+    { key: "cantidadPersonas", title: "Cantidad de personas" },
     { key: "flagRegimenExcepcion", title: "Régimen de Excepción" },
     { key: "observaciones", title: "Observaciones" },
   ];
@@ -111,7 +111,7 @@ const Registros = () => {
       const formatted = (resp.registros ?? []).map((r) => ({
         id: r.id,
         fechaHecho: r.fechaHecho
-          ? new Date(r.fechaHecho).toLocaleDateString()
+          ? r.fechaHecho.split("-").reverse().join("/")
           : "N/A",
         fuente: r.fuente?.descripcion || "N/A",
         estadoActual: r.estadoActual?.descripcion || "N/A",
@@ -119,7 +119,7 @@ const Registros = () => {
         flagDetencion: renderCheck(r.flagDetencion),
         flagExpresion: renderCheck(r.flagExpresion),
         flagJusticia: renderCheck(r.flagJusticia),
-        flagCensura: renderCheck(r.flagCensura),
+        cantidadPersonas: r.cantidadPersonas || "N/A",
         flagRegimenExcepcion: renderCheck(r.flagRegimenExcepcion),
         observaciones: r.observaciones || "N/A",
       }));
@@ -148,11 +148,6 @@ const Registros = () => {
   };
 
   const handleDelete = async (item) => {
-    const confirmDelete = window.confirm(
-      "¿Estás seguro de que deseas eliminar este registro?"
-    );
-
-    if (!confirmDelete) return;
 
     try {
       // Elimina el registro del estado local antes de hacer fetch
@@ -259,7 +254,7 @@ const Registros = () => {
       )}
 
       {!isLoading && !error && (
-        <div className="px-4 py-3 border-top bg-white">
+        <div className="px-4 py-3 border-top bg-#ffffff">
           <div className="d-flex justify-content-between align-items-center">
             <div>
               Mostrar

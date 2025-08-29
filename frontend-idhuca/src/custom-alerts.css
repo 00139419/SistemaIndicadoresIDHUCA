@@ -1,0 +1,58 @@
+/* Animated icons for success and error alerts */
+.animated-check {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
+.animated-check svg {
+  display: block;
+}
+/* Animated error icon: bigger and shake animation */
+.animated-error {
+  display: inline-block;
+  width: 44px;
+  height: 44px;
+  vertical-align: middle;
+  animation: shakeError 0.5s;
+}
+.animated-error svg {
+  display: block;
+}
+
+@keyframes shakeError {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+/* Alert styles for more visual impact */
+/* Alert styles for more visual impact and fixed icon space */
+.custom-alert {
+  font-size: 1.1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  animation: fadeInAlert 0.5s;
+}
+.custom-alert .custom-alert-icon {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-alert .custom-alert-message {
+  flex: 1 1 auto;
+  margin-left: 1rem;
+  word-break: break-word;
+}
+@keyframes fadeInAlert {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
