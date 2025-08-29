@@ -765,6 +765,70 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
+                {/* Departamento de residencia */}
+                <div className="field col-12 md:col-5">
+                  <label className="mb-2 d-block font-semibold">
+                    Departamento de residencia
+                  </label>
+                  <Dropdown
+                    value={persona.departamentoResidencia}
+                    onChange={(e) =>
+                      handleDepartamentoResidenciaChange(index, e.value)
+                    }
+                    options={departamentos}
+                    optionLabel="descripcion"
+                    placeholder="Seleccione un departamento"
+                    className="w-full"
+                    disabled={
+                      !(
+                        persona.nacionalidad &&
+                        persona.nacionalidad.codigo === "PAIS_9300"
+                      )
+                    }
+                    onClick={() => {
+                      console.log(
+                        `DepartamentoResidencia habilitado para persona #${
+                          index + 1
+                        }:`,
+                        persona.nacionalidad
+                      );
+                    }}
+                  />
+                </div>
+                {/* Municipio de residencia */}
+                <div className="field col-12 md:col-5">
+                  <label className="mb-2 d-block font-semibold">
+                    Municipio de residencia
+                  </label>
+                  <Dropdown
+                    value={persona.municipioResidencia}
+                    onChange={(e) =>
+                      actualizarPersona(index, "municipioResidencia", e.value)
+                    }
+                    options={municipiosResidenciaList[index] || []}
+                    optionLabel="descripcion"
+                    placeholder={
+                      persona.departamentoResidencia
+                        ? "Seleccione un municipio"
+                        : "Seleccione un departamento primero"
+                    }
+                    className="w-full"
+                    disabled={
+                      !(
+                        persona.nacionalidad &&
+                        persona.nacionalidad.codigo === "PAIS_9300"
+                      )
+                    }
+                    onClick={() => {
+                      console.log(
+                        `MunicipioResidencia habilitado para persona #${
+                          index + 1
+                        }:`,
+                        persona.nacionalidad
+                      );
+                    }}
+                  />
+                </div>
                 {/* Nacionalidad - también necesita lógica para limpiar campos */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Nacionalidad</label>
