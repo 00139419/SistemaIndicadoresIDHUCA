@@ -688,6 +688,38 @@ public class GraphicsUseUcase {
 	                     .filter(res -> permitido(res, permitidos))  // aquí comparamos literal
 	                     .toList();
 	        };
+	        
+	        /* ----------  Catálogo: departamento detencion  ---------- */
+	        case "departamentosDetencion" -> re -> {
+	            if (re.getPersonasAfectadas() == null)  
+	            	return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getDepartamentoDetencion)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
+	        
+	        /* ----------  Catálogo: municipio detencion  ---------- */
+	        case "municipiosDetencion" -> re -> {
+	            if (re.getPersonasAfectadas() == null)  
+	            	return List.of("Sin dato");
+
+	            return re.getPersonasAfectadas().stream()
+	                     .map(PersonaAfectada::getDetencionIntegridad)
+	                     .filter(Objects::nonNull)
+	                     .map(DetencionIntegridad::getMunicipioDetencion)
+	                     .filter(Objects::nonNull)
+	                     .filter(cat -> permitido(cat.getCodigo(), permitidos))
+	                     .map(Catalogo::getDescripcion)
+	                     .filter(Objects::nonNull)
+	                     .toList();
+	        };
 
 	        /* ----------  Por defecto ---------- */
 	        default -> re -> List.of();

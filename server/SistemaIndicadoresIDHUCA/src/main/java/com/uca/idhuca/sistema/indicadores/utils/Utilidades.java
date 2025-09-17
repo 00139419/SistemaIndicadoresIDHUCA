@@ -320,6 +320,15 @@ public class Utilidades {
 		    if (integridad.getResultado() == null) {
 		    	integridad.setResultado("");
 		    }
+		    
+		    if(integridad.getDepartamentoDetencion() == null || integridad.getDepartamentoDetencion().getCodigo() == null) {
+		    	integridad.setDepartamentoDetencion(new Catalogo(Constantes.CATALOGO_DEPARTAMENTO+ "0",""));
+		    	integridad.setMunicipioDetencion(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
+		    } 
+		    
+		    if(integridad.getMunicipioDetencion() == null || integridad.getMunicipioDetencion().getCodigo() == null) {
+		    	integridad.setMunicipioDetencion(new Catalogo(Constantes.CATALOGO_MUNICIPIO + "0_0",""));
+		    } 
 		}
     }
     

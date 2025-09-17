@@ -1,5 +1,7 @@
 package com.uca.idhuca.sistema.indicadores.models;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -55,8 +57,19 @@ public class DetencionIntegridad {
 
     @Column(name = "resultado")
     private String resultado;
-
+    
     @ManyToOne
     @JoinColumn(name = "motivo_detencion_codigo", referencedColumnName = "codigo")
     private Catalogo motivoDetencion;
+    
+    @Column(name = "fecha_detencion")
+    private LocalDate fechaDetencion;
+
+    @ManyToOne
+    @JoinColumn(name = "departamento_detencion_codigo", referencedColumnName = "codigo")
+    private Catalogo departamentoDetencion;
+
+    @ManyToOne
+    @JoinColumn(name = "municipio_detencion_codigo", referencedColumnName = "codigo")
+    private Catalogo municipioDetencion;
 }

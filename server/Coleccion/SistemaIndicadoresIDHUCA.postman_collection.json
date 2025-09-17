@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "5d9f5738-d1c8-48f5-935f-ea4b4574becf",
-		"name": "SistemaIndicadoresIDHUCA",
+		"name": "SistemaIndicadoresIDHUCA1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "31832790"
 	},
@@ -465,7 +465,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"00139419@uca.edu.sv\",\n    \"password\":\"123\"\n}",
+							"raw": "{\n    \"email\":\"administrador@uca.edu.sv\",\n    \"password\":\"123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -584,7 +584,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{JWT}}",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yQHVjYS5lZHUuc3YiLCJpYXQiOjE3NTMxNTM3NTQsImV4cCI6NDQ0NDYxOTcyMjk3NTR9.2auZDobaM84tVOUxs88rwTf-6OcU-8ok04ctVzlGw8jbiMbSpWl3tMWOdol-ow2WBJH855cyZSc9yTzCQD2z8w",
 									"type": "string"
 								}
 							]
@@ -605,6 +605,38 @@
 								"users",
 								"get",
 								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/auth/verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"auth",
+								"verify"
 							]
 						}
 					},
@@ -632,7 +664,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\": false,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": true,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DEP_1\",\n    \"filtros\": {\n        \"paginacion\": {\n            \"paginaActual\": 1,\n            \"registrosPorPagina\": 10\n        }\n    }\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\": true,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"cargarDeafult\":true,\n    \"parentId\": \"DER_1\",\n    \"filtros\": {\n        \"paginacion\": {\n            \"paginaActual\": 0,\n            \"registrosPorPagina\": 1000\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -674,7 +706,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\": true,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"DER_1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
+							"raw": "{\n    \"tipoProcesoJudicial\": false,\n    \"tipoDenunciante\": false,\n    \"duracionProceso\": false,\n    \"tipoRepresion\": false,\n    \"medioExpresion\": false,\n    \"motivoDetencion\": false,\n    \"tipoArma\": false,\n    \"tipoDetencion\": false,\n    \"tipoViolencia\": false,\n    \"estadoSalud\": false,\n    \"tipoPersona\": false,\n    \"genero\": false,\n    \"lugarExacto\": false,\n    \"estadoRegistro\": false,\n    \"fuentes\": false,\n    \"paises\": false,\n    \"subDerechos\": true,\n    \"derechos\": false,\n    \"roles\": false,\n    \"departamentos\": false,\n    \"municipios\": false,\n    \"securityQuestions\": false,\n    \"parentId\": \"1\",\n    \"nuevoCatalogo\": \"ALEMANIA\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -859,7 +891,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"codigoDerecho\": \"DER_1\",\r\n    \"filtros\": {\r\n        \"rangoFechas\": {\r\n            \"fechaInicio\": \"2025-04-02\",\r\n            \"fechaFin\": \"2025-06-07\"\r\n        },\r\n        \"paginacion\": {\r\n            \"registrosPorPagina\": 2,\r\n            \"paginaActual\": 0\r\n        }\r\n    }\r\n}",
+							"raw": "{\r\n    \"codigoDerecho\": \"DER_1\",\r\n    \"filtros\": {\r\n        \"rangoFechas\": {\r\n            \"fechaInicio\": \"2025-04-02\",\r\n            \"fechaFin\": \"2026-06-07\"\r\n        },\r\n        \"paginacion\": {\r\n            \"registrosPorPagina\": 2,\r\n            \"paginaActual\": 0\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1088,6 +1120,49 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"clave\": \"tiempo_de_vida_de_sesion\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/parametros/sistema/getOne",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"parametros",
+								"sistema",
+								"getOne"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1111,7 +1186,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"fechaHecho\": \"2024-05-20\",\n    \"fuente\": {\n        \"codigo\": \"FUENTE_8\",\n        \"descripcion\": \"La Prensa Gráfica\"\n    },\n    \"estadoActual\": {\n        \"codigo\": \"ESTREG_3\",\n        \"descripcion\": \"Caso en investigación\"\n    },\n    \"derechoAsociado\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"flagViolencia\": true,\n    \"flagDetencion\": true,\n    \"flagExpresion\": true,\n    \"flagJusticia\": true,\n    \"flagCensura\": true,\n    \"flagRegimenExcepcion\": true,\n    \"observaciones\": \"Hecho en el que se violentarion todos los derechos posibles\",\n    \"ubicacion\": {\n        \"departamento\": {\n            \"codigo\": \"DEP_1\",\n            \"descripcion\": \"AHUACHAPAN\"\n        },\n        \"municipio\": {\n            \"codigo\": \"MUN_1_7\",\n            \"descripcion\": \"APANECA\"\n        },\n        \"lugarExacto\": {\n            \"codigo\": \"LUGEXAC_1\",\n            \"descripcion\": \"Fosa clandestina\"\n        }\n    },\n    \"personasAfectadas\": [\n        {\n            \"nombre\": \"Juan Pérez\",\n            \"edad\": 30,\n            \"genero\": {\n                \"codigo\": \"GEN_2\",\n                \"descripcion\": \"Hombre\"\n            },\n            \"nacionalidad\": {\n                \"codigo\": \"PAIS_9300\",\n                \"descripcion\": \"EL SALVADOR\"\n            },\n            \"departamentoResidencia\": {\n                \"codigo\": \"DEP_6\",\n                \"descripcion\": \"SAN SALVADOR\"\n            },\n            \"municipioResidencia\": {\n                \"codigo\": \"MUN_6_7\",\n                \"descripcion\": \"ILOPANGO\"\n            },\n            \"tipoPersona\": {\n                \"codigo\": \"TIPOPER_1\",\n                \"descripcion\": \"Persona particular\"\n            },\n            \"estadoSalud\": {\n                \"codigo\": \"ESTSALUD_6\",\n                \"descripcion\": \"Fallecida\"\n            },\n            \"derechosVulnerados\": [\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_1_1\",\n                        \"descripcion\": \"Detención arbitraria\"\n                    }\n                },\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_2_1\",\n                        \"descripcion\": \"Censura de medios\"\n                    }\n                }\n            ],\n            \"violencia\": {\n                \"esAsesinato\": true,\n                \"tipoViolencia\": {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                },\n                \"artefactoUtilizado\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"contexto\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"actorResponsable\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"estadoSaludActorResponsable\": {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                },\n                \"huboProteccion\": true,\n                \"investigacionAbierta\": true,\n                \"respuestaEstado\": \"Se abrió investigación preliminar.\"\n            },\n            \"detencion\": {\n                \"tipoDetencion\": {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                },\n                \"ordenJudicial\": false,\n                \"autoridadInvolucrada\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"huboTortura\": true,\n                \"duracionDias\": 5,\n                \"accesoAbogado\": true,\n                \"resultado\": \"Liberado sin cargos\",\n                \"motivoDetencion\": {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                }\n            },\n            \"expresion\": {\n                \"medioExpresion\": {\n                    \"codigo\": \"MEDIO_EXPRESION_0\",\n                    \"descripcion\": \"Otro\"\n                },\n                \"tipoRepresion\": {\n                    \"codigo\": \"TIPO_REPRESION_1\",\n                    \"descripcion\": \"Censura directa\"\n                },\n                \"represaliasLegales\": true,\n                \"represaliasFisicas\": true,\n                \"actorCensor\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"consecuencia\": \"Perdió su trabajo\"\n            },\n            \"justicia\": {\n                \"tipoProceso\": {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                },\n                \"fechaDenuncia\": \"2024-05-22T00:00:00.000+00:00\",\n                \"tipoDenunciante\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"duracionProceso\": {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                },\n                \"accesoAbogado\": true,\n                \"huboParcialidad\": true,\n                \"resultadoProceso\": \"Caso cerrado sin resolución\",\n                \"instancia\": \"Primera instancia\"\n            }\n        },\n        {\n            \"nombre\": \"Juan Pérez\",\n            \"edad\": 30,\n            \"genero\": {\n                \"codigo\": \"GEN_2\",\n                \"descripcion\": \"Hombre\"\n            },\n            \"nacionalidad\": {\n                \"codigo\": \"PAIS_9300\",\n                \"descripcion\": \"EL SALVADOR\"\n            },\n            \"departamentoResidencia\": {\n                \"codigo\": \"DEP_6\",\n                \"descripcion\": \"SAN SALVADOR\"\n            },\n            \"municipioResidencia\": {\n                \"codigo\": \"MUN_6_7\",\n                \"descripcion\": \"ILOPANGO\"\n            },\n            \"tipoPersona\": {\n                \"codigo\": \"TIPOPER_1\",\n                \"descripcion\": \"Persona particular\"\n            },\n            \"estadoSalud\": {\n                \"codigo\": \"ESTSALUD_6\",\n                \"descripcion\": \"Fallecida\"\n            },\n            \"derechosVulnerados\": [\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_1_1\",\n                        \"descripcion\": \"Detención arbitraria\"\n                    }\n                },\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_2_1\",\n                        \"descripcion\": \"Censura de medios\"\n                    }\n                }\n            ],\n            \"violencia\": {\n                \"esAsesinato\": true,\n                \"tipoViolencia\": {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                },\n                \"artefactoUtilizado\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"contexto\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"actorResponsable\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"estadoSaludActorResponsable\": {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                },\n                \"huboProteccion\": true,\n                \"investigacionAbierta\": true,\n                \"respuestaEstado\": \"Se abrió investigación preliminar.\"\n            },\n            \"detencion\": {\n                \"tipoDetencion\": {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                },\n                \"ordenJudicial\": false,\n                \"autoridadInvolucrada\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"huboTortura\": true,\n                \"duracionDias\": 5,\n                \"accesoAbogado\": true,\n                \"resultado\": \"Liberado sin cargos\",\n                \"motivoDetencion\": {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                }\n            },\n            \"expresion\": {\n                \"medioExpresion\": {\n                    \"codigo\": \"MEDIO_EXPRESION_0\",\n                    \"descripcion\": \"Otro\"\n                },\n                \"tipoRepresion\": {\n                    \"codigo\": \"TIPO_REPRESION_1\",\n                    \"descripcion\": \"Censura directa\"\n                },\n                \"represaliasLegales\": true,\n                \"represaliasFisicas\": true,\n                \"actorCensor\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"consecuencia\": \"Perdió su trabajo\"\n            },\n            \"justicia\": {\n                \"tipoProceso\": {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                },\n                \"fechaDenuncia\": \"2024-05-22T00:00:00.000+00:00\",\n                \"tipoDenunciante\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"duracionProceso\": {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                },\n                \"accesoAbogado\": true,\n                \"huboParcialidad\": true,\n                \"resultadoProceso\": \"Caso cerrado sin resolución\",\n                \"instancia\": \"Primera instancia\"\n            }\n        },\n        {\n            \"nombre\": \"Juan Pérez\",\n            \"edad\": 30,\n            \"genero\": {\n                \"codigo\": \"GEN_2\",\n                \"descripcion\": \"Hombre\"\n            },\n            \"nacionalidad\": {\n                \"codigo\": \"PAIS_9300\",\n                \"descripcion\": \"EL SALVADOR\"\n            },\n            \"departamentoResidencia\": {\n                \"codigo\": \"DEP_6\",\n                \"descripcion\": \"SAN SALVADOR\"\n            },\n            \"municipioResidencia\": {\n                \"codigo\": \"MUN_6_7\",\n                \"descripcion\": \"ILOPANGO\"\n            },\n            \"tipoPersona\": {\n                \"codigo\": \"TIPOPER_1\",\n                \"descripcion\": \"Persona particular\"\n            },\n            \"estadoSalud\": {\n                \"codigo\": \"ESTSALUD_6\",\n                \"descripcion\": \"Fallecida\"\n            },\n            \"derechosVulnerados\": [\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_1_1\",\n                        \"descripcion\": \"Detención arbitraria\"\n                    }\n                },\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_2_1\",\n                        \"descripcion\": \"Censura de medios\"\n                    }\n                }\n            ],\n            \"violencia\": {\n                \"esAsesinato\": true,\n                \"tipoViolencia\": {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                },\n                \"artefactoUtilizado\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"contexto\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"actorResponsable\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"estadoSaludActorResponsable\": {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                },\n                \"huboProteccion\": true,\n                \"investigacionAbierta\": true,\n                \"respuestaEstado\": \"Se abrió investigación preliminar.\"\n            },\n            \"detencion\": {\n                \"tipoDetencion\": {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                },\n                \"ordenJudicial\": false,\n                \"autoridadInvolucrada\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"huboTortura\": true,\n                \"duracionDias\": 5,\n                \"accesoAbogado\": true,\n                \"resultado\": \"Liberado sin cargos\",\n                \"motivoDetencion\": {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                }\n            },\n            \"expresion\": {\n                \"medioExpresion\": {\n                    \"codigo\": \"MEDIO_EXPRESION_0\",\n                    \"descripcion\": \"Otro\"\n                },\n                \"tipoRepresion\": {\n                    \"codigo\": \"TIPO_REPRESION_1\",\n                    \"descripcion\": \"Censura directa\"\n                },\n                \"represaliasLegales\": true,\n                \"represaliasFisicas\": true,\n                \"actorCensor\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"consecuencia\": \"Perdió su trabajo\"\n            },\n            \"justicia\": {\n                \"tipoProceso\": {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                },\n                \"fechaDenuncia\": \"2024-05-22T00:00:00.000+00:00\",\n                \"tipoDenunciante\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"duracionProceso\": {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                },\n                \"accesoAbogado\": true,\n                \"huboParcialidad\": true,\n                \"resultadoProceso\": \"Caso cerrado sin resolución\",\n                \"instancia\": \"Primera instancia\"\n            }\n        }\n    ]\n}",
+							"raw": "{\n    \"fechaHecho\": \"2024-05-20\",\n    \"fuente\": {\n        \"codigo\": \"FUENTE_8\",\n        \"descripcion\": \"La Prensa Gráfica\"\n    },\n    \"estadoActual\": {\n        \"codigo\": \"ESTREG_3\",\n        \"descripcion\": \"Caso en investigación\"\n    },\n    \"derechoAsociado\": {\n        \"codigo\": \"DER_1\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"flagViolencia\": true,\n    \"flagDetencion\": true,\n    \"flagExpresion\": true,\n    \"flagJusticia\": true,\n    \"flagCensura\": true,\n    \"flagRegimenExcepcion\": true,\n    \"observaciones\": \"Hecho en el que se violentarion todos los derechos posibles\",\n    \"ubicacion\": {\n        \"departamento\": {\n            \"codigo\": \"DEP_3\",\n            \"descripcion\": \"AHUACHAPAN\"\n        },\n        \"municipio\": {\n            \"codigo\": \"MUN_1_7\",\n            \"descripcion\": \"APANECA\"\n        },\n        \"lugarExacto\": {\n            \"codigo\": \"LUGEXAC_1\",\n            \"descripcion\": \"Fosa clandestina\"\n        }\n    },\n    \"personasAfectadas\": [\n        {\n            \"nombre\": \"\",\n            \"edad\": 30,\n            \"genero\": {\n                \"codigo\": \"GEN_2\",\n                \"descripcion\": \"Hombre\"\n            },\n            \"nacionalidad\": {\n                \"codigo\": \"PAIS_9300\",\n                \"descripcion\": \"EL SALVADOR\"\n            },\n            \"departamentoResidencia\": {\n                \"codigo\": \"DEP_6\",\n                \"descripcion\": \"SAN SALVADOR\"\n            },\n            \"municipioResidencia\": {\n                \"codigo\": \"MUN_6_7\",\n                \"descripcion\": \"ILOPANGO\"\n            },\n            \"tipoPersona\": {\n                \"codigo\": \"TIPOPER_1\",\n                \"descripcion\": \"Persona particular\"\n            },\n            \"estadoSalud\": {\n                \"codigo\": \"ESTSALUD_6\",\n                \"descripcion\": \"Fallecida\"\n            },\n            \"derechosVulnerados\": [\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_1_1\",\n                        \"descripcion\": \"Detención arbitraria\"\n                    }\n                },\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_2_1\",\n                        \"descripcion\": \"Censura de medios\"\n                    }\n                }\n            ],\n            \"violencia\": {\n                \"esAsesinato\": true,\n                \"tipoViolencia\": {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                },\n                \"artefactoUtilizado\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"contexto\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"actorResponsable\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"estadoSaludActorResponsable\": {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                },\n                \"huboProteccion\": true,\n                \"investigacionAbierta\": true,\n                \"respuestaEstado\": \"Se abrió investigación preliminar.\"\n            },\n            \"detencionIntegridad\": {\n                \"tipoDetencion\": {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                },\n                \"ordenJudicial\": false,\n                \"autoridadInvolucrada\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"huboTortura\": true,\n                \"duracionDias\": 5,\n                \"accesoAbogado\": true,\n                \"resultado\": \"Liberado sin cargos\",\n                \"motivoDetencion\": {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                },\n                \"departamentoDetencion\": {\n                    \"codigo\": \"DEP_2\"\n                },\n                \"municipioDetencion\": {\n                    \"codigo\": \"MUN_2_2\"\n                },\n                \"fechaDetencion\": \"2025-09-17\"\n            },\n            \"expresionCensura\": {\n                \"medioExpresion\": {\n                    \"codigo\": \"MEDIO_EXPRESION_0\",\n                    \"descripcion\": \"Otro\"\n                },\n                \"tipoRepresion\": {\n                    \"codigo\": \"TIPO_REPRESION_1\",\n                    \"descripcion\": \"Censura directa\"\n                },\n                \"represaliasLegales\": true,\n                \"represaliasFisicas\": true,\n                \"actorCensor\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"consecuencia\": \"Perdió su trabajo\"\n            },\n            \"accesoJusticia\": {\n                \"tipoProceso\": {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                },\n                \"fechaDenuncia\": \"2024-05-22T00:00:00.000+00:00\",\n                \"tipoDenunciante\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"duracionProceso\": {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                },\n                \"accesoAbogado\": true,\n                \"huboParcialidad\": true,\n                \"resultadoProceso\": \"Caso cerrado sin resolución\",\n                \"instancia\": \"Primera instancia\"\n            }\n        },\n        {\n            \"nombre\": \"Juan Pérez\",\n            \"edad\": 30,\n            \"genero\": {\n                \"codigo\": \"GEN_2\",\n                \"descripcion\": \"Hombre\"\n            },\n            \"nacionalidad\": {\n                \"codigo\": \"PAIS_9300\",\n                \"descripcion\": \"EL SALVADOR\"\n            },\n            \"departamentoResidencia\": {\n                \"codigo\": \"DEP_6\",\n                \"descripcion\": \"SAN SALVADOR\"\n            },\n            \"municipioResidencia\": {\n                \"codigo\": \"MUN_6_7\",\n                \"descripcion\": \"ILOPANGO\"\n            },\n            \"tipoPersona\": {\n                \"codigo\": \"TIPOPER_1\",\n                \"descripcion\": \"Persona particular\"\n            },\n            \"estadoSalud\": {\n                \"codigo\": \"ESTSALUD_6\",\n                \"descripcion\": \"Fallecida\"\n            },\n            \"derechosVulnerados\": [\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_1_1\",\n                        \"descripcion\": \"Detención arbitraria\"\n                    }\n                },\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_2_1\",\n                        \"descripcion\": \"Censura de medios\"\n                    }\n                }\n            ],\n            \"violencia\": {\n                \"esAsesinato\": true,\n                \"tipoViolencia\": {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                },\n                \"artefactoUtilizado\": {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"contexto\": {\n                    \"codigo\": \"CONTEXTO_3\",\n                    \"descripcion\": \"Arma de fuego\"\n                },\n                \"actorResponsable\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"estadoSaludActorResponsable\": {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                },\n                \"huboProteccion\": true,\n                \"investigacionAbierta\": true,\n                \"respuestaEstado\": \"Se abrió investigación preliminar.\"\n            },\n            \"detencionIntegridad\": {\n                \"tipoDetencion\": {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                },\n                \"ordenJudicial\": false,\n                \"autoridadInvolucrada\": {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                },\n                \"huboTortura\": true,\n                \"duracionDias\": 5,\n                \"accesoAbogado\": true,\n                \"resultado\": \"Liberado sin cargos\",\n                \"motivoDetencion\": {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                }\n            },\n            \"expresionCensura\": {\n                \"medioExpresion\": {\n                    \"codigo\": \"MEDIO_EXPRESION_1\",\n                    \"descripcion\": \"Otro\"\n                },\n                \"tipoRepresion\": {\n                    \"codigo\": \"TIPO_REPRESION_1\",\n                    \"descripcion\": \"Censura directa\"\n                },\n                \"represaliasLegales\": true,\n                \"represaliasFisicas\": true,\n                \"actorCensor\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"consecuencia\": \"Perdió su trabajo\"\n            },\n            \"accesoJusticia\": {\n                \"tipoProceso\": {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                },\n                \"fechaDenuncia\": \"2024-05-22T00:00:00.000+00:00\",\n                \"tipoDenunciante\": {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                },\n                \"duracionProceso\": {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                },\n                \"accesoAbogado\": true,\n                \"huboParcialidad\": true,\n                \"resultadoProceso\": \"Caso cerrado sin resolución\",\n                \"instancia\": \"Primera instancia\"\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"evento",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fechaHecho\": \"2024-05-20\",\n    \"fuente\": {\n        \"codigo\": \"FUENTE_8\"\n    },\n    \"estadoActual\": {\n        \"codigo\": \"ESTREG_3\"\n    },\n    \"derechoAsociado\": {\n        \"codigo\": \"DER_3\"\n    },\n    \"flagViolencia\": false,\n    \"flagDetencion\": false,\n    \"flagExpresion\": false,\n    \"flagJusticia\": false,\n    \"flagCensura\": false,\n    \"flagRegimenExcepcion\": true,\n    \"observaciones\": \"Hecho en el que se violentarion todos los derechos posibles\",\n    \"ubicacion\": {\n        \"departamento\": {\n            \"codigo\": \"DEP_1\"\n        },\n        \"municipio\": {\n            \"codigo\": \"MUN_1_7\"\n        },\n        \"lugarExacto\": {\n            \"codigo\": \"LUGEXAC_1\"\n        }\n    },\n    \"personasAfectadas\": [\n        {\n            \"nombre\": \"Juan Pérez\",\n            \"edad\": 30,\n            \"genero\": {\n                \"codigo\": \"GEN_2\"\n            },\n            \"nacionalidad\": {\n                \"codigo\": \"PAIS_9300\"\n            },\n            \"departamentoResidencia\": {\n                \"codigo\": \"DEP_6\"\n            },\n            \"municipioResidencia\": {\n                \"codigo\": \"MUN_6_7\"\n            },\n            \"tipoPersona\": {\n                \"codigo\": \"TIPOPER_1\"\n            },\n            \"estadoSalud\": {\n                \"codigo\": \"ESTSALUD_6\",\n                \"descripcion\": \"Fallecida\"\n            },\n            \"derechosVulnerados\": [\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_1_1\"\n                    }\n                },\n                {\n                    \"derecho\": {\n                        \"codigo\": \"SUBDER_2_1\",\n                        \"descripcion\": \"Censura de medios\"\n                    }\n                }\n            ]\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1154,7 +1272,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"filtros\": {\n        \"paginacion\": {\n            \"registrosPorPagina\": 10,\n            \"paginaActual\": 0\n        },\n        \"rangoFechas\": {\n            \"fechaInicio\": \"2024-04-02\",\n            \"fechaFin\": \"2026-04-05\"\n        },\n        \"eventoFiltro\": {\n            \"fechaHechoRango\": {\n                \"fechaInicio\": \"2024-05-20\",\n                \"fechaFin\": \"2024-05-20\"\n            },\n            \"fuentes\": [\n                {\n                    \"codigo\": \"FUENTE_7\",\n                    \"descripcion\": \"El Diario de Hoy\"\n                }\n            ],\n            \"estadosActuales\": [\n                {\n                    \"codigo\": \"ESTREG_3\",\n                    \"descripcion\": \"Caso en investigación\"\n                }\n            ],\n            \"departamentos\": [\n                {\n                    \"codigo\": \"DEP_1\",\n                    \"descripcion\": \"AHUACHAPAN\"\n                }\n            ],\n            \"municipios\": [\n                {\n                    \"codigo\": \"MUN_1_2\",\n                    \"descripcion\": \"APANECA\"\n                }\n            ],\n            \"lugaresExactos\": [\n                {\n                    \"codigo\": \"LUGEXAC_1\",\n                    \"descripcion\": \"Fosa clandestina\"\n                }\n            ],\n            \"flagViolencia\": true,\n            \"flagDetencion\": true,\n            \"flagExpresion\": true,\n            \"flagJusticia\": true,\n            \"flagCensura\": true,\n            \"flagRegimenExcepcion\": false\n        },\n        \"afectadaFiltro\": {\n            \"nombres\": [\n                \"Juan Pérez\"\n            ],\n            \"generos\": [\n                {\n                    \"codigo\": \"GEN_2\",\n                    \"descripcion\": \"Hombre\"\n                }\n            ],\n            \"nacionalidades\": [\n                {\n                    \"codigo\": \"PAIS_9300\",\n                    \"descripcion\": \"EL SALVADOR\"\n                }\n            ],\n            \"departamentosResidencia\": [\n                {\n                    \"codigo\": \"DEP_6\",\n                    \"descripcion\": \"SAN SALVADOR\"\n                }\n            ],\n            \"municipiosResidencia\": [\n                {\n                    \"codigo\": \"MUN_6_7\",\n                    \"descripcion\": \"ILOPANGO\"\n                }\n            ],\n            \"tiposPersona\": [\n                {\n                    \"codigo\": \"TIPOPER_1\",\n                    \"descripcion\": \"Persona particular\"\n                }\n            ],\n            \"estadosSalud\": [\n                {\n                    \"codigo\": \"ESTSALUD_6\",\n                    \"descripcion\": \"Fallecida\"\n                }\n            ],\n            \"rangoEdad\": {\n                \"desde\": 30,\n                \"hasta\": 30\n            }\n        },\n        \"derechosVulneradosFiltro\": {\n            \"derechosVulnerados\": [\n                {\n                    \"codigo\": \"SUBDER_1_1\",\n                    \"descripcion\": \"Censura directa o indirecta\"\n                }\n            ]\n        },\n        \"violenciaFiltro\": {\n            \"esAsesinato\": true,\n            \"tiposViolencia\": [\n                {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                }\n            ],\n            \"artefactosUtilizados\": [\n                {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                }\n            ],\n            \"contextos\": [\n                {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                }\n            ],\n            \"actoresResponsables\": [\n                {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                }\n            ],\n            \"estadosSaludActorResponsable\": [\n                {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                }\n            ],\n            \"huboProteccion\": true,\n            \"investigacionAbierta\": true\n        },\n        \"detencionFiltro\": {\n            \"tiposDetencion\": [\n                {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                }\n            ],\n            \"ordenJudicial\": false,\n            \"autoridadesInvolucradas\": [\n                {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                }\n            ],\n            \"huboTortura\": true,\n            \"motivosDetencion\": [\n                {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                }\n            ],\n            \"duracionDiasExactos\": {\n                \"desde\": 5,\n                \"hasta\": 5\n            },\n            \"accesoAbogado\": true,\n            \"resultados\": [\n                \"Liberado\"\n            ]\n        },\n        \"censuraFiltro\": {\n            \"mediosExpresion\": [\n                {\n                    \"codigo\": \"MEDIO_EXPRESION_0\"\n                }\n            ],\n            \"tiposRepresion\": [\n                {\n                    \"codigo\": \"MEDIO_EXPRESION_0\"\n                }\n            ],\n            \"represaliasLegales\": true,\n            \"represaliasFisicas\": true,\n            \"actoresCensores\": [\n                {\n                    \"codigo\": \"TIPOPER_2\"\n                }\n            ],\n            \"consecuencias\": [\n                \"Perdió su trabajo\"\n            ]\n        },\n        \"accesoJusticiaFiltro\": {\n            \"tiposProceso\": [\n                {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                }\n            ],\n            \"fechaDenunciaRango\": {\n                \"fechaInicio\": \"2024-05-21\",\n                \"fechaFin\": \"2024-05-21\"\n            },\n            \"tiposDenunciante\": [\n                {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                }\n            ],\n            \"duracionesProceso\": [\n                {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                }\n            ],\n            \"accesoAbogado\": true,\n            \"huboParcialidad\": true,\n            \"resultadosProceso\": [\n                \"Caso cerrado sin resolución\"\n            ],\n            \"instancias\": [\n                \"Primera instancia\"\n            ]\n        }\n    }\n}\n}",
+							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_1\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\"filtros\": {\n        \"paginacion\": {\n            \"registrosPorPagina\": 10,\n            \"paginaActual\": 0\n        }\n    },\n    \"filtros2\": {\n        \"paginacion\": {\n            \"registrosPorPagina\": 10,\n            \"paginaActual\": 0\n        },\n        \"rangoFechas\": {\n            \"fechaInicio\": \"2024-04-02\",\n            \"fechaFin\": \"2026-04-05\"\n        },\n        \"eventoFiltro\": {\n            \"fechaHechoRango\": {\n                \"fechaInicio\": \"2024-05-20\",\n                \"fechaFin\": \"2024-05-20\"\n            },\n            \"fuentes\": [\n                {\n                    \"codigo\": \"FUENTE_7\",\n                    \"descripcion\": \"El Diario de Hoy\"\n                }\n            ],\n            \"estadosActuales\": [\n                {\n                    \"codigo\": \"ESTREG_3\",\n                    \"descripcion\": \"Caso en investigación\"\n                }\n            ],\n            \"departamentos\": [\n                {\n                    \"codigo\": \"DEP_1\",\n                    \"descripcion\": \"AHUACHAPAN\"\n                }\n            ],\n            \"municipios\": [\n                {\n                    \"codigo\": \"MUN_1_2\",\n                    \"descripcion\": \"APANECA\"\n                }\n            ],\n            \"lugaresExactos\": [\n                {\n                    \"codigo\": \"LUGEXAC_1\",\n                    \"descripcion\": \"Fosa clandestina\"\n                }\n            ],\n            \"flagRegimenExcepcion\": false\n        },\n        \"afectadaFiltro\": {\n            \"nombres\": [\n                \"Juan Pérez\",\"Daniel\"\n            ],\n            \"generos\": [\n                {\n                    \"codigo\": \"GEN_2\",\n                    \"descripcion\": \"Hombre\"\n                }\n            ],\n            \"nacionalidades\": [\n                {\n                    \"codigo\": \"PAIS_9300\",\n                    \"descripcion\": \"EL SALVADOR\"\n                }\n            ],\n            \"departamentosResidencia\": [\n                {\n                    \"codigo\": \"DEP_6\",\n                    \"descripcion\": \"SAN SALVADOR\"\n                }\n            ],\n            \"municipiosResidencia\": [\n                {\n                    \"codigo\": \"MUN_6_7\",\n                    \"descripcion\": \"ILOPANGO\"\n                }\n            ],\n            \"tiposPersona\": [\n                {\n                    \"codigo\": \"TIPOPER_1\",\n                    \"descripcion\": \"Persona particular\"\n                }\n            ],\n            \"estadosSalud\": [\n                {\n                    \"codigo\": \"ESTSALUD_6\",\n                    \"descripcion\": \"Fallecida\"\n                }\n            ],\n            \"rangoEdad\": {\n                \"desde\": 30,\n                \"hasta\": 30\n            }\n        },\n        \"derechosVulneradosFiltro\": {\n            \"derechosVulnerados\": [\n                {\n                    \"codigo\": \"SUBDER_1_1\",\n                    \"descripcion\": \"Censura directa o indirecta\"\n                }\n            ]\n        },\n        \"violenciaFiltro\": {\n            \"esAsesinato\": true,\n            \"tiposViolencia\": [\n                {\n                    \"codigo\": \"TIPOVIOLENCIA_1\",\n                    \"descripcion\": \"Violencia física\"\n                }\n            ],\n            \"artefactosUtilizados\": [\n                {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                }\n            ],\n            \"contextos\": [\n                {\n                    \"codigo\": \"ARTEFACTO_1\",\n                    \"descripcion\": \"Arma de fuego\"\n                }\n            ],\n            \"actoresResponsables\": [\n                {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                }\n            ],\n            \"estadosSaludActorResponsable\": [\n                {\n                    \"codigo\": \"ESTSALUD_1\",\n                    \"descripcion\": \"Sin afectaciones visibles\"\n                }\n            ],\n            \"huboProteccion\": true,\n            \"investigacionAbierta\": true\n        },\n        \"detencionFiltro\": {\n            \"tiposDetencion\": [\n                {\n                    \"codigo\": \"DETENCION_1\",\n                    \"descripcion\": \"Detención en flagrancia\"\n                }\n            ],\n            \"ordenJudicial\": false,\n            \"autoridadesInvolucradas\": [\n                {\n                    \"codigo\": \"TIPOPER_3\",\n                    \"descripcion\": \"Miembro de la Policía Nacional Civil\"\n                }\n            ],\n            \"huboTortura\": true,\n            \"motivosDetencion\": [\n                {\n                    \"codigo\": \"MOTIVO_DETENCION_2\",\n                    \"descripcion\": \"Presunto delito de homicidio\"\n                }\n            ],\n            \"duracionDiasExactos\": {\n                \"desde\": 5,\n                \"hasta\": 5\n            },\n            \"accesoAbogado\": true,\n            \"resultados\": [\n                \"Liberado\"\n            ]\n        },\n        \"censuraFiltro\": {\n            \"mediosExpresion\": [\n                {\n                    \"codigo\": \"MEDIO_EXPRESION_0\"\n                }\n            ],\n            \"tiposRepresion\": [\n                {\n                    \"codigo\": \"MEDIO_EXPRESION_0\"\n                }\n            ],\n            \"represaliasLegales\": true,\n            \"represaliasFisicas\": true,\n            \"actoresCensores\": [\n                {\n                    \"codigo\": \"TIPOPER_2\"\n                }\n            ],\n            \"consecuencias\": [\n                \"Perdió su trabajo\"\n            ]\n        },\n        \"accesoJusticiaFiltro\": {\n            \"tiposProceso\": [\n                {\n                    \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\n                    \"descripcion\": \"Proceso penal con detención provisional\"\n                }\n            ],\n            \"fechaDenunciaRango\": {\n                \"fechaInicio\": \"2024-05-21\",\n                \"fechaFin\": \"2024-05-21\"\n            },\n            \"tiposDenunciante\": [\n                {\n                    \"codigo\": \"TIPOPER_2\",\n                    \"descripcion\": \"Servidor público\"\n                }\n            ],\n            \"duracionesProceso\": [\n                {\n                    \"codigo\": \"DURACION_PROCESO_1\",\n                    \"descripcion\": \"Menos de 3 meses\"\n                }\n            ],\n            \"accesoAbogado\": true,\n            \"huboParcialidad\": true,\n            \"resultadosProceso\": [\n                \"Caso cerrado sin resolución\"\n            ],\n            \"instancias\": [\n                \"Primera instancia\"\n            ]\n        }\n    }\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/idhuca-indicadores/api/srv/registros/evento/getAllByDerecho",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"idhuca-indicadores",
+								"api",
+								"srv",
+								"registros",
+								"evento",
+								"getAllByDerecho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllByDerecho Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"derecho\": {\n    \"codigo\": \"DER_1\",\n    \"descripcion\": \"Derecho a la Libertad Personal e Integridad personal\"\n  },\n  \"filtros\": {\n    \"paginacion\": {\n      \"paginaActual\": 0,\n      \"registrosPorPagina\": 10\n    }\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1197,7 +1358,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 23\n}",
+							"raw": "{\n    \"id\": 12\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1240,7 +1401,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 45\n}",
+							"raw": "{\n    \"id\": 75\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1331,7 +1492,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    }\n}",
+							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_1\",\n        \"descripcion\": \"Derecho a la Vida\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1460,7 +1621,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 1\n}",
+							"raw": "{\n    \"id\": 30\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1503,7 +1664,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n                    \"id\": 1,\r\n                    \"nombre\": \"Juan  2 Pérez\",\r\n                    \"genero\": {\r\n                        \"codigo\": \"GEN_1\",\r\n                        \"descripcion\": \"Hombre\"\r\n                    },\r\n                    \"edad\": 30,\r\n                    \"nacionalidad\": {\r\n                        \"codigo\": \"PAIS_9303\",\r\n                        \"descripcion\": \"EL SALVADOR\"\r\n                    },\r\n                    \"departamentoResidencia\": {\r\n                        \"codigo\": \"DEP_7\",\r\n                        \"descripcion\": \"CUSCATLAN\"\r\n                    },\r\n                    \"municipioResidencia\": {\r\n                        \"codigo\": \"MUN_7_2\",\r\n                        \"descripcion\": \"COJUTEPEQUE\"\r\n                    },\r\n                    \"tipoPersona\": {\r\n                        \"codigo\": \"TIPOPER_2\",\r\n                        \"descripcion\": \"Servidor público\"\r\n                    },\r\n                    \"estadoSalud\": {\r\n                        \"codigo\": \"ESTSALUD_7\",\r\n                        \"descripcion\": \"Desconocido\"\r\n                    },\r\n                    \"derechosVulnerados\": [\r\n                        {\r\n                            \"id\": 1,\r\n                            \"derecho\": {\r\n                                \"codigo\": \"SUBDER_1_2\",\r\n                                \"descripcion\": \"Tortura o tratos crueles, inhumanos o degradantes\"\r\n                            }\r\n                        },\r\n                        {\r\n                            \"id\": 2,\r\n                            \"derecho\": {\r\n                                \"codigo\": \"SUBDER_2_2\",\r\n                                \"descripcion\": \"Amenazas o represalias por expresarse\"\r\n                            }\r\n                        }\r\n                    ],\r\n                    \"violencia\": null,\r\n                    \"detencionIntegridad\": null,\r\n                    \"expresionCensura\": null,\r\n                    \"accesoJusticia\": null\r\n                }",
+							"raw": "{\r\n        \"id\": 30,\r\n        \"nombre\": \"Daniel\",\r\n        \"genero\": {\r\n            \"codigo\": \"GEN_2\",\r\n            \"descripcion\": \"Hombre\"\r\n        },\r\n        \"edad\": 30,\r\n        \"nacionalidad\": {\r\n            \"codigo\": \"PAIS_9300\",\r\n            \"descripcion\": \"EL SALVADOR\"\r\n        },\r\n        \"departamentoResidencia\": {\r\n            \"codigo\": \"DEP_6\",\r\n            \"descripcion\": \"SAN SALVADOR\"\r\n        },\r\n        \"municipioResidencia\": {\r\n            \"codigo\": \"MUN_6_7\",\r\n            \"descripcion\": \"ILOPANGO\"\r\n        },\r\n        \"tipoPersona\": {\r\n            \"codigo\": \"TIPOPER_1\",\r\n            \"descripcion\": \"Persona particular\"\r\n        },\r\n        \"estadoSalud\": {\r\n            \"codigo\": \"ESTSALUD_6\",\r\n            \"descripcion\": \"Fallecida\"\r\n        },\r\n        \"derechosVulnerados\": [\r\n            {\r\n                \"id\": 78,\r\n                \"derecho\": {\r\n                    \"codigo\": \"SUBDER_1_1\",\r\n                    \"descripcion\": \"Detención arbitraria\"\r\n                }\r\n            },\r\n            {\r\n                \"id\": 79,\r\n                \"derecho\": {\r\n                    \"codigo\": \"SUBDER_2_1\",\r\n                    \"descripcion\": \"Censura directa o indirecta\"\r\n                }\r\n            }\r\n        ],\r\n        \"violencia\": {\r\n            \"id\": 13,\r\n            \"esAsesinato\": true,\r\n            \"tipoViolencia\": {\r\n                \"codigo\": \"TIPOVIOLENCIA_1\",\r\n                \"descripcion\": \"Violencia física\"\r\n            },\r\n            \"artefactoUtilizado\": {\r\n                \"codigo\": \"ARTEFACTO_1\",\r\n                \"descripcion\": \"Arma de fuego\"\r\n            },\r\n            \"contexto\": {\r\n                \"codigo\": \"ARTEFACTO_1\",\r\n                \"descripcion\": \"Arma de fuego\"\r\n            },\r\n            \"actorResponsable\": {\r\n                \"codigo\": \"TIPOPER_3\",\r\n                \"descripcion\": \"Miembro de la Policía Nacional Civil\"\r\n            },\r\n            \"estadoSaludActorResponsable\": {\r\n                \"codigo\": \"ESTSALUD_1\",\r\n                \"descripcion\": \"Sin afectaciones visibles\"\r\n            },\r\n            \"huboProteccion\": true,\r\n            \"investigacionAbierta\": true,\r\n            \"respuestaEstado\": \"Se abrió investigación preliminar.\"\r\n        },\r\n        \"detencionIntegridad\": {\r\n            \"id\": 5,\r\n            \"tipoDetencion\": {\r\n                \"codigo\": \"DETENCION_1\",\r\n                \"descripcion\": \"Detención en flagrancia\"\r\n            },\r\n            \"ordenJudicial\": false,\r\n            \"autoridadInvolucrada\": {\r\n                \"codigo\": \"TIPOPER_3\",\r\n                \"descripcion\": \"Miembro de la Policía Nacional Civil\"\r\n            },\r\n            \"huboTortura\": true,\r\n            \"duracionDias\": 5,\r\n            \"accesoAbogado\": true,\r\n            \"resultado\": \"Liberado sin cargos\",\r\n            \"motivoDetencion\": {\r\n                \"codigo\": \"MOTIVO_DETENCION_2\",\r\n                \"descripcion\": \"Presunto delito de homicidio\"\r\n            },\r\n            \"fechaDetencion\": \"2026-09-17\",\r\n            \"departamentoDetencion\": {\r\n                \"codigo\": \"DEP_3\",\r\n                \"descripcion\": \"SANTA ANA\"\r\n            },\r\n            \"municipioDetencion\": {\r\n                \"codigo\": \"MUN_3_2\",\r\n                \"descripcion\": \"COATEPEQUE\"\r\n            }\r\n        },\r\n        \"expresionCensura\": {\r\n            \"id\": 13,\r\n            \"medioExpresion\": {\r\n                \"codigo\": \"MEDIO_EXPRESION_0\",\r\n                \"descripcion\": \"Otro\"\r\n            },\r\n            \"tipoRepresion\": {\r\n                \"codigo\": \"TIPO_REPRESION_1\",\r\n                \"descripcion\": \"Censura directa\"\r\n            },\r\n            \"represaliasLegales\": true,\r\n            \"represaliasFisicas\": true,\r\n            \"actorCensor\": {\r\n                \"codigo\": \"TIPOPER_2\",\r\n                \"descripcion\": \"Servidor público\"\r\n            },\r\n            \"consecuencia\": \"Perdió su trabajo\"\r\n        },\r\n        \"accesoJusticia\": {\r\n            \"id\": 13,\r\n            \"tipoProceso\": {\r\n                \"codigo\": \"TIPO_PROCESO_JUDICIAL_2\",\r\n                \"descripcion\": \"Proceso penal con detención provisional\"\r\n            },\r\n            \"fechaDenuncia\": \"2024-05-21\",\r\n            \"tipoDenunciante\": {\r\n                \"codigo\": \"TIPOPER_2\",\r\n                \"descripcion\": \"Servidor público\"\r\n            },\r\n            \"duracionProceso\": {\r\n                \"codigo\": \"DURACION_PROCESO_1\",\r\n                \"descripcion\": \"Menos de 3 meses\"\r\n            },\r\n            \"accesoAbogado\": true,\r\n            \"huboParcialidad\": true,\r\n            \"resultadoProceso\": \"Caso cerrado sin resolución\",\r\n            \"instancia\": \"Primera instancia\"\r\n        }\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1594,7 +1755,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_4\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"filtros\": {\n        \"paginacion\": {\n            \"registrosPorPagina\": 10,\n            \"paginaActual\": 0\n        },\n        \"rangoFechas\": {\n            \"fechaInicio\": \"2023-04-02\",\n            \"fechaFin\": \"2028-04-06\"\n        }\n    },\n    \"categoriaEjeX\": {\n        \"eventoFiltro\": {\n            \"municipios\": [\n                {\"codigo\": \"MUN_1_1\"},\n                {\"codigo\": \"MUN_1_2\"},\n                {\"codigo\": \"MUN_1_3\"},\n                {\"codigo\": \"MUN_1_4\"}\n            ]\n        }\n    },\n    \"graphicsSettings\": {\n        \"chartType\": \"PIE\"\n    }\n}",
+							"raw": "{\n    \"derecho\": {\n        \"codigo\": \"DER_1\",\n        \"descripcion\": \"Derecho a la Vida\"\n    },\n    \"filtros\": {\n        \"paginacion\": {\n            \"registrosPorPagina\": 10,\n            \"paginaActual\": 0\n        }\n    },\n    \"categoriaEjeX\": {\n        \"detencionFiltro\": {\n            \"departamentosDetencion\": [\n                {\"codigo\": \"DEP_1\"}\n            ]\n        }\n    },\n    \"graphicsSettings\": {\n        \"chartType\": \"PIE\",\n        \"title\": \"\",\n        \"subtitle\": \"\",\n        \"titleFont\": 20,\n        \"subTitleFont\": 13,\n        \"categoryAxisLabel\": null,\n        \"valueAxisLabel\": null,\n        \"threeD\": true,\n        \"showLegend\": true,\n        \"width\": 800,\n        \"height\": 600,\n        \"style\": null,\n        \"series\": null\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1614,6 +1775,378 @@
 								"srv",
 								"graphics",
 								"generate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Backup",
+			"item": [
+				{
+					"name": "BackupMensual",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": []
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yQHVjYS5lZHUuc3YiLCJpYXQiOjE3NTMxMDkzMTQsImV4cCI6MTc1MzEyMDExNH0.-nsPs8ky_Xq1NiaKutostLsB2fk-KUlRUJM7Iie1tSZNYFAZIf01smte2L4DTGgfK8DA4kuhMvzPdpQJyyW4dw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/backup/quick-schedules/monthly?name=backup_mensual_15_3am&dayOfMonth=15&hour=3&minute=30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"backup",
+								"quick-schedules",
+								"monthly"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "backup_mensual_15_3am"
+								},
+								{
+									"key": "dayOfMonth",
+									"value": "15"
+								},
+								{
+									"key": "hour",
+									"value": "3"
+								},
+								{
+									"key": "minute",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BackupSemanal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": []
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yQHVjYS5lZHUuc3YiLCJpYXQiOjE3NTMwODM2ODIsImV4cCI6MTc1MzA5NDQ4Mn0.PUXHtywwv2cfxL0_nn4i5YwTXvr9Sm_k0rN0S9bCj7dDOrhRO2KcqRHO-ze43xDjwo28plRedBvKYVjOeC1c_w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/backup/quick-schedules/weekly?name=backup_lunes_2am&dayOfWeek=MON&hour=2&minute=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"backup",
+								"quick-schedules",
+								"weekly"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "backup_lunes_2am"
+								},
+								{
+									"key": "dayOfWeek",
+									"value": "MON"
+								},
+								{
+									"key": "hour",
+									"value": "2"
+								},
+								{
+									"key": "minute",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteBackup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": []
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/backup/schedules/backup_test_1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"backup",
+								"schedules",
+								"backup_test_1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ManualBackup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": []
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yQHVjYS5lZHUuc3YiLCJpYXQiOjE3NTMwODEyNTEsImV4cCI6MTc1MzA5MjA1MX0.QbUe9EYBx2bLdAccvA8zS2Gp-NKNrDIRENWrqpsr8HNM_0EA0_kiRujxO1dT1zP2TD0HQ18YHRxlbD_A_hXDpg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/backup/schedules/backup_prueba2/execute?=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"backup",
+								"schedules",
+								"backup_prueba2",
+								"execute"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": []
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yQHVjYS5lZHUuc3YiLCJpYXQiOjE3NTMwODM2ODIsImV4cCI6MTc1MzA5NDQ4Mn0.PUXHtywwv2cfxL0_nn4i5YwTXvr9Sm_k0rN0S9bCj7dDOrhRO2KcqRHO-ze43xDjwo28plRedBvKYVjOeC1c_w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/backup/schedules",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"backup",
+								"schedules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ScheduleBackup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": []
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzc0OTA0LCJleHAiOjMxMjc5MjM3NDkwNH0.5PPkp3nlOsvouDonykU0RxdYVEWwnd6dPEeeKr877u9l6VQsdzZYaOPDCcWnTqDt4u9SVqCg0x1pHsCkxx0wgQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEzOTQxOUB1Y2EuZWR1LnN2IiwiaWF0IjoxNzUyMzY3MTYyLCJleHAiOjMxMjc5MjM2NzE2Mn0.xB-H9q3lMR5VKSTXoZHW92oH-YiLMtiWppYhTk91hINjUyoI7OXBgekc4xJoaoyD9Z8rnIlyA-MFPc9jSk_BTQ"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"backup_test_1\",\n\t\"cronExpression\": \"0 56 22 * * ?\",\n\t\"description\": \"Backup de prueba para las 22:56\",\n\t\"enabled\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/backup/schedules",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"backup",
+								"schedules"
 							]
 						}
 					},

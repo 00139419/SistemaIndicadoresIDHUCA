@@ -185,6 +185,9 @@ public class EventosUseCase {
 		entidad.setAccesoAbogado(dto.getAccesoAbogado());
 		entidad.setResultado(dto.getResultado());
 		entidad.setMotivoDetencion(getCatalogoOrThrow(dto.getMotivoDetencion().getCodigo(), "Motivo detencion"));
+		entidad.setFechaDetencion(dto.getFechaDetencion());
+		entidad.setDepartamentoDetencion(getCatalogoOrThrow(dto.getDepartamentoDetencion().getCodigo(), "Departamento"));
+		entidad.setMunicipioDetencion(getCatalogoOrThrow(dto.getMunicipioDetencion().getCodigo(), "Municipio"));
 	}
 	
 	public void actualizarExpresionDesdeDTO(ExpresionCensura entidad, ExpresionCensuraDTO dto) throws ValidationException {
