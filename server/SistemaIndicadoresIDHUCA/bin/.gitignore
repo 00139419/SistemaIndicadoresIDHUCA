@@ -31,8 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Backup files ###
-/data/database/backups-dev/
-/backups-dev/
-/backup.txt

@@ -22,7 +22,6 @@ import com.uca.idhuca.sistema.indicadores.controllers.dto.PersonaAfectadaDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.RegistroEventoDTO;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.UbicacionDTO;
 import com.uca.idhuca.sistema.indicadores.dto.LoginDto;
-import com.uca.idhuca.sistema.indicadores.filtros.dto.DetencionFiltro;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.EventoFiltro;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.Filtros;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.PersonaAfectadaFiltro;
@@ -281,18 +280,6 @@ public class RequestValidations {
 			
 			if(departamento != null && municipio != null && departamento.size() > 0 && municipio.size() > 0) {
 				request.getCategoriaEjeX().getEventoFiltro().setDepartamentos(null);
-				camposConValor--;
-			}
-		}
-		
-		if(request.getCategoriaEjeX().getDetencionFiltro()!= null) {
-			DetencionFiltro dF = request.getCategoriaEjeX().getDetencionFiltro();
-			
-			List<Catalogo> departamento = dF.getDepartamentosDetencion();
-			List<Catalogo> municipio = dF.getMunicipiosDetencion();
-			
-			if(departamento != null && municipio != null && departamento.size() > 0 && municipio.size() > 0) {
-				request.getCategoriaEjeX().getDetencionFiltro().setDepartamentosDetencion(null);
 				camposConValor--;
 			}
 		}

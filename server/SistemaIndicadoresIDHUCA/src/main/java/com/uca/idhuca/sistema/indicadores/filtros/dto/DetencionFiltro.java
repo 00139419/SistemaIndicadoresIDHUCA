@@ -17,8 +17,5 @@ public class DetencionFiltro {
     private List<Integer> diasExactos; // para generacion de graficos
     private Boolean accesoAbogado;
     private List<String> resultados;
-    private RangoFechas fechaDetecionRango;
-    private List<Catalogo> departamentosDetencion;
-    private List<Catalogo> municipiosDetencion;
 }
 

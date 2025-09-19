@@ -12,7 +12,6 @@ import com.uca.idhuca.sistema.indicadores.filtros.dto.AccesoJusticiaFiltro;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.DetencionFiltro;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.EventoFiltro;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.PersonaAfectadaFiltro;
-import com.uca.idhuca.sistema.indicadores.filtros.dto.RangoFechas;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.RangoNumero;
 import com.uca.idhuca.sistema.indicadores.filtros.dto.ViolenciaFiltro;
 import com.uca.idhuca.sistema.indicadores.models.Catalogo;
@@ -489,46 +488,6 @@ public class RegistroEventoRepositoryImpl implements RegistroEventoRepositoryCus
                 log.info("[SYSTEM] Filtro detención: resultado LIKE %{}%", f.getResultados().get(i));
             }
             sb.append(") ");
-        }
-        
-        /* 10. fecha detención (rango) */
-        if (f.getFechaDetecionRango() != null) {
-            RangoFechas rango = f.getFechaDetecionRango();
-
-            if (rango.getFechaInicio() != null && rango.getFechaFin() != null) {
-                sb.append(" AND di.fechaDetencion BETWEEN :fechaDesde AND :fechaHasta ");
-                params.put("fechaDesde", rango.getFechaInicio());
-                params.put("fechaHasta", rango.getFechaFin());
-                log.info("[SYSTEM] Filtro detención: fechaDetencion BETWEEN {} AND {}", rango.getFechaInicio(), rango.getFechaFin());
-
-            } else if (rango.getFechaInicio() != null) {
-                sb.append(" AND di.fechaDetencion >= :fechaDesde ");
-                params.put("fechaDesde", rango.getFechaInicio());
-                log.info("[SYSTEM] Filtro detención: fechaDetencion >= {}", rango.getFechaInicio());
-
-            } else if (rango.getFechaFin() != null) {
-                sb.append(" AND di.fechaDetencion <= :fechaHasta ");
-                params.put("fechaHasta", rango.getFechaFin());
-                log.info("[SYSTEM] Filtro detención: fechaDetencion <= {}", rango.getFechaFin());
-            }
-        }
-        
-        /* 11. Departamentos detención */
-        if (f.getDepartamentosDetencion() != null && !f.getDepartamentosDetencion().isEmpty()) {
-            List<String> codigos = f.getDepartamentosDetencion().stream()
-                                    .map(Catalogo::getCodigo).toList();
-            sb.append(" AND di.departamentoDetencion.codigo IN :depDet ");
-            params.put("depDet", codigos);
-            log.info("[SYSTEM] Filtro detención: departamentoDetencionCodigo IN {}", codigos);
-        }
-        
-        /* 12. Municipios detención */
-        if (f.getMunicipiosDetencion() != null && !f.getMunicipiosDetencion().isEmpty()) {
-            List<String> codigos = f.getMunicipiosDetencion().stream()
-                                    .map(Catalogo::getCodigo).toList();
-            sb.append(" AND di.municipioDetencion.codigo IN :munDet ");
-            params.put("munDet", codigos);
-            log.info("[SYSTEM] Filtro detención: municipioDetencion IN {}", codigos);
         }
     }
 
