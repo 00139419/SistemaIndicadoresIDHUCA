@@ -140,10 +140,7 @@ CREATE TABLE detencion_integridad(
     duracion_dias INT,
     acceso_abogado BOOLEAN,
     resultado TEXT,
-    motivo_detencion_codigo VARCHAR REFERENCES catalogo(codigo),
-    fecha_detencion DATE,
-    departamento_detencion_codigo VARCHAR REFERENCES catalogo(codigo),
-    municipio_detencion_codigo VARCHAR REFERENCES catalogo(codigo)
+    motivo_detencion_codigo VARCHAR REFERENCES catalogo(codigo)
 );
 
 -- Tabla expresión y censura
