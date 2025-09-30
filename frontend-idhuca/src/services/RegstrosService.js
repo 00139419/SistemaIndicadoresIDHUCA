@@ -319,3 +319,29 @@ export const renderCheck = (value) => (
     :
     <span className="d-flex justify-content-center align-items-center" style={{ color: 'red' }}>❌</span>
 );
+
+export const addPersonaAfectada = async (eventoId, personaData) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No hay token de autenticación");
+  }
+
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}/registros/personasAfectadas/add/${eventoId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(personaData),
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.mensaje || "Error al crear persona");
+  }
+
+  return response.json();
+};

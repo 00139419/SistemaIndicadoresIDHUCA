@@ -854,7 +854,7 @@ const AgregarRegistro = () => {
                           }:`,
                           nuevaNacionalidad
                         );
-                        // CORREGIR: El código debe ser "PAIS_9300", no "9300"
+                        
                         if (
                           !nuevaNacionalidad ||
                           nuevaNacionalidad.codigo !== "PAIS_9300"
