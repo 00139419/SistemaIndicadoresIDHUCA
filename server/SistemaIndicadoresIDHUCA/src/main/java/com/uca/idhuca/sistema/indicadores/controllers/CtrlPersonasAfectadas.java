@@ -5,14 +5,14 @@ import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
 import java.util.List;
 
+import com.uca.idhuca.sistema.indicadores.models.RegistroEvento;
+import com.uca.idhuca.sistema.indicadores.repositories.PersonasAfectadasRepository;
+import com.uca.idhuca.sistema.indicadores.repositories.RegistroEventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.idhuca.sistema.indicadores.controllers.dto.CatalogoDto;
@@ -153,6 +153,31 @@ public class CtrlPersonasAfectadas {
 			return new ResponseEntity<SuperGenericResponse>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			log.info("[" + key + "] ------ Fin de servicio '/update'");
+		}
+	}
+
+	@PostMapping(value = "/add/{eventoId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SuperGenericResponse> addPersonaAfectada(
+			@PathVariable Long eventoId,
+			@RequestBody PersonaAfectadaDTO personaDTO) {
+		String key = "ADMIN";
+
+		try {
+			key = utils.obtenerUsuarioAutenticado().getEmail();
+			log.info("[{}] ------ Inicio de servicio '/addPersonaAfectada' para eventoId: {}", key, eventoId);
+
+			// Llamar al servicio para agregar la persona afectada
+			SuperGenericResponse response = personasaAfectadasServices.addPersonaAfectada(eventoId, personaDTO);
+
+			log.info("[{}] Persona afectada agregada correctamente al evento con ID: {}", key, eventoId);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<>(new SuperGenericResponse(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			log.error("[{}] Error al agregar persona afectada: {}", key, e.getMessage(), e);
+			return new ResponseEntity<>(new SuperGenericResponse(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			log.info("[{}] ------ Fin de servicio '/addPersonaAfectada'", key);
 		}
 	}
 	

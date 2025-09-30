@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -121,55 +122,56 @@ public class PersonasAfectadasImpl implements IPersonasAfectadas{
 		return new GenericEntityResponse<List<PersonaAfectada>>(OK, "Datos encontrados correctamente.", ls);
 	}
 
+	@Transactional
 	@Override
 	public SuperGenericResponse deletePerson(RegistroEventoDTO request) throws ValidationException {
-	    List<String> errorsList = validarDetelePersonByIDEvento(request);
-	    if (!errorsList.isEmpty()) {
-	        throw new ValidationException(ERROR, errorsList.get(0));
-	    }
+		List<String> errorsList = validarDetelePersonByIDEvento(request);
+		if (!errorsList.isEmpty()) {
+			throw new ValidationException(ERROR, errorsList.get(0));
+		}
 
-	    Usuario usuarioAutenticado = utils.obtenerUsuarioAutenticado();
-	    String key = usuarioAutenticado.getEmail();
+		Usuario usuarioAutenticado = utils.obtenerUsuarioAutenticado();
+		String key = usuarioAutenticado.getEmail();
 
-	    RegistroEvento evento = eventoRepository.findById(request.getId())
-	        .orElseThrow(() -> {
-	            log.info("[{}] No existe el evento con ID: {}", key, request.getId());
-	            return new ValidationException(ERROR, "No existe el evento con ID: " + request.getId());
-	        });
-	    
-	    log.info("[{}] Request válido Cantidad de persopnas {}", key, evento.getPersonasAfectadas().size());
+		RegistroEvento evento = eventoRepository.findById(request.getId())
+				.orElseThrow(() -> {
+					log.info("[{}] No existe el evento con ID: {}", key, request.getId());
+					return new ValidationException(ERROR, "No existe el evento con ID: " + request.getId());
+				});
 
-	    if(evento.getCantidadPersonas() == 1) {
-	    	log.info("[{}] No es posible eliminar la única persona de un registro de personas vulneradas.", key);
-	    	throw new ValidationException(ERROR, "No es posible eliminar la única persona de un registro de personas vulneradas.");
-	    }
-	    
-	    Set<Long> idsAEliminar = request.getPersonasAfectadas().stream()
-	        .map(PersonaAfectadaDTO::getId)
-	        .collect(Collectors.toSet());
+		Set<Long> idsAEliminar = request.getPersonasAfectadas().stream()
+				.map(PersonaAfectadaDTO::getId)
+				.collect(Collectors.toSet());
 
-	    log.info("[{}] Eliminando personas afectadas con IDs: {}", key, idsAEliminar);
+		// Verificar si después de eliminar quedarían 0 personas
+		if (evento.getPersonasAfectadas().size() <= idsAEliminar.size()) {
+			log.info("[{}] No es posible eliminar todas las personas de un registro.", key);
+			throw new ValidationException(ERROR, "No es posible eliminar todas las personas de un registro.");
+		}
 
-	    for (Long id : idsAEliminar) {
-	        PersonaAfectada persona = personaRepository.findById(id)
-	            .orElseThrow(() -> {
-	                log.info("[{}] No existe la persona afectada con ID: {}", key, id);
-	                return new ValidationException(ERROR, "No existe la persona afectada con ID: " + id);
-	            });
+		log.info("[{}] Eliminando personas afectadas con IDs: {}", key, idsAEliminar);
 
-	        personaRepository.delete(persona);
-	    }
-	    
-	    evento.setCantidadPersonas(evento.getCantidadPersonas() - 1);
-	    eventoRepository.save(evento);
-	    log.info("[{}] Cantidad de personas afectadas actualizada correctamente", key);
-	    
-	    eventoUseCase.actualizarFlagsDerechosPorEvento(evento.getId());
-	    AuditoriaRegistroEventoDTO auditoria = utils.fromRegistroEvento(evento);
-	    auditoriaService.add(utils.crearDto(usuarioAutenticado, DELETE, auditoria));
+		// Eliminar las personas de la colección y de la base de datos
+		evento.getPersonasAfectadas().removeIf(persona -> {
+			if (idsAEliminar.contains(persona.getId())) {
+				persona.setEvento(null); // Desvincula la relación
+				personaRepository.delete(persona);
+				return true;
+			}
+			return false;
+		});
 
-	    log.info("[{}] Personas afectadas eliminadas correctamente", key);
-	    return new SuperGenericResponse(OK, "Personas afectadas eliminadas correctamente");
+		// Actualizar cantidad de personas
+		evento.setCantidadPersonas(evento.getPersonasAfectadas().size());
+		eventoRepository.save(evento);
+
+		log.info("[{}] Cantidad de personas afectadas actualizada a: {}", key, evento.getPersonasAfectadas().size());
+
+		eventoUseCase.actualizarFlagsDerechosPorEvento(evento.getId());
+		AuditoriaRegistroEventoDTO auditoria = utils.fromRegistroEvento(evento);
+		auditoriaService.add(utils.crearDto(usuarioAutenticado, DELETE, auditoria));
+
+		return new SuperGenericResponse(OK, "Personas afectadas eliminadas correctamente");
 	}
 
 	@Override
@@ -317,5 +319,54 @@ public class PersonasAfectadasImpl implements IPersonasAfectadas{
 	    eventoUseCase.actualizarFlagsDerechosPorEvento(evento.getId());
 
 	    return new SuperGenericResponse(OK, "Actualizado correctamente");
+	}
+
+	@Override
+	public SuperGenericResponse addPersonaAfectada(Long eventoId, PersonaAfectadaDTO personaDTO) throws ValidationException {
+		Usuario usuarioAutenticado = utils.obtenerUsuarioAutenticado();
+		String key = usuarioAutenticado.getEmail();
+
+		RegistroEvento evento = eventoRepository.findById(eventoId)
+				.orElseThrow(() -> {
+					log.info("[{}] No existe el evento con ID: {}", key, eventoId);
+					return new ValidationException(ERROR, "No existe el evento con ID: " + eventoId);
+				});
+
+		log.info("[{}] Evento encontrado correctamente", key);
+
+		PersonaAfectada nuevaPersona = new PersonaAfectada();
+		nuevaPersona.setNombre(personaDTO.getNombre());
+		nuevaPersona.setEdad(personaDTO.getEdad());
+		nuevaPersona.setGenero(personaDTO.getGenero());
+		nuevaPersona.setNacionalidad(personaDTO.getNacionalidad());
+		nuevaPersona.setDepartamentoResidencia(personaDTO.getDepartamentoResidencia());
+		nuevaPersona.setMunicipioResidencia(personaDTO.getMunicipioResidencia());
+		nuevaPersona.setTipoPersona(personaDTO.getTipoPersona());
+		nuevaPersona.setEstadoSalud(personaDTO.getEstadoSalud());
+		nuevaPersona.setEvento(evento);
+
+		if (personaDTO.getDerechosVulnerados() != null) {
+			List<DerechoVulnerado> derechos = personaDTO.getDerechosVulnerados().stream().map(dv -> {
+				DerechoVulnerado derecho = new DerechoVulnerado();
+				derecho.setDerecho(dv.getDerecho());
+				derecho.setPersonaAfectada(nuevaPersona);
+				return derecho;
+			}).collect(Collectors.toList());
+			nuevaPersona.setDerechosVulnerados(derechos);
+		}
+
+		eventoUseCase.actualizarDatosPersonalesDesdeDTO(nuevaPersona, personaDTO, true);
+		personaRepository.save(nuevaPersona);
+
+		// Actualizar la cantidad de personas en el evento
+		if (evento.getCantidadPersonas() == null) {
+			evento.setCantidadPersonas(1);
+		} else {
+			evento.setCantidadPersonas(evento.getCantidadPersonas() + 1);
+		}
+		eventoRepository.save(evento);
+
+		log.info("[{}] Persona afectada agregada correctamente al evento con ID: {}", key, eventoId);
+		return new SuperGenericResponse(OK, "Persona afectada agregada correctamente");
 	}
 }

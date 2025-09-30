@@ -16,4 +16,8 @@ public interface PersonasAfectadasRepository extends JpaRepository<PersonaAfecta
 	
 	@Query("SELECT p.evento FROM PersonaAfectada p WHERE p = :persona")
 	RegistroEvento findEventoByPersona(@Param("persona") PersonaAfectada persona);
+
+
+	@Query("SELECT COUNT(p) FROM PersonaAfectada p WHERE p.evento = :evento")
+	int countByEvento(@Param("evento") RegistroEvento evento);
 }
