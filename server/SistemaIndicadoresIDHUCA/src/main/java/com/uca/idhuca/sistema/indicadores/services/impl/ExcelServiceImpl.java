@@ -54,25 +54,56 @@ public class ExcelServiceImpl implements IExcel {
         // Hoja: Violencia
         Map<Integer, Integer> anchosViolencia = new HashMap<>();
         anchosViolencia.put(0, 5000);
+        anchosViolencia.put(1, 5000);
+        anchosViolencia.put(2, 5000);
+        anchosViolencia.put(3, 5000);
+        anchosViolencia.put(4, 5000);
         anchosViolencia.put(5, 20000);
+        anchosViolencia.put(6, 5000);
+        anchosViolencia.put(7, 8000);
+        anchosViolencia.put(8, 5000);
+        anchosViolencia.put(9, 5000);
+        anchosViolencia.put(10, 15000);
         MAPA_ANCHOS_COLUMNAS.put("Violencia", anchosViolencia);
 
         // Hoja: Detención e Integridad
         Map<Integer, Integer> anchosDetencion = new HashMap<>();
         anchosDetencion.put(0, 5000);
+        anchosDetencion.put(1, 5000);
+        anchosDetencion.put(2, 5000);
+        anchosDetencion.put(3, 5000);
+        anchosDetencion.put(4, 5000);
+        anchosDetencion.put(5, 5000);
+        anchosDetencion.put(6, 5000);
+        anchosDetencion.put(7, 5000);
+        anchosDetencion.put(8, 5000);
         anchosDetencion.put(9, 20000);
         MAPA_ANCHOS_COLUMNAS.put("Detencion e Integridad", anchosDetencion);
 
         // Hoja: Expresión y Censura
         Map<Integer, Integer> anchosExpresion = new HashMap<>();
         anchosExpresion.put(0, 5000);
+        anchosExpresion.put(1, 5000);
+        anchosExpresion.put(2, 5000);
+        anchosExpresion.put(3, 5000);
+        anchosExpresion.put(4, 5000);
+        anchosExpresion.put(5, 5000);
+        anchosExpresion.put(6, 5000);
         anchosExpresion.put(7, 15000);
         MAPA_ANCHOS_COLUMNAS.put("Expresion y Censura", anchosExpresion);
 
         // Hoja: Acceso a Justicia
         Map<Integer, Integer> anchosJusticia = new HashMap<>();
         anchosJusticia.put(0, 5000);
+        anchosJusticia.put(1, 5000);
+        anchosJusticia.put(2, 5000);
+        anchosJusticia.put(3, 5000);
+        anchosJusticia.put(4, 5000);
+        anchosJusticia.put(5, 5000);
+        anchosJusticia.put(6, 5000);
+        anchosJusticia.put(7, 5000);
         anchosJusticia.put(8, 15000);
+        anchosJusticia.put(9, 15000);
         MAPA_ANCHOS_COLUMNAS.put("Acceso a Justicia", anchosJusticia);
     }
     
@@ -166,8 +197,6 @@ public class ExcelServiceImpl implements IExcel {
         row.setHeightInPoints(maxLines * sheet.getDefaultRowHeightInPoints());
     }
 
-
-    
     @Override
     public void generarExcel(List<RegistroEvento> datos, OutputStream outputStream, String key) throws Exception {
         log.info("[{}] Inicio de creación de Excel.", key);
@@ -243,7 +272,6 @@ public class ExcelServiceImpl implements IExcel {
             ajustarAlturaDinamica(row, sheet);
         }
     }
-
 
     public void crearHojaPersonasAfectadas(SXSSFWorkbook workbook, List<RegistroEvento> registros) {
         SXSSFSheet sheet = workbook.createSheet("Personas Afectadas");
