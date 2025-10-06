@@ -48,6 +48,63 @@ const VistaRegistrosDinamica = ({
     navigate("/filter", { state: { derechoId, filtros } }); // Pasamos derechoId y filtros en el state
   };
 
+  // Exportar Excel
+  const exportExcel = async () => {
+    try {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/idhuca-indicadores/api/srv/';
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        throw new Error('No hay token de autenticación');
+      }
+
+      // Construir requestBody con paginacion vacía
+      const requestBody = {
+        derecho: {
+          codigo: derechoId,
+          descripcion: ''
+        },
+        filtros: {
+          ...filtros,
+          paginacion: {}
+        }
+      };
+
+      const response = await fetch(`${API_URL}registros/exportData`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Error al exportar datos');
+      }
+
+      const blob = await response.blob();
+
+      // Inferir nombre de archivo por fecha
+      const now = new Date();
+      const filename = `registros_${derechoId || 'all'}_${now.toISOString().slice(0,19).replace(/[:T]/g,'-')}.xlsx`;
+
+      // Crear enlace de descarga
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error exporting excel:', err);
+      // Opcional: mostrar alerta al usuario
+      alert(err.message || 'Error al exportar');
+    }
+  };
+
   const handleAction = (action, item, index) => {
     switch (action) {
       case "view":
@@ -172,6 +229,18 @@ const VistaRegistrosDinamica = ({
                     style={{ width: "12px", height: "12px" }}
                   ></span>
                 )}
+              </button>
+            )}
+            {/* Botón Exportar */}
+            {hasPermission('filter') && (
+              <button
+                className="btn btn-success d-flex align-items-center gap-2"
+                onClick={exportExcel}
+                style={{ fontSize: '14px' }}
+                title="Exportar Excel"
+              >
+                <i className="bi bi-file-earmark-excel-fill"></i>
+                <span>Exportar</span>
               </button>
             )}
           </div>
