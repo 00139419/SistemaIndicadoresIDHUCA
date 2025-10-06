@@ -120,6 +120,10 @@ public class UserImpl implements IUser {
 				.orElseThrow(() -> new NotFoundException(ERROR, "Usuario no existe."));
 		log.info("[{}] Usuario encontrado correctamente.", key);
 
+		if(usuario.getEmail().equalsIgnoreCase("administrador@uca.edu.sv")) {
+			throw new ValidationException(ERROR, "No es posible eliminar el usuario adminitrador ya que varios procesos dependen de él.");
+		}
+		
 		userRepository.delete(usuario);
 		log.info("[{}] Usuario eliminado correctamente.", key);
 

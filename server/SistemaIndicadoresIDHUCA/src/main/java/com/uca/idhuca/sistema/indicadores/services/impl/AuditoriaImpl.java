@@ -133,10 +133,6 @@ public class AuditoriaImpl implements IAuditoria {
 				tablaAfectada = "Archivo de una ficha del derecho";
 			}
 			
-			if(tablaAfectada.equalsIgnoreCase("BackupConfig")) {
-				tablaAfectada = "Backup";
-			}
-			
 			if(tablaAfectada.equalsIgnoreCase("recoverypasswords")) {
 				tablaAfectada = "Recuperacion de contraseña";
 			}

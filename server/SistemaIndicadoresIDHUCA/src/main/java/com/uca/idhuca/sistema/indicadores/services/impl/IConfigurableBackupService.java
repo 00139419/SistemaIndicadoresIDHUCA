@@ -2,6 +2,7 @@ package com.uca.idhuca.sistema.indicadores.services.impl;
 
 import com.uca.idhuca.sistema.indicadores.backup.config.BackupConfig;
 import com.uca.idhuca.sistema.indicadores.backup.config.ScheduleConfig;
+import com.uca.idhuca.sistema.indicadores.models.Backup;
 import com.uca.idhuca.sistema.indicadores.models.Usuario;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
@@ -9,6 +10,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.SimpleTriggerContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -267,6 +270,7 @@ public class IConfigurableBackupService {
     }
 
     public void realizarBackup(String scheduleName) {
+    	Date fechaActual = new Date();
         if (config == null || !config.isEnabled()) {
             logger.warn("Backup cancelado: sistema deshabilitado");
             return;
@@ -340,12 +344,22 @@ public class IConfigurableBackupService {
 
                 updateLastExecution(scheduleName);
 
-                Usuario u = new Usuario();
+                Usuario u = utils.obtenerUsuarioSystema(); 
+                Backup b = new Backup();
                 
-                u.setNombre("Sistema interno");
-                u.setEmail("SYSTEM");
+                LocalDateTime fechaLocal = fechaActual.toInstant()
+                        .atZone(ZoneId.of("America/El_Salvador"))
+                        .toLocalDateTime();
+
+                // Formatear como yyyyMMddHHmmss
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+                String fechaFormateada = fechaLocal.format(formatter);
+
                 
-                auditoriaService.add(utils.crearDto(u, CREAR, backupConfig));
+                b.setCodigo(fechaFormateada);
+                b.setDescripcion("Backup realizado exitosamente.");
+                
+                auditoriaService.add(utils.crearDto(u, CREAR, b));
 
                 // Opcional: Limpiar backups antiguos
                 cleanupOldBackups(backupDirectory, scheduleName);
