@@ -19,6 +19,7 @@ import com.uca.idhuca.sistema.indicadores.models.Auditoria;
 import com.uca.idhuca.sistema.indicadores.repositories.AuditoriaRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.custom.AuditoriaRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
+import com.uca.idhuca.sistema.indicadores.services.IParametrosSistema;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
@@ -40,6 +41,9 @@ public class AuditoriaImpl implements IAuditoria {
 	private AuditoriaRepository auditoriaRepository;
 	
 	@Autowired AuditoriaRepositoryCustom auditoriaRepositoryCustom;
+	
+	@Autowired
+	private IParametrosSistema parametrosServices;
 
 	@Autowired
 	private ObjectMapper objectMapper; // Asegúrate de tenerlo como @Bean o usar new ObjectMapper() si prefieres.
@@ -151,8 +155,16 @@ public class AuditoriaImpl implements IAuditoria {
 			
 			auditoria.setDescripcion(descripcion);
 
-			Auditoria auditoriaSaved = auditoriaRepository.save(auditoria);
-			log.info("[{}] Auditoria creada correctamente: {}", key, mapper.writeValueAsString(auditoriaSaved));
+			boolean esAuditoriaActiva = parametrosServices.getOne("auditoria_activa?").getEntity().getValor().equalsIgnoreCase("Si") ? true : false;
+			
+			log.info("[{}] Auditoria activa? : {}", key, esAuditoriaActiva);
+			
+			if(esAuditoriaActiva) {
+				Auditoria auditoriaSaved = auditoriaRepository.save(auditoria);
+				log.info("[{}] Auditoria creada correctamente: {}", key, mapper.writeValueAsString(auditoriaSaved));
+			} else {
+				log.info("[{}] No se guardo auditoria porque esta desactivada.", key);
+			}
 
 			return new SuperGenericResponse(OK, "Auditoría registrada correctamente.");
 			
