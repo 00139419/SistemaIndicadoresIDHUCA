@@ -3,6 +3,9 @@ package com.uca.idhuca.sistema.indicadores.controllers;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ROOT_CONTEXT;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,32 +48,43 @@ public class CtrlExportData {
 	
 	@PostMapping(value = "/exportData", consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<?> exportData(@RequestBody CatalogoDto request, HttpServletResponse response) throws ValidationException {
-		List<RegistroEvento> datos = null;
-		String key = "ADMIN";
-		
-		try {
-			key = utils.obtenerUsuarioAutenticado().getEmail();
-			log.info("[" + key + "] ------ Inicio de servicio '/exportData' ");
-			
-			// Configurar cabeceras para forzar descarga
-			response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-			response.setHeader("Content-Disposition", "attachment; filename=reporte.xlsx");
-			
-			//Aca es donde tengo la lista de datos a exportar como excel
-			datos = registrosServices.getAllByDerecho(request).getEntity();
-			
-			// Generar el Excel en streaming y escribirlo al response
+	    List<RegistroEvento> datos = null;
+	    String key = "ADMIN";
+
+	    try {
+	        key = utils.obtenerUsuarioAutenticado().getEmail();
+	        log.info("[" + key + "] ------ Inicio de servicio '/exportData' ");
+
+	        // Formatear la fecha para el nombre del archivo
+	        String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+	        String nombreArchivo = "reporte_" + fecha + ".xlsx";
+
+	        // Configurar cabeceras para forzar descarga con nombre dinámico
+	        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	        response.setHeader("Content-Disposition", "attachment; filename=" + nombreArchivo);
+
+	        try {
+	        	// Obtener datos a exportar
+		        datos = registrosServices.getAllByDerecho(request).getEntity();
+			} catch (ValidationException e) {
+				datos = Arrays.asList();
+			}
+
+	        // Generar el Excel en streaming y escribirlo al response
 	        excelService.generarExcel(datos, response.getOutputStream(), key);
-			
-			return ResponseEntity.ok().build(); 
-		} catch (ValidationException e) {
-			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			log.info("stacktrace: ", e);
-			e.printStackTrace();
-			return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-		} finally {
-			log.info("[" + key + "] ------ Fin de servicio '/exportData'");
-		}
+
+	        return ResponseEntity.ok().build();
+	    } catch (ValidationException e) {
+	        return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(
+	                new GenericEntityResponse<>(ERROR, e.getMensaje()), HttpStatus.BAD_REQUEST);
+	    } catch (Exception e) {
+	        log.info("stacktrace: ", e);
+	        e.printStackTrace();
+	        return new ResponseEntity<GenericEntityResponse<List<RegistroEvento>>>(
+	                new GenericEntityResponse<>(ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+	    } finally {
+	        log.info("[" + key + "] ------ Fin de servicio '/exportData'");
+	    }
 	}
+
 }
