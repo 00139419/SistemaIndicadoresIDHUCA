@@ -12,6 +12,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 @Slf4j
 @Component
@@ -42,9 +43,9 @@ public class RequestFilter extends OncePerRequestFilter {
 
 	    log.info("============================== [Respuesta] ===============================");
 	    log.info("Status: {}", response.getStatus());
-
+	    
 	    // Evitar loguear archivos binarios
-	    if (!endpoint.startsWith("/indicadores/api/fichaDerecho/get/file") && !endpoint.startsWith("/idhuca-indicadores/api/srv/graphics/generate")  ) {
+	    if (!esRutaConArchivoPesado(endpoint)) {
 	        String responseBody = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
 	        if (!responseBody.isBlank()) {
 	            log.info("Body de la respuesta: {}", responseBody);
@@ -57,5 +58,15 @@ public class RequestFilter extends OncePerRequestFilter {
 
 	    response.copyBodyToResponse();
 	}
-
+	
+	String[] rutasConArchivosPesados = {
+    		"/indicadores/api/srv/fichaDerecho/get/file",
+    		"/idhuca-indicadores/api/srv/graphics/generate",
+    		"/idhuca-indicadores/api/srv/registros/exportData"
+    		};
+	
+	boolean esRutaConArchivoPesado(String ruta) {
+	    return Arrays.stream(rutasConArchivosPesados)
+	                 .anyMatch(ruta::startsWith);
+	}
 }

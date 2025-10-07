@@ -75,6 +75,14 @@ public class Utilidades {
                 .orElseThrow(() -> new ValidationException(Constantes.ERROR, "Usuario no encontrado con email: " + email));
     }
     
+    /**
+     * Obtiene el usuario "Systema" para los proceso en segundo plano.
+     */
+    public Usuario obtenerUsuarioSystema() throws ValidationException {
+       return usuarioRepository.findByEmail("administrador@uca.edu.sv")
+                .orElseThrow(() -> new ValidationException(Constantes.ERROR, "Usuario no encontrado con email: " + "administrador@uca.edu.sv"));
+    }
+    
     public <E> AuditoriaDto<E> crearDto(Usuario usuario, String operacion, E entidad) {
         AuditoriaDto<E> dto = new AuditoriaDto<>();
         dto.setUsuario(usuario);

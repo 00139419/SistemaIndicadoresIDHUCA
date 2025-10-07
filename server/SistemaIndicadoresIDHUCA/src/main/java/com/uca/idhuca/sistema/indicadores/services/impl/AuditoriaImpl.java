@@ -21,6 +21,7 @@ import com.uca.idhuca.sistema.indicadores.models.Auditoria;
 import com.uca.idhuca.sistema.indicadores.repositories.AuditoriaRepository;
 import com.uca.idhuca.sistema.indicadores.repositories.custom.AuditoriaRepositoryCustom;
 import com.uca.idhuca.sistema.indicadores.services.IAuditoria;
+import com.uca.idhuca.sistema.indicadores.services.IParametrosSistema;
 import com.uca.idhuca.sistema.indicadores.utils.Utilidades;
 
 import static com.uca.idhuca.sistema.indicadores.utils.Constantes.ERROR;
@@ -42,8 +43,12 @@ public class AuditoriaImpl implements IAuditoria {
 	private AuditoriaRepository auditoriaRepository;
 	
 	@Autowired AuditoriaRepositoryCustom auditoriaRepositoryCustom;
+  
 	@Autowired
 	private ParametrosSistemaRepository ParametrosSistemaRepository;
+	
+	@Autowired
+	private IParametrosSistema parametrosServices;
 
 	@Autowired
 	private ObjectMapper objectMapper; // Asegúrate de tenerlo como @Bean o usar new ObjectMapper() si prefieres.
@@ -93,7 +98,7 @@ public class AuditoriaImpl implements IAuditoria {
 
 	public <E> SuperGenericResponse add(AuditoriaDto<E> dto) throws ValidationException {
 		// Verificar si la auditoría está activa
-		ParametroSistema parametro = ParametrosSistemaRepository.findByClave("auditoria_activa");
+		ParametroSistema parametro = ParametrosSistemaRepository.findByClave("auditoria_activa?");
 		if (parametro != null && "false".equalsIgnoreCase(parametro.getValor())) {
 			log.debug("Auditoría desactivada por parámetro del sistema");
 			return new SuperGenericResponse(OK, "Auditoría desactivada");
@@ -140,10 +145,6 @@ public class AuditoriaImpl implements IAuditoria {
 				tablaAfectada = "Archivo de una ficha del derecho";
 			}
 			
-			if(tablaAfectada.equalsIgnoreCase("BackupConfig")) {
-				tablaAfectada = "Backup";
-			}
-			
 			if(tablaAfectada.equalsIgnoreCase("recoverypasswords")) {
 				tablaAfectada = "Recuperacion de contraseña";
 			}
@@ -162,8 +163,16 @@ public class AuditoriaImpl implements IAuditoria {
 			
 			auditoria.setDescripcion(descripcion);
 
-			Auditoria auditoriaSaved = auditoriaRepository.save(auditoria);
-			log.info("[{}] Auditoria creada correctamente: {}", key, mapper.writeValueAsString(auditoriaSaved));
+			boolean esAuditoriaActiva = parametrosServices.getOne("auditoria_activa?").getEntity().getValor().equalsIgnoreCase("Si") ? true : false;
+			
+			log.info("[{}] Auditoria activa? : {}", key, esAuditoriaActiva);
+			
+			if(esAuditoriaActiva) {
+				Auditoria auditoriaSaved = auditoriaRepository.save(auditoria);
+				log.info("[{}] Auditoria creada correctamente: {}", key, mapper.writeValueAsString(auditoriaSaved));
+			} else {
+				log.info("[{}] No se guardo auditoria porque esta desactivada.", key);
+			}
 
 			return new SuperGenericResponse(OK, "Auditoría registrada correctamente.");
 			

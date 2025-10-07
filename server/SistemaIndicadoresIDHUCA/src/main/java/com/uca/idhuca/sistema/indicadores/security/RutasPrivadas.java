@@ -6,7 +6,8 @@ public class RutasPrivadas {
 	public static final String[] RUTAS_COMPARTIDAS  = {
 	       Constantes.ROOT_CONTEXT +  "user/**",
 	       Constantes.ROOT_CONTEXT +  "auditoria/**",
-	       Constantes.ROOT_CONTEXT +  "fichaDerecho/**"
+	       Constantes.ROOT_CONTEXT +  "fichaDerecho/**",
+	       Constantes.ROOT_CONTEXT +  "registros/**"
 	    };
 	
 	
