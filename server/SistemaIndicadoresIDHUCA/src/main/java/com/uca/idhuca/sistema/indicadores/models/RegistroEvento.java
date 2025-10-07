@@ -86,7 +86,8 @@ public class RegistroEvento {
 
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonaAfectada> personasAfectadas;
-    
+
+
     public RegistroEvento() {
     	super();
     }

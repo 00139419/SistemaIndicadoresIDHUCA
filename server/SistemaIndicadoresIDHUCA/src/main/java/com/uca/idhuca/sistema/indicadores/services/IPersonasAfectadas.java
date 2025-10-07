@@ -16,4 +16,6 @@ public interface IPersonasAfectadas {
 	SuperGenericResponse deletePerson(RegistroEventoDTO request) throws ValidationException;
 	SuperGenericResponse update(PersonaAfectadaDTO request) throws ValidationException;
 	GenericEntityResponse<PersonaAfectada> getOneById(PersonaAfectadaDTO request) throws ValidationException;
+
+	SuperGenericResponse addPersonaAfectada(Long eventoId, PersonaAfectadaDTO personaDTO) throws ValidationException;
 }
