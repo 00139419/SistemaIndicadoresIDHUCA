@@ -326,6 +326,15 @@ const SistemaParametros = () => {
     return backup.cronExpression || "Programación personalizada";
   };
 
+  const getAuditoriaStatus = () => {
+    const auditoriaParam = parametros.find(param => param.clave === 'auditoria_activa');
+    return auditoriaParam ? auditoriaParam.valor.toLowerCase() === 'true' : true;
+  };
+
+  const getAuditoriaParam = () => {
+    return parametros.find(param => param.clave === 'auditoria_activa');
+  };
+
   useEffect(() => {
     if (modalError) {
       const timer = setTimeout(() => setModalError(null), 3000);
@@ -338,14 +347,7 @@ const SistemaParametros = () => {
       className="d-flex flex-column"
       style={{ height: "calc(100vh - 160px)" }}
     >
-      {/* Header fijo */}
-      <div className="px-4 pt-1 pb-3 border-bottom bg-white">
-        <h1 className="mb-0 fs-2 fw-bold text-center">
-          <i className="bi bi-gear-fill me-2 text-primary"></i>
-          Parámetros del Sistema
-        </h1>
-      </div>
-
+      
       {/* Contenido con scroll */}
       <div
         className="flex-grow-1 px-4 py-3"
@@ -650,6 +652,105 @@ const SistemaParametros = () => {
             </div>
           )}
         </div>
+
+        {/* Sección de Auditoría */}
+        <div className="mb-6">
+          <div className="mb-3">
+            <div className="d-flex justify-content-between align-items-center mb-0">
+              <h3 className="mb-0">
+                <i className="bi bi-shield-shaded me-2 text-warning"></i>
+                Control de Auditoría
+              </h3>
+              <div className="d-flex align-items-center gap-3">
+                <span className={`badge ${getAuditoriaStatus() ? 'bg-success' : 'bg-danger'} fs-6`}>
+                  <i className={`bi ${getAuditoriaStatus() ? 'bi-shield-check' : 'bi-shield-exclamation'} me-1`}></i>
+                  {getAuditoriaStatus() ? 'ACTIVADA' : 'DESACTIVADA'}
+                </span>
+                {getAuditoriaParam() && (
+                  <button
+                    className={`btn btn-sm ${getAuditoriaStatus() ? 'btn-outline-danger' : 'btn-outline-success'}`}
+                    onClick={() => {
+                      const auditoriaParam = getAuditoriaParam();
+                      setEditingParam(auditoriaParam);
+                      setUpdatedValues({
+                        clave: auditoriaParam.clave,
+                        valor: getAuditoriaStatus() ? 'false' : 'true',
+                      });
+                      setShowModal(true);
+                    }}
+                  >
+                    <i className={`bi ${getAuditoriaStatus() ? 'bi-toggle-off' : 'bi-toggle-on'} me-1`}></i>
+                    {getAuditoriaStatus() ? 'Desactivar' : 'Activar'}
+                  </button>
+                )}
+              </div>
+            </div>
+            
+            <div className="mb-3 small text-muted">
+              <i className="bi bi-info-circle me-1"></i>
+              {getAuditoriaStatus() 
+                ? "La auditoría está registrando todas las operaciones del sistema" 
+                : "⚠️ La auditoría está desactivada - No se están registrando las operaciones"
+              }
+            </div>
+          </div>
+
+          {/* Card informativa sobre auditoría */}
+          <div className={`card border-${getAuditoriaStatus() ? 'success' : 'warning'}`}>
+            <div className="card-body">
+              <div className="row align-items-center">
+                <div className="col-md-8">
+                  <h6 className="card-title mb-2">
+                    <i className="bi bi-clipboard-data me-2"></i>
+                    Estado del Sistema de Auditoría
+                  </h6>
+                  <p className="card-text small mb-0">
+                    {getAuditoriaStatus() 
+                      ? "El sistema está registrando todas las operaciones realizadas por los usuarios, incluyendo creación, modificación y eliminación de registros."
+                      : "⚠️ El sistema NO está registrando las operaciones. Se recomienda activar la auditoría para mantener el control de las actividades."
+                    }
+                  </p>
+                </div>
+                <div className="col-md-4 text-center">
+                  <i className={`bi ${getAuditoriaStatus() ? 'bi-shield-check' : 'bi-shield-exclamation'} display-4 text-${getAuditoriaStatus() ? 'success' : 'warning'}`}></i>
+                </div>
+              </div>
+              
+              {/* Información adicional */}
+              <div className="mt-3 pt-3 border-top">
+                <div className="row text-center">
+                  <div className="col-4">
+                    <div className="small text-muted">
+                      <i className="bi bi-person-check me-1"></i>
+                      <div>Control de Usuarios</div>
+                      <span className={`badge badge-sm ${getAuditoriaStatus() ? 'bg-success' : 'bg-secondary'}`}>
+                        {getAuditoriaStatus() ? 'Activo' : 'Inactivo'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="small text-muted">
+                      <i className="bi bi-file-text me-1"></i>
+                      <div>Registro de Operaciones</div>
+                      <span className={`badge badge-sm ${getAuditoriaStatus() ? 'bg-success' : 'bg-secondary'}`}>
+                        {getAuditoriaStatus() ? 'Activo' : 'Inactivo'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="small text-muted">
+                      <i className="bi bi-clock-history me-1"></i>
+                      <div>Historial de Cambios</div>
+                      <span className={`badge badge-sm ${getAuditoriaStatus() ? 'bg-success' : 'bg-secondary'}`}>
+                        {getAuditoriaStatus() ? 'Activo' : 'Inactivo'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Modal de edición de parámetros */}
@@ -682,6 +783,14 @@ const SistemaParametros = () => {
                   {modalError}
                 </div>
               )}
+              
+              {editingParam?.clave === 'auditoria_activa' && (
+                <div className="alert alert-info py-2 small mb-3">
+                  <i className="bi bi-info-circle me-2"></i>
+                  <strong>Auditoría del Sistema:</strong> Este parámetro controla si se registran todas las operaciones del sistema.
+                </div>
+              )}
+              
               <div className="mb-3">
                 <label className="form-label">
                   <i className="bi bi-key me-1"></i>Clave
@@ -693,23 +802,51 @@ const SistemaParametros = () => {
                   disabled
                 />
               </div>
+              
+              {editingParam?.descripcion && (
+                <div className="mb-3">
+                  <label className="form-label">
+                    <i className="bi bi-info-circle me-1"></i>Descripción
+                  </label>
+                  <div className="form-control-plaintext small text-muted">
+                    {editingParam.descripcion}
+                  </div>
+                </div>
+              )}
+              
               <div className="mb-3">
                 <label className="form-label">
                   <i className="bi bi-tag me-1"></i>Valor
                 </label>
-                <textarea
-                  className="form-control"
-                  value={updatedValues.valor}
-                  onChange={(e) =>
-                    setUpdatedValues({
-                      ...updatedValues,
-                      valor: e.target.value,
-                    })
-                  }
-                  rows={6}
-                  style={{ resize: "vertical" }}
-                  required
-                />
+                {editingParam?.clave === 'auditoria_activa' ? (
+                  <select
+                    className="form-select"
+                    value={updatedValues.valor}
+                    onChange={(e) =>
+                      setUpdatedValues({
+                        ...updatedValues,
+                        valor: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="true">✅ Activada (true)</option>
+                    <option value="false">❌ Desactivada (false)</option>
+                  </select>
+                ) : (
+                  <textarea
+                    className="form-control"
+                    value={updatedValues.valor}
+                    onChange={(e) =>
+                      setUpdatedValues({
+                        ...updatedValues,
+                        valor: e.target.value,
+                      })
+                    }
+                    rows={6}
+                    style={{ resize: "vertical" }}
+                    required
+                  />
+                )}
               </div>
             </div>
             <div className="modal-footer">

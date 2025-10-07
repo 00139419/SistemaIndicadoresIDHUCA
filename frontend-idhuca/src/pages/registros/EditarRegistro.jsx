@@ -530,10 +530,6 @@ const handleAgregarPersonaNueva = useCallback(async (persona, index) => {
         : null
     };
 
-    console.log("=== CREANDO NUEVA PERSONA ===");
-    console.log("Payload:", JSON.stringify(payload, null, 2));
-
-    // CORRECCIÓN: URL base debe incluir el /idhuca-indicadores/api/srv/ completo
     const url = `http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/add/${evento?.id}`;
     console.log("URL de la petición:", url);
 
@@ -546,8 +542,6 @@ const handleAgregarPersonaNueva = useCallback(async (persona, index) => {
       body: JSON.stringify(payload),
     });
 
-    console.log("=== RESPUESTA ===");
-    console.log("Status:", response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
