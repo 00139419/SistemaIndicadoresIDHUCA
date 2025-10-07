@@ -72,6 +72,16 @@ public class ParametrosSistemaImpl implements IParametrosSistema {
 
 		String clave = request.getClave();
 
+		// Validación específica para auditoria_activa
+		if (clave.equalsIgnoreCase("auditoria_activa")) {
+			String valor = request.getValor().toLowerCase();
+			if (!valor.equals("true") && !valor.equals("false")) {
+				throw new ValidationException(ERROR, "El valor para auditoria_activa debe ser 'true' o 'false'");
+			}
+		}
+
+		// Validaciones existentes para otros parámetros
+
 		if (clave.equalsIgnoreCase("max_tiempo_inactividad") ||
 				clave.equalsIgnoreCase("max_intentos_pregunta_seguridad") ||
 				clave.equalsIgnoreCase("tiempo_de_vida_de_sesion")) {

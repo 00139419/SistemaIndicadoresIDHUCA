@@ -2,6 +2,8 @@ package com.uca.idhuca.sistema.indicadores.services.impl;
 
 import java.util.List;
 
+import com.uca.idhuca.sistema.indicadores.models.ParametroSistema;
+import com.uca.idhuca.sistema.indicadores.repositories.ParametrosSistemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,9 @@ public class AuditoriaImpl implements IAuditoria {
 	private AuditoriaRepository auditoriaRepository;
 	
 	@Autowired AuditoriaRepositoryCustom auditoriaRepositoryCustom;
+  
+	@Autowired
+	private ParametrosSistemaRepository ParametrosSistemaRepository;
 	
 	@Autowired
 	private IParametrosSistema parametrosServices;
@@ -92,6 +97,13 @@ public class AuditoriaImpl implements IAuditoria {
 
 
 	public <E> SuperGenericResponse add(AuditoriaDto<E> dto) throws ValidationException {
+		// Verificar si la auditoría está activa
+		ParametroSistema parametro = ParametrosSistemaRepository.findByClave("auditoria_activa?");
+		if (parametro != null && "false".equalsIgnoreCase(parametro.getValor())) {
+			log.debug("Auditoría desactivada por parámetro del sistema");
+			return new SuperGenericResponse(OK, "Auditoría desactivada");
+		}
+
 		Auditoria auditoria = new Auditoria();
 		
 		String key = "ADMIN";
