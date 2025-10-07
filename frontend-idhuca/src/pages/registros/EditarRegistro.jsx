@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,  useCallback } from "react";
 import { Tooltip } from "primereact/tooltip";
 import { useParams, useNavigate } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
@@ -26,6 +26,7 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 
 const EditarRegistro = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const { id } = useParams();
   const location = useLocation();
   let { filtros, derechoId, categoriaEjeX } = location.state || {};
@@ -87,7 +88,11 @@ const EditarRegistro = () => {
 
   // Cargar catálogos y datos del evento
   useEffect(() => {
+    let isMounted = true;
+
     const cargarTodo = async () => {
+      if (!isMounted) return;
+
       try {
         setLoading(true);
         const [
@@ -186,17 +191,27 @@ const EditarRegistro = () => {
 
         console.log(evento);
       } catch (err) {
-        showResponseModal(
-          "error",
-          "Error",
-          `Error al cargar datos: ${err.message}`
-        );
+        if (isMounted) {
+          showResponseModal(
+            "error",
+            "Error",
+            `Error al cargar datos: ${err.message}`
+          );
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
+
     cargarTodo();
-  }, [id]);
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [id]); // Solo id como dependencia
 
   // Cargar municipios cuando cambia el departamento
   useEffect(() => {
@@ -217,7 +232,6 @@ const EditarRegistro = () => {
     }
   };
 
-  // Utilidad para transformar el evento recibido del backend al formato del formulario
   // Utilidad para transformar el evento recibido del backend al formato del formulario
   function transformarEventoParaEdicion(data) {
     return {
@@ -404,65 +418,231 @@ const EditarRegistro = () => {
       derecho: dv.derecho || dv, // Puede venir como objeto o solo el derecho
     }));
 
-  // Función para actualizar una persona afectada
-  const handleActualizarPersona = async (persona) => {
+  // Función original para actualizar persona existente
+const handleActualizarPersona = useCallback(async (persona, index) => {
+  const payload = {
+    id: persona.id,
+    nombre: persona.nombre,
+    genero: persona.genero,
+    edad: persona.edad,
+    nacionalidad: persona.nacionalidad,
+    departamentoResidencia: persona.departamentoResidencia,
+    municipioResidencia: persona.municipioResidencia,
+    tipoPersona: persona.tipoPersona,
+    estadoSalud: persona.estadoSalud,
+    derechosVulnerados: mapDerechosVulnerados(persona.derechosVulnerados),
+    violencia: persona.violencia || null,
+    detencionIntegridad: persona.detencionIntegridad || null,
+    expresionCensura: persona.expresionCensura || null,
+    accesoJusticia: persona.accesoJusticia
+      ? {
+          ...persona.accesoJusticia,
+          fechaDenuncia: persona.accesoJusticia.fechaDenuncia
+            ? new Date(persona.accesoJusticia.fechaDenuncia)
+                .toISOString()
+                .split("T")[0]
+            : null,
+        }
+      : null,
+    fechaHecho: evento.fechaHecho
+      ? new Date(evento.fechaHecho).toISOString().split("T")[0]
+      : null,
+  };
+
+  try {
+    console.log("Actualizando persona existente:", JSON.stringify(payload));
+    await updatePersonaAfectada(payload);
+    showResponseModal(
+      "success",
+      "¡Éxito!",
+      "Persona actualizada correctamente"
+    );
+  } catch (error) {
+    showResponseModal(
+      "error",
+      "Error",
+      `Error al actualizar persona: ${error.message}`
+    );
+  }
+}, [evento?.fechaHecho]);
+
+// Nueva función específica para agregar persona nueva
+const handleAgregarPersonaNueva = useCallback(async (persona, index) => {
+  try {
+    const token = localStorage.getItem("token") || localStorage.getItem("authToken");
+    
+    if (!token) {
+      console.error("No se encontró token en localStorage");
+      showResponseModal(
+        "error",
+        "Autenticación",
+        "No hay token de autenticación. Por favor, inicie sesión nuevamente."
+      );
+      return;
+    }
+
+    // Validaciones básicas antes de enviar
+    if (!persona.nombre || persona.nombre.trim() === "") {
+      showResponseModal(
+        "error",
+        "Datos incompletos",
+        "El nombre de la persona es obligatorio"
+      );
+      return;
+    }
+
+    if (!persona.derechosVulnerados || persona.derechosVulnerados.length === 0) {
+      showResponseModal(
+        "error",
+        "Datos incompletos",
+        "Debe seleccionar al menos un derecho vulnerado"
+      );
+      return;
+    }
+
     const payload = {
-      id: persona.id,
       nombre: persona.nombre,
-      genero: persona.genero,
       edad: persona.edad,
+      genero: persona.genero,
       nacionalidad: persona.nacionalidad,
       departamentoResidencia: persona.departamentoResidencia,
       municipioResidencia: persona.municipioResidencia,
       tipoPersona: persona.tipoPersona,
       estadoSalud: persona.estadoSalud,
-      derechosVulnerados: mapDerechosVulnerados(persona.derechosVulnerados),
-      violencia: persona.violencia || null,
-      detencionIntegridad: persona.detencionIntegridad || null,
-      expresionCensura: persona.expresionCensura || null,
-      accesoJusticia: persona.accesoJusticia
+      derechosVulnerados: Array.isArray(persona.derechosVulnerados)
+        ? persona.derechosVulnerados.map(d => ({
+            derecho: {
+              codigo: d.codigo,
+              descripcion: d.descripcion
+            }
+          }))
+        : [],
+      violencia: persona.violencia,
+      detencionIntegridad: persona.detencionIntegridad,
+      expresionCensura: persona.expresionCensura,
+      accesoJusticia: persona.accesoJusticia 
         ? {
             ...persona.accesoJusticia,
             fechaDenuncia: persona.accesoJusticia.fechaDenuncia
-              ? new Date(persona.accesoJusticia.fechaDenuncia)
-                  .toISOString()
-                  .split("T")[0]
-              : null,
+              ? new Date(persona.accesoJusticia.fechaDenuncia).toISOString()
+              : null
           }
-        : null,
-      fechaHecho: evento.fechaHecho
-        ? new Date(evento.fechaHecho).toISOString().split("T")[0]
-        : null,
+        : null
     };
-    try {
-      console.log("Actualizando persona: ", JSON.stringify(payload));
-      await updatePersonaAfectada(payload);
-      showResponseModal(
-        "success",
-        "¡Éxito!",
-        "Persona actualizada correctamente"
-      );
-    } catch (error) {
-      showResponseModal(
-        "error",
-        "Error",
-        `Error al actualizar persona: ${error.message}`
-      );
-    }
-  };
 
-  const handleEliminarPersona = async (personaId) => {
+    console.log("=== CREANDO NUEVA PERSONA ===");
+    console.log("Payload:", JSON.stringify(payload, null, 2));
+
+    // CORRECCIÓN: URL base debe incluir el /idhuca-indicadores/api/srv/ completo
+    const url = `http://localhost:8080/idhuca-indicadores/api/srv/registros/personasAfectadas/add/${evento?.id}`;
+    console.log("URL de la petición:", url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    console.log("=== RESPUESTA ===");
+    console.log("Status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch (e) {
+        errorData = { mensaje: `Error ${response.status}: ${response.statusText}` };
+      }
+      
+      throw new Error(errorData.mensaje || "Error al crear persona");
+    }
+
+    const data = await response.json();
+    console.log("Respuesta exitosa:", data);
+    
+    if (data.codigo === 0) {
+      // Recargar el evento completo para obtener los datos actualizados
+      try {
+        const eventoActualizado = await detailEvent(evento.id);
+        const eventoTransformado = transformarEventoParaEdicion(eventoActualizado.entity);
+        setEvento(eventoTransformado);
+        
+        // También recargar los municipios
+        const municipiosPorPersona = await Promise.all(
+          (eventoTransformado.personasAfectadas || []).map(async (p) => {
+            if (p.departamentoResidencia && p.departamentoResidencia.codigo) {
+              try {
+                const municipios = await getCatalogo({
+                  municipios: true,
+                  parentId: p.departamentoResidencia.codigo,
+                });
+                return municipios;
+              } catch {
+                return [];
+              }
+            }
+            return [];
+          })
+        );
+        setMunicipiosResidenciaList(municipiosPorPersona);
+        
+        showResponseModal(
+          "success",
+          "¡Éxito!",
+          "Persona agregada correctamente"
+        );
+      } catch (reloadError) {
+        console.error("Error al recargar datos:", reloadError);
+        showResponseModal(
+          "success",
+          "¡Éxito!",
+          "Persona agregada correctamente. Por favor, recargue la página para ver los cambios."
+        );
+      }
+    } else {
+      throw new Error(data.mensaje || "No se pudo crear la persona");
+    }
+  } catch (error) {
+    console.error("Error al crear persona:", error);
+    showResponseModal(
+      "error",
+      "Error",
+      `Error al crear persona: ${error.message}`
+    );
+  }
+}, [evento?.id]);
+
+  const handleEliminarPersona = async (personaId, index) => {
     showConfirmDialog(
       "¿Seguro que deseas eliminar esta persona afectada?",
       async () => {
         try {
-          await deletePersonaAfectada(evento.id, personaId);
+          // Si la persona tiene ID, eliminarla del backend
+          if (personaId) {
+            await deletePersonaAfectada(evento.id, personaId);
+          }
+
+          // En cualquier caso, eliminarla del estado local
           setEvento((prev) => ({
             ...prev,
             personasAfectadas: prev.personasAfectadas.filter(
-              (p) => p.id !== personaId
+              (_, idx) => idx !== index
             ),
           }));
+
+          // También eliminar su array de municipios
+          setMunicipiosResidenciaList((prev) => {
+            const newList = [...prev];
+            newList.splice(index, 1);
+            return newList;
+          });
+
           showResponseModal(
             "success",
             "¡Éxito!",
@@ -473,6 +653,33 @@ const EditarRegistro = () => {
         }
       }
     );
+  };
+
+  // 1. Primero, agrega esta nueva función después de handleEliminarPersona:
+  const handleAgregarPersona = () => {
+    const nuevaPersona = {
+      nombre: "",
+      edad: null,
+      genero: null,
+      nacionalidad: null,
+      departamentoResidencia: null,
+      municipioResidencia: null,
+      tipoPersona: null,
+      estadoSalud: null,
+      derechosVulnerados: [],
+      violencia: null,
+      detencionIntegridad: null,
+      expresionCensura: null,
+      accesoJusticia: null,
+    };
+
+    setEvento((prev) => ({
+      ...prev,
+      personasAfectadas: [...prev.personasAfectadas, nuevaPersona],
+    }));
+
+    // Agregar un nuevo array vacío para los municipios de la nueva persona
+    setMunicipiosResidenciaList((prev) => [...prev, []]);
   };
 
   if (loading || !evento) {
@@ -685,26 +892,60 @@ const EditarRegistro = () => {
         </div>
       </Card>
 
+      {/* Agregar el botón para agregar personas */}
+      <div className="flex justify-content-end my-3">
+        <Button
+          label="Agregar Persona"
+          icon="pi pi-user-plus"
+          className="p-button-primary"
+          onClick={handleAgregarPersona}
+        />
+      </div>
+
+      {/* Mapeo de personas */}
       {evento.personasAfectadas.map((persona, index) => (
         <Card
-          key={persona.id || index}
+          key={persona.id || `nueva-${index}`}
           className="mt-6 mb-4 border-round shadow-2"
         >
           <div className="flex justify-content-between align-items-center mb-3">
             <h5 className="m-0">👤 Persona #{index + 1}</h5>
-            <div>
-              <Button
-                icon="pi pi-save"
-                className="p-button-success p-button-text"
-                label="Actualizar persona"
-                onClick={() => handleActualizarPersona(persona)}
-                tooltip="Actualizar persona"
-              />
+            <div className="flex gap-2">
+              {!persona.id ? (
+    // Botón para agregar persona nueva
+    <Button
+      icon="pi pi-plus"
+      className="p-button-success p-button-text"
+      label="Agregar persona"
+      onClick={() => {
+        console.log("=== BOTÓN AGREGAR CLICKEADO ===");
+        console.log("Persona:", persona);
+        console.log("Index:", index);
+        handleAgregarPersonaNueva(persona, index);
+      }}
+      tooltip="Agregar nueva persona"
+    />
+  ) : (
+    // Botón para actualizar persona existente
+    <Button
+      icon="pi pi-save"
+      className="p-button-primary p-button-text"
+      label="Actualizar persona"
+      onClick={() => {
+        console.log("=== BOTÓN ACTUALIZAR CLICKEADO ===");
+        console.log("Persona:", persona);
+        console.log("Index:", index);
+        handleActualizarPersona(persona, index);
+      }}
+      tooltip="Actualizar persona existente"
+    />
+  )}
+              
               <Button
                 icon="pi pi-trash"
                 className="p-button-danger p-button-text ml-2"
                 label="Eliminar persona"
-                onClick={() => handleEliminarPersona(persona.id)}
+                onClick={() => handleEliminarPersona(persona.id, index)}
                 tooltip="Eliminar persona"
               />
             </div>
@@ -765,99 +1006,20 @@ const EditarRegistro = () => {
                     className="w-full"
                   />
                 </div>
-                {/* Departamento de residencia */}
-                <div className="field col-12 md:col-5">
-                  <label className="mb-2 d-block font-semibold">
-                    Departamento de residencia
-                  </label>
-                  <Dropdown
-                    value={persona.departamentoResidencia}
-                    onChange={(e) =>
-                      handleDepartamentoResidenciaChange(index, e.value)
-                    }
-                    options={departamentos}
-                    optionLabel="descripcion"
-                    placeholder="Seleccione un departamento"
-                    className="w-full"
-                    disabled={
-                      !(
-                        persona.nacionalidad &&
-                        persona.nacionalidad.codigo === "PAIS_9300"
-                      )
-                    }
-                    onClick={() => {
-                      console.log(
-                        `DepartamentoResidencia habilitado para persona #${
-                          index + 1
-                        }:`,
-                        persona.nacionalidad
-                      );
-                    }}
-                  />
-                </div>
-                {/* Municipio de residencia */}
-                <div className="field col-12 md:col-5">
-                  <label className="mb-2 d-block font-semibold">
-                    Municipio de residencia
-                  </label>
-                  <Dropdown
-                    value={persona.municipioResidencia}
-                    onChange={(e) =>
-                      actualizarPersona(index, "municipioResidencia", e.value)
-                    }
-                    options={municipiosResidenciaList[index] || []}
-                    optionLabel="descripcion"
-                    placeholder={
-                      persona.departamentoResidencia
-                        ? "Seleccione un municipio"
-                        : "Seleccione un departamento primero"
-                    }
-                    className="w-full"
-                    disabled={
-                      !(
-                        persona.nacionalidad &&
-                        persona.nacionalidad.codigo === "PAIS_9300"
-                      )
-                    }
-                    onClick={() => {
-                      console.log(
-                        `MunicipioResidencia habilitado para persona #${
-                          index + 1
-                        }:`,
-                        persona.nacionalidad
-                      );
-                    }}
-                  />
-                </div>
-                {/* Nacionalidad - también necesita lógica para limpiar campos */}
+                
+                {/* Nacionalidad */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Nacionalidad</label>
                   <Dropdown
                     value={persona.nacionalidad}
                     onChange={(e) => {
                       const nuevaNacionalidad = e.value;
-                      actualizarPersona(
-                        index,
-                        "nacionalidad",
-                        nuevaNacionalidad
-                      );
-                      console.log(
-                        `Nacionalidad seleccionada para persona #${index + 1}:`,
-                        nuevaNacionalidad
-                      );
-
+                      actualizarPersona(index, "nacionalidad", nuevaNacionalidad);
+                      
                       // Si NO es El Salvador (PAIS_9300), borrar departamento y municipio
-                      if (
-                        !nuevaNacionalidad ||
-                        nuevaNacionalidad.codigo !== "PAIS_9300"
-                      ) {
-                        actualizarPersona(
-                          index,
-                          "departamentoResidencia",
-                          null
-                        );
+                      if (!nuevaNacionalidad || nuevaNacionalidad.codigo !== "PAIS_9300") {
+                        actualizarPersona(index, "departamentoResidencia", null);
                         actualizarPersona(index, "municipioResidencia", null);
-                        // También limpiar la lista de municipios para esta persona
                         const nuevos = [...municipiosResidenciaList];
                         nuevos[index] = [];
                         setMunicipiosResidenciaList(nuevos);
@@ -873,7 +1035,8 @@ const EditarRegistro = () => {
                     showClear
                   />
                 </div>
-                {/* Departamento de residencia */}
+
+                {/* Departamento de residencia - SOLO UNA VEZ */}
                 <div className="field col-12 md:col-5">
                   <label className="mb-2 d-block font-semibold">
                     Departamento de residencia
@@ -884,32 +1047,14 @@ const EditarRegistro = () => {
                   >
                     <Dropdown
                       value={persona.departamentoResidencia}
-                      onChange={(e) =>
-                        handleDepartamentoResidenciaChange(index, e.value)
-                      }
+                      onChange={(e) => handleDepartamentoResidenciaChange(index, e.value)}
                       options={departamentos}
                       optionLabel="descripcion"
                       placeholder="Seleccione un departamento"
                       className="w-full"
-                      disabled={
-                        !(
-                          persona.nacionalidad &&
-                          persona.nacionalidad.codigo === "PAIS_9300"
-                        )
-                      }
-                      onClick={() => {
-                        console.log(
-                          `DepartamentoResidencia habilitado para persona #${
-                            index + 1
-                          }:`,
-                          persona.nacionalidad
-                        );
-                      }}
+                      disabled={!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300")}
                     />
-                    {!(
-                      persona.nacionalidad &&
-                      persona.nacionalidad.codigo === "PAIS_9300"
-                    ) && (
+                    {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
                       <Tooltip
                         target={`#tooltip-departamento-${index}`}
                         position="top"
@@ -918,7 +1063,8 @@ const EditarRegistro = () => {
                     )}
                   </span>
                 </div>
-                {/* Municipio de residencia */}
+
+                {/* Municipio de residencia - SOLO UNA VEZ */}
                 <div className="field col-12 md:col-5">
                   <label className="mb-2 d-block font-semibold">
                     Municipio de residencia
@@ -929,9 +1075,7 @@ const EditarRegistro = () => {
                   >
                     <Dropdown
                       value={persona.municipioResidencia}
-                      onChange={(e) =>
-                        actualizarPersona(index, "municipioResidencia", e.value)
-                      }
+                      onChange={(e) => actualizarPersona(index, "municipioResidencia", e.value)}
                       options={municipiosResidenciaList[index] || []}
                       optionLabel="descripcion"
                       placeholder={
@@ -940,25 +1084,9 @@ const EditarRegistro = () => {
                           : "Seleccione un departamento primero"
                       }
                       className="w-full"
-                      disabled={
-                        !(
-                          persona.nacionalidad &&
-                          persona.nacionalidad.codigo === "PAIS_9300"
-                        )
-                      }
-                      onClick={() => {
-                        console.log(
-                          `MunicipioResidencia habilitado para persona #${
-                            index + 1
-                          }:`,
-                          persona.nacionalidad
-                        );
-                      }}
+                      disabled={!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300")}
                     />
-                    {!(
-                      persona.nacionalidad &&
-                      persona.nacionalidad.codigo === "PAIS_9300"
-                    ) && (
+                    {!(persona.nacionalidad && persona.nacionalidad.codigo === "PAIS_9300") && (
                       <Tooltip
                         target={`#tooltip-municipio-${index}`}
                         position="top"
@@ -967,14 +1095,13 @@ const EditarRegistro = () => {
                     )}
                   </span>
                 </div>
+
                 {/* Estado de salud */}
                 <div className="field col-12 md:col-4">
                   <label className="mb-2 d-block">Estado de salud</label>
                   <Dropdown
                     value={persona.estadoSalud}
-                    onChange={(e) =>
-                      actualizarPersona(index, "estadoSalud", e.value)
-                    }
+                    onChange={(e) => actualizarPersona(index, "estadoSalud", e.value)}
                     options={estadosSalud}
                     optionLabel="descripcion"
                     placeholder="Seleccione el estado de la victima"
@@ -1418,7 +1545,8 @@ const EditarRegistro = () => {
                     <InputText
                       value={persona.accesoJusticia.instancia}
                       onChange={(e) =>
-                        actualizarPersona(index, "accesoJusticia", {
+                        actualizarPersona(index, "accesoJusticia",
+                        {
                           ...persona.accesoJusticia,
                           instancia: e.target.value,
                         })
@@ -1769,25 +1897,6 @@ const EditarRegistro = () => {
           </TabView>
         </Card>
       ))}
-      {/*
-      <div className="flex justify-content-end mb-3 gap-2">
-        <Button
-          label="Actualizar todas las personas"
-          icon="pi pi-save"
-          className="p-button-success"
-          onClick={async () => {
-            try {
-              for (const persona of evento.personasAfectadas) {
-                await handleActualizarPersona(persona);
-              }
-              alert("Todas las personas actualizadas correctamente");
-            } catch (error) {
-              alert("Error al actualizar personas: " + error.message);
-            }
-          }}
-        />
-      </div>
-      */}
     </div>
   );
 };
