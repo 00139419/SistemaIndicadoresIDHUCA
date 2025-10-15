@@ -36,7 +36,7 @@ import "primeflex/primeflex.css";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/sistemaRegistrosIdhuca">
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
