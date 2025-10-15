@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/sistemaRegistrosIdhuca/static/css/main.f4d53f71.css",
+    "main.js": "/sistemaRegistrosIdhuca/static/js/main.10cb20e6.js",
+    "static/js/453.7a40437b.chunk.js": "/sistemaRegistrosIdhuca/static/js/453.7a40437b.chunk.js",
+    "static/media/InterVariable-Italic.woff2": "/sistemaRegistrosIdhuca/static/media/InterVariable-Italic.e295f70fe3e2df296c7b.woff2",
+    "static/media/InterVariable.woff2": "/sistemaRegistrosIdhuca/static/media/InterVariable.a0e477f2f1f9d2376fde.woff2",
+    "static/media/primeicons.svg": "/sistemaRegistrosIdhuca/static/media/primeicons.6ed59f962963a4a73af2.svg",
+    "static/media/bootstrap-icons.woff?": "/sistemaRegistrosIdhuca/static/media/bootstrap-icons.1295669cd4e305c97f2c.woff",
+    "static/media/LogoMain.png": "/sistemaRegistrosIdhuca/static/media/LogoMain.dea2034eac3931bf8530.png",
+    "static/media/bootstrap-icons.woff2?": "/sistemaRegistrosIdhuca/static/media/bootstrap-icons.92ea18a81d737146ff04.woff2",
+    "static/media/primeicons.eot": "/sistemaRegistrosIdhuca/static/media/primeicons.ff0c4cd79b2ffca2de54.eot",
+    "static/media/primeicons.woff": "/sistemaRegistrosIdhuca/static/media/primeicons.8931fda1930c3bd21e96.woff",
+    "static/media/primeicons.ttf": "/sistemaRegistrosIdhuca/static/media/primeicons.a5c2a53d1ff7a9ff5933.ttf",
+    "static/media/idhuca-logo-blue.png": "/sistemaRegistrosIdhuca/static/media/idhuca-logo-blue.6d3e5dda1c686a91f065.png",
+    "static/media/justicia.png": "/sistemaRegistrosIdhuca/static/media/justicia.c42a6eb170db1b33072c.png",
+    "static/media/image.png": "/sistemaRegistrosIdhuca/static/media/image.5ee6e41ce377f84477bd.png",
+    "static/media/vida.png": "/sistemaRegistrosIdhuca/static/media/vida.611cdb1295c7e910165f.png",
+    "static/media/primeicons.woff2": "/sistemaRegistrosIdhuca/static/media/primeicons.024b32cc7bf399b1a847.woff2",
+    "static/media/libertad.png": "/sistemaRegistrosIdhuca/static/media/libertad.3b8b0307bd7c4028e230.png",
+    "static/media/expresion.png": "/sistemaRegistrosIdhuca/static/media/expresion.32b40638728baeeac791.png",
+    "index.html": "/sistemaRegistrosIdhuca/index.html",
+    "main.f4d53f71.css.map": "/sistemaRegistrosIdhuca/static/css/main.f4d53f71.css.map",
+    "main.10cb20e6.js.map": "/sistemaRegistrosIdhuca/static/js/main.10cb20e6.js.map",
+    "453.7a40437b.chunk.js.map": "/sistemaRegistrosIdhuca/static/js/453.7a40437b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f4d53f71.css",
+    "static/js/main.10cb20e6.js"
+  ]
+}
